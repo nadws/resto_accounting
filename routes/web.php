@@ -3,6 +3,8 @@
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\OpnameController;
+use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +42,7 @@ Route::middleware('auth')->group(function () {
     // 
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/data_master', 'data_master')->name('data_master');
+        Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
     });
 
     
@@ -69,6 +72,16 @@ Route::middleware('auth')->group(function () {
         Route::patch('/profile', 'update')->name('profile.update');
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
+
+    Route::controller(ProdukController::class)->group(function () {
+        Route::get('/produk', 'index')->name('produk');
+    });
+
+    Route::controller(OpnameController::class)->group(function () {
+        Route::get('/opname', 'index')->name('opname');
+    });
+
+
 });
 
 require __DIR__ . '/auth.php';

@@ -37,4 +37,25 @@ class NavbarController extends Controller
         $title = 'Data Master';
         return view('navbar.data_master', compact(['data', 'title']));
     }
+
+    public function persediaan_barang()
+    {
+        $data = [
+            
+            [
+                'judul' => 'Data Produk',
+                'route' => 'produk',
+                'img' => 'product.png',
+                'deskripsi' => 'mengelola data barang',
+            ],
+            [
+                'judul' => 'Stok Opname',
+                'route' => 'opname',
+                'img' => 'box.png',
+                'deskripsi' => 'menyelaraskan jumlah barang antara tersedia fisik dan buku',
+            ],
+        ];
+        $title = 'Persediaan Barang';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
 }
