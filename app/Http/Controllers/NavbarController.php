@@ -16,10 +16,10 @@ class NavbarController extends Controller
                 'deskripsi' => 'ini adalah data user',
             ],
             [
-                'judul' => 'Daftar Akun',
-                'route' => 'user',
-                'img' => 'accounting.png',
-                'deskripsi' => 'membuat dan menyunting data rekening',
+                'judul' => 'Gudang',
+                'route' => 'gudang',
+                'img' => 'gudang.png',
+                'deskripsi' => 'membuat dan mengelola data gudang',
             ],
             [
                 'judul' => 'Data User',

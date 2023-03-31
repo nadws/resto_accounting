@@ -24,7 +24,8 @@
                                 <x-theme.button hapus="Y" href="{{ route('users.delete', $d->id) }}" icon="fa-trash"
                                     addClass="float-end" teks="" variant="danger" />
                                 <x-theme.button modal="Y" idModal="edit-modal" icon="fa-pen"
-                                    addClass="me-1 float-end edit-btn" teks="" data="url={{route('users.edit', $d->id)}}" />
+                                    addClass="me-1 float-end edit-btn" teks=""
+                                    data="url={{ route('users.edit', $d->id) }}" />
                             </td>
                         </tr>
                     @endforeach
@@ -69,32 +70,31 @@
                 </div>
             </x-theme.modal>
         </form>
-        
+
         <form action="{{ route('users.update') }}" method="post">
             @csrf
             <x-theme.modal idModal="edit-modal" title="tambah user" btnSave="Y" size="modal-lg">
                 <div id="editBody"></div>
-                
             </x-theme.modal>
         </form>
 
     </x-slot>
-    
+
     @section('scripts')
-    <script>
-        $(document).ready(function () {
-            $(document).on('click', '.edit-btn', function(){
-                var url = $(this).attr('url')
-                $.ajax({
-                    type: "GET",
-                    url: url,
-                    success: function (response) {
-                        $('#editBody').html(response);
-                    }
-                });
-  
-            })
-        });
-    </script>
+        <script>
+            $(document).ready(function() {
+                $(document).on('click', '.edit-btn', function() {
+                    var url = $(this).attr('url')
+                    $.ajax({
+                        type: "GET",
+                        url: url,
+                        success: function(response) {
+                            $('#editBody').html(response);
+                        }
+                    });
+
+                })
+            });
+        </script>
     @endsection
 </x-theme.app>

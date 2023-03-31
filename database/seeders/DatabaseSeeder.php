@@ -27,5 +27,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'aldi@gmail.com',
             'password' => bcrypt('password'),
         ]);
+
+        $satuan = [
+            'pcs', 'box', 'pack', 'gr', 'kg'
+        ];
+
+        foreach ($satuan as $d) {
+            \App\Models\Satuan::create([
+                'nm_satuan' => $d
+            ]);
+        }
     }
 }
