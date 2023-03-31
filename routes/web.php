@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\OpnameController;
@@ -78,10 +79,22 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(ProdukController::class)->group(function () {
         Route::get('/produk', 'index')->name('produk');
+        Route::post('/produk', 'create')->name('produk.create');
+        Route::get('/produk/{gudang_id}', 'index')->name('produk.detail');
+        Route::get('/produk/edit/{id_produk}', 'edit_load')->name('produk.edit_load');
+        Route::post('/produk/edit', 'edit')->name('produk.edit');
     });
 
     Route::controller(OpnameController::class)->group(function () {
         Route::get('/opname', 'index')->name('opname');
+    });
+
+    Route::controller(GudangController::class)->group(function () {
+        Route::get('/gudang', 'index')->name('gudang');
+        Route::post('/gudang', 'create')->name('gudang.create');
+        Route::get('/gudang/edit/{id_gudang}', 'edit_load')->name('gudang.edit_load');
+        Route::post('/gudang/edit', 'edit')->name('gudang.edit');
+        Route::get('/gudang/delete/{id_gudang}', 'delete')->name('gudang.delete');
     });
 });
 

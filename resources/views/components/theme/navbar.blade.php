@@ -74,6 +74,22 @@
                 ]
                 ],
                 ];
+                $nav = [
+                [
+                'nama' => 'data master',
+                'route' => 'data_master',
+                'isi' => [
+                'data_master', 'gudang'
+                ]
+                ],
+                [
+                'nama' => 'persediaan barang',
+                'route' => 'persediaan_barang',
+                'isi' => [
+                'persediaan_barang', 'produk', 'opname'
+                ]
+                ],
+                ];
                 @endphp
                 @foreach ($nav as $d)
 
@@ -85,69 +101,70 @@
                 </li>
                 @endforeach
 
-                {{-- @php
-                $subMenuGroup = [
-                'menu' => [
-                [
-                'href' => 'dashboard',
-                'nama' => 'takemori',
-                ],
-                [
-                'href' => 'dashboard',
-                'nama' => 'soondobu',
-                ],
-                ],
-                ];
-                $menu = [
-                [
-                'href' => 'dashboard',
-                'img' => 'https://ptagafood.com/assets/img_menu/data-science.png',
-                'nama' => 'Kom Server',
-                ],
-                [
-                'href' => 'dashboard',
-                'img' => 'https://ptagafood.com/assets/img_menu/clipboard.png',
-                'nama' => 'Kom Kitchen',
-                ],
-                ];
-                @endphp
+                <<<<<<< HEAD {{-- @php $subMenuGroup=[ 'menu'=> [
+                    [
+                    'href' => 'dashboard',
+                    'nama' => 'takemori',
+                    ],
+                    [
+                    'href' => 'dashboard',
+                    'nama' => 'soondobu',
+                    ],
+                    ],
+                    ];
+                    $menu = [
+                    [
+                    'href' => 'dashboard',
+                    'img' => 'https://ptagafood.com/assets/img_menu/data-science.png',
+                    'nama' => 'Kom Server',
+                    ],
+                    [
+                    'href' => 'dashboard',
+                    'img' => 'https://ptagafood.com/assets/img_menu/clipboard.png',
+                    'nama' => 'Kom Kitchen',
+                    ],
+                    ];
+                    @endphp
 
-                <li class="menu-item has-sub">
-                    <a href="#" class='menu-link'>
-                        <img width="25" src="https://ptagafood.com/assets/img_menu/server.png" alt="">
-                        <span>{{ ucwords('database') }}</span>
-                    </a>
-                    <div class="submenu ">
-                        <div class="submenu-group-wrapper">
+                    <li class="menu-item has-sub">
+                        <a href="#" class='menu-link'>
+                            <img width="25" src="https://ptagafood.com/assets/img_menu/server.png" alt="">
+                            <span>{{ ucwords('database') }}</span>
+                        </a>
+                        <div class="submenu ">
+                            <div class="submenu-group-wrapper">
 
-                            <ul class="submenu-group">
-                                @foreach ($subMenuGroup as $i => $d)
-                                <li class="submenu-item  has-sub">
-                                    <a href="#" class='submenu-link'>{{ ucwords($i) }}</a>
-                                    <ul class="subsubmenu">
-                                        @foreach ($d as $m)
-                                        <li class="subsubmenu-item ">
-                                            <a href="#" class="subsubmenu-link">{{ ucwords($m['nama']) }}</a>
-                                        </li>
-                                        @endforeach
-                                    </ul>
+                                <ul class="submenu-group">
+                                    @foreach ($subMenuGroup as $i => $d)
+                                    <li class="submenu-item  has-sub">
+                                        <a href="#" class='submenu-link'>{{ ucwords($i) }}</a>
+                                        <ul class="subsubmenu">
+                                            @foreach ($d as $m)
+                                            <li class="subsubmenu-item ">
+                                                <a href="#" class="subsubmenu-link">{{ ucwords($m['nama']) }}</a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
 
-                                </li>
-                                @endforeach
+                                    </li>
+                                    @endforeach
 
-                            </ul>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
 
-                @foreach ($menu as $d)
-                <li class="menu-item">
-                    <a href="{{ route($d['href']) }}" class='menu-link'>
-                        <img width="25" src="{{ $d['img'] }}" alt="">
-                        <span>{{ ucwords($d['nama']) }}</span>
-                    </a>
-                </li>
-                @endforeach --}}
+                    @foreach ($menu as $d)
+                    <li class="menu-item">
+                        <a href="{{ route($d['href']) }}" class='menu-link'>
+                            <img width="25" src="{{ $d['img'] }}" alt="">
+                            <span>{{ ucwords($d['nama']) }}</span>
+                        </a>
+                    </li>
+                    @endforeach --}}
+                    =======
+
+                    >>>>>>> a2ab791d599597eea7c57915ba843aae5b3f70fc
 
             </ul>
         </div>

@@ -29,11 +29,25 @@
 <script src="{{ asset('theme') }}/assets/js/pages/datatables.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
 <script>
     $('.select2').select2({
         dropdownParent: $('#tambah .modal-content')
     });
+    function edit(kelas, attr, link, load) {
+        $(document).on('click', `.${kelas}`, function() {
+            var id = $(this).attr(`${attr}`)
+            $.ajax({
+                type: "GET",
+                url: `${link}/${id}`,
+                success: function(r) {
+                    $(`#${load}`).html(r);
+                    $('.select2').select2({
+                        dropdownParent: $('#edit .modal-content')
+                    });
+                }
+            });
+        })
+    }
     $('.select2').select2();
 
     $('#table').DataTable({
@@ -44,7 +58,7 @@
         "info": false,
         "stateSave": true,
         "autoWidth": true,
-        "order": [ 5, 'DESC' ],
+        "order": [5, 'DESC'],
         "searching": true,
     });
 
