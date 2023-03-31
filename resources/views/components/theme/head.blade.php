@@ -34,7 +34,7 @@
 
         .form-switch2 .form-check-input2 {
             background-image: url(data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='rgba(0, 0, 0, 0.25)'/%3E%3C/svg%3E);
-            background-position: 0;
+ background-position: 0;
             border-radius: 2em;
             margin-left: -2.5em;
             transition: background-position .15s ease-in-out;
@@ -57,7 +57,27 @@
             background-color: #fff;
             border: 1px solid rgb(237, 238, 241);
             border-radius: 4px;
-            height: 35px;
+            height: 40px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #A5AEBD;
+            line-height: 40px;
+            font-size: 12px;
+
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 20px;
+        }
+
+        label {
+            font-size: 11px;
+            color: #7F8BA2;
         }
 
         input:read-only {

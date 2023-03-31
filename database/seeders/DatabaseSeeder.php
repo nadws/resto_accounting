@@ -14,18 +14,27 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\Posisi::create([
-            'nm_posisi' => 'Presiden'
-        ]);
-        \App\Models\Posisi::create([
-            'nm_posisi' => 'Admin'
-        ]);
+        // \App\Models\Posisi::create([
+        //     'nm_posisi' => 'Presiden'
+        // ]);
+        // \App\Models\Posisi::create([
+        //     'nm_posisi' => 'Admin'
+        // ]);
 
-        \App\Models\User::factory()->create([
-            'posisi_id' => 1,
-            'name' => 'aldi',
-            'email' => 'aldi@gmail.com',
-            'password' => bcrypt('password'),
-        ]);
+        // \App\Models\User::factory()->create([
+        //     'posisi_id' => 1,
+        //     'name' => 'aldi',
+        //     'email' => 'aldi@gmail.com',
+        //     'password' => bcrypt('password'),
+        // ]);
+
+        for ($i = 0; $i < 500; $i++) {
+            # code...
+            \App\Models\Akun::create([
+                'nm_akun' => 'Bank',
+                'kode_akun' => $i,
+                'id_klasifikasi' => '2'
+            ]);
+        }
     }
 }

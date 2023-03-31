@@ -31,7 +31,6 @@
 
 
 <script>
-
     $('.select2').select2({
         dropdownParent: $('#tambah .modal-content')
     });

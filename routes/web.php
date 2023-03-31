@@ -43,9 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/data_master', 'data_master')->name('data_master');
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
+        Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
     });
 
-    
+
     Route::controller(JurnalController::class)->group(function () {
         Route::get('/jurnal', 'index')->name('jurnal');
         Route::post('/jurnal-create', 'create')->name('jurnal.create');
@@ -55,9 +56,11 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(AkunController::class)->group(function () {
         Route::get('/akun', 'index')->name('akun');
-        Route::post('/akun-create', 'create')->name('akun.create');
+        Route::post('/akun', 'create')->name('akun');
         Route::post('/akun-update', 'update')->name('akun.update');
         Route::get('/akun-delete', 'delete')->name('akun.delete');
+        Route::get('/get_kode', 'get_kode')->name('get_kode');
+        Route::get('/get_edit_akun', 'get_edit_akun')->name('get_edit_akun');
     });
 
     Route::controller(UserController::class)->group(function () {
@@ -80,8 +83,6 @@ Route::middleware('auth')->group(function () {
     Route::controller(OpnameController::class)->group(function () {
         Route::get('/opname', 'index')->name('opname');
     });
-
-
 });
 
 require __DIR__ . '/auth.php';
