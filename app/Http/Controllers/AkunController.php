@@ -13,7 +13,7 @@ class AkunController extends Controller
     {
         $data =  [
             'title' => 'Daftar Akun',
-            'akun' => Akun::where('id_klasifikasi', 2)->get(),
+            'akun' => Akun::all(),
             'subklasifikasi' => SubklasifikasiAkun::all()
         ];
         return view('Akun.index', $data);

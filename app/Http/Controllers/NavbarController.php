@@ -76,7 +76,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Jurnal Umum',
-                'route' => 'opname',
+                'route' => 'jurnal',
                 'img' => 'newspaper.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],

@@ -53,6 +53,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/jurnal-create', 'create')->name('jurnal.create');
         Route::post('/jurnal-update', 'update')->name('jurnal.update');
         Route::get('/jurnal-delete', 'delete')->name('jurnal.delete');
+        Route::get('/add_jurnal', 'add')->name('add_jurnal');
+        Route::get('/load_menu', 'load_menu')->name('load_menu');
+        Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
     });
 
     Route::controller(AkunController::class)->group(function () {
