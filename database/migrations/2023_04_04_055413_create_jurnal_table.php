@@ -20,12 +20,13 @@ return new class extends Migration
             $table->integer('id_buku');
             $table->index('id_buku');
             $table->string('no_nota');
-            $table->string('ket');
-            $table->string('no_dokumen');
-            $table->date('tgl_dokumen');
+            $table->string('ket')->nullable();
+            $table->string('no_dokumen')->nullable();
+            $table->date('tgl_dokumen')->nullable();
             $table->index('tgl_dokumen');
             $table->double('debit');
             $table->double('kredit');
+            $table->string('admin');
             $table->timestamps();
         });
     }

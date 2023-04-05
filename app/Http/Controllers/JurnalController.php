@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Akun;
 use App\Models\Jurnal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 
 class JurnalController extends Controller
@@ -21,7 +23,7 @@ class JurnalController extends Controller
 
         $data =  [
             'title' => 'Jurnal Umum',
-            'jurnal' => Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->get()
+            'jurnal' => Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->orderBY('id_jurnal', 'DESC')->get()
 
         ];
         return view('Jurnal.index', $data);
@@ -29,8 +31,16 @@ class JurnalController extends Controller
 
     public function add()
     {
+        $max = DB::table('notas')->latest('nomor_nota')->first();
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->nomor_nota + 1;
+        }
         $data =  [
             'title' => 'Jurnal Umum',
+            'max' => $nota_t
 
         ];
         return view('Jurnal.add', $data);
@@ -54,5 +64,52 @@ class JurnalController extends Controller
 
         ];
         return view('Jurnal.tbh_baris', $data);
+    }
+
+    public function save_jurnal(Request $r)
+    {
+        $tgl = $r->tgl;
+        // $no_nota = $r->no_nota;
+        $id_akun = $r->id_akun;
+        $keterangan = $r->keterangan;
+        $debit = $r->debit;
+        $kredit = $r->kredit;
+
+        $max = DB::table('notas')->latest('nomor_nota')->first();
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->nomor_nota + 1;
+        }
+        DB::table('notas')->insert(['nomor_nota' => $nota_t]);
+
+
+        for ($i = 0; $i < count($id_akun); $i++) {
+            $data = [
+                'tgl' => $tgl,
+                'no_nota' => 'KS-' . $nota_t,
+                'id_akun' => $id_akun[$i],
+                'id_buku' => '2',
+                'ket' => $keterangan[$i],
+                'debit' => $debit[$i],
+                'kredit' => $kredit[$i],
+                'admin' => Auth::user()->name,
+                'no_dokumen' => $r->no_dokumen,
+                'tgl_dokumen' => $r->tgl_dokumen,
+            ];
+            Jurnal::create($data);
+        }
+
+
+        return redirect()->route('jurnal')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function delete(Request $r)
+    {
+        $nomer = substr($r->no_nota, 3);
+        DB::table('notas')->where('nomor_nota', $nomer)->delete();
+        Jurnal::where('no_nota', $r->no_nota)->delete();
+        return redirect()->route('jurnal')->with('sukses', 'Data berhasil dihapus');
     }
 }

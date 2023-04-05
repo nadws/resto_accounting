@@ -11,14 +11,14 @@
     <tbody>
         <tr id="baris1">
             <td>
-                <select name="" id="" class="select">
+                <select name="id_akun[]" id="" class="select">
                     <option value="">Pilih</option>
                     @foreach ($akun as $a)
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
                     @endforeach
                 </select>
             </td>
-            <td><input type="text" class="form-control"></td>
+            <td><input type="text" name="keterangan[]" class="form-control"></td>
             <td>
                 <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="1">
                 <input type="hidden" class="form-control debit_biasa debit_biasa1" value="0" name="debit[]">
@@ -35,14 +35,14 @@
         </tr>
         <tr id="baris2">
             <td>
-                <select name="" id="" class="select">
+                <select name="id_akun[]" id="" class="select">
                     <option value="">Pilih</option>
                     @foreach ($akun as $a)
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
                     @endforeach
                 </select>
             </td>
-            <td><input type="text" class="form-control"></td>
+            <td><input type="text" name="keterangan[]" class="form-control"></td>
             <td>
                 <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="2">
                 <input type="hidden" class="form-control debit_biasa debit_biasa2" value="0" name="debit[]">

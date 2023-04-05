@@ -13,6 +13,8 @@
         {{ $slot }}
         @else
         <div class="row">
+
+            @csrf
             <div class="col-lg-{{$sizeCard}}">
                 <div class="card">
                     <div class="card-header">
@@ -23,8 +25,17 @@
 
                         {{ $cardBody }}
                     </div>
+                    @if (!empty($cardFooter))
+                    <div class="card-footer">
+                        {{ $cardFooter }}
+                    </div>
+                    @else
+
+                    @endif
+
                 </div>
             </div>
+
         </div>
         @endif
 

@@ -43,9 +43,11 @@ $(document).ready(function () {
         });
 
         if (selisih === 0) {
-            $(".cselisih").css("color", "black");
+            $(".cselisih").css("color", "green");
+            $(".button-save").removeAttr("hidden");
         } else {
             $(".cselisih").css("color", "red");
+            $(".button-save").attr("hidden", true);
         }
         $(".selisih").text(selisih_total);
     });
@@ -113,9 +115,11 @@ $(document).ready(function () {
             currency: "IDR",
         });
         if (selisih === 0) {
-            $(".cselisih").css("color", "black");
+            $(".cselisih").css("color", "green");
+            $(".button-save").removeAttr("hidden");
         } else {
             $(".cselisih").css("color", "red");
+            $(".button-save").attr("hidden", true);
         }
         $(".selisih").text(selisih_total);
     });
@@ -166,10 +170,35 @@ $(document).ready(function () {
         });
 
         if (selisih === 0) {
-            $(".cselisih").css("color", "black");
+            $(".cselisih").css("color", "green");
+            $(".button-save").removeAttr("hidden");
         } else {
             $(".cselisih").css("color", "red");
+            $(".button-save").attr("hidden", true);
         }
         $(".selisih").text(selisih_total);
+    });
+
+    $("form").on("keypress", function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    $(".pilihan_l").hide();
+
+    $(document).on("click", "#Pilihan_Lainnya", function () {
+        if ($(this).prop("checked") == true) {
+            $(".pilihan_l").show();
+            $(".inp-lain").removeAttr("disabled");
+        } else if ($(this).prop("checked") == false) {
+            $(".pilihan_l").hide();
+        }
+    });
+
+    $("form").submit(function () {
+        $(".button-save").hide();
+        $(".btn_save_loading").removeAttr("hidden");
     });
 });
