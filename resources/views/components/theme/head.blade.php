@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/styles/choices.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.css">
-    
+
 
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -31,7 +31,8 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     {{-- my css --}}
-    {{-- <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
+    {{--
+    <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
         .modal-lg-max {
             max-width: 1200px;
@@ -51,13 +52,13 @@
 
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             color: #000000;
-            line-height: 35px;
+            line-height: 36px;
             font-size: 12px;
 
         }
 
         .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 34px;
+            height: 35px;
             position: absolute;
             top: 1px;
             right: 1px;
@@ -137,7 +138,7 @@
         }
     </style>
     @yield('styles')
-    
+
     <livewire:styles />
     <livewire:scripts />
 </head>
