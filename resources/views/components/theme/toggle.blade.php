@@ -15,6 +15,6 @@ $judul = $name;
             type="checkbox" id="{{$ubah}}" />
     </div>
 </div>
-<div class="col-lg-6 ">
+<div class="col-lg-6">
     <label for="{{$ubah}}">{{ ucwords($name) }}</label>
 </div>

@@ -31,7 +31,8 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     {{-- my css --}}
-    <link rel="stylesheet" href="{{ asset('mycss.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
+    <style>
         .modal-lg-max {
             max-width: 1200px;
         }
