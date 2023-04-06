@@ -45,18 +45,18 @@
             background-color: #fff;
             border: 1px solid rgb(237, 238, 241);
             border-radius: 4px;
-            height: 40px;
+            height: 35px;
         }
 
         .select2-container--default .select2-selection--single .select2-selection__rendered {
-            color: #6A7080;
-            line-height: 40px;
+            color: #000000;
+            line-height: 35px;
             font-size: 12px;
 
         }
 
         .select2-container--default .select2-selection--single .select2-selection__arrow {
-            height: 38px;
+            height: 34px;
             position: absolute;
             top: 1px;
             right: 1px;
@@ -123,6 +123,16 @@
 
         .card:hover .card-text {
             opacity: 1;
+        }
+
+        .modal-dialog-centered {
+            display: flex;
+            align-items: center;
+            min-height: calc(100% - 3.5rem);
+        }
+
+        .modal-dialog-centered {
+            justify-content: center;
         }
     </style>
     @yield('styles')

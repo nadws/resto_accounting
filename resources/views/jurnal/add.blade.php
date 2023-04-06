@@ -1,4 +1,5 @@
 <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
+
     <x-theme.app title="{{$title}}" table="Y" sizeCard="12">
         <x-slot name="cardHeader">
             <div class="row justify-content-end">
@@ -66,7 +67,7 @@
                 <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
                 Loading...
             </button>
-            <button class="float-end btn btn-outline-primary me-2">Batal</button>
+            <a href="{{route('jurnal')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
         </x-slot>
 
 

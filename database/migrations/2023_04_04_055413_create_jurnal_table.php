@@ -27,6 +27,8 @@ return new class extends Migration
             $table->double('debit');
             $table->double('kredit');
             $table->string('admin');
+            $table->integer('id_proyek');
+            $table->integer('id_departemen');
             $table->timestamps();
         });
     }
