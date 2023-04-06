@@ -15,7 +15,7 @@
                             $idPosisi = auth()->user()->posisi->id_posisi;
                             $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
                             @endphp
-                            <img src="{{ asset(" img/$gambar.png")}}" alt="Avatar">
+                            <img src="{{ asset("img/$gambar.png")}}" alt="Avatar">
                         </div>
                         <div class="text">
                             <h6 class="user-dropdown-name">{{ ucwords(auth()->user()->name) }}</h6>
@@ -65,7 +65,7 @@
                 [
                 'nama' => 'Buku Besar',
                 'route' => 'buku_besar',
-                'isi' => ['buku_besar', 'akun', 'jurnal','jurnal-add'],
+                'isi' => ['buku_besar', 'akun', 'jurnal','jurnal.add'],
                 ],
                 [
                 'nama' => 'persediaan barang',
