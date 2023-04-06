@@ -13,8 +13,6 @@
         {{ $slot }}
         @else
         <div class="row">
-
-            @csrf
             <div class="col-lg-{{$sizeCard}}">
                 <div class="card">
                     <div class="card-header">

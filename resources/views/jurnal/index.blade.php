@@ -7,9 +7,7 @@
                 <x-theme.button modal="Y" idModal="view" icon="fas fa-search" addClass="float-end" teks="" />
             </div>
         </div>
-
     </x-slot>
-
     <x-slot name="cardBody">
         <section class="row">
             <table class="table table-hover" id="table1">
@@ -45,9 +43,16 @@
                                             data-bs-target="#edit" id_akun="{{$a->id_akun}}"><i
                                                 class="me-2 fas fa-pen"></i>Edit</a>
                                     </li>
-                                    <li>
+                                    {{-- <li>
                                         <a class="dropdown-item  text-danger"
+                                            onclick="return confirm('Yakin ingin dihapus ?')"
                                             href="{{route('jurnal-delete',['no_nota' => $a->no_nota])}}"><i
+                                                class="me-2 fas fa-trash"></i>Delete
+                                        </a>
+                                    </li> --}}
+                                    <li>
+                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{$a->no_nota}}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
                                                 class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
@@ -64,7 +69,7 @@
         </section>
 
         <form action="" method="get">
-            <x-theme.modal title="Tambah Akun" idModal="view">
+            <x-theme.modal title="View" idModal="view">
                 <div class="row">
                     <div class="col-lg-6">
                         <label for="">Dari</label>
@@ -79,13 +84,39 @@
             </x-theme.modal>
         </form>
 
+        <form action="{{route('jurnal-delete')}}" method="get">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <input type="hidden" class="no_nota" name="no_nota">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
 
     </x-slot>
-    {{-- @section('scripts')
+    @section('scripts')
     <script>
         $(document).ready(function () {
-            
+            $('.delete_nota').click(function () { 
+                var no_nota = $(this).attr('no_nota');
+                $('.no_nota').val(no_nota);
+                
+            });
         });
     </script>
-    @endsection --}}
+    @endsection
 </x-theme.app>

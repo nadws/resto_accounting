@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     $(document).on("click", ".remove_baris", function () {
         var delete_row = $(this).attr("count");
-        $("#baris" + delete_row).remove();
+        $(".baris" + delete_row).remove();
 
         var total_debit = 0;
         $(".debit_biasa").each(function () {
