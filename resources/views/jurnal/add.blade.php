@@ -1,6 +1,6 @@
-<form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
 
-    <x-theme.app title="{{$title}}" table="Y" sizeCard="12">
+<x-theme.app title="{{$title}}" table="Y" sizeCard="12">
+    <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
         <x-slot name="cardHeader">
             <div class="row justify-content-end">
                 <div class="col-lg-2">
@@ -69,10 +69,10 @@
             </button>
             <a href="{{route('jurnal')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
         </x-slot>
+    </form>
 
 
         @section('scripts')
         <script src="/js/jurnal.js"></script>
         @endsection
     </x-theme.app>
-</form>
