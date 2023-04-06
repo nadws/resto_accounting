@@ -17,7 +17,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Gudang',
-                'route' => 'gudang',
+                'route' => 'gudang.index',
                 'img' => 'gudang.png',
                 'deskripsi' => 'membuat dan mengelola data gudang',
             ],
@@ -44,9 +44,15 @@ class NavbarController extends Controller
 
             [
                 'judul' => 'Data Produk',
-                'route' => 'produk',
+                'route' => 'produk.index',
                 'img' => 'product.png',
                 'deskripsi' => 'mengelola data barang',
+            ],
+            [
+                'judul' => 'Stok Masuk',
+                'route' => 'stok_masuk.index',
+                'img' => 'warehouse.png',
+                'deskripsi' => 'mengelola data barang masuk',
             ],
             [
                 'judul' => 'Stok Opname',

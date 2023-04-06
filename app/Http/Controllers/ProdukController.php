@@ -6,6 +6,7 @@ use App\Models\Gudang;
 use App\Models\Produk;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProdukController extends Controller
 {
@@ -15,7 +16,7 @@ class ProdukController extends Controller
     public function index($gudang_id = null)
     {
         $kd_produk = Produk::latest('kd_produk')->first();
- 
+
         $data = [
             'title' => 'Data Produk',
             'gudang_id' => $gudang_id,
@@ -31,12 +32,13 @@ class ProdukController extends Controller
 
     public function create(Request $r)
     {
-        $route = $r->segment ? 'produk.detail' : 'detail';
+        $route = $r->segment ? 'produk.detail' : 'produk.index';
         $file = $r->file('img');
         $fileDiterima = ['jpg', 'png', 'jpeg'];
         $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
         if ($cek) {
-            $file->move('upload', $file->getClientOriginalName());
+            $fileName = "P-$r->kd_produk" . $file->getClientOriginalName();
+            $file->move('upload', $fileName);
 
             Produk::create([
                 'kd_produk' => $r->kd_produk,
@@ -45,7 +47,7 @@ class ProdukController extends Controller
                 'satuan_id' => $r->satuan_id,
                 'departemen_id' => $this->id_departemen,
                 'kontrol_stok' => $r->kontrol_stok,
-                'img' => $file->getClientOriginalName(),
+                'img' => $fileName,
                 'tgl' => date('Y-m-d'),
                 'admin' => auth()->user()->name,
             ]);
@@ -67,12 +69,46 @@ class ProdukController extends Controller
 
     public function edit(Request $r)
     {
+        $file = $r->file('img');
+        $fileDiterima = ['jpg', 'png', 'jpeg'];
+        if ($file !== null) {
+            $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
+            if ($cek) {
+                $path = public_path('upload/' . $r->imgLama);
+                if (file_exists($path)) {
+                    unlink($path);
+                }
+                $fileName = "P-$r->kd_produk" . $file->getClientOriginalName();
+                $file->move('upload', $fileName);
+            } else {
+                return redirect()->route('produk.index')->with('error', 'File tidak didukung');
+            }
+        }
+
         Produk::where('id_produk', $r->id_produk)->update([
             'nm_produk' => $r->nm_produk,
-            'kd_produk' => $r->kd_produk,
+            'gudang_id' => $r->gudang_id,
+            'satuan_id' => $r->satuan_id,
+            'kontrol_stok' => $r->kontrol_stok,
+            'img' => $fileName ?? $r->imgLama,
+            'tgl' => date('Y-m-d'),
             'admin' => auth()->user()->name,
         ]);
 
-        return redirect()->route('produk')->with('sukses', 'Berhasil update data');
+        return redirect()->route('produk.index')->with('sukses', 'Berhasil update data');
+    }
+
+    public function delete($id_produk)
+    {
+        $produk = Produk::findOrFail($id_produk);
+        
+        $path = public_path('upload/' . $produk->img);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+
+        $produk->delete();
+
+        return redirect()->route('produk.index')->with('sukses', 'Berhasil hapus data');
     }
 }

@@ -1,0 +1,118 @@
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+.form-switch2 .form-check-input2 {
+    background-image: url(
+        data:image/svg + xml;charset=utf-8,
+        %3Csvgxmlns="http://www.w3.org/2000/svg"viewBox="-4 -4 8 8"%3E%3Ccircler="3"fill="rgba(0, 0, 0, 0.25)"/%3E%3C/svg%3E
+    );
+    background-position: 0;
+    border-radius: 2em;
+    margin-left: -2.5em;
+    transition: background-position 0.15s ease-in-out;
+    width: 40px;
+    transform: scale(1.5);
+    margin-top: 8px;
+    margin-left: -22px;
+}
+
+.modal-lg-max {
+    max-width: 1200px;
+}
+
+.select2 {
+    width: 100% !important;
+}
+
+.select2-container--default .select2-selection--single {
+    background-color: #fff;
+    border: 1px solid rgb(237, 238, 241);
+    border-radius: 4px;
+    height: 40px;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    color: #a5aebd;
+    line-height: 40px;
+    font-size: 12px;
+}
+
+.select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 38px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+}
+
+label {
+    font-size: 11px;
+    color: #7f8ba2;
+}
+
+input:read-only {
+    background-color: #e9ecef;
+}
+
+input:active {
+    background-color: #e9ecef;
+}
+
+.active {
+    text-decoration: underline;
+    color: #ffffff !important;
+}
+
+.card-hover .card-front {
+    position: relative;
+    z-index: 2;
+    transition: transform 0.5s;
+}
+
+.card-hover .card-back {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transform: rotateY(180deg);
+    transition: transform 0.5s, opacity 0.5s;
+}
+
+.card-hover:hover .card-front {
+    transform: rotateY(180deg);
+}
+
+.card-hover:hover .card-back {
+    opacity: 1;
+    transform: rotateY(0deg);
+}
+
+.card-icon i {
+    transition: all 0.3s ease-in-out;
+}
+
+.card:hover .card-icon i {
+    transform: rotate(360deg);
+}
+
+.card:hover .card-title {
+    opacity: 0;
+}
+
+.card:hover .card-text {
+    opacity: 1;
+}
+
+.img-detail {
+    width: 50%;
+    height: 350px;
+    object-fit: cover;
+}

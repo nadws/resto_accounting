@@ -1,8 +1,16 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="form-group">
+            <input type="hidden" name="id_produk" value="{{ $produk->id_produk }}">
+            <input type="hidden" name="kd_produk" value="{{ $produk->kd_produk }}">
+            <div class="card border text-center">
+                <div class="card-body">
+                    <img class="img-detail rounded" src="{{ asset("upload/$produk->img") }}" alt="">
+                </div>
+            </div>
             <label for="">Image</label>
             <input type="file" name="img" class="form-control">
+            <input type="hidden" name="imgLama" value="{{ $produk->img }}" class="form-control">
         </div>
     </div>
     <div class="col-lg-12">
@@ -22,7 +30,7 @@
     <div class="col-lg-6">
         <div class="form-group">
             <label for="">Satuan</label>
-            <select required name="satuan_id" class="form-control select2" id="">
+            <select required name="satuan_id" class="form-control select2-edit" id="">
                 <option value="">- Pilih Satuan -</option>
                 @foreach ($satuan as $d)
                     <option {{$d->id_satuan == $produk->satuan_id ? 'selected' : ''}} value="{{ $d->id_satuan }}">{{ $d->nm_satuan }}</option>
@@ -33,7 +41,7 @@
     <div class="col-lg-12 mb-2">
         <div class="form-group">
             <label for="">Gudang</label>
-            <select required name="gudang_id" class="form-control select2" id="">
+            <select required name="gudang_id" class="form-control select2-edit" id="">
                 <option value="">- Pilih Gudang -</option>
                 @foreach ($gudang as $d)
                     <option {{$d->id_gudang == $produk->gudang_id ? 'selected' : ''}} value="{{ $d->id_gudang }}">{{ $d->nm_gudang }}</option>

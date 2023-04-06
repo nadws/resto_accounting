@@ -2,7 +2,7 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-4">
-                <select name="example" class="form-control select float-end select-gudang" id="">
+                <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
                     @foreach ($gudang as $g)
                         <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
@@ -25,7 +25,6 @@
                             data-bs-target="#tambah-gudang">Gudang</a>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -41,7 +40,7 @@
                         <th>Nama</th>
                         <th>Satuan</th>
                         <th>Qty</th>
-                        <th>Aksi</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -54,7 +53,7 @@
                                 {{ ucwords($d->satuan->nm_satuan) }}
                             </td>
                             <td>10 Kg</td>
-                            <td>
+                            <td align="center">
                                 <div class="btn-group dropstart mb-1">
                                     <span class="btn btn-lg" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v text-primary"></i>
@@ -63,7 +62,7 @@
                                         <a id_produk="{{$d->id_produk}}" data-bs-toggle="modal" data-bs-target="#edit" class="dropdown-item text-primary edit" href="#"><i
                                                 class="me-2 fas fa-pen"></i>
                                             Edit</a>
-                                        <a class="dropdown-item text-danger" href="#"><i
+                                        <a class="dropdown-item text-danger" onclick="return confirm('Yakin dihapus ?')" href="{{ route('produk.delete', $d->id_produk) }}"><i
                                                 class="me-2 fas fa-trash"></i> Delete</a>
                                         <a class="dropdown-item text-info" href="#"><i
                                                 class="me-2 fas fa-search"></i>
@@ -158,9 +157,9 @@
         {{-- ------ --}}
 
         {{-- edit produk --}}
-        <form action="{{ route('produk.edit') }}" method="post">
+        <form action="{{ route('produk.edit') }}" method="post" enctype="multipart/form-data">
             @csrf
-            <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="edit">
+            <x-theme.modal size="modal-lg" title="Edit Produk" idModal="edit">
                 <div id="load-edit"></div>
             </x-theme.modal>
         </form>
@@ -169,12 +168,6 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
-                $('.select2').select2({
-                    dropdownParent: $('#tambah .modal-content')
-                });
-
-                $('.select').select2();
-
                 $(".select-gudang").change(function(e) {
                     e.preventDefault();
                     var gudang_id = $(this).val()

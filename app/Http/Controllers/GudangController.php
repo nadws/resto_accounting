@@ -22,7 +22,7 @@ class GudangController extends Controller
 
     public function create(Request $r)
     {
-        $route = $r->url ?? 'gudang';
+        $route = $r->url ?? 'gudang.index';
         $route = $r->segment ? 'produk.detail' : $route;
         Gudang::create([
             'nm_gudang' => $r->nm_gudang,
@@ -50,12 +50,12 @@ class GudangController extends Controller
             'admin' => auth()->user()->name,
         ]);
 
-        return redirect()->route('gudang')->with('sukses', 'Berhasil update data');
+        return redirect()->route('gudang.index')->with('sukses', 'Berhasil update data');
     }
 
     public function delete($id_gudang)
     {
         Gudang::findOrFail($id_gudang)->delete();
-        return redirect()->route('gudang')->with('sukses', 'Berhasil hapus data');
+        return redirect()->route('gudang.index')->with('sukses', 'Berhasil hapus data');
     }
 }

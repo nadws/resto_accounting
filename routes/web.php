@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StokMasukController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,24 +79,52 @@ Route::middleware('auth')->group(function () {
         Route::delete('/profile', 'destroy')->name('profile.destroy');
     });
 
-    Route::controller(ProdukController::class)->group(function () {
-        Route::get('/produk', 'index')->name('produk');
-        Route::post('/produk', 'create')->name('produk.create');
-        Route::get('/produk/{gudang_id}', 'index')->name('produk.detail');
-        Route::get('/produk/edit/{id_produk}', 'edit_load')->name('produk.edit_load');
-        Route::post('/produk/edit', 'edit')->name('produk.edit');
+    Route::controller(ProdukController::class)
+    ->prefix('produk')
+    ->name('produk.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/{gudang_id}', 'index')->name('detail');
+        Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
+        Route::post('/edit', 'edit')->name('edit');
+        Route::get('/delete/{id_produk}', 'delete')->name('delete');
+    });
+
+    Route::controller(StokMasukController::class)
+    ->prefix('stok_masuk')
+    ->name('stok_masuk.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/{gudang_id}', 'index')->name('detail');
+        Route::get('/edit/{id_stok_masuk}', 'edit_load')->name('edit_load');
+        Route::post('/edit', 'edit')->name('edit');
+        Route::get('/delete/{id_stok_masuk}', 'delete')->name('delete');
     });
 
     Route::controller(OpnameController::class)->group(function () {
         Route::get('/opname', 'index')->name('opname');
     });
 
-    Route::controller(GudangController::class)->group(function () {
-        Route::get('/gudang', 'index')->name('gudang');
-        Route::post('/gudang', 'create')->name('gudang.create');
-        Route::get('/gudang/edit/{id_gudang}', 'edit_load')->name('gudang.edit_load');
-        Route::post('/gudang/edit', 'edit')->name('gudang.edit');
-        Route::get('/gudang/delete/{id_gudang}', 'delete')->name('gudang.delete');
+    Route::controller(GudangController::class)
+    ->prefix('gudang')
+    ->name('gudang.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/edit/{id_gudang}', 'edit_load')->name('edit_load');
+        Route::post('/edit', 'edit')->name('edit');
+        Route::get('/delete/{id_gudang}', 'delete')->name('delete');
+    });
+
+    Route::controller(CrudPermissionController::class)
+    ->prefix('permis')
+    ->name('permis.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/', 'create')->name('create');
+        Route::get('/edit/{id_permis}', 'edit')->name('edit');
     });
 });
 
