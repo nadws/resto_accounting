@@ -52,9 +52,12 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(JurnalController::class)->group(function () {
         Route::get('/jurnal', 'index')->name('jurnal');
-        Route::post('/jurnal-create', 'create')->name('jurnal.create');
         Route::post('/jurnal-update', 'update')->name('jurnal.update');
-        Route::get('/jurnal-delete', 'delete')->name('jurnal.delete');
+        Route::get('/jurnal-delete', 'delete')->name('jurnal-delete');
+        Route::get('/jurnal-add', 'add')->name('jurnal.add');
+        Route::get('/load_menu', 'load_menu')->name('load_menu');
+        Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
+        Route::post('/save_jurnal', 'save_jurnal')->name('save_jurnal');
     });
 
     Route::controller(AkunController::class)->group(function () {

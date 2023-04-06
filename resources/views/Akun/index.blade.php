@@ -25,7 +25,7 @@
                     @foreach ($akun as $no => $a)
                     <tr>
                         <td>{{$no + 1}}</td>
-                        <td>{{$a->klasifikasi->kode_sub}}-{{$a->kode_akun}}</td>
+                        <td>{{$a->kode_akun}}</td>
                         <td>{{$a->nm_akun}}</td>
                         <td>
                             {{$a->klasifikasi->nm_subklasifikasi}}

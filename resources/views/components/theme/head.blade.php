@@ -32,6 +32,99 @@
 
     {{-- my css --}}
     <link rel="stylesheet" href="{{ asset('mycss.css') }}">
+        .modal-lg-max {
+            max-width: 1200px;
+        }
+
+        .select2 {
+            width: 100% !important;
+
+        }
+
+        .select2-container--default .select2-selection--single {
+            background-color: #fff;
+            border: 1px solid rgb(237, 238, 241);
+            border-radius: 4px;
+            height: 40px;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #6A7080;
+            line-height: 40px;
+            font-size: 12px;
+
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            width: 20px;
+        }
+
+        label {
+            font-size: 11px;
+            color: #7F8BA2;
+        }
+
+        input:read-only {
+            background-color: #E9ECEF;
+        }
+
+        input:active {
+            background-color: #E9ECEF;
+        }
+
+        .active {
+            text-decoration: underline;
+            color: #ffffff !important;
+        }
+
+        .card-hover .card-front {
+            position: relative;
+            z-index: 2;
+            transition: transform .5s;
+        }
+
+        .card-hover .card-back {
+            position: absolute;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transform: rotateY(180deg);
+            transition: transform .5s, opacity .5s;
+        }
+
+        .card-hover:hover .card-front {
+            transform: rotateY(180deg);
+        }
+
+        .card-hover:hover .card-back {
+
+            opacity: 1;
+            transform: rotateY(0deg);
+        }
+
+        .card-icon i {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card:hover .card-icon i {
+            transform: rotate(360deg);
+        }
+
+        .card:hover .card-title {
+            opacity: 0;
+        }
+
+        .card:hover .card-text {
+            opacity: 1;
+        }
+    </style>
     @yield('styles')
     
     <livewire:styles />

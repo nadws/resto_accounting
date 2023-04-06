@@ -26,6 +26,9 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="topbarUserDropdown">
                         <li>
+                            <a class="dropdown-item" href="{{route('profile.edit')}}">Profile</a>
+                        </li>
+                        <li>
                             <form id="myForm" method="post" action="{{ route('logout') }}">
                                 @csrf
                             </form>
