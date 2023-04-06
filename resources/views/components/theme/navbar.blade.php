@@ -77,7 +77,7 @@
                 @foreach ($nav as $d)
                 <li class="menu-item">
                     <a href="{{ route($d['route']) }}" class='menu-link 
-                    {{ in_array(Request::route()->getName(), $d[' isi']) ? ' active' : '' }}'>
+                    {{ in_array(Request::route()->getName(), $d['isi']) ? ' active' : '' }}'>
                         <span>{{ ucwords($d['nama']) }}</span>
                     </a>
                 </li>
