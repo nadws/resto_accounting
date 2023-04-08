@@ -27,8 +27,10 @@ return new class extends Migration
             $table->double('debit');
             $table->double('kredit');
             $table->string('admin');
-            $table->integer('id_proyek');
-            $table->integer('id_departemen');
+            $table->integer('id_proyek')->nullable();
+            $table->index('id_proyek');
+            $table->integer('id_departemen')->nullable();
+            $table->string('no_urut')->nullable();
             $table->timestamps();
         });
     }

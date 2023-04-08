@@ -1,18 +1,20 @@
-
 <x-theme.app title="{{$title}}" table="Y" sizeCard="12">
-    <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
-        <x-slot name="cardHeader">
-            <div class="row justify-content-end">
-                <div class="col-lg-2">
 
-                </div>
+    <x-slot name="cardHeader">
+        <div class="row justify-content-end">
+            <div class="col-lg-2">
+
             </div>
+        </div>
 
-        </x-slot>
+    </x-slot>
 
 
-        <x-slot name="cardBody">
+    <x-slot name="cardBody">
+        <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
+            @csrf
             <section class="row">
+
                 <div class="col-lg-3">
                     <label for="">Tanggal</label>
                     <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
@@ -20,6 +22,15 @@
                 <div class="col-lg-3">
                     <label for="">No Nota</label>
                     <input type="text" class="form-control" name="no_nota" value="KS-{{$max}}">
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Proyek</label>
+                    <select name="id_proyek" id="select2">
+                        <option value="">Pilih</option>
+                        @foreach ($proyek as $p)
+                        <option value="{{$p->id_proyek}}">{{$p->nm_proyek}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
@@ -60,19 +71,20 @@
 
                 </div>
             </section>
-        </x-slot>
-        <x-slot name="cardFooter">
-            <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
-            <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
-                <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                Loading...
-            </button>
-            <a href="{{route('jurnal')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
-        </x-slot>
-    </form>
+    </x-slot>
+    <x-slot name="cardFooter">
+        <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
+            <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+        <a href="{{route('jurnal')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
+        </form>
+    </x-slot>
 
 
-        @section('scripts')
-        <script src="/js/jurnal.js"></script>
-        @endsection
-    </x-theme.app>
+
+    @section('scripts')
+    <script src="/js/jurnal.js"></script>
+    @endsection
+</x-theme.app>

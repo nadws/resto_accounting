@@ -69,15 +69,34 @@
         </section>
 
         <form action="" method="get">
-            <x-theme.modal title="View" idModal="view">
+            <x-theme.modal title="Filter Jurnal Umum" idModal="view">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <label for="">Dari</label>
-                        <input type="date" name="tgl1" class="form-control">
-                    </div>
-                    <div class="col-lg-6">
-                        <label for="">Sampai</label>
-                        <input type="date" name="tgl2" class="form-control">
+                    <div class="col-lg-12">
+
+                        <table width="100%" cellpadding="10px">
+                            <tr>
+                                <td>Tanggal</td>
+                                <td>
+                                    <label for="">Dari</label>
+                                    <input type="date" name="tgl1" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="">Sampai</label>
+                                    <input type="date" name="tgl2" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Proyek</td>
+                                <td colspan="2">
+                                    <select name="id_proyek" id="" class="selectview">
+                                        <option value="0">All</option>
+                                        @foreach ($proyek as $p)
+                                        <option value="{{$p->id_proyek}}">{{$p->nm_proyek}}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 

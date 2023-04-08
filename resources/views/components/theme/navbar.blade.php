@@ -15,7 +15,7 @@
                             $idPosisi = auth()->user()->posisi->id_posisi;
                             $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
                             @endphp
-                            <img src="{{ asset("img/$gambar.png")}}" alt="Avatar">
+                            <img src="{{ asset('img/$gambar.png')}}" alt="Avatar">
                         </div>
                         <div class="text">
                             <h6 class="user-dropdown-name">{{ ucwords(auth()->user()->name) }}</h6>
@@ -49,7 +49,7 @@
         <div class="container font-bold">
             <ul>
                 <li class="menu-item">
-                    <a href="template1" class='menu-link {{ Request::route()->getName() == ' template1' ? 'active' : ''
+                    <a href="template1" class='menu-link {{ Request::route()->getName() == "template1" ? "active" : ''
                         }}'>
                         <span>Dashboard</span>
                     </a>
@@ -77,7 +77,7 @@
                 @foreach ($nav as $d)
                 <li class="menu-item">
                     <a href="{{ route($d['route']) }}" class='menu-link 
-                    {{ in_array(Request::route()->getName(), $d['isi']) ? ' active' : '' }}'>
+                    {{ in_array(Request::route()->getName(), $d["isi"]) ? ' active' : '' }}'>
                         <span>{{ ucwords($d['nama']) }}</span>
                     </a>
                 </li>

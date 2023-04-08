@@ -24,20 +24,14 @@
                     @endforeach
                 </select>
                 <div class="collapse join1">
-                    <label for="" class="mt-2 ">Proyek</label>
-                    <select name="" id="" class="select ">
-                        <option value="">Pilih</option>
-                        <option value="">N/A</option>
-                    </select>
+                    <label for="" class="mt-2 ">No Dokumen</label>
+                    <input type="text" class="form-control " name="no_urut[]">
                 </div>
 
             </td>
             <td style="vertical-align: top;">
                 <input type="text" name="keterangan[]" class="form-control" style="vertical-align: top">
-                <div class="collapse join1">
-                    <label for="" class="mt-2 ">No Dokumen</label>
-                    <input type="text" class="form-control " name="no_urut">
-                </div>
+
             </td>
             <td style="vertical-align: top;">
                 <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="1">
@@ -68,19 +62,13 @@
                     @endforeach
                 </select>
                 <div class="collapse join2">
-                    <label for="" class="mt-2 ">Proyek</label>
-                    <select name="" id="" class="select ">
-                        <option value="">Pilih</option>
-                        <option value="">N/A</option>
-                    </select>
+                    <label for="" class="mt-2 ">No Dokumen</label>
+                    <input type="text" class="form-control " name="no_urut[]">
                 </div>
             </td>
             <td style="vertical-align: top;">
                 <input type="text" name="keterangan[]" class="form-control">
-                <div class="collapse join2">
-                    <label for="" class="mt-2 ">No Dokumen</label>
-                    <input type="text" class="form-control " name="no_urut">
-                </div>
+
             </td>
             <td style="vertical-align: top;">
                 <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="2">

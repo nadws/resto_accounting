@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Akun;
 use App\Models\Jurnal;
+use App\Models\proyek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,10 +21,23 @@ class JurnalController extends Controller
             $tgl1 =  $r->tgl1;
             $tgl2 =  $r->tgl2;
         }
+        if (empty($r->id_proyek)) {
+            $id_proyek = 0;
+        } else {
+            $id_proyek = $r->id_proyek;
+        }
+        if ($id_proyek == 0) {
+            $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->orderBY('id_jurnal', 'DESC')->get();
+        } else {
+            $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->where('id_proyek', $id_proyek)->orderBY('id_jurnal', 'DESC')->get();
+        }
+
+
 
         $data =  [
             'title' => 'Jurnal Umum',
-            'jurnal' => Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->orderBY('id_jurnal', 'DESC')->get()
+            'jurnal' => $jurnal,
+            'proyek' => proyek::where('status', 'berjalan')->get()
 
         ];
         return view('Jurnal.index', $data);
@@ -40,7 +54,8 @@ class JurnalController extends Controller
         }
         $data =  [
             'title' => 'Jurnal Umum',
-            'max' => $nota_t
+            'max' => $nota_t,
+            'proyek' => proyek::all()
 
         ];
         return view('Jurnal.add', $data);
@@ -50,7 +65,8 @@ class JurnalController extends Controller
     {
         $data =  [
             'title' => 'Jurnal Umum',
-            'akun' => Akun::all()
+            'akun' => Akun::all(),
+            'proyek' => proyek::all()
 
         ];
         return view('Jurnal.load_menu', $data);
@@ -74,6 +90,8 @@ class JurnalController extends Controller
         $keterangan = $r->keterangan;
         $debit = $r->debit;
         $kredit = $r->kredit;
+        $id_proyek = $r->id_proyek;
+        $no_urut = $r->no_urut;
 
         $max = DB::table('notas')->latest('nomor_nota')->first();
 
@@ -97,6 +115,8 @@ class JurnalController extends Controller
                 'admin' => Auth::user()->name,
                 'no_dokumen' => $r->no_dokumen,
                 'tgl_dokumen' => $r->tgl_dokumen,
+                'id_proyek' => $id_proyek,
+                'no_urut' => $no_urut[$i]
             ];
             Jurnal::create($data);
         }
