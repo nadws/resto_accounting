@@ -197,5 +197,5 @@ $(document).ready(function () {
         }
     });
 
-    aksiBtn('form')
+    aksiBtn("form");
 });
