@@ -70,7 +70,7 @@
                 [
                 'nama' => 'persediaan barang',
                 'route' => 'persediaan_barang',
-                'isi' => ['persediaan_barang', 'produk', 'opname'],
+                'isi' => ['persediaan_barang', 'produk', 'opname', 'stok_masuk.index', 'stok_masuk.add'],
                 ],
                 ];
                 @endphp
