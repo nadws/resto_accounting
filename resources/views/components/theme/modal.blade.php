@@ -26,9 +26,10 @@
                     <span class="d-none d-sm-block">Close</span>
                 </button>
                 @if ($btnSave == 'Y')
-                <button type="submit" class="btn btn-primary">
-                    <i class="bx bx-x d-block d-sm-none"></i>
-                    <span class="d-none d-sm-block">Save</span>
+                <button type="submit" class="float-end btn btn-primary button-save-modal">Simpan</button>
+                <button class="float-end btn btn-primary button-save-modal-loading" type="button" disabled hidden>
+                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                    Loading...
                 </button>
                 @endif
 

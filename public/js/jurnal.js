@@ -197,8 +197,5 @@ $(document).ready(function () {
         }
     });
 
-    $("form").submit(function () {
-        $(".button-save").hide();
-        $(".btn_save_loading").removeAttr("hidden");
-    });
+    aksiBtn('form')
 });

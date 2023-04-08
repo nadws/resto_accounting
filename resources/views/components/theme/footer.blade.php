@@ -33,8 +33,11 @@
     $('.select2').select2({
         dropdownParent: $('#tambah .modal-content')
     });
+    $('.selectView').select2({
+        dropdownParent: $('#view .modal-content')
+    });
     
-    
+
     $('#select2').select2({});
     
 
@@ -51,6 +54,28 @@
                     });
                 }
             });
+        })
+    }
+
+    function inputChecked(allId, itemClass) {
+        $(document).on('click', '#'+allId, function(){
+            $("."+itemClass).prop('checked', $(this).prop('checked'));
+        })
+    }
+
+    function pencarian(inputId, tblId) {
+        $(document).on('keyup', "#" + inputId, function() {
+            var value = $(this).val().toLowerCase();
+            $(`#${tblId} tbody tr`).filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        })
+    }
+
+    function aksiBtn(idForm) {
+        $(document).on('submit', idForm, function(){
+            $(".button-save").hide();
+            $(".btn_save_loading").removeAttr("hidden");
         })
     }
 

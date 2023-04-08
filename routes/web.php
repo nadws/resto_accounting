@@ -99,7 +99,11 @@ Route::middleware('auth')->group(function () {
     ->name('stok_masuk.')
     ->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::post('/', 'create')->name('create');
+        Route::get('/add', 'add')->name('add');
+        Route::post('/create', 'create')->name('create');
+        Route::get('/create_add', 'create_add')->name('create_add');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/load', 'load_menu')->name('load_menu');
         Route::get('/{gudang_id}', 'index')->name('detail');
         Route::get('/edit/{id_stok_masuk}', 'edit_load')->name('edit_load');
         Route::post('/edit', 'edit')->name('edit');
