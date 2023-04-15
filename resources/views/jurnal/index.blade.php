@@ -43,13 +43,6 @@
                                             data-bs-target="#edit" id_akun="{{$a->id_akun}}"><i
                                                 class="me-2 fas fa-pen"></i>Edit</a>
                                     </li>
-                                    {{-- <li>
-                                        <a class="dropdown-item  text-danger"
-                                            onclick="return confirm('Yakin ingin dihapus ?')"
-                                            href="{{route('jurnal-delete',['no_nota' => $a->no_nota])}}"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                    </li> --}}
                                     <li>
                                         <a class="dropdown-item  text-danger delete_nota" no_nota="{{$a->no_nota}}"
                                             href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
@@ -88,7 +81,7 @@
                             <tr>
                                 <td>Proyek</td>
                                 <td colspan="2">
-                                    <select name="id_proyek" id="" class="selectview">
+                                    <select name="id_proyek" id="selectView" class="">
                                         <option value="0">All</option>
                                         @foreach ($proyek as $p)
                                         <option value="{{$p->id_proyek}}">{{$p->nm_proyek}}</option>
@@ -135,6 +128,9 @@
                 $('.no_nota').val(no_nota);
                 
             });
+            $('.selectView').select2({
+        dropdownParent: $('#view .modal-content')
+    });
         });
     </script>
     @endsection

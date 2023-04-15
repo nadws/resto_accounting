@@ -2,7 +2,7 @@
     <div class="header-top">
         <div class="container">
             <div class="logo">
-                <a href="index.html"><img src="theme/assets/images/logo/logo.svg" alt="Logo"></a>
+                <a href="dashboard"><img src="/assets/login/img/empat.svg" alt="Logo"></a>
             </div>
             <div class="header-top-right">
 
@@ -15,7 +15,7 @@
                             $idPosisi = auth()->user()->posisi->id_posisi;
                             $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
                             @endphp
-                            <img src="{{ asset('img/$gambar.png')}}" alt="Avatar">
+                            <img src='{{ asset("img/$gambar.png")}}' alt="Avatar">
                         </div>
                         <div class="text">
                             <h6 class="user-dropdown-name">{{ ucwords(auth()->user()->name) }}</h6>
@@ -49,7 +49,7 @@
         <div class="container font-bold">
             <ul>
                 <li class="menu-item">
-                    <a href="template1" class='menu-link {{ Request::route()->getName() == "template1" ? "active" : ''
+                    <a href="dashboard" class='menu-link {{ Request::route()->getName() == "dashboard" ? "active" : ''
                         }}'>
                         <span>Dashboard</span>
                     </a>
@@ -60,12 +60,12 @@
                 [
                 'nama' => 'data master',
                 'route' => 'data_master',
-                'isi' => ['data_master', 'gudang'],
+                'isi' => ['data_master', 'gudang','proyek'],
                 ],
                 [
                 'nama' => 'Buku Besar',
                 'route' => 'buku_besar',
-                'isi' => ['buku_besar', 'akun', 'jurnal','jurnal.add'],
+                'isi' => ['buku_besar', 'akun', 'jurnal','jurnal.add','summary_buku_besar'],
                 ],
                 [
                 'nama' => 'persediaan barang',

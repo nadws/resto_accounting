@@ -33,7 +33,7 @@
     $('.select2').select2({
         dropdownParent: $('#tambah .modal-content')
     });
-    $('.selectView').select2({
+    $('#selectView').select2({
         dropdownParent: $('#view .modal-content')
     });
     

@@ -22,10 +22,10 @@ class NavbarController extends Controller
                 'deskripsi' => 'membuat dan mengelola data gudang',
             ],
             [
-                'judul' => 'Data User',
-                'route' => 'user',
-                'img' => 'team.png',
-                'deskripsi' => 'ini adalah data user',
+                'judul' => 'Data Proyek',
+                'route' => 'proyek',
+                'img' => 'clipboard.png',
+                'deskripsi' => 'Membuat dan mengelola data proyek beserta anggaran pendapatan dan biaya.',
             ],
             [
                 'judul' => 'Daftar Akun',
@@ -76,7 +76,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Buku Besar',
-                'route' => 'opname',
+                'route' => 'summary_buku_besar',
                 'img' => 'ledger.png',
                 'deskripsi' => 'Menampilkan ikhtisar jurnal dan perubahannya pada berbagai rekening.',
             ],

@@ -31,9 +31,6 @@ class JurnalController extends Controller
         } else {
             $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->where('id_proyek', $id_proyek)->orderBY('id_jurnal', 'DESC')->get();
         }
-
-
-
         $data =  [
             'title' => 'Jurnal Umum',
             'jurnal' => $jurnal,

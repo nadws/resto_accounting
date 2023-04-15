@@ -31,8 +31,9 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
     {{-- my css --}}
- 
-    {{-- <link rel="stylesheet" href="{{ asset('mycss.css') }}">  --}}
+
+    {{--
+    <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
         .modal-lg-max {
             max-width: 1200px;
@@ -66,8 +67,9 @@
         }
 
         label {
-            font-size: 11px;
+            font-size: 13px;
             color: #7F8BA2;
+            margin-bottom: 10px;
         }
 
         input:read-only {
@@ -133,15 +135,19 @@
             min-height: calc(100% - 3.5rem);
         }
 
+        .layout-horizontal .header-top .logo img {
+            height: 50px;
+        }
+
         .modal-dialog-centered {
             justify-content: center;
         }
 
         .img-detail {
-    width: 50%;
-    height: 350px;
-    object-fit: cover;
-}
+            width: 50%;
+            height: 350px;
+            object-fit: cover;
+        }
     </style>
     @yield('styles')
 

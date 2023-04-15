@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\BukuBesarController;
 use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StokMasukController;
+use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,7 +40,7 @@ Route::get('/template2', function () {
 
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', ['title' => 'Administrator']);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -83,56 +85,64 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(ProdukController::class)
-    ->prefix('produk')
-    ->name('produk.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/', 'create')->name('create');
-        Route::get('/{gudang_id}', 'index')->name('detail');
-        Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
-        Route::post('/edit', 'edit')->name('edit');
-        Route::get('/delete/{id_produk}', 'delete')->name('delete');
-    });
+        ->prefix('produk')
+        ->name('produk.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::get('/{gudang_id}', 'index')->name('detail');
+            Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
+            Route::post('/edit', 'edit')->name('edit');
+            Route::get('/delete/{id_produk}', 'delete')->name('delete');
+        });
 
     Route::controller(StokMasukController::class)
-    ->prefix('stok_masuk')
-    ->name('stok_masuk.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/add', 'add')->name('add');
-        Route::post('/create', 'create')->name('create');
-        Route::get('/create_add', 'create_add')->name('create_add');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/load', 'load_menu')->name('load_menu');
-        Route::get('/{gudang_id}', 'index')->name('detail');
-        Route::get('/edit/{id_stok_masuk}', 'edit_load')->name('edit_load');
-        Route::post('/edit', 'edit')->name('edit');
-        Route::get('/delete/{id_stok_masuk}', 'delete')->name('delete');
-    });
+        ->prefix('stok_masuk')
+        ->name('stok_masuk.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::post('/create', 'create')->name('create');
+            Route::get('/create_add', 'create_add')->name('create_add');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/load', 'load_menu')->name('load_menu');
+            Route::get('/{gudang_id}', 'index')->name('detail');
+            Route::get('/edit/{id_stok_masuk}', 'edit_load')->name('edit_load');
+            Route::post('/edit', 'edit')->name('edit');
+            Route::get('/delete/{id_stok_masuk}', 'delete')->name('delete');
+        });
 
     Route::controller(OpnameController::class)->group(function () {
         Route::get('/opname', 'index')->name('opname');
     });
 
     Route::controller(GudangController::class)
-    ->prefix('gudang')
-    ->name('gudang.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/', 'create')->name('create');
-        Route::get('/edit/{id_gudang}', 'edit_load')->name('edit_load');
-        Route::post('/edit', 'edit')->name('edit');
-        Route::get('/delete/{id_gudang}', 'delete')->name('delete');
-    });
+        ->prefix('gudang')
+        ->name('gudang.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::get('/edit/{id_gudang}', 'edit_load')->name('edit_load');
+            Route::post('/edit', 'edit')->name('edit');
+            Route::get('/delete/{id_gudang}', 'delete')->name('delete');
+        });
 
     Route::controller(CrudPermissionController::class)
-    ->prefix('permis')
-    ->name('permis.')
-    ->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('/', 'create')->name('create');
-        Route::get('/edit/{id_permis}', 'edit')->name('edit');
-    });
+        ->prefix('permis')
+        ->name('permis.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::get('/edit/{id_permis}', 'edit')->name('edit');
+        });
+});
+Route::controller(BukuBesarController::class)->group(function () {
+    Route::get('/summary_buku_besar', 'index')->name('summary_buku_besar');
+});
+Route::controller(ProyekController::class)->group(function () {
+    Route::get('/proyek', 'index')->name('proyek');
+    Route::post('/proyek', 'add')->name('proyek');
+    Route::get('/proyek_delete', 'delete')->name('proyek_delete');
 });
 
 require __DIR__ . '/auth.php';
