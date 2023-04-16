@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\JurnalExport;
 use App\Models\Akun;
 use App\Models\Jurnal;
 use App\Models\proyek;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redis;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\UsersExport;
 
 class JurnalController extends Controller
 {
@@ -26,6 +28,7 @@ class JurnalController extends Controller
         } else {
             $id_proyek = $r->id_proyek;
         }
+
         if ($id_proyek == 0) {
             $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->orderBY('id_jurnal', 'DESC')->get();
         } else {
@@ -34,7 +37,10 @@ class JurnalController extends Controller
         $data =  [
             'title' => 'Jurnal Umum',
             'jurnal' => $jurnal,
-            'proyek' => proyek::where('status', 'berjalan')->get()
+            'proyek' => proyek::where('status', 'berjalan')->get(),
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+            'id_proyek' => $id_proyek
 
         ];
         return view('Jurnal.index', $data);
@@ -128,5 +134,31 @@ class JurnalController extends Controller
         DB::table('notas')->where('nomor_nota', $nomer)->delete();
         Jurnal::where('no_nota', $r->no_nota)->delete();
         return redirect()->route('jurnal')->with('sukses', 'Data berhasil dihapus');
+    }
+
+    public function export(Request $r)
+    {
+        if (empty($r->tgl1)) {
+            $tgl1 =  date('Y-m-01');
+            $tgl2 =  date('Y-m-t');
+        } else {
+            $tgl1 =  $r->tgl1;
+            $tgl2 =  $r->tgl2;
+        }
+        if (empty($r->id_proyek)) {
+            $id_proyek = 0;
+        } else {
+            $id_proyek = $r->id_proyek;
+        }
+        if ($id_proyek == 0) {
+            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.tgl between '$tgl1' and '$tgl2'");
+        } else {
+            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.tgl between '$tgl1' and '$tgl2' and a.id_proyek = '$id_proyek'");
+        }
+
+        $totalrow = $total->jumlah;
+
+
+        return Excel::download(new JurnalExport($tgl1, $tgl2, $id_proyek, $totalrow), 'jurnal.xlsx');
     }
 }

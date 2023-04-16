@@ -2,6 +2,8 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
+                <a href="{{route('export_jurnal',['tgl1'=> $tgl1, 'tgl2'=>$tgl2, 'id_proyek' => $id_proyek])}}"
+                    class="float-end btn btn-success"><i class="fas fa-file-excel"></i> Export</a>
                 <x-theme.button modal="T" href="{{route('jurnal.add')}}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fas fa-search" addClass="float-end" teks="" />

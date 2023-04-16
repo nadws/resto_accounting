@@ -15,4 +15,8 @@ class Jurnal extends Model
     {
         return $this->belongsTo(Akun::class, 'id_akun', 'id_akun');
     }
+    public function proyek()
+    {
+        return $this->belongsTo(proyek::class, 'id_proyek', 'id_proyek');
+    }
 }

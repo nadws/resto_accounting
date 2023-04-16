@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/jurnal-add', 'add')->name('jurnal.add');
         Route::get('/load_menu', 'load_menu')->name('load_menu');
         Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
+        Route::get('/export_jurnal', 'export')->name('export_jurnal');
         Route::post('/save_jurnal', 'save_jurnal')->name('save_jurnal');
     });
 
