@@ -137,6 +137,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id_permis}', 'edit')->name('edit');
         });
 });
+
 Route::controller(BukuBesarController::class)->group(function () {
     Route::get('/summary_buku_besar', 'index')->name('summary_buku_besar');
 });

@@ -15,6 +15,7 @@ class JurnalExport  implements FromView, WithEvents
     protected $tgl1;
     protected $tgl2;
     protected $id_proyek;
+    protected $totalrow;
 
     public function __construct($tgl1, $tgl2, $id_proyek, $totalrow)
     {
@@ -35,6 +36,7 @@ class JurnalExport  implements FromView, WithEvents
             'jurnal' => $jurnal
         ]);
     }
+    
     public function registerEvents(): array
     {
         return [
