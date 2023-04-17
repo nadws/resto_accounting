@@ -6,7 +6,8 @@
                     class="float-end btn btn-success"><i class="fas fa-file-excel"></i> Export</a>
                 <x-theme.button modal="T" href="{{route('jurnal.add')}}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
-                <x-theme.button modal="Y" idModal="view" icon="fas fa-search" addClass="float-end" teks="" />
+                <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+
             </div>
         </div>
     </x-slot>
@@ -41,8 +42,8 @@
                                     <i class="fas fa-ellipsis-v text-primary"></i>
                                 </span>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item text-primary edit_akun" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit" id_akun="{{$a->id_akun}}"><i
+                                    <li><a class="dropdown-item text-primary edit_akun"
+                                            href="{{route('edit_jurnal',['no_nota' => $a->no_nota])}}"><i
                                                 class="me-2 fas fa-pen"></i>Edit</a>
                                     </li>
                                     <li>

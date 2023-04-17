@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
 use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
 
 class JurnalExport  implements FromView, WithEvents
@@ -36,7 +38,9 @@ class JurnalExport  implements FromView, WithEvents
             'jurnal' => $jurnal
         ]);
     }
-    
+
+
+
     public function registerEvents(): array
     {
         return [

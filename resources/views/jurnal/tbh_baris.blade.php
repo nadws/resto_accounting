@@ -13,7 +13,7 @@
         </select>
         <div class="collapse join{{$count}}">
             <label for="" class="mt-2 ">No Dokumen</label>
-            <input type="text" class="form-control " name="no_urut">
+            <input type="text" class="form-control " name="no_urut[]">
         </div>
     </td>
     <td style="vertical-align: top;">
@@ -26,7 +26,7 @@
     </td>
     <td style="vertical-align: top;">
         <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="{{$count}}">
-        <input type="hidden" class="form-control kredit_biasa kredit_biasa{{$count}}" value="0" name="debit[]">
+        <input type="hidden" class="form-control kredit_biasa kredit_biasa{{$count}}" value="0" name="kredit[]">
     </td>
     <td style="vertical-align: top;">
         <button type="button" class="btn rounded-pill remove_baris" count="{{$count}}"><i

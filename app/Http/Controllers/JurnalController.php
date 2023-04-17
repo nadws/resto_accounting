@@ -161,4 +161,52 @@ class JurnalController extends Controller
 
         return Excel::download(new JurnalExport($tgl1, $tgl2, $id_proyek, $totalrow), 'jurnal.xlsx');
     }
+
+    public function edit(Request $r)
+    {
+        $data =  [
+            'title' => 'Jurnal Umum',
+            'proyek' => proyek::all(),
+            'jurnal' => Jurnal::where('no_nota', $r->no_nota)->get(),
+            'akun' => Akun::all(),
+            'no_nota' => $r->no_nota,
+            'head_jurnal' => DB::selectOne("SELECT a.tgl, a.id_proyek, a.no_dokumen,a.tgl_dokumen, sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.no_nota = '$r->no_nota'")
+
+        ];
+        return view('Jurnal.edit', $data);
+    }
+
+    public function edit_save(Request $r)
+    {
+        $tgl = $r->tgl;
+        // $no_nota = $r->no_nota;
+        $id_akun = $r->id_akun;
+        $keterangan = $r->keterangan;
+        $debit = $r->debit;
+        $kredit = $r->kredit;
+        $id_proyek = $r->id_proyek;
+        $no_urut = $r->no_urut;
+        $nota_t = $r->no_nota;
+
+        Jurnal::where('no_nota', $nota_t)->delete();
+
+        for ($i = 0; $i < count($id_akun); $i++) {
+            $data = [
+                'tgl' => $tgl,
+                'no_nota' => $nota_t,
+                'id_akun' => $id_akun[$i],
+                'id_buku' => '2',
+                'ket' => $keterangan[$i],
+                'debit' => $debit[$i],
+                'kredit' => $kredit[$i],
+                'admin' => Auth::user()->name,
+                'no_dokumen' => $r->no_dokumen,
+                'tgl_dokumen' => $r->tgl_dokumen,
+                'id_proyek' => $id_proyek,
+                'no_urut' => $no_urut[$i]
+            ];
+            Jurnal::create($data);
+        }
+        return redirect()->route('jurnal')->with('sukses', 'Data berhasil ditambahkan');
+    }
 }
