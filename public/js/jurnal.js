@@ -63,6 +63,7 @@ $(document).ready(function () {
             },
         });
     });
+    
     $(document).on("keyup", ".debit_rupiah", function () {
         var count = $(this).attr("count");
         var rupiah = $(this)
@@ -123,6 +124,7 @@ $(document).ready(function () {
         }
         $(".selisih").text(selisih_total);
     });
+
     $(document).on("keyup", ".kredit_rupiah", function () {
         var count = $(this).attr("count");
         var rupiah = $(this)

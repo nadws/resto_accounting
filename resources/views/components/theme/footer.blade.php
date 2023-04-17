@@ -36,10 +36,63 @@
     $('#selectView').select2({
         dropdownParent: $('#view .modal-content')
     });
-    
+
 
     $('#select2').select2({});
-    
+
+    function convertRp(classNoHide, classHide) {
+        $(document).on("keyup", "." + classNoHide, function() {
+            var count = $(this).attr("count");
+            var rupiah = $(this)
+                .val()
+                .replace(/[^,\d]/g, "")
+                .toString(),
+                split = rupiah.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+
+            var debit = 0;
+            $("." + classNoHide).each(function() {
+                debit += parseFloat($(this).val());
+            });
+
+            if (rupiah === "") {
+                $(this).val("Rp 0");
+                $("." + classHide + count).val("0");
+            } else {
+                $(this).val("Rp " + rupiah);
+                var rupiah_biasa = parseFloat(rupiah.replace(/[^\d]/g, ""));
+                $("." + classHide + count).val(rupiah_biasa);
+            }
+        });
+    }
+
+    function plusRow(count, classPlus, url) {
+        $(document).on("click", "." + classPlus, function() {
+            count = count + 1;
+            $.ajax({
+                url: `${url}?count=` + count,
+                type: "GET",
+                success: function(data) {
+                    $("#" + classPlus).append(data);
+                    $(".select2").select2();
+                },
+            });
+        });
+
+        $(document).on('click', '.remove_baris', function() {
+            var delete_row = $(this).attr("count");
+            $(".baris" + delete_row).remove();
+        })
+    }
 
     function edit(kelas, attr, link, load) {
         $(document).on('click', `.${kelas}`, function() {
@@ -58,8 +111,8 @@
     }
 
     function inputChecked(allId, itemClass) {
-        $(document).on('click', '#'+allId, function(){
-            $("."+itemClass).prop('checked', $(this).prop('checked'));
+        $(document).on('click', '#' + allId, function() {
+            $("." + itemClass).prop('checked', $(this).prop('checked'));
         })
     }
 
@@ -73,7 +126,7 @@
     }
 
     function aksiBtn(idForm) {
-        $(document).on('submit', idForm, function(){
+        $(document).on('submit', idForm, function() {
             $(".button-save").hide();
             $(".btn_save_loading").removeAttr("hidden");
         })
@@ -100,8 +153,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -113,11 +166,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-</script>
+    </script>
 @endif
 @if (session()->has('error'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -131,7 +184,7 @@
 
 
         });
-</script>
+    </script>
 @endif
 @yield('scripts')
 
