@@ -49,6 +49,12 @@ class NavbarController extends Controller
                 'deskripsi' => 'mengelola data barang',
             ],
             [
+                'judul' => 'Pengajuan Pembelian',
+                'route' => 'po.index',
+                'img' => 'box.png',
+                'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
+            ],
+            [
                 'judul' => 'Stok Masuk',
                 'route' => 'stok_masuk.index',
                 'img' => 'warehouse.png',
