@@ -61,12 +61,6 @@ class NavbarController extends Controller
                 'deskripsi' => 'mengelola data barang',
             ],
             [
-                'judul' => 'Pengajuan Pembelian',
-                'route' => 'po.index',
-                'img' => 'box.png',
-                'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
-            ],
-            [
                 'judul' => 'Stok Masuk',
                 'route' => 'stok_masuk.index',
                 'img' => 'warehouse.png',
@@ -104,6 +98,21 @@ class NavbarController extends Controller
                 'img' => 'newspaper.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
+        ];
+        $title = 'Buku Besar';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
+
+    public function pembelian()
+    {
+        $data = [
+            [
+                'judul' => 'Pengajuan Pembelian',
+                'route' => 'po.index',
+                'img' => 'box.png',
+                'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
+            ],
+           
         ];
         $title = 'Buku Besar';
         return view('navbar.data_master', compact(['data', 'title']));

@@ -6,24 +6,24 @@
     <x-slot name="cardBody">
 
         <section class="row">
-            <table class="table" id="table1">
+            <table class="table table-hover" id="tableScroll">
                 <thead>
                     <tr>
                         <th width="5">#</th>
-                        <th>Tanggal</th>
+                        <th class="text-center">Tanggal</th>
                         <th>No Nota</th>
                         <th>Status</th>
-                        <th>Jumlah Barang</th>
+                        <th class="text-center">Jumlah Barang</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($stok as $no => $d)
                         <tr>
                             <td>{{ $no + 1 }}</td>
-                            <td>{{ tanggal($d->tgl) }}</td>
-                            <td>{{ $d->no_nota }}</td>
+                            <td align="center">{{ tanggal($d->tgl) }}</td>
+                            <td><a href="{{ route('stok_masuk.add', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a></td>
                             <td>{{ $d->jenis }}</td>
-                            <td>{{ $d->debit }}</td>
+                            <td align="center">{{ $d->debit }}</td>
                         </tr>
                     @endforeach
 

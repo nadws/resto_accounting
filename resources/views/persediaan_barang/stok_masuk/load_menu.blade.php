@@ -18,21 +18,19 @@
                     <th width="9%">Satuan</th>
                     <th width="10%">Stok Sebelumnya</th>
                     <th width="10%">Stok Masuk</th>
-                    <th width="5%">Total</th>
                 </tr>
             </thead>
             <tbody>
 
-                @foreach ($produk as $d)
+                @foreach ($produk as $i => $d)
+
                     <input type="hidden" name="id_produk[]" value="{{ $d->id_produk }}">
-                    <input type="hidden" name="jml_sebelumnya[]" value="{{ $d->jml_sebelumnya }}">
-                    <input type="hidden" name="jml_sesudahnya[]" value="{{ $d->jml_sesudahnya }}">
+                    <input type="hidden" name="jml_sebelumnya[]" value="{{ $d->debit - $d->kredit }}">
                     <tr>
-                        <td style="vertical-align: top;">{{ $d->produk->nm_produk }}</td>
-                        <td style="vertical-align: top;">{{ $d->produk->satuan->nm_satuan }}</td>
-                        <td style="vertical-align: top;" align="center">{{ $d->jml_sesudahnya }}</td>
-                        <td style="vertical-align: top;" align="center"><input name="debit[]" style="text-align:right;" type="text" class="form-control"></td>
-                        <td style="vertical-align: top;" align="center">0</td>
+                        <td style="vertical-align: top;">{{ $d->nm_produk }}</td>
+                        <td style="vertical-align: top;">{{ $d->nm_satuan }}</td>
+                        <td style="vertical-align: top;" align="center">{{ $d->debit - $d->kredit }}</td>
+                        <td style="vertical-align: top;" align="center"><input name="debit[]" style="text-align:right;" type="text" class="form-control debit-keyup{{$d->id_stok_produk}}"></td>
                     </tr>
                 @endforeach
                 
