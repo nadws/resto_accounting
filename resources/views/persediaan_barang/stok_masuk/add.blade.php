@@ -11,12 +11,29 @@
             <div id="load_menu"></div>
     </x-slot>
     <x-slot name="cardFooter">
-        <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
+        <div class="btn-group float-end dropdown me-1 mb-1">
+            
+            <button type="submit" name="simpan" value="simpan" class=" btn btn-primary button-save">
+                Simpan
+            </button>
+            <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
+                <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                Loading...
+            </button>
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-reference="parent">
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu " style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(81px, 40px, 0px);" data-popper-placement="bottom-start">
+              <button class="dropdown-item" type="submit" value="draft" name="simpan">Draft</button>
+              <button class="dropdown-item" type="submit" value="simpan" name="simpan">Simpan</button>
+            </div>
+          </div>
+        {{-- <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
         <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...
-        </button>
-        <a href="{{ route('jurnal') }}" class="float-end btn btn-outline-primary me-2">Batal</a>
+        </button> --}}
+        <a href="{{ route('stok_masuk.index') }}" class="float-end btn btn-outline-primary me-2">Batal</a>
         </form>
         <form id="form_add_produk">
             @csrf
@@ -103,6 +120,7 @@
                     }
                 });
             })
+
         </script>
     @endsection
 </x-theme.app>

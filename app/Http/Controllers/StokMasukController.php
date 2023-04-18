@@ -62,12 +62,17 @@ class StokMasukController extends Controller
 
     public function load_menu(Request $r)
     {   
-
+        
         $data = [
             'no_nota' => $r->no_nota,
-            'produk' => Stok::with('produk.satuan')
-                            ->where('no_nota', $r->no_nota)
-                            ->get(),
+            'produk' => DB::select("SELECT a.id_produk,a.jml_sebelumnya,a.jml_sesudahnya,b.nm_produk,d.nm_satuan, c.debit, c.kredit, a.id_stok_produk FROM `tb_stok_produk` as a
+            LEFT JOIN tb_produk as b ON a.id_produk = b.id_produk
+            LEFT JOIN tb_satuan as d ON b.satuan_id = d.id_satuan
+            LEFT JOIN (
+                SELECT b.id_produk, sum(b.debit) as debit, sum(b.kredit) as kredit
+            FROM tb_stok_produk as b WHERE b.jenis = 'selesai' GROUP BY b.id_produk
+            ) as c ON c.id_produk = a.id_produk
+            WHERE a.no_nota = '$r->no_nota'"),
             'allProduk' => $this->produk
         ];
         return view('persediaan_barang.stok_masuk.load_menu',$data);
@@ -100,14 +105,13 @@ class StokMasukController extends Controller
         for ($i=0; $i < count($r->id_produk); $i++) { 
             $id_produk = $r->id_produk[$i];
             $jml_sebelumnya = $r->jml_sebelumnya[$i];
-            $jml_sesudahnya = $r->jml_sesudahnya[$i];
             $debit = $r->debit[$i];
 
             Stok::where([['no_nota', $r->no_nota], ['id_produk', $id_produk]])->update([
                 'tgl' => $r->tgl,
                 'departemen_id' => '1',
                 'status' => 'masuk',
-                'jenis' => 'selesai',
+                'jenis' => $r->simpan == 'simpan' ? 'selesai' : 'draft',
                 'gudang_id' => '1',
                 'jml_sebelumnya' => $jml_sebelumnya,
                 'jml_sesudahnya' => $jml_sebelumnya + $debit,
@@ -118,7 +122,5 @@ class StokMasukController extends Controller
 
         return redirect()->route('stok_masuk.index')->with('sukses', 'Data Berhasil Ditambahkan');
     }
-
-    
     
 }

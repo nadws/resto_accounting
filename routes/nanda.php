@@ -36,8 +36,9 @@ Route::middleware('auth')->group(function () {
     // 
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/data_master', 'data_master')->name('data_master');
-        Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
+        Route::get('/pembelian', 'pembelian')->name('pembelian');
+        Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
     });
 
 

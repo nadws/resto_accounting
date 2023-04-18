@@ -68,9 +68,14 @@
                             'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar'],
                         ],
                         [
+                            'nama' => 'Pembelian',
+                            'route' => 'pembelian',
+                            'isi' => ['pembelian', 'po.index'],
+                        ],
+                        [
                             'nama' => 'persediaan barang',
                             'route' => 'persediaan_barang',
-                            'isi' => ['persediaan_barang', 'produk', 'opname', 'po.index', 'stok_masuk.index', 'stok_masuk.add'],
+                            'isi' => ['persediaan_barang', 'produk', 'opname', 'stok_masuk.index', 'stok_masuk.add'],
                         ],
                     ];
                 @endphp
