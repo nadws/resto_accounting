@@ -46,11 +46,11 @@ class JurnalExport  implements FromView, WithEvents
         return [
             AfterSheet::class    => function (AfterSheet $event) {
                 $totalrow = $this->totalrow + 1;
-                $cellRange = 'A1:J1';
+                $cellRange = 'A1:K1';
                 // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->setAutoFilter($cellRange);
-                $event->sheet->getStyle('A1:J1')->applyFromArray([
+                $event->sheet->getStyle('A1:K1')->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -59,11 +59,11 @@ class JurnalExport  implements FromView, WithEvents
                     ],
                     'font' => [
                         'name'  =>  'Calibri',
-                        'size'  =>  12,
+                        'size'  =>  10,
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A2:J' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A2:K' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -72,7 +72,7 @@ class JurnalExport  implements FromView, WithEvents
                     ],
                     'font' => [
                         'name'  =>  'Calibri',
-                        'size'  =>  12,
+                        'size'  =>  10,
                         'bold' => false
                     ]
                 ]);

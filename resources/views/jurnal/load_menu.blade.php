@@ -17,7 +17,7 @@
                 </button>
             </td>
             <td style="vertical-align: top;">
-                <select name="id_akun[]" id="" class="select">
+                <select name="id_akun[]" id="" class="select" required>
                     <option value="">Pilih</option>
                     @foreach ($akun as $a)
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
@@ -55,7 +55,7 @@
                 </button>
             </td>
             <td style="vertical-align: top;">
-                <select name="id_akun[]" id="" class="select">
+                <select name="id_akun[]" id="" class="select" required>
                     <option value="">Pilih</option>
                     @foreach ($akun as $a)
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>

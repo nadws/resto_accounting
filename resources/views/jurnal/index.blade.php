@@ -52,8 +52,9 @@
                                                 class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item  text-info" href="#"><i
-                                                class="me-2 fas fa-search"></i>Detail</a>
+                                    <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                            no_nota="{{$a->no_nota}}" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
                                     </li>
                                 </ul>
                             </div>
@@ -119,6 +120,15 @@
             </div>
         </form>
 
+        <x-theme.modal title="Detail Jurnal" size="modal-lg-max" idModal="detail">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="detail_jurnal"></div>
+                </div>
+            </div>
+
+        </x-theme.modal>
+
 
 
 
@@ -132,8 +142,20 @@
                 
             });
             $('.selectView').select2({
-        dropdownParent: $('#view .modal-content')
-    });
+                dropdownParent: $('#view .modal-content')
+            });
+
+            $('.detail_nota').click(function () { 
+                var no_nota = $(this).attr('no_nota');
+                $.ajax({
+                    type: "get",
+                    url: "/detail_jurnal?no_nota=" + no_nota,
+                    success: function (data) {
+                        $("#detail_jurnal").html(data);
+                    }
+                });
+                
+            });
         });
     </script>
     @endsection

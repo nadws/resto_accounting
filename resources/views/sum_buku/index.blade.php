@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
-                    <tr>
+                    <tr data-href="" style="cursor: pointer;">
                         <td>{{$no+1}}</td>
                         <td>{{$a->kode_akun}}</td>
                         <td>{{$a->nm_akun}}</td>
@@ -53,12 +53,16 @@
                 </div>
             </x-theme.modal>
         </form>
-
-
-
-
-
-
     </x-slot>
+    @section('scripts')
+    <script>
+        // Menangani event klik pada setiap baris dan mengarahkan pengguna ke URL yang sesuai
+        document.querySelectorAll('tbody tr').forEach(function(row) {
+          row.addEventListener('click', function() {
+            window.location.href = row.getAttribute('data-href');
+          });
+        });
+    </script>
+    @endsection
 
 </x-theme.app>
