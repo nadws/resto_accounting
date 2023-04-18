@@ -30,7 +30,8 @@
 
             </td>
             <td style="vertical-align: top;">
-                <input type="text" name="keterangan[]" class="form-control" style="vertical-align: top">
+                <input type="text" name="keterangan[]" class="form-control" style="vertical-align: top"
+                    placeholder="nama barang, qty, @rp">
 
             </td>
             <td style="vertical-align: top;">
@@ -67,7 +68,7 @@
                 </div>
             </td>
             <td style="vertical-align: top;">
-                <input type="text" name="keterangan[]" class="form-control">
+                <input type="text" name="keterangan[]" class="form-control" placeholder="nama barang, qty, @rp">
 
             </td>
             <td style="vertical-align: top;">

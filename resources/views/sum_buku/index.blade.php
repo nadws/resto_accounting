@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
-                    <tr data-href="" style="cursor: pointer;">
+                    <tr data-href="" style="curs">
                         <td>{{$no+1}}</td>
                         <td>{{$a->kode_akun}}</td>
                         <td>{{$a->nm_akun}}</td>
