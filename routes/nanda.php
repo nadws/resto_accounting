@@ -65,9 +65,9 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/user', 'index')->name('user');
-        Route::post('/user-create', 'create')->name('user.create');
-        Route::post('/user-update', 'update')->name('user.update');
-        Route::get('/user-delete', 'delete')->name('user.delete');
+        Route::post('/user-create', 'create')->name('users.create');
+        Route::post('/user-update', 'update')->name('users.edit');
+        Route::get('/user.delete', 'delete')->name('users.delete');
     });
 
     Route::controller(ProfileController::class)->group(function () {
