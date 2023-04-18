@@ -48,6 +48,9 @@
                                         </a>
                                     </li>
                                     <li><a class="dropdown-item  text-info" href="#"><i
+                                                class="fas fa-clipboard-check"></i> Selesai</a>
+                                    </li>
+                                    <li><a class="dropdown-item  text-info" href="#"><i
                                                 class="me-2 fas fa-search"></i>Detail</a>
                                     </li>
                                 </ul>
