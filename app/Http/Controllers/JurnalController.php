@@ -44,7 +44,7 @@ class JurnalController extends Controller
             'id_proyek' => $id_proyek
 
         ];
-        return view('Jurnal.index', $data);
+        return view('jurnal.index', $data);
     }
 
     public function add()
@@ -62,7 +62,7 @@ class JurnalController extends Controller
             'proyek' => proyek::all()
 
         ];
-        return view('Jurnal.add', $data);
+        return view('jurnal.add', $data);
     }
 
     public function load_menu()
@@ -73,7 +73,7 @@ class JurnalController extends Controller
             'proyek' => proyek::all()
 
         ];
-        return view('Jurnal.load_menu', $data);
+        return view('jurnal.load_menu', $data);
     }
     public function tambah_baris_jurnal(Request $r)
     {
@@ -83,7 +83,7 @@ class JurnalController extends Controller
             'count' => $r->count
 
         ];
-        return view('Jurnal.tbh_baris', $data);
+        return view('jurnal.tbh_baris', $data);
     }
 
     public function save_jurnal(Request $r)
@@ -174,7 +174,7 @@ class JurnalController extends Controller
             'head_jurnal' => DB::selectOne("SELECT a.tgl, a.id_proyek, a.no_dokumen,a.tgl_dokumen, sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.no_nota = '$r->no_nota'")
 
         ];
-        return view('Jurnal.edit', $data);
+        return view('jurnal.edit', $data);
     }
 
     public function edit_save(Request $r)
@@ -223,7 +223,7 @@ class JurnalController extends Controller
             where a.no_nota = '$r->no_nota'")
 
         ];
-        return view('Jurnal.detail', $data);
+        return view('jurnal.detail', $data);
     }
 
     public function import_jurnal()
