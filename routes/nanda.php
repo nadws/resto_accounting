@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/edit_jurnal', 'edit')->name('edit_jurnal');
         Route::post('/edit_jurnal', 'edit_save')->name('edit_jurnal');
         Route::get('/detail_jurnal', 'detail_jurnal')->name('detail_jurnal');
+        Route::post('/import_jurnal', 'import_jurnal')->name('import_jurnal');
     });
 
     Route::controller(AkunController::class)->group(function () {

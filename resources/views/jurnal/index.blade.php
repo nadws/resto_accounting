@@ -2,12 +2,13 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
+                <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
+                    teks="Import" />
                 <a href="{{route('export_jurnal',['tgl1'=> $tgl1, 'tgl2'=>$tgl2, 'id_proyek' => $id_proyek])}}"
-                    class="float-end btn btn-success"><i class="fas fa-file-excel"></i> Export</a>
+                    class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
                 <x-theme.button modal="T" href="{{route('jurnal.add')}}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
-
             </div>
         </div>
     </x-slot>
@@ -94,6 +95,18 @@
                                 </td>
                             </tr>
                         </table>
+                    </div>
+                </div>
+
+            </x-theme.modal>
+        </form>
+        <form action="{{route('import_jurnal')}}" method="post" enctype="multipart/form-data">
+            @csrf
+            <x-theme.modal title="Import Jurnal" idModal="import">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="">File Excel (Format: @file.xlsx)</label>
+                        <input type="file" name="file" id="" class="form-control">
                     </div>
                 </div>
 
