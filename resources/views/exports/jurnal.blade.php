@@ -18,7 +18,7 @@
         @foreach ($jurnal as $no => $a)
         <tr>
             <td>{{$no + 1}}</td>
-            <td>{{date('d-m-Y',strtotime($a->tgl))}}</td>
+            <td>{{$a->tgl}}</td>
             <td>{{$a->no_nota}}</td>
             <td>{{$a->no_urut}}</td>
             <td>{{$a->akun->kode_akun}}</td>

@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\UsersExport;
+use App\Imports\JurnalImport;
+
 
 class JurnalController extends Controller
 {
@@ -223,5 +224,12 @@ class JurnalController extends Controller
 
         ];
         return view('jurnal.detail', $data);
+    }
+
+    public function import_jurnal()
+    {
+        Excel::import(new JurnalImport, request()->file('file'));
+
+        return back();
     }
 }
