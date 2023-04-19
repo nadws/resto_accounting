@@ -101,9 +101,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/store', 'store')->name('store');
             Route::get('/load', 'load_menu')->name('load_menu');
             Route::get('/{gudang_id}', 'index')->name('detail');
-            Route::get('/edit/{id_stok_masuk}', 'edit_load')->name('edit_load');
-            Route::post('/edit', 'edit')->name('edit');
-            Route::get('/delete/{id_stok_masuk}', 'delete')->name('delete');
         });
 
     Route::controller(OpnameController::class)->group(function () {

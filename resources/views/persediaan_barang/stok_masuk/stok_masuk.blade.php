@@ -1,7 +1,21 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
-        <a class="btn btn-primary float-end" href="#" data-bs-toggle="modal" data-bs-target="#tambah"><i
-                class="fas fa-plus"></i> Tambah</a>
+        <div class="row justify-content-end">
+            <div class="col-lg-4">
+                <select name="example" class="form-control float-end select-gudang" id="select2">
+                    <option value="" selected>All Warehouse </option>
+                    @foreach ($gudang as $g)
+                        <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
+                            {{ ucwords($g->nm_gudang) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <a class="btn btn-primary float-end" href="#" data-bs-toggle="modal" data-bs-target="#tambah"><i
+                    class="fas fa-plus"></i> Tambah</a>
+            </div>
+        </div>
+        
     </x-slot>
     <x-slot name="cardBody">
 
@@ -22,7 +36,7 @@
                             <td>{{ $no + 1 }}</td>
                             <td align="center">{{ tanggal($d->tgl) }}</td>
                             <td><a href="{{ route('stok_masuk.add', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a></td>
-                            <td>{{ $d->jenis }}</td>
+                            <td><div class="btn btn-sm btn-{{$d->jenis == 'draft' ? 'warning' : 'success'}}">{{ ucwords($d->jenis) }}</div>   </td>
                             <td align="center">{{ $d->debit }}</td>
                         </tr>
                     @endforeach
@@ -48,7 +62,7 @@
                             <th width="8%">#</th>
                             <th>Nama</th>
                             <th>Satuan</th>
-                            <th>Qty</th>
+                            {{-- <th>Qty</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -60,7 +74,7 @@
                                 <td><label style="font-size: 16px;" class="form-check-label"
                                         for="for{{ $no + 1 }}">{{ ucwords($p->nm_produk) }}</label></td>
                                 <td>{{ $p->satuan->nm_satuan }}</td>
-                                <td>1</td>
+                                {{-- <td>{{ $p->debit }}</td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -74,7 +88,11 @@
         <script>
             $(document).ready(function() {
                 inputChecked('checkAll', 'checkItem')
-                
+                $(".select-gudang").change(function(e) {
+                    e.preventDefault();
+                    var gudang_id = $(this).val()
+                    document.location.href = `/stok_masuk/${gudang_id}`
+                });
 
                 pencarian('pencarian', 'tableProduk')
             });

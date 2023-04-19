@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Stok extends Model
 {
@@ -21,5 +22,23 @@ class Stok extends Model
     public function satuan()
     {
         return $this->belongsTo(Produk::class, 'id_produk');
+    }
+
+    public static function getStatus($no_nota) 
+    {
+        return self::where('no_nota', $no_nota)->value('jenis');
+    }
+
+    public static function getStokMasuk($no_nota)
+    {
+        return DB::select("SELECT a.debit, a.id_produk,a.jml_sebelumnya,a.jml_sesudahnya,b.nm_produk,d.nm_satuan, c.ttlDebit, c.ttlKredit, a.id_stok_produk 
+            FROM `tb_stok_produk` as a
+            LEFT JOIN tb_produk as b ON a.id_produk = b.id_produk
+            LEFT JOIN tb_satuan as d ON b.satuan_id = d.id_satuan
+            LEFT JOIN (
+                SELECT b.id_produk, sum(b.debit) as ttlDebit, sum(b.kredit) as ttlKredit
+            FROM tb_stok_produk as b WHERE b.jenis = 'selesai' GROUP BY b.id_produk
+            ) as c ON c.id_produk = a.id_produk
+            WHERE a.no_nota = '$no_nota'");
     }
 }
