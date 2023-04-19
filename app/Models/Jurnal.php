@@ -19,4 +19,8 @@ class Jurnal extends Model
     {
         return $this->belongsTo(proyek::class, 'id_proyek', 'id_proyek');
     }
+    public function postCenter()
+    {
+        return $this->belongsTo(PostCenter::class, 'id_post_center', 'id_post_center');
+    }
 }

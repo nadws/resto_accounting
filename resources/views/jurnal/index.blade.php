@@ -1,12 +1,12 @@
-<x-theme.app title="{{$title}}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
                     teks="Import" />
-                <a href="{{route('export_jurnal',['tgl1'=> $tgl1, 'tgl2'=>$tgl2, 'id_proyek' => $id_proyek])}}"
+                <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek]) }}"
                     class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
-                <x-theme.button modal="T" href="{{route('jurnal.add')}}" icon="fa-plus" addClass="float-end"
+                <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
             </div>
@@ -21,6 +21,7 @@
                         <th>Tanggal</th>
                         <th>No Nota</th>
                         <th>Akun</th>
+                        <th>Post Center</th>
                         <th>Keterangan</th>
                         <th style="text-align: right">Debit</th>
                         <th style="text-align: right">Kredit</th>
@@ -29,38 +30,39 @@
                 </thead>
                 <tbody>
                     @foreach ($jurnal as $no => $a)
-                    <tr>
-                        <td>{{$no + 1}}</td>
-                        <td>{{date('d-m-Y',strtotime($a->tgl))}}</td>
-                        <td>{{$a->no_nota}}</td>
-                        <td>{{$a->akun->nm_akun}}</td>
-                        <td>{{$a->ket}}</td>
-                        <td align="right">{{number_format($a->debit,0)}}</td>
-                        <td align="right">{{number_format($a->kredit,0)}}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v text-primary"></i>
-                                </span>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item text-primary edit_akun"
-                                            href="{{route('edit_jurnal',['no_nota' => $a->no_nota])}}"><i
-                                                class="me-2 fas fa-pen"></i>Edit</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{$a->no_nota}}"
-                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                    </li>
-                                    <li><a class="dropdown-item  text-info detail_nota" href="#"
-                                            no_nota="{{$a->no_nota}}" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
+                            <td>{{ $a->no_nota }}</td>
+                            <td>{{ ucwords(strtolower($a->akun->nm_akun)) }}</td>
+                            <td>{{ ucwords(strtolower($a->postCenter->nm_post ?? '')) }}</td>
+                            <td>{{ ucwords($a->ket) }}</td>
+                            <td align="right">{{ number_format($a->debit, 0) }}</td>
+                            <td align="right">{{ number_format($a->kredit, 0) }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <li><a class="dropdown-item text-primary edit_akun"
+                                                href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
+                                                    class="me-2 fas fa-pen"></i>Edit</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item  text-danger delete_nota"
+                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
+                                            </a>
+                                        </li>
+                                        <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -89,7 +91,7 @@
                                     <select name="id_proyek" id="selectView" class="">
                                         <option value="0">All</option>
                                         @foreach ($proyek as $p)
-                                        <option value="{{$p->id_proyek}}">{{$p->nm_proyek}}</option>
+                                            <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -100,7 +102,7 @@
 
             </x-theme.modal>
         </form>
-        <form action="{{route('import_jurnal')}}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('import_jurnal') }}" method="post" enctype="multipart/form-data">
             @csrf
             <x-theme.modal title="Import Jurnal" idModal="import">
                 <div class="row">
@@ -113,8 +115,9 @@
             </x-theme.modal>
         </form>
 
-        <form action="{{route('jurnal-delete')}}" method="get">
-            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <form action="{{ route('jurnal-delete') }}" method="get">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -125,7 +128,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-outline-danger"
+                                data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-danger">Hapus</button>
                         </div>
                     </div>
@@ -147,29 +151,29 @@
 
     </x-slot>
     @section('scripts')
-    <script>
-        $(document).ready(function () {
-            $('.delete_nota').click(function () { 
-                var no_nota = $(this).attr('no_nota');
-                $('.no_nota').val(no_nota);
-                
-            });
-            $('.selectView').select2({
-                dropdownParent: $('#view .modal-content')
-            });
+        <script>
+            $(document).ready(function() {
+                $('.delete_nota').click(function() {
+                    var no_nota = $(this).attr('no_nota');
+                    $('.no_nota').val(no_nota);
 
-            $('.detail_nota').click(function () { 
-                var no_nota = $(this).attr('no_nota');
-                $.ajax({
-                    type: "get",
-                    url: "/detail_jurnal?no_nota=" + no_nota,
-                    success: function (data) {
-                        $("#detail_jurnal").html(data);
-                    }
                 });
-                
+                $('.selectView').select2({
+                    dropdownParent: $('#view .modal-content')
+                });
+
+                $('.detail_nota').click(function() {
+                    var no_nota = $(this).attr('no_nota');
+                    $.ajax({
+                        type: "get",
+                        url: "/detail_jurnal?no_nota=" + no_nota,
+                        success: function(data) {
+                            $("#detail_jurnal").html(data);
+                        }
+                    });
+
+                });
             });
-        });
-    </script>
+        </script>
     @endsection
 </x-theme.app>

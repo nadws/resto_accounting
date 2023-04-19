@@ -129,9 +129,14 @@ Route::middleware('auth')->group(function () {
         });
 });
 
-Route::controller(BukuBesarController::class)->group(function () {
-    Route::get('/summary_buku_besar', 'index')->name('summary_buku_besar');
-});
+Route::controller(BukuBesarController::class)
+    ->prefix('summary_buku_besar')
+    ->name('summary_buku_besar.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/detail', 'detail')->name('detail');
+    });
+
 Route::controller(ProyekController::class)->group(function () {
     Route::get('/proyek', 'index')->name('proyek');
     Route::post('/proyek', 'add')->name('proyek');

@@ -88,7 +88,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Buku Besar',
-                'route' => 'summary_buku_besar',
+                'route' => 'summary_buku_besar.index',
                 'img' => 'ledger.png',
                 'deskripsi' => 'Menampilkan ikhtisar jurnal dan perubahannya pada berbagai rekening.',
             ],

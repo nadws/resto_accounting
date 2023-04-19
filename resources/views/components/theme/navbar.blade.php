@@ -65,7 +65,7 @@
                         [
                             'nama' => 'Buku Besar',
                             'route' => 'buku_besar',
-                            'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar'],
+                            'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index'],
                         ],
                         [
                             'nama' => 'Pembelian',

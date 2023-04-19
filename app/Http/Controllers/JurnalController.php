@@ -15,26 +15,26 @@ use App\Imports\JurnalImport;
 
 class JurnalController extends Controller
 {
-    public function index(Request $r)
+    protected $tgl1, $tgl2, $id_proyek;
+    public function __construct(Request $r)
     {
-        if (empty($r->tgl1)) {
-            $tgl1 =  date('Y-m-01');
-            $tgl2 =  date('Y-m-t');
-        } else {
-            $tgl1 =  $r->tgl1;
-            $tgl2 =  $r->tgl2;
-        }
-        if (empty($r->id_proyek)) {
-            $id_proyek = 0;
-        } else {
-            $id_proyek = $r->id_proyek;
-        }
+        $this->tgl1 = $r->tgl1 ?? date('Y-m-01');
+        $this->tgl2 = $r->tgl2 ?? date('Y-m-t');
+        $this->id_proyek = $r->id_proyek ?? 0;
+    }
 
-        if ($id_proyek == 0) {
-            $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->orderBY('id_jurnal', 'DESC')->get();
-        } else {
-            $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->where('id_proyek', $id_proyek)->orderBY('id_jurnal', 'DESC')->get();
-        }
+    public function index()
+    {
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
+
+        $id_proyek = $this->id_proyek;
+
+        $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])
+            ->when($id_proyek, function ($q, $id_proyek) {
+                return $q->where('id_proyek', $id_proyek);
+            })
+            ->orderBY('tgl', 'DESC')->get();
         $data =  [
             'title' => 'Jurnal Umum',
             'jurnal' => $jurnal,
@@ -139,18 +139,11 @@ class JurnalController extends Controller
 
     public function export(Request $r)
     {
-        if (empty($r->tgl1)) {
-            $tgl1 =  date('Y-m-01');
-            $tgl2 =  date('Y-m-t');
-        } else {
-            $tgl1 =  $r->tgl1;
-            $tgl2 =  $r->tgl2;
-        }
-        if (empty($r->id_proyek)) {
-            $id_proyek = 0;
-        } else {
-            $id_proyek = $r->id_proyek;
-        }
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
+
+        $id_proyek = $this->id_proyek;
+
         if ($id_proyek == 0) {
             $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.tgl between '$tgl1' and '$tgl2'");
         } else {
