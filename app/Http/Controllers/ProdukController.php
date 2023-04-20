@@ -7,6 +7,7 @@ use App\Models\Produk;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class ProdukController extends Controller
 {
@@ -38,8 +39,15 @@ class ProdukController extends Controller
         $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
         if ($cek) {
             $fileName = "P-$r->kd_produk" . $file->getClientOriginalName();
-            $file->move('upload', $fileName);
-
+            $path = $file->move('upload', $fileName);
+            Image::make($file->getRealPath())
+                ->resize(800, 600, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })
+                ->encode($file->getClientOriginalExtension(), 75)
+                ->save($path);
+                
             Produk::create([
                 'kd_produk' => $r->kd_produk,
                 'nm_produk' => $r->nm_produk,
@@ -101,7 +109,7 @@ class ProdukController extends Controller
     public function delete($id_produk)
     {
         $produk = Produk::findOrFail($id_produk);
-        
+
         $path = public_path('upload/' . $produk->img);
         if (file_exists($path)) {
             unlink($path);

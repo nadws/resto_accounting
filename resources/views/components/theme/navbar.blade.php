@@ -50,7 +50,7 @@
             <ul>
                 <li class="menu-item">
                     <a href="dashboard"
-                        class='menu-link {{ Request::route()->getName() == 'dashboard' ? 'active' : '' }}'>
+                        class='menu-link {{ request()->route()->getName() == 'dashboard' ? 'active' : '' }}'>
                         <span>Dashboard</span>
                     </a>
                 </li>
@@ -83,7 +83,7 @@
                     <li class="menu-item">
                         <a href="{{ route($d['route']) }}"
                             class='menu-link 
-                    {{ in_array(Request::route()->getName(), $d['isi']) ? ' active' : '' }}'>
+                    {{ in_array(request()->route()->getName(), $d['isi']) ? ' active' : '' }}'>
                             <span>{{ ucwords($d['nama']) }}</span>
                         </a>
                     </li>

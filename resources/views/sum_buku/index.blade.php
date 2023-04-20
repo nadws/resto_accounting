@@ -20,7 +20,7 @@
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
-                    <tr data-href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}" style="curs">
+                    <tr class="tbl" data-href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}" style="curs">
                         <td>{{$no+1}}</td>
                         <td>{{$a->kode_akun}}</td>
                         <td>{{$a->nm_akun}}</td>
@@ -57,7 +57,7 @@
     @section('scripts')
     <script>
         // Menangani event klik pada setiap baris dan mengarahkan pengguna ke URL yang sesuai
-        document.querySelectorAll('tbody tr').forEach(function(row) {
+        document.querySelectorAll('tbody .tbl').forEach(function(row) {
           row.addEventListener('click', function() {
             window.location.href = row.getAttribute('data-href');
           });

@@ -85,7 +85,7 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="form-group">
-                            <input type="hidden" name="url" value="produk">
+                            <input type="hidden" name="url" value="produk.index">
                             <input type="hidden" name="segment" value="{{ Request::segment(2) }}">
                             <label for="">Kode Gudang</label>
                             <input type="text" name="kd_gudang" class="form-control">
