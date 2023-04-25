@@ -148,4 +148,5 @@ Route::controller(ProyekController::class)->group(function () {
     Route::get('/proyek', 'index')->name('proyek');
     Route::post('/proyek', 'add')->name('proyek');
     Route::get('/proyek_delete', 'delete')->name('proyek_delete');
+    Route::get('/proyek_selesai', 'proyek_selesai')->name('proyek_selesai');
 });

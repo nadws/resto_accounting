@@ -47,8 +47,19 @@
                                             data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item  text-info" href="#"><i
-                                                class="fas fa-clipboard-check"></i> Selesai</a>
+                                    <li>
+                                        @if ($a->status == 'berjalan')
+                                        <a class="dropdown-item  text-info selesai_proyek" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#selesai"
+                                            id_proyek="{{$a->id_proyek}}"><i class="fas fa-clipboard-check"></i>
+                                            Selesai</a>
+                                        @else
+                                        {{-- <a class="dropdown-item  text-danger selesai_proyek" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#selesai"
+                                            id_proyek="{{$a->id_proyek}}"><i class="fas fa-clipboard-check"></i>
+                                            Batal</a> --}}
+                                        @endif
+
                                     </li>
                                     <li><a class="dropdown-item  text-info" href="#"><i
                                                 class="me-2 fas fa-search"></i>Detail</a>
@@ -121,6 +132,27 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <form action="{{route('proyek_selesai')}}" method="get">
+            <div class="modal fade" id="selesai" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-info ms-4 mt-4"><i class="fas fa-clipboard-check"></i> Selesaikan Proyek
+                                </h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menyelesaikan proyek ?</p>
+                                <input type="hidden" class="id_proyek_selesai" name="id_proyek">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-info">Selesai</button>
                         </div>
                     </div>
                 </div>

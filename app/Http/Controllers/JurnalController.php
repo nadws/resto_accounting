@@ -58,7 +58,7 @@ class JurnalController extends Controller
         $data =  [
             'title' => 'Jurnal Umum',
             'max' => $nota_t,
-            'proyek' => proyek::all()
+            'proyek' => proyek::where('status', 'berjalan')->get()
 
         ];
         return view('jurnal.add', $data);
@@ -109,7 +109,7 @@ class JurnalController extends Controller
         for ($i = 0; $i < count($id_akun); $i++) {
             $data = [
                 'tgl' => $tgl,
-                'no_nota' => 'KS-' . $nota_t,
+                'no_nota' => 'JU-' . $nota_t,
                 'id_akun' => $id_akun[$i],
                 'id_buku' => '2',
                 'ket' => $keterangan[$i],

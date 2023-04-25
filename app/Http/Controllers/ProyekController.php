@@ -48,4 +48,10 @@ class ProyekController extends Controller
             return redirect()->route('proyek')->with('sukses', 'Data berhasil dihapus');
         }
     }
+
+    public function proyek_selesai(Request $r)
+    {
+        Proyek::where('id_proyek', $r->id_proyek)->update(['status' => 'selesai']);
+        return redirect()->route('proyek')->with('sukses', 'Data berhasil diselesaikan');
+    }
 }

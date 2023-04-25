@@ -23,4 +23,8 @@ $(document).ready(function () {
         var id_proyek = $(this).attr("id_proyek");
         $(".id_proyek").val(id_proyek);
     });
+    $(".selesai_proyek").click(function () {
+        var id_proyek = $(this).attr("id_proyek");
+        $(".id_proyek_selesai").val(id_proyek);
+    });
 });

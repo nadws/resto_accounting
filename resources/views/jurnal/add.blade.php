@@ -21,7 +21,7 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control" name="no_nota" value="KS-{{$max}}">
+                    <input type="text" class="form-control" name="no_nota" value="JU-{{$max}}">
                 </div>
                 <div class="col-lg-3">
                     <label for="">Proyek</label>
