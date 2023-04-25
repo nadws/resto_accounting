@@ -20,10 +20,12 @@
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
-                    <tr class="tbl" data-href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}" style="curs">
+                    <tr>
                         <td>{{$no+1}}</td>
                         <td>{{$a->kode_akun}}</td>
-                        <td>{{$a->nm_akun}}</td>
+                        <td><a
+                                href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}">{{ucwords(strtolower($a->nm_akun))}}</a>
+                        </td>
                         <td style="text-align: right">{{number_format($a->debit,0)}}</td>
                         <td style="text-align: right">{{number_format($a->kredit,0)}}</td>
                     </tr>

@@ -40,7 +40,7 @@
 
     $('#select2').select2({});
 
-    function convertRp(classNoHide, classHide) {
+    function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
             var count = $(this).attr("count");
             var rupiah = $(this)
@@ -72,6 +72,22 @@
                 var rupiah_biasa = parseFloat(rupiah.replace(/[^\d]/g, ""));
                 $("." + classHide + count).val(rupiah_biasa);
             }
+
+            var total_debit = 0;
+            $("." + classHide).each(function () {
+                total_debit += parseFloat($(this).val());
+            });
+
+            $("." + classTotalhide).val(total_debit);
+
+            var totalRupiah = total_debit.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            var debit = $("." + classTotal).text(totalRupiah);
+
+
+            
         });
     }
 
@@ -153,8 +169,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -166,11 +182,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-    </script>
+</script>
 @endif
 @if (session()->has('error'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -184,7 +200,7 @@
 
 
         });
-    </script>
+</script>
 @endif
 @yield('scripts')
 

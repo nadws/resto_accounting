@@ -87,6 +87,12 @@ class NavbarController extends Controller
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
             [
+                'judul' => 'Saldo Awal',
+                'route' => 'saldo_awal',
+                'img' => 'report.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
                 'judul' => 'Buku Besar',
                 'route' => 'summary_buku_besar.index',
                 'img' => 'ledger.png',
@@ -112,7 +118,7 @@ class NavbarController extends Controller
                 'img' => 'box.png',
                 'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
             ],
-           
+
         ];
         $title = 'Buku Besar';
         return view('navbar.data_master', compact(['data', 'title']));

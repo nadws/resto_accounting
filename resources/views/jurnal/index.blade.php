@@ -30,39 +30,39 @@
                 </thead>
                 <tbody>
                     @foreach ($jurnal as $no => $a)
-                        <tr>
-                            <td>{{ $no + 1 }}</td>
-                            <td>{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
-                            <td>{{ $a->no_nota }}</td>
-                            <td>{{ ucwords(strtolower($a->akun->nm_akun)) }}</td>
-                            <td>{{ ucwords(strtolower($a->postCenter->nm_post ?? '')) }}</td>
-                            <td>{{ ucwords($a->ket) }}</td>
-                            <td align="right">{{ number_format($a->debit, 0) }}</td>
-                            <td align="right">{{ number_format($a->kredit, 0) }}</td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v text-primary"></i>
-                                    </span>
-                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <li><a class="dropdown-item text-primary edit_akun"
-                                                href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
-                                                    class="me-2 fas fa-pen"></i>Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item  text-danger delete_nota"
-                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
-                                            </a>
-                                        </li>
-                                        <li><a class="dropdown-item  text-info detail_nota" href="#"
-                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $no + 1 }}</td>
+                        <td>{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
+                        <td>{{ $a->no_nota }}</td>
+                        <td>{{ ucwords(strtolower($a->akun->nm_akun)) }}</td>
+                        <td>{{ ucwords(strtolower($a->postCenter->nm_post ?? '')) }}</td>
+                        <td>{{ ucwords($a->ket) }}</td>
+                        <td align="right">{{ number_format($a->debit, 0) }}</td>
+                        <td align="right">{{ number_format($a->kredit, 0) }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v text-primary"></i>
+                                </span>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <li><a class="dropdown-item text-primary edit_akun"
+                                            href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
+                                                class="me-2 fas fa-pen"></i>Edit</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{ $a->no_nota }}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                class="me-2 fas fa-trash"></i>Delete
+                                        </a>
+                                    </li>
+                                    <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                            no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -91,7 +91,7 @@
                                     <select name="id_proyek" id="selectView" class="">
                                         <option value="0">All</option>
                                         @foreach ($proyek as $p)
-                                            <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
+                                        <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -116,8 +116,7 @@
         </form>
 
         <form action="{{ route('jurnal-delete') }}" method="get">
-            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -128,8 +127,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger"
-                                data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-danger">Hapus</button>
                         </div>
                     </div>
@@ -151,8 +149,8 @@
 
     </x-slot>
     @section('scripts')
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 $('.delete_nota').click(function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
@@ -174,6 +172,6 @@
 
                 });
             });
-        </script>
+    </script>
     @endsection
 </x-theme.app>

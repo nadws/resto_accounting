@@ -225,4 +225,17 @@ class JurnalController extends Controller
 
         return back();
     }
+
+    public function saldo_akun(Request $r)
+    {
+        $id_akun = $r->id_akun;
+        $jurnal =  DB::selectOne("SELECT sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.id_akun = '$id_akun'");
+        $saldo = $jurnal->debit - $jurnal->kredit;
+
+        if (empty($saldo)) {
+            echo 'Rp. 0';
+        } else {
+            echo 'Rp. ' . number_format($saldo, 0, '.', '.');
+        }
+    }
 }

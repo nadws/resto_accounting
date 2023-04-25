@@ -63,7 +63,7 @@ $(document).ready(function () {
             },
         });
     });
-    
+
     $(document).on("keyup", ".debit_rupiah", function () {
         var count = $(this).attr("count");
         var rupiah = $(this)
@@ -163,6 +163,7 @@ $(document).ready(function () {
             style: "currency",
             currency: "IDR",
         });
+        alert(totalRupiah);
         $(".total_kredit").text(totalRupiah);
 
         var selisih = total_debit - total_kredit;

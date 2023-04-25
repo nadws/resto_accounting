@@ -40,7 +40,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        <x-theme.toggle name="Pilihan Lainnya">
+                        {{-- <x-theme.toggle name="Pilihan Lainnya">
 
                         </x-theme.toggle>
                         <div class="col-lg-12"></div>
@@ -51,7 +51,7 @@
                         <div class="col-lg-6 pilihan_l">
                             <label for="">Tanggal Dokumen</label>
                             <input type="date" class="form-control inp-lain" name="tgl_dokumen">
-                        </div>
+                        </div> --}}
 
                     </div>
                 </div>
@@ -85,6 +85,21 @@
 
 
     @section('scripts')
-    <script src="/js/jurnal.js"></script>
+    <script src="../js/jurnal.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on("change", ".pilih_akun", function () {
+                var count = $(this).attr("count");
+                var id_akun = $(".pilih_akun" + count).val();
+                $.ajax({
+                    url: "/saldo_akun?id_akun=" + id_akun,
+                    type: "Get",
+                    success: function (data) {
+                        $(".saldo_akun" + count).text(data);
+                    },
+                });
+            });
+        });
+    </script>
     @endsection
 </x-theme.app>
