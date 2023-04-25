@@ -163,7 +163,6 @@ $(document).ready(function () {
             style: "currency",
             currency: "IDR",
         });
-        alert(totalRupiah);
         $(".total_kredit").text(totalRupiah);
 
         var selisih = total_debit - total_kredit;

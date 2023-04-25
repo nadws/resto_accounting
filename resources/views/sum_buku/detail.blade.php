@@ -29,11 +29,7 @@
                     @foreach ($detail as $n => $d)
                     @php
                     $saldo += $d->debit - $d->kredit;
-                    if ($d->debit + $d->kredit == 0) {
-                    continue;
-                    } else {
-                    # code...
-                    }
+
 
                     @endphp
                     <tr>

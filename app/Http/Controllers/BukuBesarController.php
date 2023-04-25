@@ -48,7 +48,7 @@ class BukuBesarController extends Controller
                             GROUP BY j.no_nota
                         ) d ON a.no_nota = d.no_nota AND d.id_akun != a.id_akun
                         WHERE a.id_akun = '$r->id_akun'
-                        order by a.saldo DESC
+                        order by a.saldo DESC, a.id_jurnal ASC
             ")
         ];
         return view('sum_buku.detail', $data);
