@@ -32,10 +32,10 @@
                     @foreach ($jurnal as $no => $a)
                     <tr>
                         <td>{{ $no + 1 }}</td>
-                        <td>{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
+                        <td class="nowrap">{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
                         <td>{{ $a->no_nota }}</td>
-                        <td>{{ ucwords(strtolower($a->akun->nm_akun)) }}</td>
-                        <td>{{ ucwords(strtolower($a->postCenter->nm_post ?? '')) }}</td>
+                        <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                        <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
                         <td>{{ ucwords($a->ket) }}</td>
                         <td align="right">{{ number_format($a->debit, 0) }}</td>
                         <td align="right">{{ number_format($a->kredit, 0) }}</td>
@@ -160,7 +160,8 @@
                     dropdownParent: $('#view .modal-content')
                 });
 
-                $('.detail_nota').click(function() {
+
+                $(document).on("click", ".detail_nota", function () {
                     var no_nota = $(this).attr('no_nota');
                     $.ajax({
                         type: "get",
