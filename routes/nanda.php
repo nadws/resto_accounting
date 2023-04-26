@@ -6,7 +6,6 @@ use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
-use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StokMasukController;
@@ -117,9 +116,7 @@ Route::middleware('auth')->group(function () {
             
         });
 
-    Route::controller(OpnameController::class)->group(function () {
-        Route::get('/opname', 'index')->name('opname');
-    });
+    
 
     Route::controller(GudangController::class)
         ->prefix('gudang')

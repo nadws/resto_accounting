@@ -85,9 +85,6 @@
 
 
     @section('scripts')
-<<<<<<< HEAD
-        <script src="/js/jurnal.js"></script>
-=======
     <script src="../js/jurnal.js"></script>
     <script>
         $(document).ready(function () {
@@ -104,6 +101,5 @@
             });
         });
     </script>
->>>>>>> f7350968591012ef17fe4951652dc8b1ed76eeb2
     @endsection
 </x-theme.app>

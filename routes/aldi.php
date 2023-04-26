@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PoController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/edit', 'edit')->name('edit');
             Route::get('/delete/{id_produk}', 'delete')->name('delete');
         });
+
+    Route::controller(OpnameController::class)->group(function () {
+        Route::get('/opname', 'index')->name('opname');
+    });
 });
