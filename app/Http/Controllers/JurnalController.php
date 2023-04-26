@@ -29,12 +29,11 @@ class JurnalController extends Controller
         $tgl2 =  $this->tgl2;
 
         $id_proyek = $this->id_proyek;
-
-        $jurnal = Jurnal::whereBetween('tgl', [$tgl1, $tgl2])
-            ->when($id_proyek, function ($q, $id_proyek) {
-                return $q->where('id_proyek', $id_proyek);
-            })
-            ->orderBY('tgl', 'DESC')->get();
+        $jurnal =  DB::select("SELECT a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
+        left join akun as b on b.id_akun = a.id_akun
+        left join tb_post_center as c on c.id_post_center = a.id_post_center
+        where a.id_buku = '2'
+         ");
         $data =  [
             'title' => 'Jurnal Umum',
             'jurnal' => $jurnal,
@@ -59,7 +58,7 @@ class JurnalController extends Controller
         $data =  [
             'title' => 'Jurnal Umum',
             'max' => $nota_t,
-            'proyek' => proyek::all()
+            'proyek' => proyek::where('status', 'berjalan')->get()
 
         ];
         return view('jurnal.add', $data);
@@ -110,7 +109,7 @@ class JurnalController extends Controller
         for ($i = 0; $i < count($id_akun); $i++) {
             $data = [
                 'tgl' => $tgl,
-                'no_nota' => 'KS-' . $nota_t,
+                'no_nota' => 'JU-' . $nota_t,
                 'id_akun' => $id_akun[$i],
                 'id_buku' => '2',
                 'ket' => $keterangan[$i],
@@ -224,5 +223,18 @@ class JurnalController extends Controller
         Excel::import(new JurnalImport, request()->file('file'));
 
         return back();
+    }
+
+    public function saldo_akun(Request $r)
+    {
+        $id_akun = $r->id_akun;
+        $jurnal =  DB::selectOne("SELECT sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.id_akun = '$id_akun'");
+        $saldo = $jurnal->debit - $jurnal->kredit;
+
+        if (empty($saldo)) {
+            echo 'Rp. 0';
+        } else {
+            echo 'Rp. ' . number_format($saldo, 0, '.', '.');
+        }
     }
 }

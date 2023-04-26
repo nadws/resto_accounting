@@ -148,6 +148,10 @@
             height: 350px;
             object-fit: cover;
         }
+
+        .nowrap {
+            white-space: nowrap;
+        }
     </style>
     @yield('styles')
 

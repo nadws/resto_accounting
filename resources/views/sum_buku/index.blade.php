@@ -2,7 +2,7 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <x-theme.button modal="Y" idModal="view" icon="fas fa-search" addClass="float-end" teks="" />
+                <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
             </div>
         </div>
     </x-slot>
@@ -20,6 +20,7 @@
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
+<<<<<<< HEAD
                         <tr class="tbl"
                             data-href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}"
                             style="curs">
@@ -29,6 +30,17 @@
                             <td style="text-align: right">{{ number_format($a->debit, 0) }}</td>
                             <td style="text-align: right">{{ number_format($a->kredit, 0) }}</td>
                         </tr>
+=======
+                    <tr>
+                        <td>{{$no+1}}</td>
+                        <td>{{$a->kode_akun}}</td>
+                        <td><a
+                                href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}">{{ucwords(strtolower($a->nm_akun))}}</a>
+                        </td>
+                        <td style="text-align: right">{{number_format($a->debit,0)}}</td>
+                        <td style="text-align: right">{{number_format($a->kredit,0)}}</td>
+                    </tr>
+>>>>>>> f7350968591012ef17fe4951652dc8b1ed76eeb2
                     @endforeach
                 </tbody>
             </table>

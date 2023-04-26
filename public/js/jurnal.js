@@ -63,7 +63,7 @@ $(document).ready(function () {
             },
         });
     });
-    
+
     $(document).on("keyup", ".debit_rupiah", function () {
         var count = $(this).attr("count");
         var rupiah = $(this)

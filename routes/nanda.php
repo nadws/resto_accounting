@@ -11,6 +11,8 @@ use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StokMasukController;
 use App\Http\Controllers\ProyekController;
+use App\Http\Controllers\Saldo;
+use App\Http\Controllers\SaldoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/edit_jurnal', 'edit_save')->name('edit_jurnal');
         Route::get('/detail_jurnal', 'detail_jurnal')->name('detail_jurnal');
         Route::post('/import_jurnal', 'import_jurnal')->name('import_jurnal');
+        Route::get('/saldo_akun', 'saldo_akun')->name('saldo_akun');
     });
 
     Route::controller(AkunController::class)->group(function () {
@@ -64,6 +67,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/akun-delete', 'delete')->name('akun.delete');
         Route::get('/get_kode', 'get_kode')->name('get_kode');
         Route::get('/get_edit_akun', 'get_edit_akun')->name('get_edit_akun');
+    });
+    Route::controller(SaldoController::class)->group(function () {
+        Route::get('/saldo_awal', 'index')->name('saldo_awal');
+        Route::get('/saveSaldo', 'saveSaldo')->name('saveSaldo');
     });
 
     Route::controller(UserController::class)->group(function () {
@@ -147,4 +154,5 @@ Route::controller(ProyekController::class)->group(function () {
     Route::get('/proyek', 'index')->name('proyek');
     Route::post('/proyek', 'add')->name('proyek');
     Route::get('/proyek_delete', 'delete')->name('proyek_delete');
+    Route::get('/proyek_selesai', 'proyek_selesai')->name('proyek_selesai');
 });

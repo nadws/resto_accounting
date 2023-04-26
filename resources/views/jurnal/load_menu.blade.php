@@ -2,10 +2,11 @@
     <thead>
         <tr>
             <th width="2%">#</th>
-            <th width="25%">Akun</th>
-            <th width="28%">Keterangan</th>
-            <th width="20%" style="text-align: right;">Debit</th>
-            <th width="20%" style="text-align: right;">Kredit</th>
+            <th width="22%">Akun</th>
+            <th width="25%">Keterangan</th>
+            <th width="12%" style="text-align: right;">Debit</th>
+            <th width="12%" style="text-align: right;">Kredit</th>
+            <th width="12%" style="text-align: right;">Saldo</th>
             <th width="5%">Aksi</th>
         </tr>
     </thead>
@@ -17,14 +18,14 @@
                 </button>
             </td>
             <td style="vertical-align: top;">
-                <select name="id_akun[]" id="" class="select" required>
+                <select name="id_akun[]" id="" class="select pilih_akun pilih_akun1" count="1" required>
                     <option value="">Pilih</option>
                     @foreach ($akun as $a)
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
                     @endforeach
                 </select>
                 <div class="collapse join1">
-                    <label for="" class="mt-2 ">No Dokumen</label>
+                    <label for="" class="mt-2 ">No CFM</label>
                     <input type="text" class="form-control " name="no_urut[]">
                 </div>
 
@@ -43,6 +44,9 @@
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa1" value="0" name="kredit[]">
             </td>
             <td style="vertical-align: top;">
+                <p class="saldo_akun1 text-end" style="font-size: 12px"></p>
+            </td>
+            <td style="vertical-align: top;">
                 <button type="button" class="btn rounded-pill remove_baris" count="1"><i
                         class="fas fa-trash text-danger"></i>
                 </button>
@@ -56,14 +60,14 @@
                 </button>
             </td>
             <td style="vertical-align: top;">
-                <select name="id_akun[]" id="" class="select" required>
+                <select name="id_akun[]" id="" class="select pilih_akun pilih_akun2" count="2" required>
                     <option value="">Pilih</option>
                     @foreach ($akun as $a)
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
                     @endforeach
                 </select>
                 <div class="collapse join2">
-                    <label for="" class="mt-2 ">No Dokumen</label>
+                    <label for="" class="mt-2 ">No CFM</label>
                     <input type="text" class="form-control " name="no_urut[]">
                 </div>
             </td>
@@ -78,6 +82,9 @@
             <td style="vertical-align: top;">
                 <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="2">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa2" value="0" name="kredit[]">
+            </td>
+            <td style="vertical-align: top;">
+                <p class="saldo_akun2 text-end" style="font-size: 12px"></p>
             </td>
             <td style="vertical-align: top;">
                 <button type="button" class="btn rounded-pill remove_baris" count="2"><i
