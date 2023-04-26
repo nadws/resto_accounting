@@ -16,7 +16,7 @@
                         <th>Akun</th>
                         <th style="text-align: right">Debit</th>
                         <th style="text-align: right">Kredit</th>
-                        <th style="text-align: right">Saldo</th>
+                        <th style="text-align: right">Saldo dsa</th>
                     </tr>
                 </thead>
                 <tbody>
