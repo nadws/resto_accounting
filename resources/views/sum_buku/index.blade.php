@@ -21,17 +21,6 @@
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
-<<<<<<< HEAD
-                        <tr class="tbl"
-                            data-href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun]) }}"
-                            style="curs">
-                            <td>{{ $no + 1 }}</td>
-                            <td>{{ $a->kode_akun }}</td>
-                            <td>{{ $a->nm_akun }}</td>
-                            <td style="text-align: right">{{ number_format($a->debit, 0) }}</td>
-                            <td style="text-align: right">{{ number_format($a->kredit, 0) }}</td>
-                        </tr>
-=======
                     <tr>
                         <td>{{$no+1}}</td>
                         <td>{{$a->kode_akun}}</td>
@@ -42,7 +31,6 @@
                         <td style="text-align: right">{{number_format($a->kredit,0)}}</td>
                         <td style="text-align: right">{{number_format($a->debit - $a->kredit,0)}}</td>
                     </tr>
->>>>>>> f7350968591012ef17fe4951652dc8b1ed76eeb2
                     @endforeach
                 </tbody>
             </table>
@@ -71,14 +59,14 @@
         </form>
     </x-slot>
     @section('scripts')
-        <script>
-            // Menangani event klik pada setiap baris dan mengarahkan pengguna ke URL yang sesuai
+    <script>
+        // Menangani event klik pada setiap baris dan mengarahkan pengguna ke URL yang sesuai
             document.querySelectorAll('tbody .tbl').forEach(function(row) {
                 row.addEventListener('click', function() {
                     window.location.href = row.getAttribute('data-href');
                 });
             });
-        </script>
+    </script>
     @endsection
 
 </x-theme.app>
