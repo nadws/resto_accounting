@@ -59,18 +59,6 @@
                         </button>
                     </td>
                 </tr>
-                {{-- @foreach ($produk as $d)
-                    <input type="hidden" name="id_produk[]" value="{{ $d->id_produk }}">
-                    <input type="hidden" name="jml_sebelumnya[]" value="{{ $d->jml_sebelumnya }}">
-                    <input type="hidden" name="jml_sesudahnya[]" value="{{ $d->jml_sesudahnya }}">
-                    <tr>
-                        <td style="vertical-align: top;">{{ $d->produk->nm_produk }}</td>
-                        <td style="vertical-align: top;">{{ $d->produk->satuan->nm_satuan }}</td>
-                        <td style="vertical-align: top;" align="center">{{ $d->jml_sesudahnya }}</td>
-                        <td style="vertical-align: top;" align="center"><input name="debit[]" style="text-align:right;" type="text" class="form-control"></td>
-                        <td style="vertical-align: top;" align="center">0</td>
-                    </tr>
-                @endforeach --}}
 
             </tbody>
             <tbody id="tbh_baris">

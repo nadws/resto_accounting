@@ -110,7 +110,7 @@
                     <div class="col-lg-12">
                         <input type="hidden" name="segment" value="{{ Request::segment(2) }}">
                         <div class="form-group">
-                            <label for="">Image</label>
+                            <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah 1MB</span></label>
                             <input type="file" name="img" class="form-control">
                         </div>
                     </div>

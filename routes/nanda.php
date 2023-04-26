@@ -98,10 +98,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/add', 'add')->name('add');
             Route::post('/create', 'create')->name('create');
-            Route::get('/create_add', 'create_add')->name('create_add');
             Route::post('/store', 'store')->name('store');
             Route::get('/load', 'load_menu')->name('load_menu');
+            Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::get('/get_stok_sebelumnya', 'get_stok_sebelumnya')->name('get_stok_sebelumnya');
+            Route::get('/cetak', 'cetak')->name('cetak');
             Route::get('/{gudang_id}', 'index')->name('detail');
+            Route::get('/delete/{no_nota}', 'delete')->name('delete');
+            Route::get('/edit/{no_nota}', 'edit')->name('edit_load');
+            Route::post('/edit', 'update')->name('edit');
+            
         });
 
     Route::controller(OpnameController::class)->group(function () {

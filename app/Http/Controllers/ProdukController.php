@@ -7,7 +7,7 @@ use App\Models\Produk;
 use App\Models\Satuan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Image;
+use Illuminate\Http\UploadedFile;
 
 class ProdukController extends Controller
 {
@@ -38,16 +38,13 @@ class ProdukController extends Controller
         $fileDiterima = ['jpg', 'png', 'jpeg'];
         $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
         if ($cek) {
+            $maxFileSize = 1024 * 1024; // 1MB
+            if ($file instanceof UploadedFile && $file->getSize() > $maxFileSize) {
+                return redirect()->route($route, $r->segment ?? '')->with('error', 'File lebih dari 1MB');
+            }
             $fileName = "P-$r->kd_produk" . $file->getClientOriginalName();
             $path = $file->move('upload', $fileName);
-            Image::make($file->getRealPath())
-                ->resize(800, 600, function ($constraint) {
-                    $constraint->aspectRatio();
-                    $constraint->upsize();
-                })
-                ->encode($file->getClientOriginalExtension(), 75)
-                ->save($path);
-                
+
             Produk::create([
                 'kd_produk' => $r->kd_produk,
                 'nm_produk' => $r->nm_produk,

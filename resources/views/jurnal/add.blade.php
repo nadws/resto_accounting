@@ -85,6 +85,6 @@
 
 
     @section('scripts')
-    <script src="/js/jurnal.js"></script>
+        <script src="/js/jurnal.js"></script>
     @endsection
 </x-theme.app>

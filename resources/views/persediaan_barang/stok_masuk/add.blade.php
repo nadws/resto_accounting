@@ -11,9 +11,22 @@
             <div id="load_menu"></div>
     </x-slot>
     <x-slot name="cardFooter">
-        @if (\App\Models\Stok::getStatus(request()->get('no_nota')) != 'selesai')
-            
-        
+
+        @php
+            $cek = false;
+            $nonot = request()->get('no_nota');
+            if (!empty($nonot)) {
+                if(strlen($nonot) > 200 || strlen($nonot) < 200){
+                    echo '<script>history.back()</script>';
+                }
+                $no_notas = decrypt($nonot);
+                if (\App\Models\Stok::getStatus($no_notas)->jenis != 'selesai') {
+                    $cek = true;
+                }
+            }
+        @endphp
+        {{-- @if (empty(request()->get('no_nota')) || $cek)
+        @endif --}}
         <div class="btn-group float-end dropdown me-1 mb-1">
 
             <button type="submit" name="simpan" value="simpan" class=" btn btn-primary button-save">
@@ -34,61 +47,11 @@
                 <button class="dropdown-item" type="submit" value="simpan" name="simpan">Simpan</button>
             </div>
         </div>
-        @endif
+
         <a href="{{ route('stok_masuk.index') }}" class="float-end btn btn-outline-primary me-2">Batal</a>
         </form>
-        <form id="form_add_produk">
-            @csrf
-            <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah_add">
-                <div class="row float-end">
-                    <div class="col-lg-12">
-                        <label for="">Pencarian : </label>
-                        <input type="text" id="pencarian" class="form-control">
-                    </div>
-                </div>
-                <table class="table" id="tableProduk">
-                    <thead>
-                        <tr>
-                            <th width="8%"><input id="checkAll" type="checkbox" class="form-check"></th>
-                            <th width="8%">#</th>
-                            <th>Nama</th>
-                            <th>Satuan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                        @php
-                            $id_produk = [];
-                            $produks = \App\Models\Stok::with('produk.satuan')
-                                ->where('no_nota', request()->get('no_nota'))
-                                ->get();
-                            foreach ($produks as $p) {
-                                $id_produk[] = $p->id_produk;
-                            }
-                        @endphp
-                        @foreach ($allProduk as $no => $p)
-                            <input type="hidden" name="no_nota_add" value="{{ request()->get('no_nota') }}">
-                            <tr>
-                                <td><input name="id_produk[]" {{ in_array($p->id_produk, $id_produk) ? 'checked' : '' }}
-                                        value="{{ $p->id_produk }}" id="for{{ $no + 1 }}" type="checkbox"
-                                        class="checkbox checkItem"></td>
-                                <td>{{ $no + 1 }}</td>
-                                <td><label style="font-size: 16px;" class="form-check-label"
-                                        for="for{{ $no + 1 }}">{{ ucwords($p->nm_produk) }}</label></td>
-                                <td>{{ $p->satuan->nm_satuan }}</td>
-                            </tr>
-                        @endforeach
-                        {{-- @if ($addProduk->count() < 1)
-                            
-                        @else
-                        <tr>
-                            <td colspan="5" align="center"><span><em>Data produk kosong</em></span></td>
-                        </tr>
-                        @endif --}}
-                    </tbody>
-                </table>
-            </x-theme.modal>
-        </form>
+
     </x-slot>
 
 
@@ -99,9 +62,9 @@
             function load_menu() {
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('stok_masuk.load_menu') }}?no_nota={{ request()->get('no_nota') }}",
-                    data:{
-                        'no_nota' : "{{ request()->get('no_nota') }}",
+                    url: "{{ route('stok_masuk.load_menu') }}?no_nota={{ $no_notas ?? '' }}",
+                    data: {
+                        'no_nota': "{{ $no_notas ?? '' }}",
                     },
                     success: function(r) {
                         $("#load_menu").html(r);
@@ -110,21 +73,22 @@
                 });
             }
 
+            var count = 3;
+            plusRow(count, 'tbh_baris', 'tbh_baris')
             convertRp('rp-nohide', 'rp-hide')
-            inputChecked('checkAll', 'checkItem')
-            pencarian('pencarian', 'tableProduk')
             aksiBtn('#save_stok_masuk')
 
-            $(document).on('submit', '#form_add_produk', function(e) {
-                e.preventDefault();
-                var datas = $("#form_add_produk").serialize()
+            $(document).on('change', '.produk-change', function() {
+                var val = $(this).val()
+                var count = $(this).attr('count')
                 $.ajax({
                     type: "GET",
-                    url: "{{ route('stok_masuk.create_add') }}",
-                    data: datas,
-                    success: function(response) {
-                        load_menu()
-                        $("#tambah_add").modal('hide')
+                    url: "get_stok_sebelumnya",
+                    data: {
+                        id_produk: val
+                    },
+                    success: function(r) {
+                        $('.stok-sebelumnya' + count).val(r.ttlDebit ?? 0);
                     }
                 });
             })
