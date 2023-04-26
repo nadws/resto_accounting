@@ -32,7 +32,7 @@ class JurnalController extends Controller
         $jurnal =  DB::select("SELECT a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
         left join akun as b on b.id_akun = a.id_akun
         left join tb_post_center as c on c.id_post_center = a.id_post_center
-        where a.id_buku = '2' and a.tgl between '$tgl1' and '$tgl2'
+        where a.id_buku = '2' and a.tgl between '$tgl1' and '$tgl2' order by a.id_jurnal DESC
          ");
         $data =  [
             'title' => 'Jurnal Umum',
