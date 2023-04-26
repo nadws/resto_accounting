@@ -142,6 +142,7 @@ Route::controller(BukuBesarController::class)
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/detail', 'detail')->name('detail');
+        Route::get('/export_detail', 'export_detail')->name('export_detail');
     });
 
 Route::controller(ProyekController::class)->group(function () {

@@ -43,13 +43,15 @@
                                 <input type="text" class="form-control text-end rp-nohide  rp-nohide{{$no + 1}}"
                                     count="{{$no + 1}}" value="Rp. {{number_format($a->debit,0)}}">
                                 <input type="hidden" name="debit[]"
-                                    class="form-control text-end rp-hide rp-hide{{$no + 1}}" value="{{$a->debit}}">
+                                    class="form-control text-end rp-hide rp-hide{{$no + 1}}"
+                                    value="{{empty($a->debit) ? '0' : $a->debit}}">
                             </td>
                             <td>
                                 <input type="text" class="form-control text-end rp-nohides rp-nohides{{$no + 1}}"
                                     count="{{$no + 1}}" value="Rp. {{number_format($a->kredit)}}">
                                 <input type="hidden" name="kredit[]"
-                                    class="form-control text-end rp-hides rp-hides{{$no + 1}}" value="{{$a->kredit}}">
+                                    class="form-control text-end rp-hides rp-hides{{$no + 1}}"
+                                    value="{{empty($a->kredit) ? '0' : $a->kredit}}">
                             </td>
                         </tr>
                         @endforeach
@@ -66,8 +68,10 @@
                                 <p class="totalKredit">Rp. {{number_format($t_kredit,0)}}
                                 </p>
                             </th>
-                            <input type="text" style="display: none" class="totalDebithide" value="{{$t_debit}}">
-                            <input type="text" style="display: none" class="totalKredithide" value="{{$t_kredit}}">
+                            <input type="text" style="display: none" class="totalDebithide"
+                                value="{{empty($t_debit) ? '0' :$t_debit }}">
+                            <input type="text" style="display: none" class="totalKredithide"
+                                value="{{empty($t_kredit) ? '0' : $t_kredit}}">
                         </tr>
                     </tfoot>
                 </table>

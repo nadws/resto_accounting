@@ -73,10 +73,12 @@
                 $("." + classHide + count).val(rupiah_biasa);
             }
 
+
             var total_debit = 0;
             $("." + classHide).each(function () {
                 total_debit += parseFloat($(this).val());
             });
+        
 
             $("." + classTotalhide).val(total_debit);
 
