@@ -58,7 +58,6 @@
             }
 
             rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-
             var debit = 0;
             $("." + classNoHide).each(function() {
                 debit += parseFloat($(this).val());

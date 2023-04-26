@@ -24,19 +24,19 @@ class StokMasukController extends Controller
             'produk' => $this->produk,
             'gudang' => Gudang::all(),
             'stok' => Stok::select('no_nota', 'tgl', 'jenis', DB::raw('SUM(debit) as debit'))
-                        ->when($gudang_id, function ($q, $gudang_id) {
-                            return $q->where('gudang_id', $gudang_id);
-                        })
-                        ->groupBy('no_nota')
-                        ->orderBy('id_stok_produk', 'DESC')
-                        ->get()
+                ->when($gudang_id, function ($q, $gudang_id) {
+                    return $q->where('gudang_id', $gudang_id);
+                })
+                ->groupBy('no_nota')
+                ->orderBy('id_stok_produk', 'DESC')
+                ->get()
         ];
-        return view('persediaan_barang.stok_masuk.stok_masuk',$data);
+        return view('persediaan_barang.stok_masuk.stok_masuk', $data);
     }
 
     public function add(Request $r)
     {
-        
+
         $data = [
             'title' => 'Add Stok Produk',
             'allProduk' => $this->produk,
@@ -46,70 +46,53 @@ class StokMasukController extends Controller
 
     public function create(Request $r)
     {
-        
-        $no_nota = "INV". strtoupper(str()->random(4));
-        $data = [];
-
-        for ($i=0; $i < count($r->id_produk); $i++) { 
-            $data[] = [
-                'id_produk' => $r->id_produk[$i],
-                'tgl' => date('Y-m-d'),
-                'no_nota' => $no_nota,
-                'departemen_id' => '1',
-                'status' => 'masuk',
-                'jenis' => 'draft',
-                'gudang_id' => request()->segment(2) ?? 0,
-                'admin' => auth()->user()->name,
-            ];
-        }
-
-        Stok::insert($data);
+        $no_nota = "INV" . strtoupper(str()->random(4));
 
         return redirect()->route('stok_masuk.add', ['no_nota' => $no_nota])->with('sukses', 'Data Berhasil Add');
     }
 
     public function load_menu(Request $r)
-    {   
+    {
+        $no_nota = buatNota('tb_stok_produk', 'urutan');
         $data = [
-            'no_nota' => $r->no_nota,
-            'status' => Stok::getStatus($r->no_nota),
-            'produk' => Stok::getStokMasuk($r->no_nota),
+            'no_nota' => $no_nota,
+            'detail' => Stok::getStatus($r->no_nota),
+            'stok' => Stok::getStokMasuk($r->no_nota),
+            'produk' => $this->produk,
             'gudang' => Gudang::all(),
         ];
-        return view('persediaan_barang.stok_masuk.load_menu',$data);
+        return view('persediaan_barang.stok_masuk.load_menu', $data);
     }
 
-    public function create_add(Request $r)
+    public function get_stok_sebelumnya(Request $r)
     {
-        DB::transaction(function () use($r) {
-            
-            Stok::where('no_nota', $r->no_nota_add)->delete();
+        return Stok::getStokMasuk($r->id_produk);
+    }
 
-            for ($i=0; $i < count($r->id_produk); $i++) { 
-                Stok::create([
-                    'id_produk' => $r->id_produk[$i],
-                    'tgl' => date('Y-m-d'),
-                    'no_nota' => $r->no_nota_add,
-                    'departemen_id' => '1',
-                    'status' => 'masuk',
-                    'jenis' => 'draft',
-                    'gudang_id' => '1',
-                    'admin' => auth()->user()->name,
-                ]);
-            }
-            
-        });
+    public function tbh_baris(Request $r)
+    {
+        $data = [
+            'title' => 'Tambah Barang',
+            'count' => $r->count,
+            'produk' => $this->produk
+        ];
+        return view('persediaan_barang.stok_masuk.tbh_baris', $data);
     }
 
     public function store(Request $r)
     {
-        for ($i=0; $i < count($r->id_produk); $i++) { 
-            $id_produk = $r->id_produk[$i];
+        if(empty($r->id_produk)) {
+            return redirect()->route('stok_masuk.index')->with('error', 'Data Tidak ada');
+        }
+        for ($i = 0; $i < count($r->id_produk); $i++) {
             $jml_sebelumnya = $r->jml_sebelumnya[$i];
             $debit = $r->debit[$i];
 
-            Stok::where([['no_nota', $r->no_nota], ['id_produk', $id_produk]])->update([
+            $data = [
+                'id_produk' => $r->id_produk[$i],
                 'tgl' => $r->tgl,
+                'urutan' => $r->urutan,
+                'no_nota' => $r->no_nota,
                 'departemen_id' => '1',
                 'status' => 'masuk',
                 'jenis' => $r->simpan == 'simpan' ? 'selesai' : 'draft',
@@ -118,11 +101,48 @@ class StokMasukController extends Controller
                 'jml_sesudahnya' => $jml_sebelumnya + $debit,
                 'debit' => $debit,
                 'ket' => $r->ket,
+                'rp_satuan' => $r->rp_satuan[$i],
                 'admin' => auth()->user()->name,
-            ]);
+            ];
+
+            if (!empty($r->jenis)) {
+                Stok::where([['urutan', $r->urutan], ['id_produk', $r->id_produk[$i]]])->update($data);
+            } else {
+                Stok::create($data);
+            }
         }
 
         return redirect()->route('stok_masuk.index')->with('sukses', 'Data Berhasil Ditambahkan');
     }
-    
+
+    public function edit($no_nota)
+    {
+        $data = [
+            'title' => 'Stok Masuk Edit',
+            'stok' => Stok::where('no_nota', $no_nota)->get(),
+            'detail' => Stok::getStatus($no_nota),
+        ];
+        return view('persediaan_barang.stok_masuk.detail', $data);
+    }
+
+    public function delete($no_nota)
+    {
+        Stok::where('no_nota', $no_nota)->delete();
+        return redirect()->route('stok_masuk.index')->with('sukses', 'Data Berhasil Ditambahkan');
+    }
+
+    public function cetak(Request $r)
+    {
+        if(strlen($r->no_nota) > 200 || strlen($r->no_nota) < 200){
+            return redirect()->back()->with('error', 'No nota tidak terdaftar !');
+        }
+        $no_nota = decrypt($r->no_nota);
+        
+        $data = [
+            'title' => 'Stok Masuk Cetak',
+            'stok' => Stok::where('no_nota', $no_nota)->get(),
+            'detail' => Stok::getStatus($no_nota),
+        ];
+        return view('persediaan_barang.stok_masuk.cetak', $data);
+    }
 }

@@ -11,33 +11,72 @@
                 </select>
             </div>
             <div class="col-lg-2">
-                <a class="btn btn-primary float-end" href="#" data-bs-toggle="modal" data-bs-target="#tambah"><i
-                    class="fas fa-plus"></i> Tambah</a>
+                {{-- <a class="btn btn-primary float-end" href="#" data-bs-toggle="modal" data-bs-target="#tambah"><i
+                    class="fas fa-plus"></i> Tambah</a> --}}
+                <a class="btn btn-primary float-end" href="{{ route('stok_masuk.add') }}"><i class="fas fa-plus"></i>
+                    Tambah</a>
             </div>
         </div>
-        
+
     </x-slot>
     <x-slot name="cardBody">
 
         <section class="row">
-            <table class="table table-hover" id="tableScroll">
+            <table class="table table-hover" id="table">
                 <thead>
                     <tr>
-                        <th width="5">#</th>
+                        <th width="2">#</th>
                         <th class="text-center">Tanggal</th>
                         <th>No Nota</th>
                         <th>Status</th>
                         <th class="text-center">Jumlah Barang</th>
+                        <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($stok as $no => $d)
-                        <tr>
-                            <td>{{ $no + 1 }}</td>
-                            <td align="center">{{ tanggal($d->tgl) }}</td>
-                            <td><a href="{{ route('stok_masuk.add', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a></td>
-                            <td><div class="btn btn-sm btn-{{$d->jenis == 'draft' ? 'warning' : 'success'}}">{{ ucwords($d->jenis) }}</div>   </td>
-                            <td align="center">{{ $d->debit }}</td>
+                        <tr class="tbl"
+                            data-href="javascript:void(0)">
+                            <td class="td-href">{{ $no + 1 }}</td>
+                            <td class="td-href" align="center">{{ tanggal($d->tgl) }}</td>
+                            <td class="td-href">{{ $d->no_nota }}</td>
+                            <td class="td-href">
+                                <div class="btn btn-sm btn-{{ $d->jenis == 'draft' ? 'warning' : 'success' }}">
+                                    {{ ucwords($d->jenis) }}</div>
+                            </td>
+                            <td class="td-href" align="center">{{ $d->debit }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <li>
+                                            <a class="dropdown-item text-primary edit"
+                                                href="{{ route('stok_masuk.add', ['no_nota' => encrypt($d->no_nota)]) }}"><i class="me-2 fas fa-pen"></i>
+                                                Edit</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger"
+                                                onclick="return confirm('Yakin dihapus ?')"
+                                                href="{{ route('stok_masuk.delete', $d->no_nota) }}"><i
+                                                    class="me-2 fas fa-trash"></i> Delete</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-info detail_nota"
+                                                no_nota="{{ $d->no_nota }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>
+                                                Detail</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-info"
+                                                 href="{{ route('stok_masuk.cetak', ['no_nota' => encrypt($d->no_nota)]) }}"><i class="me-2 fas fa-print"></i>
+                                                Cetak</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+
                         </tr>
                     @endforeach
 
@@ -70,7 +109,7 @@
                             <tr>
                                 <td><input name="id_produk[]" value="{{ $p->id_produk }}" id="for{{ $no + 1 }}"
                                         type="checkbox" class="checkbox checkItem"></td>
-                                <td>{{ $no + 1 }}</td>
+                                <td>{{ $no + 1 }} {{ $p->rp_satuan }}</td>
                                 <td><label style="font-size: 16px;" class="form-check-label"
                                         for="for{{ $no + 1 }}">{{ ucwords($p->nm_produk) }}</label></td>
                                 <td>{{ $p->satuan->nm_satuan }}</td>
@@ -82,19 +121,35 @@
             </x-theme.modal>
         </form>
         {{-- ------ --}}
+
+        {{-- edit produk --}}
+        <form action="{{ route('stok_masuk.edit') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <x-theme.modal size="modal-lg-max" btnSave="" title="Detail Stok masuk" idModal="detail">
+                <div id="load-edit"></div>
+            </x-theme.modal>
+        </form>
     </x-slot>
 
     @section('scripts')
         <script>
             $(document).ready(function() {
                 inputChecked('checkAll', 'checkItem')
+
                 $(".select-gudang").change(function(e) {
                     e.preventDefault();
                     var gudang_id = $(this).val()
                     document.location.href = `/stok_masuk/${gudang_id}`
                 });
+                edit('detail_nota', 'no_nota', 'stok_masuk/edit', 'load-edit')
 
                 pencarian('pencarian', 'tableProduk')
+
+                document.querySelectorAll('tbody .tbl').forEach(function(row) {
+                    row.addEventListener('click', function() {
+                        window.location.href = row.getAttribute('data-href');
+                    });
+                });
             });
         </script>
     @endsection

@@ -1,11 +1,14 @@
 <?php
-if(!function_exists('tanggal')){
+
+use Illuminate\Support\Facades\DB;
+
+if (!function_exists('tanggal')) {
     function tanggal($tgl)
     {
         $date = explode("-", $tgl);
-    
+
         $bln  = $date[1];
-    
+
         switch ($bln) {
             case '01':
                 $bulan = "Januari";
@@ -46,15 +49,23 @@ if(!function_exists('tanggal')){
         }
         $tanggal = $date[2];
         $tahun   = $date[0];
-    
+
         $strTanggal = "$tanggal $bulan $tahun";
         return $strTanggal;
     }
 }
 
-if(!function_exists('kode')){
+if (!function_exists('kode')) {
     function kode($kode)
     {
         return str_pad($kode, 5, '0', STR_PAD_LEFT);
+    }
+}
+
+if (!function_exists('buatNota')) {
+    function buatNota($tbl, $kolom)
+    {
+        $max = DB::table($tbl)->latest($kolom)->first();
+        return empty($max) ? 1000 : $max->$kolom + 1;
     }
 }
