@@ -75,7 +75,8 @@ Route::middleware('auth')->group(function () {
     Route::controller(UserController::class)->group(function () {
         Route::get('/user', 'index')->name('user');
         Route::post('/user-create', 'create')->name('users.create');
-        Route::post('/user-update', 'update')->name('users.edit');
+        Route::post('/user-update', 'update')->name('users.update');
+        Route::post('/user-edit', 'edit')->name('users.edit');
         Route::get('/user.delete', 'delete')->name('users.delete');
     });
 
@@ -113,10 +114,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete/{no_nota}', 'delete')->name('delete');
             Route::get('/edit/{no_nota}', 'edit')->name('edit_load');
             Route::post('/edit', 'update')->name('edit');
-            
         });
 
-    
+
 
     Route::controller(GudangController::class)
         ->prefix('gudang')
