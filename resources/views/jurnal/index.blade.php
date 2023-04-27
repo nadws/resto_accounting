@@ -21,7 +21,7 @@
                         <th>Tanggal</th>
                         <th>No Nota</th>
                         <th>Akun</th>
-                        <th>Post Center</th>
+                        <th>Sub Akun</th>
                         <th>Keterangan</th>
                         <th style="text-align: right">Debit</th>
                         <th style="text-align: right">Kredit</th>
