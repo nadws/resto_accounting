@@ -122,23 +122,7 @@
                     </table>
                 </div>
                 <div class="col-lg-6">
-                    <div class="row">
-                        <x-theme.toggle name="Pilihan Lainnya">
 
-                        </x-theme.toggle>
-                        <div class="col-lg-12"></div>
-                        <div class="col-lg-6 pilihan_l">
-                            <label for="">No Dokumen</label>
-                            <input type="text" class="form-control inp-lain" name="no_dokumen"
-                                value="{{$head_jurnal->no_dokumen}}">
-                        </div>
-                        <div class="col-lg-6 pilihan_l">
-                            <label for="">Tanggal Dokumen</label>
-                            <input type="date" class="form-control inp-lain" name="tgl_dokumen"
-                                value="{{$head_jurnal->tgl_dokumen}}">
-                        </div>
-
-                    </div>
                 </div>
                 <div class="col-lg-6">
                     <hr style="border: 1px solid blue">
