@@ -7,6 +7,7 @@
             <th width="90px">No Urut</th>
             <th width="100px">Kode Akun</th>
             <th width="350px">Akun</th>
+            <th width="350px">Sub Akun</th>
             <th width="149px">Proyek</th>
             <th width="149px">Keterangan</th>
             <th width="129px" style="text-align: right">Debit</th>
@@ -21,9 +22,10 @@
             <td>{{$a->tgl}}</td>
             <td>{{$a->no_nota}}</td>
             <td>{{$a->no_urut}}</td>
-            <td>{{$a->akun->kode_akun}}</td>
-            <td>{{$a->akun->nm_akun}}</td>
-            <td>{{empty($a->proyek->nm_proyek) ? '' : $a->proyek->nm_proyek }}</td>
+            <td>{{$a->kode_akun}}</td>
+            <td>{{$a->nm_akun}}</td>
+            <td>{{$a->nm_post}}</td>
+            <td>{{empty($a->nm_proyek) ? '' : $a->nm_proyek }}</td>
             <td>{{$a->ket}}</td>
             <td align="right">{{$a->debit}}</td>
             <td align="right">{{$a->kredit}}</td>

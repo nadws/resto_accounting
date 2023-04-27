@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\Jurnal;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\BeforeExport;
@@ -30,9 +31,15 @@ class JurnalExport  implements FromView, WithEvents
     public function view(): View
     {
         if ($this->id_proyek == 0) {
-            $jurnal = Jurnal::whereBetween('tgl', [$this->tgl1, $this->tgl2])->orderBY('id_jurnal', 'DESC')->get();
+            $jurnal =  DB::select("SELECT a.admin, a.no_urut, b.kode_akun, a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
+            left join akun as b on b.id_akun = a.id_akun
+            left join tb_post_center as c on c.id_post_center = a.id_post_center
+            where a.id_buku = '2' and a.tgl between '$this->tgl1' and '$this->tgl2' order by a.id_jurnal DESC");
         } else {
-            $jurnal = Jurnal::whereBetween('tgl', [$this->tgl1, $this->tgl2])->where('id_proyek', $this->id_proyek)->orderBY('id_jurnal', 'DESC')->get();
+            $jurnal =  DB::select("SELECT a.admin, a.no_urut, b.kode_akun,  a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
+            left join akun as b on b.id_akun = a.id_akun
+            left join tb_post_center as c on c.id_post_center = a.id_post_center
+            where a.id_buku = '2' and a.id_proyek = $this->id_proyek and a.tgl between '$this->tgl1' and '$this->tgl2' order by a.id_jurnal DESC");
         }
         return view('exports.jurnal', [
             'jurnal' => $jurnal
@@ -46,11 +53,11 @@ class JurnalExport  implements FromView, WithEvents
         return [
             AfterSheet::class    => function (AfterSheet $event) {
                 $totalrow = $this->totalrow + 1;
-                $cellRange = 'A1:K1';
+                $cellRange = 'A1:L1';
                 // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->setAutoFilter($cellRange);
-                $event->sheet->getStyle('A1:K1')->applyFromArray([
+                $event->sheet->getStyle('A1:L1')->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -63,7 +70,7 @@ class JurnalExport  implements FromView, WithEvents
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A2:K' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A2:L' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,

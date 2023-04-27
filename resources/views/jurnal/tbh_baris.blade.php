@@ -12,8 +12,8 @@
             @endforeach
         </select>
         <div class="collapse join{{$count}}">
-            <label for="" class="mt-2 ">No CFM<< /label>
-                    <input type="text" class="form-control " name="no_urut[]">
+            <label for="" class="mt-2 ">No CFM</label>
+            <input type="text" class="form-control " name="no_urut[]">
         </div>
     </td>
     <td style="vertical-align: top;">
