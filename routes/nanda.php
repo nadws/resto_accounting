@@ -57,6 +57,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/detail_jurnal', 'detail_jurnal')->name('detail_jurnal');
         Route::post('/import_jurnal', 'import_jurnal')->name('import_jurnal');
         Route::get('/saldo_akun', 'saldo_akun')->name('saldo_akun');
+        Route::get('/get_post', 'get_post')->name('get_post');
     });
 
     Route::controller(AkunController::class)->group(function () {

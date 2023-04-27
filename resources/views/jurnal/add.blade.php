@@ -284,8 +284,20 @@
                 $.ajax({
                     url: "/saldo_akun?id_akun=" + id_akun,
                     type: "Get",
+                    dataType: "json",
                     success: function (data) {
-                        $(".saldo_akun" + count).text(data);
+                        $(".saldo_akun" + count).text(data['saldo']);
+                    },
+                });
+            });
+            $(document).on("change", ".pilih_akun", function () {
+                var count = $(this).attr("count");
+                var id_akun = $(".pilih_akun" + count).val();
+                $.ajax({
+                    url: "/get_post?id_akun=" + id_akun,
+                    type: "Get",
+                    success: function (data) {
+                        $(".post" + count).html(data);
                     },
                 });
             });

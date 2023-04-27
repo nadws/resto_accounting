@@ -95,6 +95,7 @@ class JurnalController extends Controller
         $kredit = $r->kredit;
         $id_proyek = $r->id_proyek;
         $no_urut = $r->no_urut;
+        $id_post = $r->id_post;
 
         $max = DB::table('notas')->latest('nomor_nota')->first();
 
@@ -119,7 +120,8 @@ class JurnalController extends Controller
                 'no_dokumen' => $r->no_dokumen,
                 'tgl_dokumen' => $r->tgl_dokumen,
                 'id_proyek' => $id_proyek,
-                'no_urut' => $no_urut[$i]
+                'no_urut' => $no_urut[$i],
+                'id_post_center' => $id_post[$i]
             ];
             Jurnal::create($data);
         }
@@ -180,6 +182,7 @@ class JurnalController extends Controller
         $id_proyek = $r->id_proyek;
         $no_urut = $r->no_urut;
         $nota_t = $r->no_nota;
+        $id_post = $r->id_post;
 
         Jurnal::where('no_nota', $nota_t)->delete();
 
@@ -196,7 +199,8 @@ class JurnalController extends Controller
                 'no_dokumen' => $r->no_dokumen,
                 'tgl_dokumen' => $r->tgl_dokumen,
                 'id_proyek' => $id_proyek,
-                'no_urut' => $no_urut[$i]
+                'no_urut' => $no_urut[$i],
+                'id_post_center' => $id_post[$i]
             ];
             Jurnal::create($data);
         }
@@ -232,9 +236,25 @@ class JurnalController extends Controller
         $saldo = $jurnal->debit - $jurnal->kredit;
 
         if (empty($saldo)) {
-            echo 'Rp. 0';
+            $saldo = 'Rp. 0';
         } else {
-            echo 'Rp. ' . number_format($saldo, 0, '.', '.');
+            $saldo = 'Rp. ' . number_format($saldo, 0, '.', '.');
+        }
+
+        $data = [
+            'saldo' => $saldo,
+        ];
+        echo json_encode($data);
+    }
+
+    public function get_post(Request $r)
+    {
+        $id_akun = $r->id_akun;
+        $post = DB::table('tb_post_center')->where('id_akun', $id_akun)->get();
+
+        echo "<option value=''>Pilih sub akun</option>";
+        foreach ($post as $k) {
+            echo "<option value='" . $k->id_post_center  . "'>" . $k->nm_post . "</option>";
         }
     }
 }

@@ -41,8 +41,9 @@
                         <thead>
                             <tr>
                                 <th width="2%">#</th>
-                                <th width="22%">Akun</th>
-                                <th width="25%">Keterangan</th>
+                                <th width="14%">Akun</th>
+                                <th width="14%">Sub Akun</th>
+                                <th width="19%">Keterangan</th>
                                 <th width="12%" style="text-align: right;">Debit</th>
                                 <th width="12%" style="text-align: right;">Kredit</th>
                                 <th width="12%" style="text-align: right;">Saldo</th>
@@ -51,6 +52,9 @@
                         </thead>
                         <tbody>
                             @foreach ($jurnal as $no => $j)
+                            @php
+                            $post = DB::table('tb_post_center')->where('id_akun',$j->id_akun)->get()
+                            @endphp
                             <tr class="baris{{$no + 1}}">
                                 <td style="vertical-align: top;">
                                     <button type="button" data-bs-toggle="collapse" href=".join{{$no + 1}}"
@@ -67,11 +71,20 @@
                                         @endforeach
                                     </select>
                                     <div class="collapse join{{$no + 1}}">
-                                        <label for="" class="mt-2 ">No Dokumen</label>
+                                        <label for="" class="mt-2 ">No CFM</label>
                                         <input type="text" class="form-control " name="no_urut[]"
                                             value="{{$j->no_dokumen}}">
                                     </div>
 
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <select name="id_post[]" id="" class="select post{{$no + 1}}">
+                                        <option value="">Pilih sub akun</option>
+                                        @foreach ($post as $p)
+                                        <option value="{{$p->id_post_center}}" {{$p->id_post_center ==
+                                            $j->id_post_center ? 'selected': ''}}>{{$p->nm_post}}</option>
+                                        @endforeach
+                                    </select>
                                 </td>
                                 <td style="vertical-align: top;">
                                     <input type="text" name="keterangan[]" class="form-control"
@@ -80,13 +93,13 @@
                                 </td>
                                 <td style="vertical-align: top;">
                                     <input type="text" class="form-control debit_rupiah text-end"
-                                        value="Rp {{number_format($j->debit,0,'.','.')}}" count="{{$no + 1}}">
+                                        value="Rp {{number_format($j->debit,2,'.','.')}}" count="{{$no + 1}}">
                                     <input type="hidden" class="form-control debit_biasa debit_biasa{{$no + 1}}"
                                         value="{{$j->debit}}" name="debit[]">
                                 </td>
                                 <td style="vertical-align: top;">
                                     <input type="text" class="form-control kredit_rupiah text-end"
-                                        value="Rp {{number_format($j->kredit,0,'.','.')}}" count="{{$no + 1}}">
+                                        value="Rp {{number_format($j->kredit,2,'.','.')}}" count="{{$no + 1}}">
                                     <input type="hidden" class="form-control kredit_biasa kredit_biasa{{$no + 1}}"
                                         value="{{$j->kredit}}" name="kredit[]">
                                 </td>
@@ -108,7 +121,7 @@
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th colspan="7">
+                                <th colspan="9">
                                     <button type="button" class="btn btn-block btn-lg tbh_baris"
                                         style="background-color: #F4F7F9; color: #8FA8BD; font-size: 14px; padding: 13px;">
                                         <i class="fas fa-plus"></i> Tambah Baris Baru
@@ -357,7 +370,18 @@
                     url: "/saldo_akun?id_akun=" + id_akun,
                     type: "Get",
                     success: function (data) {
-                        $(".saldo_akun" + count).text(data);
+                        $(".saldo_akun" + count).text(data['saldo']);
+                    },
+                });
+            });
+            $(document).on("change", ".pilih_akun", function () {
+                var count = $(this).attr("count");
+                var id_akun = $(".pilih_akun" + count).val();
+                $.ajax({
+                    url: "/get_post?id_akun=" + id_akun,
+                    type: "Get",
+                    success: function (data) {
+                        $(".post" + count).html(data);
                     },
                 });
             });

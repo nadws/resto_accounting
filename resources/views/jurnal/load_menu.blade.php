@@ -2,8 +2,9 @@
     <thead>
         <tr>
             <th width="2%">#</th>
-            <th width="22%">Akun</th>
-            <th width="25%">Keterangan</th>
+            <th width="14%">Akun</th>
+            <th width="14%">Sub Akun</th>
+            <th width="19%">Keterangan</th>
             <th width="12%" style="text-align: right;">Debit</th>
             <th width="12%" style="text-align: right;">Kredit</th>
             <th width="12%" style="text-align: right;">Saldo</th>
@@ -29,6 +30,11 @@
                     <input type="text" class="form-control " name="no_urut[]">
                 </div>
 
+            </td>
+            <td style="vertical-align: top;">
+                <select name="id_post[]" id="" class="select post1">
+
+                </select>
             </td>
             <td style="vertical-align: top;">
                 <input type="text" name="keterangan[]" class="form-control" style="vertical-align: top"
@@ -70,6 +76,11 @@
                     <label for="" class="mt-2 ">No CFM</label>
                     <input type="text" class="form-control " name="no_urut[]">
                 </div>
+            </td>
+            <td style="vertical-align: top;">
+                <select name="id_post[]" id="" class="select post2">
+
+                </select>
             </td>
             <td style="vertical-align: top;">
                 <input type="text" name="keterangan[]" class="form-control" placeholder="nama barang, qty, @rp">
