@@ -17,7 +17,8 @@ class ProyekController extends Controller
     {
         $data =  [
             'title' => 'Proyek',
-            'proyek' => proyek::orderBy('id_proyek', 'DESC')->get()
+            'proyek' => proyek::orderBy('id_proyek', 'DESC')->get(),
+            'kelompok' => DB::table('kelompok_aktiva')->get()
 
         ];
         return view('proyek.index', $data);
@@ -47,6 +48,17 @@ class ProyekController extends Controller
             Proyek::where('id_proyek', $r->id_proyek)->delete();
             return redirect()->route('proyek')->with('sukses', 'Data berhasil dihapus');
         }
+    }
+
+    public function get_proyek_selesai(Request $r)
+    {
+        $data = [
+            'proyek' => DB::table('proyek')->where('id_proyek', $r->id_proyek)->first(),
+            'kelompok' => DB::table('kelompok_aktiva')->get(),
+            'jurnal' => DB::selectOne("SELECT sum(a.debit) as debit FROM jurnal as a where a.id_proyek = '$r->id_proyek'")
+        ];
+
+        return view("proyek.get_proyek", $data);
     }
 
     public function proyek_selesai(Request $r)

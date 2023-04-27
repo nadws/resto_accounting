@@ -140,15 +140,13 @@
 
         <form action="{{route('proyek_selesai')}}" method="get">
             <div class="modal fade" id="selesai" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
+                <div class="modal-dialog  modal-lg-max">
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <h5>Selesaikan Proyek</h5>
+                        </div>
                         <div class="modal-body">
-                            <div class="row">
-                                <h5 class="text-info ms-4 mt-4"><i class="fas fa-clipboard-check"></i> Selesaikan Proyek
-                                </h5>
-                                <p class=" ms-4 mt-4">Apa anda yakin ingin menyelesaikan proyek ?</p>
-                                <input type="hidden" class="id_proyek_selesai" name="id_proyek">
-                            </div>
+                            <div id="proyek_selesai"></div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-info" data-bs-dismiss="modal">Batal</button>
@@ -162,5 +160,22 @@
 
     @section('scripts')
     <script src="/js/proyek.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on("click", ".selesai_proyek", function () {
+                var id_proyek = $(this).attr("id_proyek");
+                
+
+                $.ajax({
+                    type: "get",
+                    url: "/get_proyek_selesai?id_proyek=" + id_proyek,
+                    dataType: "html",
+                    success: function (data) {
+                        $("#proyek_selesai").html(data);
+                    },
+                });
+            });
+        });
+    </script>
     @endsection
 </x-theme.app>

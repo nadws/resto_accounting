@@ -153,4 +153,5 @@ Route::controller(ProyekController::class)->group(function () {
     Route::post('/proyek', 'add')->name('proyek');
     Route::get('/proyek_delete', 'delete')->name('proyek_delete');
     Route::get('/proyek_selesai', 'proyek_selesai')->name('proyek_selesai');
+    Route::get('/get_proyek_selesai', 'get_proyek_selesai')->name('get_proyek_selesai');
 });

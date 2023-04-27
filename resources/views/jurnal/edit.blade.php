@@ -41,10 +41,11 @@
                         <thead>
                             <tr>
                                 <th width="2%">#</th>
-                                <th width="25%">Akun</th>
-                                <th width="28%">Keterangan</th>
-                                <th width="20%" style="text-align: right;">Debit</th>
-                                <th width="20%" style="text-align: right;">Kredit</th>
+                                <th width="22%">Akun</th>
+                                <th width="25%">Keterangan</th>
+                                <th width="12%" style="text-align: right;">Debit</th>
+                                <th width="12%" style="text-align: right;">Kredit</th>
+                                <th width="12%" style="text-align: right;">Saldo</th>
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
@@ -57,7 +58,8 @@
                                     </button>
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <select name="id_akun[]" id="" class="select">
+                                    <select name="id_akun[]" id="" class="select pilih_akun pilih_akun{{$no + 1}}"
+                                        count="{{$no + 1}}" required>
                                         <option value="">Pilih</option>
                                         @foreach ($akun as $a)
                                         <option value="{{$a->id_akun}}" {{$j->id_akun == $a->id_akun ? 'Selected' :
@@ -87,6 +89,9 @@
                                         value="Rp {{number_format($j->kredit,0,'.','.')}}" count="{{$no + 1}}">
                                     <input type="hidden" class="form-control kredit_biasa kredit_biasa{{$no + 1}}"
                                         value="{{$j->kredit}}" name="kredit[]">
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <p class="saldo_akun{{$no + 1}} text-end" style="font-size: 12px"></p>
                                 </td>
                                 <td style="vertical-align: top;">
                                     <button type="button" class="btn rounded-pill remove_baris" count="{{$no + 1}}"><i
@@ -169,5 +174,20 @@
 
     @section('scripts')
     <script src="/js/jurnal.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).on("change", ".pilih_akun", function () {
+                var count = $(this).attr("count");
+                var id_akun = $(".pilih_akun" + count).val();
+                $.ajax({
+                    url: "/saldo_akun?id_akun=" + id_akun,
+                    type: "Get",
+                    success: function (data) {
+                        $(".saldo_akun" + count).text(data);
+                    },
+                });
+            });
+        });
+    </script>
     @endsection
 </x-theme.app>
