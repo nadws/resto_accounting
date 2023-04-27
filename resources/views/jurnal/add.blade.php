@@ -152,66 +152,7 @@
         });
     });
 
-    // $(document).on("keyup", ".debit_rupiah", function () {
-    //     var count = $(this).attr("count");
-    //     var rupiah = $(this)
-    //             .val()
-    //             .replace(/[^,\d]/g, "")
-    //             .toString(),
-    //         split = rupiah.split("."),
-    //         sisa = split[0].length % 3,
-    //         rupiah = split[0].substr(0, sisa),
-    //         ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-    //     if (ribuan) {
-    //         separator = sisa ? "." : "";
-    //         rupiah += separator + ribuan.join(".");
-    //     }
-
-    //     rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
-
-    //     var debit = 0;
-    //     $(".debit_rupiah").each(function () {
-    //         debit += parseFloat($(this).val());
-    //     });
-
-    //     if (rupiah === "") {
-    //         $(this).val("Rp 0");
-    //         $(".debit_biasa" + count).val("0");
-    //     } else {
-    //         $(this).val("Rp " + rupiah);
-    //         var rupiah_biasa = parseFloat(rupiah.replace(/[^\d]/g, ""));
-    //         $(".debit_biasa" + count).val(rupiah_biasa);
-    //     }
-    //     var total_debit = 0;
-    //     $(".debit_biasa").each(function () {
-    //         total_debit += parseFloat($(this).val());
-    //     });
-
-    //     var totalRupiah = total_debit.toLocaleString("id-ID", {
-    //         style: "currency",
-    //         currency: "IDR",
-    //     });
-    //     var debit = $(".total").text(totalRupiah);
-
-    //     var total_kredit = 0;
-    //     $(".kredit_biasa").each(function () {
-    //         total_kredit += parseFloat($(this).val());
-    //     });
-    //     var selisih = total_debit - total_kredit;
-    //     var selisih_total = selisih.toLocaleString("id-ID", {
-    //         style: "currency",
-    //         currency: "IDR",
-    //     });
-    //     if (selisih === 0) {
-    //         $(".cselisih").css("color", "green");
-    //         $(".button-save").removeAttr("hidden");
-    //     } else {
-    //         $(".cselisih").css("color", "red");
-    //         $(".button-save").attr("hidden", true);
-    //     }
-    //     $(".selisih").text(selisih_total);
-    // });
+    
     $(document).on("keyup", ".debit_rupiah", function () {
         var count = $(this).attr("count");
         var input = $(this).val();		
