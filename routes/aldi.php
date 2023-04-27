@@ -20,7 +20,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete/{id_produk}', 'delete')->name('delete');
         });
 
-    Route::controller(OpnameController::class)->group(function () {
-        Route::get('/opname', 'index')->name('opname');
-    });
+    Route::controller(OpnameController::class)
+        ->prefix('opname')
+        ->name('opname.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'save')->name('save');
+            Route::get('/{gudang_id}', 'index')->name('detail');
+        });
 });

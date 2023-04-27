@@ -88,7 +88,7 @@
                         id_produk: val
                     },
                     success: function(r) {
-                        $('.stok-sebelumnya' + count).val(r.ttlDebit ?? 0);
+                        $('.stok-sebelumnya' + count).val(r.ttlDebit - r.ttlKredit ?? 0);
                     }
                 });
             })

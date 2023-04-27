@@ -46,4 +46,49 @@ class Stok extends Model
             ) as c ON c.id_produk = a.id_produk WHERE a.id_produk = '$id_produk'
             ");
     }
+
+    public static function getProduk($gudang_id = null, $kontrol = null)
+    {
+        $plusQuery = !empty($gudang_id) ? "AND a.gudang_id = '$gudang_id'" : '';
+        $plusKontrol = !empty($kontrol) ? "a.kontrol_stok = 'Y'" : '';
+
+        return DB::select("SELECT 
+        a.id_produk, 
+        a.kd_produk, 
+        a.gudang_id, 
+        a.nm_produk, 
+        e.nm_satuan,
+        a.admin,
+        b.debit,
+        b.kredit,
+        f.tgl as tgl1 
+      FROM 
+        tb_produk as a 
+        LEFT JOIN (
+          SELECT 
+            b.id_produk, 
+            SUM(b.debit) as debit, 
+            sum(b.kredit) as kredit 
+          FROM 
+            tb_stok_produk as b 
+          group by 
+            b.id_produk
+        ) b ON b.id_produk = a.id_produk 
+        left join tb_satuan as e on e.id_satuan = a.satuan_id 
+        LEFT join (
+          SELECT 
+            max(b.tgl) as tgl, 
+            b.id_produk, 
+            SUM(b.debit) as debit, 
+            sum(b.kredit) as kredit 
+          FROM 
+            tb_stok_produk as b 
+          where 
+            b.status = 'opname' 
+          group by 
+            b.id_produk
+        ) as f on f.id_produk = a.id_produk 
+      WHERE 
+        $plusKontrol $plusQuery");
+    }
 }

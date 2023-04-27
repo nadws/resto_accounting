@@ -55,10 +55,10 @@ class NavbarController extends Controller
         $data = [
 
             [
-                'judul' => 'Data Produk',
+                'judul' => 'Data Atk & Peralatan',
                 'route' => 'produk.index',
                 'img' => 'product.png',
-                'deskripsi' => 'mengelola data barang',
+                'deskripsi' => 'mengelola data barang atk dan peralatan',
             ],
             [
                 'judul' => 'Stok Masuk',
@@ -68,7 +68,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Stok Opname',
-                'route' => 'opname',
+                'route' => 'opname.index',
                 'img' => 'box.png',
                 'deskripsi' => 'menyelaraskan jumlah barang antara tersedia fisik dan buku',
             ],

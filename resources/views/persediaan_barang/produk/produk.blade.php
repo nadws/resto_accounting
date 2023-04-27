@@ -45,24 +45,31 @@
                 </thead>
                 <tbody>
                     @foreach ($produk as $no => $d)
+                        @php
+                            $debit = $d->debit ?? 0;
+                            $kredit = $d->kredit ?? 0;
+                            $stk = $debit - $kredit;
+                        @endphp
                         <tr>
                             <td>{{ $no + 1 }}</td>
                             <td>P-{{ kode($d->kd_produk) }}</td>
                             <td>{{ ucwords($d->nm_produk) }}</td>
                             <td>
-                                {{ ucwords($d->satuan->nm_satuan) }}
+                                {{ ucwords($d->nm_satuan) }}
                             </td>
-                            <td>10 Kg</td>
+                            <td>{{ $stk }}</td>
                             <td align="center">
                                 <div class="btn-group dropstart mb-1">
                                     <span class="btn btn-lg" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <div class="dropdown-menu">
-                                        <a id_produk="{{$d->id_produk}}" data-bs-toggle="modal" data-bs-target="#edit" class="dropdown-item text-primary edit" href="#"><i
+                                        <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal" data-bs-target="#edit"
+                                            class="dropdown-item text-primary edit" href="#"><i
                                                 class="me-2 fas fa-pen"></i>
                                             Edit</a>
-                                        <a class="dropdown-item text-danger" onclick="return confirm('Yakin dihapus ?')" href="{{ route('produk.delete', $d->id_produk) }}"><i
+                                        <a class="dropdown-item text-danger" onclick="return confirm('Yakin dihapus ?')"
+                                            href="{{ route('produk.delete', $d->id_produk) }}"><i
                                                 class="me-2 fas fa-trash"></i> Delete</a>
                                         <a class="dropdown-item text-info" href="#"><i
                                                 class="me-2 fas fa-search"></i>
@@ -110,7 +117,8 @@
                     <div class="col-lg-12">
                         <input type="hidden" name="segment" value="{{ Request::segment(2) }}">
                         <div class="form-group">
-                            <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah 1MB</span></label>
+                            <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah
+                                    1MB</span></label>
                             <input type="file" name="img" class="form-control">
                         </div>
                     </div>

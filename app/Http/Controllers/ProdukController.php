@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gudang;
 use App\Models\Produk;
 use App\Models\Satuan;
+use App\Models\Stok;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
@@ -19,11 +20,9 @@ class ProdukController extends Controller
         $kd_produk = Produk::latest('kd_produk')->first();
 
         $data = [
-            'title' => 'Data Produk',
+            'title' => 'Data Atk dan Peralatan',
             'gudang_id' => $gudang_id,
-            'produk' => Produk::with('satuan')->when($gudang_id, function ($q, $gudang_id) {
-                return $q->where('gudang_id', $gudang_id);
-            })->get(),
+            'produk' => Stok::getProduk($gudang_id, 'Y'),
             'gudang' => Gudang::all(),
             'satuan' => Satuan::all(),
             'kd_produk' => empty($kd_produk) ? 1 : $kd_produk->kd_produk + 1,
