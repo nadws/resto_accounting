@@ -37,8 +37,8 @@
                         <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
                         <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
                         <td>{{ ucwords($a->ket) }}</td>
-                        <td align="right">{{ number_format($a->debit, 0) }}</td>
-                        <td align="right">{{ number_format($a->kredit, 0) }}</td>
+                        <td align="right">{{ number_format($a->debit, 2) }}</td>
+                        <td align="right">{{ number_format($a->kredit, 2) }}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <span class="btn btn-sm" data-bs-toggle="dropdown">
