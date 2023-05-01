@@ -123,4 +123,24 @@ class NavbarController extends Controller
         $title = 'Buku Besar';
         return view('navbar.data_master', compact(['data', 'title']));
     }
+    public function penjualan()
+    {
+        $data = [
+            [
+                'judul' => 'Faktur Penjualan',
+                'route' => 'faktur_penjualan',
+                'img' => 'invoice.png',
+                'deskripsi' => 'mencatat faktur penjualan untuk pelanggan',
+            ],
+            [
+                'judul' => 'Daftar Piutang Usaha',
+                'route' => 'faktur_penjualan',
+                'img' => 'payment.png',
+                'deskripsi' => 'Menampilkan daftar perinci piutang dagang tiap pelanggan yang berasal dari penjualan bukan tunai dan/atau saldo awal piutang usaha.',
+            ],
+
+        ];
+        $title = 'Penjualan';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
 }
