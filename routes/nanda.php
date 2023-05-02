@@ -3,6 +3,7 @@
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\BukuBesarController;
 use App\Http\Controllers\CrudPermissionController;
+use App\Http\Controllers\FakturPenjualanController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
@@ -38,6 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/data_master', 'data_master')->name('data_master');
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
+        Route::get('/penjualan', 'penjualan')->name('penjualan');
         Route::get('/pembelian', 'pembelian')->name('pembelian');
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
     });
@@ -155,4 +157,7 @@ Route::controller(ProyekController::class)->group(function () {
     Route::get('/proyek_delete', 'delete')->name('proyek_delete');
     Route::get('/proyek_selesai', 'proyek_selesai')->name('proyek_selesai');
     Route::get('/get_proyek_selesai', 'get_proyek_selesai')->name('get_proyek_selesai');
+});
+Route::controller(FakturPenjualanController::class)->group(function () {
+    Route::get('/faktur_penjualan', 'index')->name('faktur_penjualan');
 });
