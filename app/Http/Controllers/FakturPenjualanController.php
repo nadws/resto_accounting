@@ -14,4 +14,13 @@ class FakturPenjualanController extends Controller
         ];
         return view('faktur_penjualan.index', $data);
     }
+
+    public function add(Request $r)
+    {
+        $data =  [
+            'title' => 'Add Penjualan',
+
+        ];
+        return view('faktur_penjualan.add', $data);
+    }
 }
