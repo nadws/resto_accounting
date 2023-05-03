@@ -30,40 +30,44 @@
         border-color: #435EBE
     }
 </style>
-<table class="table table-hover table-bordered dborder">
+<input type="text" autofocus class="form-control mb-3" id="searchInput" placeholder="search...">
+
+<table class="table table-hover table-bordered dborder" id="tblId">
     <thead>
         <tr>
             <th class="dhead" width="5">#</th>
             <th class="dhead">Nama Produk</th>
-            <th width="15%" class="dhead" style="text-align: right">Stok Sebelumnya</th>
-            <th width="15%" class="dhead" style="text-align: right">Stok Masuk</th>
-            <th width="25%" class="dhead" style="text-align: right">Harga Beli</th>
+            <th width="15%" class="dhead" style="text-align: right">Tersedia (Program)</th>
+            <th width="15%" class="dhead" style="text-align: right">Tersedia (Fisik)</th>
+            <th width="15%" class="dhead" style="text-align: right">Selisih</th>
         </tr>
     </thead>
     <tbody>
         @php
             $ttlDebit = 0;
-            $ttlRpSatuan = 0;
+            $ttlSelisih = 0;
         @endphp
         @foreach ($stok as $no => $d)
-        @php
-            $ttlDebit += $d->debit;
-            $ttlRpSatuan += $d->rp_satuan;
-        @endphp
+            @php
+                $ttlDebit += $d->debit;
+                $ttlSelisih += $d->selisih;
+            @endphp
             <tr>
                 <td>{{ $no + 1 }}</td>
                 <td>{{ $d->produk->nm_produk }}</td>
                 <td align="right">{{ $d->jml_sebelumnya }}</td>
-                <td align="right">{{ $d->debit }}</td>
-                <td align="right">{{ number_format($d->rp_satuan, 0) }}</td>
+                <td align="right">{{ $d->jml_sesudahnya }}</td>
+                <td align="right">{{ $d->selisih }}</td>
             </tr>
         @endforeach
+
+    </tbody>
+    <tfoot>
         <tr>
             <td></td>
             <th colspan="2">Total</th>
             <th style="text-align: right">{{ $ttlDebit }}</th>
-            <th style="text-align: right">{{ number_format($ttlRpSatuan,0) }}</th>
+            <th style="text-align: right">{{ $ttlSelisih }}</th>
         </tr>
-    </tbody>
-
+    </tfoot>
 </table>

@@ -1,10 +1,10 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
 
     <x-slot name="cardHeader">
-        <form action="{{ route('opname.save') }}" method="post">
+        <form action="{{ route('opname.update') }}" method="post">
             @csrf
             <div class="btn-group float-end dropdown me-1 mb-1">
-
+                <input type="hidden" name="no_nota" value="{{ $no_nota }}">
                 <button type="submit" name="simpan" value="simpan" class=" btn btn-primary button-save">
                     Simpan
                 </button>
@@ -66,7 +66,7 @@
                     @foreach ($produk as $no => $d)
                         <tr>
                             <td>{{ $no + 1 }}</td>
-                            <td>{{ ucwords($d->nm_produk) }} ({{ strtoupper($d->nm_satuan) }})</td>
+                            <td>{{ ucwords($d->produk->nm_produk) }} ({{ strtoupper($d->produk->satuan->nm_satuan) }})</td>
                             @php
                                 $debit = $d->debit ?? 0;
                                 $kredit = $d->kredit ?? 0;
@@ -81,17 +81,17 @@
                                     $tKerja = $today->diff($totalKerja);
                                 }
                             @endphp
-                            <td align="right">{{ number_format($d->debit - $d->kredit, 0) }}</td>
+                            <td align="right">{{ number_format($d->jml_sebelumnya, 0) }}</td>
                             <td>
                                 <input name="id_produk[]" type="hidden" value="{{ $d->id_produk }}">
-                                <input name="buku[]" type="hidden" value="{{ $stk ?? 0 }}">
+                                <input name="buku[]" type="hidden" value="{{ $d->jml_sebelumnya }}">
                                 <input name="gudang_id[]" type="hidden" value="{{ $d->gudang_id }}">
-                                <input name="fisik[]" value="{{ $stk ?? 0 }}" style="text-align: right"
-                                    stk="{{ $stk ?? 0 }}" type="text" class="form-control fisik"
+                                <input name="fisik[]" value="{{ $d->jml_sesudahnya }}" style="text-align: right"
+                                    stk="{{ $d->jml_sebelumnya }}" type="text" class="form-control fisik"
                                     count="{{ $no + 1 }}">
                             </td>
                             <td>
-                                <input name="selisih[]" value="0" type="text" readonly style="text-align: right"
+                                <input name="selisih[]" value="{{$d->selisih}}" type="text" readonly style="text-align: right"
                                     class="form-control selisih{{ $no + 1 }}" count="{{ $no + 1 }}">
                             </td>
                             <td align="center">{{ $tKerja == '0' ? ' - ' : $tKerja->days . ' Hari' }} </td>

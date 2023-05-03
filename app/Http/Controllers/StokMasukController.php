@@ -129,7 +129,7 @@ class StokMasukController extends Controller
     public function delete($no_nota)
     {
         Stok::where('no_nota', $no_nota)->delete();
-        return redirect()->route('stok_masuk.index')->with('sukses', 'Data Berhasil Ditambahkan');
+        return redirect()->route('stok_masuk.index')->with('sukses', 'Data Berhasil Dihapus');
     }
 
     public function cetak(Request $r)
