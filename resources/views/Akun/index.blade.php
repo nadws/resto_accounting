@@ -77,8 +77,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">Kode Akun</label>
-                            <input type="text" class="form-control kode" readonly>
-                            <input type="hidden" name="kode_akun" class="form-control kode2">
+                            <input type="text" class="form-control kode" name="kode_akun" required>
                         </div>
                     </div>
                     <div class="col-lg-12">
