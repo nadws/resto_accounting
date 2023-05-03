@@ -62,22 +62,16 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Data Bahan Baku',
+                'route' => 'bahan_baku.index',
+                'img' => 'product.png',
+                'deskripsi' => 'mengelola data barang atk dan peralatan',
+            ],
+            [
+                'judul' => 'Data Barang Dagangan',
                 'route' => 'produk.index',
                 'img' => 'product.png',
                 'deskripsi' => 'mengelola data barang atk dan peralatan',
             ],
-            // [
-            //     'judul' => 'Stok Masuk',
-            //     'route' => 'stok_masuk.index',
-            //     'img' => 'warehouse.png',
-            //     'deskripsi' => 'mengelola data barang masuk',
-            // ],
-            // [
-            //     'judul' => 'Stok Opname',
-            //     'route' => 'opname.index',
-            //     'img' => 'box.png',
-            //     'deskripsi' => 'menyelaraskan jumlah barang antara tersedia fisik dan buku',
-            // ],
         ];
         $title = 'Persediaan Barang';
         return view('navbar.data_master', compact(['data', 'title']));

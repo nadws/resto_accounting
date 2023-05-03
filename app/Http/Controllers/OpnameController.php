@@ -9,9 +9,16 @@ use Illuminate\Support\Facades\DB;
 
 class OpnameController extends Controller
 {
+    protected $gudang;
+
+    public function __construct()
+    {
+        $this->gudang = Gudang::where('kategori_id', 1)->get();
+    }
+
     public function index($gudang_id = null)
     {
-        $produk = Stok::where([['status', 'opname'],['gudang_id', $gudang_id ?? 1]])
+        $produk = Stok::where([['status', 'opname'],['gudang_id', $gudang_id ?? 1], ['kategori_id', 1]])
                     ->whereBetween('tgl', [$tgl1 ?? date('Y-m-1'), $tgl2 ?? date('Y-m-d')])
                     ->orderBy('no_nota', 'desc')
                     ->groupBy('no_nota')
@@ -19,7 +26,7 @@ class OpnameController extends Controller
 
         $data = [
             'title' => 'Opname',
-            'gudang' => Gudang::all(),
+            'gudang' => $this->gudang,
             'stok' => $produk,
         ];
         return view('persediaan_barang.opname.index',$data);
@@ -27,11 +34,11 @@ class OpnameController extends Controller
 
     public function add($gudang_id = null)
     {
-        $produk = Stok::getProduk($gudang_id, 'Y');
+        $produk = Stok::getProduk(1, $gudang_id, 'Y');
     
         $data = [
             'title' => 'Opname',
-            'gudang' => Gudang::all(),
+            'gudang' => $this->gudang,
             'produk' => $produk,
         ];
         return view('persediaan_barang.opname.opname',$data);
@@ -42,7 +49,7 @@ class OpnameController extends Controller
         $no_nota = decrypt($r->no_nota);
         $data = [
             'title' => 'Opname',
-            'gudang' => Gudang::all(),
+            'gudang' => $this->gudang,
             'produk' => Stok::where('no_nota', $no_nota)->get(),
             'no_nota' => $no_nota,
         ];
@@ -63,6 +70,7 @@ class OpnameController extends Controller
                 'status' => 'opname',
                 'jenis' => $r->simpan == 'simpan' ? 'selesai' : 'draft',
                 'gudang_id' => $r->gudang_id[$i],
+                'kategori_id' => 1,
                 'jml_sesudahnya' => $r->fisik[$i],
                 'selisih' => $r->selisih[$i],
                 'debit' => $debit,

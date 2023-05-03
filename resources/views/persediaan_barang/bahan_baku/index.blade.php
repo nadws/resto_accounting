@@ -1,30 +1,14 @@
 <x-theme.app 
 title="{{ $title }}" 
 nav="Y" 
-rot1="produk.index"
-rot2="stok_masuk.index"
-rot3="opname.index"
+rot1="bahan_baku.index"
+rot2="bahan_baku.stok_masuk"
+rot3="bahan_baku.opname"
 table="Y" 
 sizeCard="12">
     <x-slot name="cardHeader">
-     
+
         <div class="row justify-content-end">
-            {{-- <div class="col-lg-6">
-                <ul class="nav nav-pills">
-                    @php
-                        $rotName = request()->route()->getName();
-                    @endphp
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'produk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('produk.index') }}">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'stok_masuk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('stok_masuk.index') }}">Stok Masuk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'opname.index' ? 'active' : ''}}" href="{{ route('opname.index') }}">Opname</a>
-                    </li>
-                </ul>
-            </div> --}}
             <div class="col-lg-4">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
@@ -50,15 +34,16 @@ sizeCard="12">
                     </div>
                 </div>
             </div>
+
         </div>
-        <div class="row">
-            
-        </div>
+
+
+
     </x-slot>
     <x-slot name="cardBody">
 
         <section class="row">
-            <table class="table" id="table1">
+            <table class="table table-hover" id="table">
                 <thead>
                     <tr>
                         <th width="5">#</th>
@@ -111,44 +96,8 @@ sizeCard="12">
             </table>
         </section>
 
-        {{-- gudang create --}}
-        <form action="{{ route('gudang.create') }}" method="post">
-            @csrf
-            <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah2">
-                <div class="row">
-                    <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
-                    <input type="hidden" name="segment" value="{{ request()->segment(2); }}">
-                    <div class="col-lg-2">
-                        <div class="form-group">
-                            <label for="">Kode Gudang</label>
-                            <input required type="text" name="kd_gudang" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="form-group">
-                            <label for="">Kategori Persediaan</label>
-                            <select required name="kategori_id" class="form-control select2-tambah2" id="">
-                                <option value="">- Pilih Kategori -</option>
-                                <option value="1">Atk & Peralatan</option>
-                                <option value="2">Bahan Baku</option>
-                                <option value="3">Barang Dagangan</option>
-                            </select>
-
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Nama Gudang</label>
-                            <input type="text" name="nm_gudang" class="form-control">
-                        </div>
-                    </div>
-                </div>
-            </x-theme.modal>
-        </form>
-        {{-- ------ --}}
-
         {{-- tambah produk --}}
-        <form action="{{ route('produk.create') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('bahan_baku.create') }}" method="post" enctype="multipart/form-data">
             @csrf
             <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah">
                 <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
@@ -203,13 +152,42 @@ sizeCard="12">
         </form>
         {{-- ------ --}}
 
-        {{-- edit produk --}}
-        <form action="{{ route('produk.edit') }}" method="post" enctype="multipart/form-data">
+        {{-- gudang create --}}
+        <form action="{{ route('gudang.create') }}" method="post">
             @csrf
-            <x-theme.modal size="modal-lg" title="Edit Produk" idModal="edit">
-                <div id="load-edit"></div>
+            <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah2">
+                <div class="row">
+                    <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
+                    <input type="hidden" name="segment" value="{{ request()->segment(2); }}">
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="">Kode Gudang</label>
+                            <input required type="text" name="kd_gudang" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label for="">Kategori Persediaan</label>
+                            <select required name="kategori_id" class="form-control select2-tambah2" id="">
+                                <option value="">- Pilih Kategori -</option>
+                                <option value="1">Atk & Peralatan</option>
+                                <option value="2">Bahan Baku</option>
+                                <option value="3">Barang Dagangan</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="">Nama Gudang</label>
+                            <input type="text" name="nm_gudang" class="form-control">
+                        </div>
+                    </div>
+                </div>
             </x-theme.modal>
         </form>
+        {{-- ------ --}}
+
     </x-slot>
 
     @section('scripts')
@@ -218,11 +196,11 @@ sizeCard="12">
                 $(".select-gudang").change(function(e) {
                     e.preventDefault();
                     var gudang_id = $(this).val()
-                    document.location.href = `/produk/${gudang_id}`
+                    document.location.href = `/bahan_baku/${gudang_id}`
                 });
 
                 // edit
-                edit('edit', 'id_produk', 'produk/edit', 'load-edit')
+                // edit('edit', 'id_produk', 'produk/edit', 'load-edit')
             });
         </script>
     @endsection

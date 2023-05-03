@@ -14,7 +14,7 @@ class StokMasukController extends Controller
 
     public function __construct()
     {
-        $this->produk = Produk::with('satuan')->where('kontrol_stok', 'Y')->get();
+        $this->produk = Produk::with('satuan')->where([['kontrol_stok', 'Y'],['kategori_id', 1]])->get();
     }
 
     public function index($gudang_id = null)
@@ -22,7 +22,7 @@ class StokMasukController extends Controller
         $data = [
             'title' => 'Stok Masuk',
             'produk' => $this->produk,
-            'gudang' => Gudang::all(),
+            'gudang' => Gudang::where('kategori_id', 1)->get(),
             'stok' => Stok::select('no_nota', 'tgl', 'jenis', DB::raw('SUM(debit) as debit'))
                 ->when($gudang_id, function ($q, $gudang_id) {
                     return $q->where('gudang_id', $gudang_id);
@@ -60,7 +60,7 @@ class StokMasukController extends Controller
             'detail' => Stok::getStatus($r->no_nota),
             'stok' => Stok::getStokMasuk($r->no_nota),
             'produk' => $this->produk,
-            'gudang' => Gudang::all(),
+            'gudang' => Gudang::where('kategori_id', 1)->get(),
         ];
         return view('persediaan_barang.stok_masuk.load_menu', $data);
     }
@@ -95,6 +95,7 @@ class StokMasukController extends Controller
                 'urutan' => $r->urutan,
                 'no_nota' => $r->no_nota,
                 'departemen_id' => '1',
+                'kategori_id' => '1',
                 'status' => 'masuk',
                 'jenis' => $r->simpan == 'simpan' ? 'selesai' : 'draft',
                 'gudang_id' => $r->gudang_id,

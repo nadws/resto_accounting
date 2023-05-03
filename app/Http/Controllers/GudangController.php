@@ -23,15 +23,16 @@ class GudangController extends Controller
     public function create(Request $r)
     {
         $route = $r->url ?? 'gudang.index';
-        $route = $r->segment ? 'produk.detail' : $route;
         Gudang::create([
             'nm_gudang' => $r->nm_gudang,
             'kd_gudang' => $r->kd_gudang,
             'id_departemen' => $this->id_departemen,
+            'kategori_id' => $r->kategori_id,
             'admin' => auth()->user()->name,
         ]);
 
         return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
+        return redirect()->route('gudang.index')->with('sukses', 'Berhasil tambah data');
     }
 
     public function edit_load($id_gudang)
@@ -47,6 +48,7 @@ class GudangController extends Controller
         Gudang::where('id_gudang',$r->id_gudang)->update([
             'nm_gudang' => $r->nm_gudang,
             'kd_gudang' => $r->kd_gudang,
+            'kategori_id' => $r->kategori_id,
             'admin' => auth()->user()->name,
         ]);
 

@@ -1,4 +1,11 @@
-<x-theme.app title="{{ $title }}" nav="Y" table="Y" sizeCard="12">
+<x-theme.app 
+title="{{ $title }}" 
+nav="Y" 
+rot1="produk.index"
+rot2="stok_masuk.index"
+rot3="opname.index"
+table="Y" 
+sizeCard="12">
     <x-slot name="cardHeader">
 
         <div class="row justify-content-end">
