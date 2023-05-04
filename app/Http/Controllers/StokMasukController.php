@@ -121,7 +121,7 @@ class StokMasukController extends Controller
     {
         $data = [
             'title' => 'Stok Masuk Edit',
-            'stok' => Stok::where('no_nota', $no_nota)->get(),
+            'stok' => Stok::getCetak($no_nota),
             'detail' => Stok::getStatus($no_nota),
         ];
         return view('persediaan_barang.stok_masuk.detail', $data);
@@ -142,7 +142,7 @@ class StokMasukController extends Controller
         
         $data = [
             'title' => 'Stok Masuk Cetak',
-            'stok' => Stok::where('no_nota', $no_nota)->get(),
+            'stok' => Stok::getCetak($no_nota),
             'detail' => Stok::getStatus($no_nota),
         ];
         return view('persediaan_barang.stok_masuk.cetak', $data);
