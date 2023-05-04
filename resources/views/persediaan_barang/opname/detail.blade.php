@@ -15,7 +15,6 @@
         <th width="2%">:</th>
         <th>{{ $detail->ket }}</th>
     </tr>
-
 </table>
 <br>
 <br>
@@ -36,7 +35,7 @@
     <thead>
         <tr>
             <th class="dhead" width="5">#</th>
-            <th class="dhead">Nama Produk</th>
+            <th class="dhead">Nama Produk </th>
             <th width="15%" class="dhead" style="text-align: right">Tersedia (Program)</th>
             <th width="15%" class="dhead" style="text-align: right">Tersedia (Fisik)</th>
             <th width="15%" class="dhead" style="text-align: right">Selisih</th>
@@ -60,7 +59,6 @@
                 <td align="right">{{ $d->selisih }}</td>
             </tr>
         @endforeach
-
     </tbody>
     <tfoot>
         <tr>
