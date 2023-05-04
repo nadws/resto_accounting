@@ -18,7 +18,7 @@
                 <thead>
                     <tr>
                         <th width="5">#</th>
-                        <th>Tanggal aldi</th>
+                        <th>Tanggal</th>
                         <th>No Nota</th>
                         <th>Akun</th>
                         <th>Sub Akun</th>
