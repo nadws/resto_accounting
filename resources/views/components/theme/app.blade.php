@@ -1,5 +1,8 @@
 @props([
 'title' => '',
+'rot1' => '',
+'rot2' => '',
+'rot3' => '',
 'table' => 'Y',
 'nav' => 'T',
 'sizeCard' => '12',
@@ -25,13 +28,13 @@
                                         $rotName = request()->route()->getName();
                                     @endphp
                                     <li class="nav-item">
-                                        <a class="nav-link {{$rotName == 'produk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('produk.index') }}">Produk</a>
+                                        <a class="nav-link {{$rotName == $rot1 ? 'active' : ''}}" aria-current="page" href="{{ route($rot1) }}">Produk</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{$rotName == 'stok_masuk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('stok_masuk.index') }}">Stok Masuk</a>
+                                        <a class="nav-link {{$rotName == $rot2 ? 'active' : ''}}" aria-current="page" href="{{ route($rot2) }}">Stok Masuk</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{$rotName == 'opname.index' ? 'active' : ''}}" href="{{ route('opname.index') }}">Opname</a>
+                                        <a class="nav-link {{$rotName == $rot3 ? 'active' : ''}}" href="{{ route($rot3) }}">Opname</a>
                                     </li>
                                 </ul>
                             </div>

@@ -21,10 +21,10 @@ class ProdukController extends Controller
 
         $data = [
             'title' => 'Data Atk dan Peralatan',
-            'gudang_id' => $gudang_id,
-            'produk' => Stok::getProduk($gudang_id, 'Y'),
-            'gudang' => Gudang::all(),
+            'produk' => Stok::getProduk(1,$gudang_id, 'Y'),
+            'gudang' => Gudang::where('kategori_id',1)->get(),
             'satuan' => Satuan::all(),
+            'gudang_id' => $gudang_id,
             'kd_produk' => empty($kd_produk) ? 1 : $kd_produk->kd_produk + 1,
         ];
         return view('persediaan_barang.produk.produk', $data);
@@ -32,7 +32,7 @@ class ProdukController extends Controller
 
     public function create(Request $r)
     {
-        $route = $r->segment ? 'produk.detail' : 'produk.index';
+        $route = $r->url;
         $file = $r->file('img');
         $fileDiterima = ['jpg', 'png', 'jpeg'];
         $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
@@ -48,6 +48,7 @@ class ProdukController extends Controller
                 'kd_produk' => $r->kd_produk,
                 'nm_produk' => $r->nm_produk,
                 'gudang_id' => $r->gudang_id,
+                'kategori_id' => 1,
                 'satuan_id' => $r->satuan_id,
                 'departemen_id' => $this->id_departemen,
                 'kontrol_stok' => $r->kontrol_stok,

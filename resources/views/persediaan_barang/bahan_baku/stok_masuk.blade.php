@@ -1,43 +1,33 @@
-<x-theme.app title="{{ $title }}" rot1="produk.index"
-rot2="stok_masuk.index"
-rot3="opname.index" nav="Y" table="Y" sizeCard="12">
-    <x-slot name="cardHeader">
+<x-theme.app 
+title="{{ $title }}" 
+nav="Y"
+rot1="bahan_baku.index"
+rot2="bahan_baku.stok_masuk"
+rot3="bahan_baku.opname"
+table="Y"
+sizeCard="12"
+>
+<x-slot name="cardHeader">
         
-        <div class="row justify-content-end">
-            {{-- <div class="col-lg-6">
-                <ul class="nav nav-pills">
-                    @php
-                        $rotName = request()->route()->getName();
-                    @endphp
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'produk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('produk.index') }}">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'stok_masuk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('stok_masuk.index') }}">Stok Masuk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'opname.index' ? 'active' : ''}}" href="{{ route('opname.index') }}">Opname</a>
-                    </li>
-                </ul>
-            </div> --}}
-            <div class="col-lg-4">
-                <select name="example" class="form-control float-end select-gudang" id="select2">
-                    <option value="" selected>All Warehouse </option>
-                    @foreach ($gudang as $g)
-                        <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
-                            {{ ucwords($g->nm_gudang) }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-lg-2">
-                <a href="{{route('stok_masuk.add')}}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i> Tambah</a>
-            </div>
-           
+    <div class="row justify-content-end">
+        <div class="col-lg-4">
+            <select name="example" class="form-control float-end select-gudang" id="select2">
+                <option value="" selected>All Warehouse </option>
+                @foreach ($gudang as $g)
+                    <option {{ Request::segment(3) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
+                        {{ ucwords($g->nm_gudang) }}</option>
+                @endforeach
+            </select>
         </div>
-        
+        <div class="col-lg-3">
+            <a href="{{route('bahan_baku.stok_masuk_add')}}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i> Tambah</a>
+        </div>
+       
+    </div>
     
 
-    </x-slot>
+
+</x-slot>
     <x-slot name="cardBody">
 
         <section class="row">
@@ -52,7 +42,7 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                {{-- <tbody>
                     @foreach ($stok as $no => $d)
                         <tr class="tbl"
                             data-href="javascript:void(0)">
@@ -101,55 +91,11 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
                         </tr>
                     @endforeach
 
-                </tbody>
+                </tbody> --}}
             </table>
         </section>
 
-        {{-- create --}}
-        <form action="{{ route('stok_masuk.create') }}" method="post">
-            @csrf
-            <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah">
-                <div class="row float-end">
-                    <div class="col-lg-12">
-                        <label for="">Pencarian : </label>
-                        <input type="text" id="pencarian" class="form-control">
-                    </div>
-                </div>
-                <table class="table" id="tableProduk">
-                    <thead>
-                        <tr>
-                            <th width="8%"><input id="checkAll" type="checkbox" class="form-check"></th>
-                            <th width="8%">#</th>
-                            <th>Nama</th>
-                            <th>Satuan</th>
-                            {{-- <th>Qty</th> --}}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($produk as $no => $p)
-                            <tr>
-                                <td><input name="id_produk[]" value="{{ $p->id_produk }}" id="for{{ $no + 1 }}"
-                                        type="checkbox" class="checkbox checkItem"></td>
-                                <td>{{ $no + 1 }} {{ $p->rp_satuan }}</td>
-                                <td><label style="font-size: 16px;" class="form-check-label"
-                                        for="for{{ $no + 1 }}">{{ ucwords($p->nm_produk) }}</label></td>
-                                <td>{{ $p->satuan->nm_satuan }}</td>
-                                {{-- <td>{{ $p->debit }}</td> --}}
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </x-theme.modal>
-        </form>
-        {{-- ------ --}}
-
-        {{-- edit produk --}}
-        <form action="{{ route('stok_masuk.edit') }}" method="post" enctype="multipart/form-data">
-            @csrf
-            <x-theme.modal size="modal-lg-max" btnSave="" title="Detail Stok masuk" idModal="detail">
-                <div id="load-edit"></div>
-            </x-theme.modal>
-        </form>
+    
     </x-slot>
 
     @section('scripts')
@@ -160,7 +106,7 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
                 $(".select-gudang").change(function(e) {
                     e.preventDefault();
                     var gudang_id = $(this).val()
-                    document.location.href = `/stok_masuk/${gudang_id}`
+                    document.location.href = `/bahan_baku/stok_masuk/${gudang_id}`
                 });
                 edit('detail_nota', 'no_nota', 'stok_masuk/edit', 'load-edit')
 

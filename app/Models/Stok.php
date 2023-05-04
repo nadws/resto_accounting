@@ -47,10 +47,10 @@ class Stok extends Model
             ");
     }
 
-    public static function getProduk($gudang_id = null, $kontrol = null)
+    public static function getProduk($kategori_id, $gudang_id = null, $kontrol = null)
     {
         $plusQuery = !empty($gudang_id) ? "AND a.gudang_id = '$gudang_id'" : '';
-        $plusKontrol = !empty($kontrol) ? "a.kontrol_stok = 'Y'" : '';
+        $plusKontrol = !empty($kontrol) ? "AND a.kontrol_stok = 'Y'" : '';
 
         return DB::select("SELECT 
         a.id_produk, 
@@ -79,7 +79,7 @@ class Stok extends Model
           group by 
             b.id_produk
         ) as f on f.id_produk = a.id_produk 
-      WHERE 
+      WHERE a.kategori_id = '$kategori_id'
         $plusKontrol $plusQuery ");
     }
 }
