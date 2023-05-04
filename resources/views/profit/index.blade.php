@@ -3,9 +3,9 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
-                    class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
-                <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                {{-- <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                    class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a> --}}
+                <a target="_blank" href="{{ route('profit_print', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
                     class="float-end btn   btn-primary me-2"><i class="fas fa-print"></i> Print</a>
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
             </div>
