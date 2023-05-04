@@ -161,7 +161,7 @@
 		input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
         
         if (input === "") {
-            $(this).val("Rp 0");
+            $(this).val("");
             $('.debit_biasa' + count).val(0)
         } else {
             $(this).val("Rp " + input);
@@ -215,7 +215,7 @@
 		input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
         
         if (input === "") {
-            $(this).val("Rp 0");
+            $(this).val("");
             $('.kredit_biasa' + count).val(0)
         } else {
             $(this).val("Rp " + input);

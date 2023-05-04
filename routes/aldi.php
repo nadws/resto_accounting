@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BahanBakuController;
+use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PoController;
 use Illuminate\Support\Facades\Route;
@@ -48,5 +49,16 @@ Route::middleware('auth')->group(function () {
             Route::get('/opname', 'opname')->name('opname');
             Route::get('/stok_masuk/{gudang_id}', 'stokMasuk')->name('stok_masuk_segment');
             Route::get('/{gudang_id}', 'index')->name('detail');
+        });
+
+    Route::controller(CashflowController::class)
+        ->prefix('cashflow')
+        ->name('cashflow.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/load', 'load')->name('load');
+            Route::get('/loadSubKategori', 'loadSubKategori')->name('loadSubKategori');
+            Route::get('/editSubKategori', 'editSubKategori')->name('editSubKategori');
+            Route::get('/saveSubKategori', 'saveSubKategori')->name('saveSubKategori');
         });
 });

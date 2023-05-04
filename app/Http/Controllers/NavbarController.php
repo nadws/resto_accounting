@@ -112,7 +112,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Cash Flow',
-                'route' => 'jurnal',
+                'route' => 'cashflow.index',
                 'img' => 'money-flow.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
