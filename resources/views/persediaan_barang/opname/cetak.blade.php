@@ -65,6 +65,7 @@
                 <tr>
                     <th class="dhead" width="5">#</th>
                     <th class="dhead">Nama Produk</th>
+                    <th class="dhead" style="text-align: right" width="15%">Rp Satuan</th>
                     <th width="15%" class="dhead" style="text-align: right">Tersedia (Program)</th>
                     <th width="15%" class="dhead" style="text-align: right">Tersedia (Fisik)</th>
                     <th width="15%" class="dhead" style="text-align: right">Selisih</th>
@@ -72,17 +73,23 @@
             </thead>
             <tbody>
                 @php
+                    $ttlRp = 0;
+                    $ttlProgram = 0;
                     $ttlDebit = 0;
                     $ttlSelisih = 0;
                 @endphp
                 @foreach ($stok as $no => $d)
                     @php
+                        $rpSatuan = $d->rp / $d->ttl;
+                        $ttlRp += $rpSatuan;
+                        $ttlProgram += $d->jml_sebelumnya;
                         $ttlDebit += $d->debit;
                         $ttlSelisih += $d->selisih;
                     @endphp
                     <tr>
                         <td>{{ $no + 1 }}</td>
-                        <td>{{ $d->produk->nm_produk }}</td>
+                        <td>{{ $d->nm_produk }}</td>
+                        <td align="right">Rp. {{ number_format($rpSatuan, 0) }}</td>
                         <td align="right">{{ $d->jml_sebelumnya }}</td>
                         <td align="right">{{ $d->debit }}</td>
                         <td align="right">{{ $d->selisih }}</td>
@@ -90,7 +97,9 @@
                 @endforeach
                 <tr>
                     <td></td>
-                    <th colspan="2">Total</th>
+                    <th colspan="1">Total</th>
+                    <th style="text-align: right">Rp. {{ number_format($ttlRp, 0) }}</th>
+                    <th style="text-align: right">{{ $ttlProgram }}</th>
                     <th style="text-align: right">{{ $ttlDebit }}</th>
                     <th style="text-align: right">{{ $ttlSelisih }}</th>
                 </tr>

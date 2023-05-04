@@ -82,4 +82,16 @@ class Stok extends Model
       WHERE a.kategori_id = '$kategori_id'
         $plusKontrol $plusQuery ");
     }
+
+    public static function getCetak($no_nota)
+    {
+      return DB::select("SELECT b.nm_produk,a.jml_sebelumnya, a.debit, a.kredit, a.selisih, c.rp, c.ttl FROM `tb_stok_produk` as a
+      LEFT JOIN tb_produk as b ON a.id_produk = b.id_produk
+      LEFT JOIN (
+          SELECT a.id_produk, sum(a.debit - a.kredit) as ttl, sum(a.rp_satuan) as rp FROM `tb_stok_produk` as a
+          WHERE a.status = 'masuk'
+      GROUP BY a.id_produk
+      ) as c ON c.id_produk = a.id_produk
+      WHERE a.no_nota = '$no_nota';");
+    }
 }

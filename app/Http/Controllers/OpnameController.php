@@ -102,6 +102,7 @@ class OpnameController extends Controller
                 'urutan' => $no_nota,
                 'no_nota' => 'OPN-'.$no_nota,
                 'departemen_id' => '1',
+                'kategori_id' => 1,
                 'status' => 'opname',
                 'jenis' => $r->simpan == 'simpan' ? 'selesai' : 'draft',
                 'gudang_id' => $r->gudang_id[$i],
@@ -146,7 +147,7 @@ class OpnameController extends Controller
         
         $data = [
             'title' => 'Opname Cetak',
-            'stok' => Stok::where('no_nota', $no_nota)->get(),
+            'stok' => Stok::getCetak($no_nota),
             'detail' => Stok::getStatus($no_nota),
         ];
         return view('persediaan_barang.opname.cetak', $data);
