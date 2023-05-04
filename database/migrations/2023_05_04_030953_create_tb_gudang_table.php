@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('kd_gudang', 10);
             $table->string('nm_gudang', 100);
             $table->integer('id_departemen');
+            $table->integer('kategori_id');
             $table->string('admin', 100);
         });
     }

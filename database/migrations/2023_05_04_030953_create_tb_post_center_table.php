@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('tb_post_center', function (Blueprint $table) {
             $table->integer('id_post_center', true);
-            $table->string('nm_post', 225);
+            $table->integer('id_akun');
+            $table->string('nm_post', 250);
         });
     }
 
