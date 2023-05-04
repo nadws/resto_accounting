@@ -106,7 +106,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Profit & Loss',
-                'route' => 'jurnal',
+                'route' => 'profit',
                 'img' => 'profit.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],

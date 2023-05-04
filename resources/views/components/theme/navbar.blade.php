@@ -51,7 +51,7 @@
             <ul>
                 <li class="menu-item">
                     <a href="dashboard"
-                        class='menu-link {{ request()->route()->getName() == 'dashboard'
+                        class='menu-link {{ request()->route()->getName() == ' dashboard'
                             ? 'active'
                             : '' }}'>
                         <span>Dashboard</span>
@@ -68,7 +68,7 @@
                         [
                             'nama' => 'Buku Besar',
                             'route' => 'buku_besar',
-                            'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index', 'saldo_awal', 'summary_buku_besar.detail', 'cashflow.index'],
+                            'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index', 'saldo_awal', 'summary_buku_besar.detail', 'profit', 'cashflow.index'],
                         ],
                         [
                             'nama' => 'Penjualan',
@@ -91,7 +91,7 @@
                     <li class="menu-item">
                         <a href="{{ route($d['route']) }}"
                             class='menu-link 
-                    {{ in_array(request()->route()->getName(),$d['isi'])? 'active': '' }}'>
+                    {{ in_array(request()->route()->getName(),$d['isi'])? ' active': '' }}'>
                             <span>{{ ucwords($d['nama']) }}</span>
                         </a>
                     </li>
