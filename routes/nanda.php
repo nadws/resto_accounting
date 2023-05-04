@@ -9,6 +9,7 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\StokMasukController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\Saldo;
@@ -74,6 +75,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/saldo_awal', 'index')->name('saldo_awal');
         Route::get('/saveSaldo', 'saveSaldo')->name('saveSaldo');
     });
+
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/user', 'index')->name('user');
@@ -160,4 +162,9 @@ Route::controller(ProyekController::class)->group(function () {
 });
 Route::controller(FakturPenjualanController::class)->group(function () {
     Route::get('/faktur_penjualan', 'index')->name('faktur_penjualan');
+});
+
+Route::controller(ProfitController::class)->group(function () {
+    Route::get('/profit', 'index')->name('profit');
+    Route::get('/profit_print', 'print')->name('profit_print');
 });
