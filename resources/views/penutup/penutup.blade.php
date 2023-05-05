@@ -4,12 +4,11 @@
             <div class="col-lg-6">
                 <a data-bs-toggle="modal"
                 data-bs-target="#delete" href="#" class="btn btn-primary float-end"><i class="fas fa-window-close"></i> Save</a>
-                <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
+                
             </div>
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        <h5>{{ tanggal($tgl1) }} ~ {{ tanggal($tgl2) ?? tanggal(date('Y-m-t')) }}</h5>
         <section class="row">
             @php
                 $ttlDebit = 0;
@@ -80,8 +79,7 @@
                             <div class="row">
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-window-close"></i> Saldo Penutup</h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menutup saldo ?</p>
-                                <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
-                                <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
+                                
                             </div>
                         </div>
                         <div class="modal-footer">
