@@ -25,9 +25,9 @@
                         <th width="5">#</th>
                         <th>Kode Akun</th>
                         <th>Akun</th>
-                        <th style="text-align: right">Debit ({{ number_format($ttlDebit,0) }})</th>
-                        <th style="text-align: right">Kredit ({{ number_format($ttlKredit,0) }})</th>
-                        <th style="text-align: right">Saldo ({{ number_format($ttlSaldo,0) }})</th>
+                        <th style="text-align: right">Debit ({{ number_format($ttlDebit,2) }})</th>
+                        <th style="text-align: right">Kredit ({{ number_format($ttlKredit,2) }})</th>
+                        <th style="text-align: right">Saldo ({{ number_format($ttlSaldo,2) }})</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,9 +38,9 @@
                         <td><a
                                 href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun,'tgl1' => $tgl1,'tgl2' => $tgl2]) }}">{{ucwords(strtolower($a->nm_akun))}}</a>
                         </td>
-                        <td style="text-align: right">{{number_format($a->debit,0)}}</td>
-                        <td style="text-align: right">{{number_format($a->kredit,0)}}</td>
-                        <td style="text-align: right">{{number_format($a->debit - $a->kredit,0)}}</td>
+                        <td style="text-align: right">{{number_format($a->debit,2)}}</td>
+                        <td style="text-align: right">{{number_format($a->kredit,2)}}</td>
+                        <td style="text-align: right">{{number_format($a->debit - $a->kredit,2)}}</td>
                     </tr>
                     @endforeach
                 </tbody>

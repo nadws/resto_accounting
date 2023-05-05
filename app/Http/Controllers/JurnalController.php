@@ -117,7 +117,6 @@ class JurnalController extends Controller
         }
         DB::table('notas')->insert(['nomor_nota' => $nota_t]);
 
-
         for ($i = 0; $i < count($id_akun); $i++) {
             $data = [
                 'tgl' => $tgl,
