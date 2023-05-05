@@ -20,7 +20,7 @@
                         <th width="5">#</th>
                         <th>Tanggal</th>
                         <th>No Nota</th>
-                        <th>No CFM</th>
+                        <th>No Cfm</th>
                         <th>Akun</th>
                         <th>Sub Akun</th>
                         <th>Keterangan</th>
@@ -38,7 +38,21 @@
                         <td>{{ $a->no_urut }}</td>
                         <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
                         <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
-                        <td>{{ ucwords($a->ket) }}</td>
+                        @if (strlen($a->ket) > 60)
+                        <td>
+                            <span class="teksLimit{{ $a->id_jurnal }}">
+                                {{ Str::limit($a->ket, 60, '...') }}
+                                <a href="#" class="readMore" id="{{ $a->id_jurnal }}">read
+                                    more</a>
+                            </span>
+                            <span class="teksFull{{ $a->id_jurnal }}" style="display:none">{{ $a->ket }}
+                                <a href="#" class="less" id="{{ $a->id_jurnal }}">less</a></span>
+                        </td>
+                        @else
+                        <td>
+                            {{ $a->ket }}
+                        </td>
+                        @endif
                         <td align="right">{{ number_format($a->debit, 2) }}</td>
                         <td align="right">{{ number_format($a->kredit, 2) }}</td>
                         <td>
@@ -137,9 +151,9 @@
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
                                 <input type="hidden" class="no_nota" name="no_nota">
-                                <input type="hidden" name="tgl1" value="{{$tgl1}}">
-                                <input type="hidden" name="tgl2" value="{{$tgl2}}">
-                                <input type="hidden" name="id_proyek" value="{{$id_proyek}}">
+                                <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
+                                <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
+                                <input type="hidden" name="id_proyek" value="{{ $id_proyek }}">
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -167,6 +181,21 @@
     @section('scripts')
     <script>
         $(document).ready(function() {
+                function readMore() {
+                    $(document).on('click', '.readMore', function(e) {
+                        e.preventDefault()
+                        var id = $(this).attr('id')
+                        $(".teksLimit" + id).css('display', 'none')
+                        $(".teksFull" + id).css('display', 'block')
+                    })
+                    $(document).on('click', '.less', function(e) {
+                        e.preventDefault()
+                        var id = $(this).attr('id')
+                        $(".teksLimit" + id).css('display', 'block')
+                        $(".teksFull" + id).css('display', 'none')
+                    })
+                }
+                readMore()
                 $('.delete_nota').click(function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
@@ -177,7 +206,7 @@
                 });
 
 
-                $(document).on("click", ".detail_nota", function () {
+                $(document).on("click", ".detail_nota", function() {
                     var no_nota = $(this).attr('no_nota');
                     $.ajax({
                         type: "get",

@@ -38,9 +38,9 @@
                         <td>{{ $d->no_nota }}</td>
                         <td>{{ $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)) }}</td>
                         <td>{{ $d->ket }}</td>
-                        <td style="text-align: right">{{ number_format($d->debit,0) }}</td>
-                        <td style="text-align: right">{{ number_format($d->kredit,0) }}</td>
-                        <td style="text-align: right">{{ number_format($saldo,0) }}</td>
+                        <td style="text-align: right">{{ number_format($d->debit,2) }}</td>
+                        <td style="text-align: right">{{ number_format($d->kredit,2) }}</td>
+                        <td style="text-align: right">{{ number_format($saldo,2) }}</td>
                     </tr>
                     @endforeach
                 </tbody>
