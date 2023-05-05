@@ -41,7 +41,8 @@
     });
 
 
-    $('#select2').select2({});
+    $('#select2').select2({
+    });
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -124,6 +125,13 @@
                     $(`#${load}`).html(r);
                     $('.select2-edit').select2({
                         dropdownParent: $('#edit .modal-content')
+                    });
+                    $('#table-edit').DataTable({
+                        "paging": true,
+                        "pageLength": 10,
+                        "lengthChange": true,
+                        "ordering": true,
+                        "searching": true,
                     });
                 }
             });
