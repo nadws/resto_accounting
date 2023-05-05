@@ -13,7 +13,11 @@ class PenutupController extends Controller
 
         $tgl1 =  $r->tgl1 ?? '2023-01-01';
         $tgl2 =  $r->tgl2 ?? date('Y-m-t');
-        
+
+        $tgl = DB::selectOne("SELECT min(a.tgl) as tgl, a.penutup FROM jurnal as a WHERE a.penutup = 'T'");
+        $tgl1Tutup = date('Y-m-01', strtotime($tgl->tgl));
+        $tgl2Tutup = date('Y-m-t', strtotime($tgl->tgl));
+
         $data = [
             'title' => 'Saldo Penutup',
             'buku' => DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
@@ -22,8 +26,10 @@ class PenutupController extends Controller
             WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' 
             group by a.id_akun
             ORDER by b.kode_akun ASC;"),
-            'tgl1' => $tgl1,
-            'tgl2' => $tgl2
+            'tgl' => $tgl,
+            'penutup' => $tgl->penutup,
+            'tgl1Tutup' => $tgl1Tutup,
+            'tgl2Tutup' => $tgl2Tutup,
         ];
         return view('penutup.penutup',$data);
     }

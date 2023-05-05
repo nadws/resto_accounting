@@ -15,7 +15,7 @@
         @foreach ($detail as $no => $d)
             <tr>
                 <td>{{ $no + 1 }}</td>
-                <td>{{ ucwords($d->nm_post) }}</td>
+                <td>{{ ucwords(strtoupper($d->nm_post)) }}</td>
                 <td align="center">
                     {{-- <button type="button" class="btn rounded-pill edit-sub" id_sub_akun count="1"><i class="fas fa-pen text-info"></i>
                     </button> --}}

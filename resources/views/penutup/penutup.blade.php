@@ -1,21 +1,25 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
+
             <div class="col-lg-6">
-                <a data-bs-toggle="modal"
-                data-bs-target="#delete" href="#" class="btn btn-primary float-end"><i class="fas fa-window-close"></i> Save</a>
-                
+                <a data-bs-toggle="modal" data-bs-target="#delete" href="#" class="btn btn-primary float-end"><i
+                        class="fas fa-window-close"></i> Save</a>
             </div>
         </div>
     </x-slot>
     <x-slot name="cardBody">
+        <div class="alert alert-danger">
+            <i class="bi bi-file-excel"></i> Saldo <b><em>{{ tanggal($tgl1Tutup) }} ~ {{ tanggal($tgl2Tutup) }}</em></b>
+            Belum Di Tutup.
+        </div>
         <section class="row">
             @php
                 $ttlDebit = 0;
                 $ttlKredit = 0;
                 $ttlSaldo = 0;
-
-                foreach($buku as $d) {
+                
+                foreach ($buku as $d) {
                     $ttlDebit += $d->debit;
                     $ttlKredit += $d->kredit;
                     $ttlSaldo += $d->debit - $d->kredit;
@@ -27,21 +31,21 @@
                         <th width="5">#</th>
                         <th>Kode Akun</th>
                         <th>Akun</th>
-                        <th style="text-align: right">Debit ({{ number_format($ttlDebit,2) }})</th>
-                        <th style="text-align: right">Kredit ({{ number_format($ttlKredit,2) }})</th>
-                        <th style="text-align: right">Saldo ({{ number_format($ttlSaldo,2) }})</th>
+                        <th style="text-align: right">Debit ({{ number_format($ttlDebit, 2) }})</th>
+                        <th style="text-align: right">Kredit ({{ number_format($ttlKredit, 2) }})</th>
+                        <th style="text-align: right">Saldo ({{ number_format($ttlSaldo, 2) }})</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($buku as $no => $a)
-                    <tr>
-                        <td>{{$no+1}}</td>
-                        <td>{{$a->kode_akun}}</td>
-                        <td>{{ucwords(strtolower($a->nm_akun))}}</td>
-                        <td style="text-align: right">{{number_format($a->debit,2)}}</td>
-                        <td style="text-align: right">{{number_format($a->kredit,2)}}</td>
-                        <td style="text-align: right">{{number_format($a->debit - $a->kredit,2)}}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ $a->kode_akun }}</td>
+                            <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                            <td style="text-align: right">{{ number_format($a->debit, 2) }}</td>
+                            <td style="text-align: right">{{ number_format($a->kredit, 2) }}</td>
+                            <td style="text-align: right">{{ number_format($a->debit - $a->kredit, 2) }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -79,12 +83,11 @@
                             <div class="row">
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-window-close"></i> Saldo Penutup</h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menutup saldo ?</p>
-                                
+
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger"
-                                data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-danger">Hapus</button>
                         </div>
                     </div>
@@ -93,14 +96,14 @@
         </form>
     </x-slot>
     @section('scripts')
-    <script>
-        // Menangani event klik pada setiap baris dan mengarahkan pengguna ke URL yang sesuai
+        <script>
+            // Menangani event klik pada setiap baris dan mengarahkan pengguna ke URL yang sesuai
             document.querySelectorAll('tbody .tbl').forEach(function(row) {
                 row.addEventListener('click', function() {
                     window.location.href = row.getAttribute('data-href');
                 });
             });
-    </script>
+        </script>
     @endsection
 
 </x-theme.app>
