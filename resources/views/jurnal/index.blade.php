@@ -20,6 +20,7 @@
                         <th width="5">#</th>
                         <th>Tanggal</th>
                         <th>No Nota</th>
+                        <th>No CFM</th>
                         <th>Akun</th>
                         <th>Sub Akun</th>
                         <th>Keterangan</th>
@@ -34,6 +35,7 @@
                         <td>{{ $no + 1 }}</td>
                         <td class="nowrap">{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
                         <td>{{ $a->no_nota }}</td>
+                        <td>{{ $a->no_urut }}</td>
                         <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
                         <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
                         <td>{{ ucwords($a->ket) }}</td>
@@ -76,13 +78,24 @@
                         <table width="100%" cellpadding="10px">
                             <tr>
                                 <td>Tanggal</td>
+                                <td colspan="2">
+                                    <select name="period" id="" class="form-control filter_tgl">
+                                        <option value="daily">Hari ini</option>
+                                        <option value="weekly">Minggu ini</option>
+                                        <option value="mounthly">Bulan ini</option>
+                                        <option value="costume">Costume</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="costume_muncul">
+                                <td></td>
                                 <td>
                                     <label for="">Dari</label>
-                                    <input type="date" name="tgl1" class="form-control">
+                                    <input type="date" name="tgl1" class="form-control tgl">
                                 </td>
                                 <td>
                                     <label for="">Sampai</label>
-                                    <input type="date" name="tgl2" class="form-control">
+                                    <input type="date" name="tgl2" class="form-control tgl">
                                 </td>
                             </tr>
                             <tr>
@@ -175,6 +188,22 @@
                     });
 
                 });
+
+                $('.costume_muncul').hide();
+                $('.tgl').prop('disabled', true);
+
+                $(document).on("change", ".filter_tgl", function () {
+                    var period = $(this).val();
+
+                    if (period === 'costume') {
+                        $('.costume_muncul').show();
+                        $('.tgl').prop('disabled', false);
+                    } else {
+                        $('.costume_muncul').hide();
+                        $('.tgl').prop('disabled', true);
+                    }
+                });
+
             });
     </script>
     @endsection
