@@ -155,4 +155,18 @@ class NavbarController extends Controller
         $title = 'Penjualan';
         return view('navbar.data_master', compact(['data', 'title']));
     }
+    public function asset()
+    {
+        $data = [
+            [
+                'judul' => 'Aktiva',
+                'route' => 'aktiva',
+                'img' => 'buildings.png',
+                'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
+            ]
+
+        ];
+        $title = 'Asset';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
 }

@@ -95,7 +95,14 @@
             dataType: "html",
             success: function (hasil) {
                 $("#load_menu").html(hasil);
-                $(".select").select2();
+                $('.select').select2({
+                    language: {
+                    searching: function() {
+                        $('.select2-search__field').focus();
+                    }
+                    }
+                });
+                
             },
         });
     }
