@@ -41,7 +41,8 @@
     });
 
 
-    $('#select2').select2({});
+    $('#select2').select2({
+    });
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -154,13 +155,9 @@
 
     $('#table').DataTable({
         "paging": true,
-        "pageLength": 100,
-        "lengthChange": false,
-        "ordering": true,
-        "info": false,
+        "pageLength": 10,
+        "lengthChange": true,
         "stateSave": true,
-        "autoWidth": true,
-        "order": [5, 'DESC'],
         "searching": true,
     });
 

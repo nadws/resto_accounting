@@ -70,8 +70,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/akun', 'create')->name('akun');
         Route::post('/akun-update', 'update')->name('akun.update');
         Route::get('/akun-delete', 'delete')->name('akun.delete');
+        Route::get('/akun-sub', 'add_sub')->name('akun.add_sub');
+        Route::get('/remove_sub', 'remove_sub')->name('akun.remove_sub');
         Route::get('/get_kode', 'get_kode')->name('get_kode');
-        Route::get('/get_edit_akun', 'get_edit_akun')->name('get_edit_akun');
+        Route::get('/get_edit_akun/{id_akun}', 'get_edit_akun')->name('get_edit_akun');
+        Route::get('/load_sub_akun/{id_akun}', 'load_sub_akun')->name('load_sub_akun');
     });
     Route::controller(SaldoController::class)->group(function () {
         Route::get('/saldo_awal', 'index')->name('saldo_awal');
