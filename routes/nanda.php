@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AktivaController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\BukuBesarController;
 use App\Http\Controllers\CrudPermissionController;
@@ -43,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/penjualan', 'penjualan')->name('penjualan');
         Route::get('/pembelian', 'pembelian')->name('pembelian');
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
+        Route::get('/asset', 'asset')->name('asset');
     });
 
 
@@ -167,4 +169,13 @@ Route::controller(FakturPenjualanController::class)->group(function () {
 Route::controller(ProfitController::class)->group(function () {
     Route::get('/profit', 'index')->name('profit');
     Route::get('/profit_print', 'print')->name('profit_print');
+});
+
+Route::controller(AktivaController::class)->group(function () {
+    Route::get('/aktiva', 'index')->name('aktiva');
+    Route::get('/aktiva.add', 'add')->name('aktiva.add');
+    Route::get('/load_aktiva', 'load_aktiva')->name('load_aktiva');
+    Route::get('/tambah_baris_aktiva', 'tambah_baris_aktiva')->name('tambah_baris_aktiva');
+    Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
+    Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
 });
