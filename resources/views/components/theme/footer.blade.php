@@ -155,13 +155,9 @@
 
     $('#table').DataTable({
         "paging": true,
-        "pageLength": 100,
-        "lengthChange": false,
-        "ordering": true,
-        "info": false,
+        "pageLength": 10,
+        "lengthChange": true,
         "stateSave": true,
-        "autoWidth": true,
-        "order": [5, 'DESC'],
         "searching": true,
     });
 

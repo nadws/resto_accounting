@@ -3,6 +3,7 @@
 use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\OpnameController;
+use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PoController;
 use Illuminate\Support\Facades\Route;
 
@@ -61,4 +62,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/editSubKategori', 'editSubKategori')->name('editSubKategori');
             Route::get('/saveSubKategori', 'saveSubKategori')->name('saveSubKategori');
         });
+
+    Route::controller(PenutupController::class)
+        ->prefix('penutup')
+        ->name('penutup.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/saldo', 'saldo')->name('saldo');
+        });
+
+
 });

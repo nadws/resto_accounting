@@ -10,7 +10,7 @@
 
     <x-slot name="cardBody">
         <section class="row">
-            <table class="table table-hover" id="table1">
+            <table class="table table-hover" id="table">
                 <thead>
                     <tr>
                         <th width="5">#</th>
@@ -31,8 +31,12 @@
                                 {{ $a->klasifikasi->nm_subklasifikasi }}
                             </td>
                             <td>
-                                <span class=" badge bg-{{ $a->is_active != 'Y' ? 'danger' : 'success' }}">
-                                    {{ $a->is_active != 'Y' ? 'Tidak Aktif' : 'Aktif' }}</span>
+                                @php
+                                    $badge = $a->is_active != 'Y' ? 'danger' : 'success';
+                                    $aktif = $a->is_active != 'Y' ? 'Tidak Aktif' : 'Aktif';
+                                @endphp
+                                <a href="" class=" badge bg-{{ $badge }}">
+                                    {{ $aktif }}</a>
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
@@ -50,10 +54,6 @@
                                                 data-bs-toggle="modal" data-bs-target="#sub-akun"
                                                 id_akun="{{ $a->id_akun }}"><i class="me-2 fas fa-layer-group"></i>Sub
                                                 Akun</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item  text-danger" href="#"><i
-                                                    class="me-2 fas fa-trash"></i>Delete</a>
                                         </li>
                                     </ul>
                                 </div>
