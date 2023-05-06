@@ -12,7 +12,13 @@ class AktivaController extends Controller
     {
         $data =  [
             'title' => 'Aktiva',
-            'aktiva' => DB::select("SELECT * FROM aktiva as a left join kelompok_aktiva as b on b.id_kelompok = a.id_kelompok")
+            'aktiva' => DB::select("SELECT a.*, b.*, c.beban FROM aktiva as a 
+            left join kelompok_aktiva as b on b.id_kelompok = a.id_kelompok
+            left join(
+            SELECT sum(c.b_penyusutan) as beban , c.id_aktiva
+                FROM depresiasi_aktiva as c
+                group by c.id_aktiva
+            ) as c on c.id_aktiva = a.id_aktiva")
 
         ];
         return view('aktiva.index', $data);

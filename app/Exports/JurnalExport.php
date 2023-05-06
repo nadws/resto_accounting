@@ -18,31 +18,36 @@ class JurnalExport  implements FromView, WithEvents
     protected $tgl1;
     protected $tgl2;
     protected $id_proyek;
+    protected $id_buku;
     protected $totalrow;
 
-    public function __construct($tgl1, $tgl2, $id_proyek, $totalrow)
+    public function __construct($tgl1, $tgl2, $id_proyek, $id_buku, $totalrow)
     {
         $this->tgl1 = $tgl1;
         $this->tgl2 = $tgl2;
         $this->id_proyek = $id_proyek;
+        $this->id_buku = $id_buku;
         $this->totalrow = $totalrow;
     }
 
     public function view(): View
     {
+
         if ($this->id_proyek == 0) {
             $jurnal =  DB::select("SELECT a.admin, a.no_urut, b.kode_akun, a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
             left join tb_post_center as c on c.id_post_center = a.id_post_center
-            where a.id_buku = '2' and a.tgl between '$this->tgl1' and '$this->tgl2' order by a.id_jurnal DESC");
+            where a.id_buku = '$this->id_buku' and a.tgl between '$this->tgl1' and '$this->tgl2' order by a.id_jurnal DESC");
         } else {
             $jurnal =  DB::select("SELECT a.admin, a.no_urut, b.kode_akun,  a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
             left join tb_post_center as c on c.id_post_center = a.id_post_center
-            where a.id_buku = '2' and a.id_proyek = $this->id_proyek and a.tgl between '$this->tgl1' and '$this->tgl2' order by a.id_jurnal DESC");
+            where a.id_buku = '$this->id_buku' and a.id_proyek = $this->id_proyek and a.tgl between '$this->tgl1' and '$this->tgl2' order by a.id_jurnal DESC");
         }
+
+
         return view('exports.jurnal', [
-            'jurnal' => $jurnal
+            'jurnal' => $jurnal,
         ]);
     }
 

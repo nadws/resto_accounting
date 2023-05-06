@@ -43,6 +43,8 @@
 
     $('#select2').select2({
     });
+    $('.select2_add').select2({
+    });
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -170,8 +172,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -183,11 +185,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-    </script>
+</script>
 @endif
 @if (session()->has('error'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -201,7 +203,7 @@
 
 
         });
-    </script>
+</script>
 @endif
 @yield('scripts')
 

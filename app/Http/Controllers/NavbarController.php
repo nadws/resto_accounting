@@ -117,9 +117,15 @@ class NavbarController extends Controller
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
             [
+<<<<<<< HEAD
                 'judul' => 'Penutup',
                 'route' => 'penutup.index',
                 'img' => 'penutup.png',
+=======
+                'judul' => 'Jurnal Penyesuaian',
+                'route' => 'jurnal_aktiva',
+                'img' => 'journalism.png',
+>>>>>>> f184e44eb40a94296340b10a5d537765f4c0a3e5
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
         ];
