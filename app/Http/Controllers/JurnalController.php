@@ -218,7 +218,7 @@ class JurnalController extends Controller
         $id_post = $r->id_post;
         $id_jurnal = $r->id_jurnal;
 
-        Jurnal::where('no_nota', $nota_t)->delete();
+        // Jurnal::where('no_nota', $nota_t)->delete();
 
         for ($i = 0; $i < count($id_akun); $i++) {
             $data = [
