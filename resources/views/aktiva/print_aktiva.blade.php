@@ -72,6 +72,7 @@
                         where c.tgl between '$tahun1' and '$tahun1_1'
                         group by c.id_aktiva
                         ) as c on c.id_aktiva = a.id_aktiva
+
                         where a.id_kelompok = '$k->id_kelompok'
                         ");
                         @endphp
@@ -99,8 +100,8 @@
                             $tgl2 = date('Y',strtotime($tahun2_1));
                             @endphp
                             <td align="right">{{$tgl > $tgl2 ? '0' : $a->h_perolehan - $a->beban1 }}</td>
-                            <td></td>
-                            <td></td>
+                            <td align="right">{{number_format($a->beban2,0)}}</td>
+                            <td align="right">{{number_format($a->h_perolehan - $a->beban2 ,0)}}</td>
                         </tr>
                         @endforeach
                         @endforeach
