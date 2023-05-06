@@ -11,6 +11,7 @@
         </div>
     </x-slot>
     <x-slot name="cardBody">
+    
         <div class="alert alert-danger">
             <i class="bi bi-file-excel"></i> Saldo <b><em>{{ tanggal($tgl1Tutup) }} ~ {{ tanggal($tgl2Tutup) }}</em></b>
             Belum Di Tutup.

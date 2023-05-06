@@ -122,12 +122,6 @@ class NavbarController extends Controller
                 'img' => 'journalism.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            [
-                'judul' => 'Jurnal Penyesuaian',
-                'route' => 'jurnal_aktiva',
-                'img' => 'journalism.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
         ];
         $title = 'Buku Besar';
         return view('navbar.data_master', compact(['data', 'title']));
