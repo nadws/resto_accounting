@@ -1,4 +1,4 @@
-<x-theme.app title="{{$title}}" table="Y" sizeCard="12">
+<x-theme.app title="{{$title}} : {{ucwords(strtolower($nm_akun->nm_akun))}}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">

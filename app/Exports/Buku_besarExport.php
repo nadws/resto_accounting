@@ -39,8 +39,11 @@ class Buku_besarExport implements FromView, WithEvents
         WHERE a.id_akun = '$this->id_akun' and a.tgl between '$this->tgl1' and '$this->tgl2'
         order by a.saldo DESC, a.id_jurnal ASC");
 
+        $nm_akun = DB::table('akun')->where('id_akun', $this->id_akun)->first();
+
         return view('exports.detail_bukubesar', [
-            'detail' => $jurnal
+            'detail' => $jurnal,
+            'nm_akun' => $nm_akun->nm_akun
         ]);
     }
 
@@ -50,12 +53,12 @@ class Buku_besarExport implements FromView, WithEvents
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $totalrow = $this->totalrow + 1;
-                $cellRange = 'A1:H1';
+                $totalrow = $this->totalrow + 2;
+                $cellRange = 'A2:H2';
                 // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->setAutoFilter($cellRange);
-                $event->sheet->getStyle('A1:H1')->applyFromArray([
+                $event->sheet->getStyle('A2:H2')->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -68,7 +71,7 @@ class Buku_besarExport implements FromView, WithEvents
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A2:H' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A3:H' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,

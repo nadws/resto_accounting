@@ -18,7 +18,8 @@ class AktivaController extends Controller
             SELECT sum(c.b_penyusutan) as beban , c.id_aktiva
                 FROM depresiasi_aktiva as c
                 group by c.id_aktiva
-            ) as c on c.id_aktiva = a.id_aktiva")
+            ) as c on c.id_aktiva = a.id_aktiva
+            order by a.id_aktiva DESC"),
 
         ];
         return view('aktiva.index', $data);

@@ -1,3 +1,4 @@
+<h3>Akun :{{$nm_akun}}</h3>
 <table>
     <thead>
         <tr>

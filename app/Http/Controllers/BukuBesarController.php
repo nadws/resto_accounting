@@ -48,7 +48,7 @@ class BukuBesarController extends Controller
         $tgl1 =  $r->tgl1;
         $tgl2 =  $r->tgl2;
         $data = [
-            'title' => 'Detail Buku Besar',
+            'title' => 'Detail ',
             'detail' => DB::select("SELECT d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
                         LEFT JOIN (
                             SELECT j.no_nota, j.id_akun, GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
@@ -62,7 +62,8 @@ class BukuBesarController extends Controller
             "),
             'id_akun' => $r->id_akun,
             'tgl1' => $tgl1,
-            'tgl2' => $tgl2
+            'tgl2' => $tgl2,
+            'nm_akun' => DB::table('akun')->where('id_akun', $r->id_akun)->first()
         ];
         return view('sum_buku.detail', $data);
     }
