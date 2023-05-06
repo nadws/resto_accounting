@@ -153,7 +153,8 @@ class JurnalController extends Controller
         }
 
         $tgl1 = date('Y-m-01', strtotime($r->tgl));
-        return redirect()->route('jurnal', ['periode' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $r->tgl, 'id_proyek' => 0])->with('sukses', 'Data berhasil ditambahkan');
+        $tgl2 = date('Y-m-t', strtotime($r->tgl));
+        return redirect()->route('jurnal', ['periode' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => 0])->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function delete(Request $r)
@@ -239,7 +240,8 @@ class JurnalController extends Controller
             Jurnal::create($data);
         }
         $tgl1 = date('Y-m-01', strtotime($r->tgl));
-        return redirect()->route('jurnal', ['periode' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $r->tgl, 'id_proyek' => 0])->with('sukses', 'Data berhasil ditambahkan');
+        $tgl2 = date('Y-m-t', strtotime($r->tgl));
+        return redirect()->route('jurnal', ['periode' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => 0])->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function detail_jurnal(Request $r)
