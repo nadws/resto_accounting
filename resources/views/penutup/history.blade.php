@@ -10,7 +10,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Tanggal</th>
+                    <th>Tanggal Ditutup</th>
+                    <th>Bulan</th>
                     <th>No Nota</th>
                     <th class="kanan">Debit</th>
                     <th class="kanan">Kredit</th>
@@ -31,6 +32,7 @@
                 <tr>
                     <td>{{ $no+1 }}</td>
                     <td>{{ tanggal($d->tgl) }}</td>
+                    <td>{{ date('M', strtotime($d->tgl_dokumen)) }}</td>
                     <td>{{ $d->no_nota }}</td>
                     <td align="right">{{ number_format($d->debit,2) }}</td>
                     <td align="right">{{ number_format($d->kredit,2) }}</td>
@@ -39,7 +41,7 @@
             @endforeach
             <tfoot>
                 <tr>
-                    <th colspan="3" class="text-center">Total</th>
+                    <th colspan="4" class="text-center">Total</th>
                     <th class="kanan">{{ number_format($ttlDebit,2) }}</th>
                     <th class="kanan">{{ number_format($ttlKredit,2) }}</th>
                     <th class="kanan">{{ number_format($ttlSaldo,2) }}</th>

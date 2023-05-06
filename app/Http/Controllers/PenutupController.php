@@ -48,7 +48,11 @@ class PenutupController extends Controller
             group by a.id_akun
             ORDER by b.kode_akun ASC;");
 
-        $no_nota = "PEN-" . strtoupper(str()->random(5));
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+
+        $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
+
+        DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
 
         foreach ($saldo as $d) {
             $data = [
@@ -56,13 +60,13 @@ class PenutupController extends Controller
                 'debit' => $d->debit,
                 'kredit' => $d->kredit,
                 'ket' => 'Saldo Penutup',
-                'id_buku' => '1',
-                'no_nota' => $no_nota,
+                'id_buku' => '5',
+                'no_nota' => "PEN-$no_nota",
                 'tgl' => date('Y-m-d'),
+                'tgl_dokumen' => $tgl2,
                 'admin' => auth()->user()->name,
                 'penutup' => 'Y'
             ];
-
             Jurnal::create($data);
 
             Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y']);
@@ -73,17 +77,17 @@ class PenutupController extends Controller
 
     public function history()
     {
-        $saldo = DB::select("SELECT a.tgl,a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
+        $saldo = DB::select("SELECT a.tgl,a.tgl_dokumen,a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
             FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
             WHERE a.ket = 'Saldo Penutup'
             group by a.no_nota
             ORDER by b.kode_akun ASC;");
-            
+
         $data = [
             'title' => 'History',
             'history' => $saldo
         ];
-        return view('penutup.history',$data);
+        return view('penutup.history', $data);
     }
 }
