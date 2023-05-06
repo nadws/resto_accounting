@@ -182,6 +182,7 @@ Route::controller(AktivaController::class)->group(function () {
     Route::get('/tambah_baris_aktiva', 'tambah_baris_aktiva')->name('tambah_baris_aktiva');
     Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
     Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+    Route::get('/print_aktiva', 'print')->name('print_aktiva');
 });
 
 Route::controller(JurnalPenyesuaianController::class)->group(function () {

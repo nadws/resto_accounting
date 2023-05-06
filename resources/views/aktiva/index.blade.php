@@ -4,7 +4,7 @@
             <div class="col-lg-6">
                 <x-theme.button modal="T" href="{{ route('aktiva.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
-                <x-theme.button modal="T" href="{{ route('aktiva.add') }}" icon="fa-print" addClass="float-end"
+                <x-theme.button modal="T" href="{{ route('print_aktiva') }}" icon="fa-print" addClass="float-end"
                     teks="Print" />
             </div>
         </div>

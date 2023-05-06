@@ -87,4 +87,12 @@ class AktivaController extends Controller
 
         return redirect()->route('aktiva')->with('sukses', 'Data berhasil ditambahkan');
     }
+
+    public function print()
+    {
+        $data = [
+            'title' => 'Print Aktiva'
+        ];
+        return view('aktiva.print_aktiva', $data);
+    }
 }
