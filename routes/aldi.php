@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/saldo', 'saldo')->name('saldo');
+            Route::get('/history', 'history')->name('history');
         });
 
 
