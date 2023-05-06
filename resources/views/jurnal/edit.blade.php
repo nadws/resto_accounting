@@ -89,6 +89,8 @@
                                 <td style="vertical-align: top;">
                                     <input type="text" name="keterangan[]" class="form-control"
                                         style="vertical-align: top" value="{{$j->ket}}">
+                                    <input type="hidden" name="id_jurnal[]" class="form-control"
+                                        style="vertical-align: top" value="{{$j->id_jurnal}}">
 
                                 </td>
                                 <td style="vertical-align: top;">

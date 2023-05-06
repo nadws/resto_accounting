@@ -59,8 +59,6 @@ class JurnalController extends Controller
             left join proyek as d on d.id_proyek = a.id_proyek
             where a.id_buku = '2' and a.id_proyek = $id_proyek and a.tgl between '$tgl1' and '$tgl2' order by a.id_jurnal DESC");
         }
-
-
         $data =  [
             'title' => 'Jurnal Umum',
             'jurnal' => $jurnal,
@@ -218,6 +216,7 @@ class JurnalController extends Controller
         $no_urut = $r->no_urut;
         $nota_t = $r->no_nota;
         $id_post = $r->id_post;
+        $id_jurnal = $r->id_jurnal;
 
         Jurnal::where('no_nota', $nota_t)->delete();
 
@@ -237,7 +236,7 @@ class JurnalController extends Controller
                 'no_urut' => $no_urut[$i],
                 'id_post_center' => $id_post[$i]
             ];
-            Jurnal::create($data);
+            Jurnal::where('id_jurnal', $id_jurnal[$i])->update($data);
         }
         $tgl1 = date('Y-m-01', strtotime($r->tgl));
         $tgl2 = date('Y-m-t', strtotime($r->tgl));
