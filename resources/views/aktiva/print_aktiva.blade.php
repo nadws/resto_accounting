@@ -12,6 +12,7 @@
 <style>
     .tengah {
         vertical-align: middle;
+        text-align: center
     }
 </style>
 
@@ -20,28 +21,90 @@
         <div class="row justify-content-center">
             <div class="col-lg-12">
                 <h4 class="text-center fw-bold">DAFTAR PENYUSUTAN AKTIVA TETAP</h4>
-                <table class="table table-bordered text-center">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th rowspan="2" class="tengah">No</th>
-                            <th rowspan="2" class="tengah">Jenis Aktiva</th>
-                            <th>Tahun</th>
-                            <th>Harga</th>
-                            <th rowspan="2" class="tengah">Tarif</th>
-                            <th>Akumulasi</th>
-                            <th>Nilai Buku</th>
-                            <th>Akumulasi</th>
-                            <th>Nilai Buku</th>
+                            <th rowspan="2" class="tengah">NO</th>
+                            <th rowspan="2" class="tengah">JENIS AKTIVA</th>
+                            <th class="tengah">TAHUN</th>
+                            <th class="tengah">HARGA</th>
+                            <th rowspan="2" class="tengah">TARIF</th>
+                            <th class="tengah">AKUMULASI</th>
+                            <th class="tengah">NILAI BUKU</th>
+                            <th class="tengah">AKUMULASI</th>
+                            <th class="tengah">NILAI BUKU</th>
                         </tr>
                         <tr>
-                            <th>Perolehan</th>
-                            <th>Perolehan</th>
-                            <th>Penyusutan</th>
-                            <th></th>
-                            <th>Penyusutan</th>
-                            <th></th>
+                            <th class="tengah">PEROLEHAN</th>
+                            <th class="tengah">PEROLEHAN</th>
+                            <th class="tengah">PENYUSUTAN {{date('Y',strtotime($tahun2))}}</th>
+                            <th class="tengah">{{date('Y',strtotime($tahun2))}}</th>
+                            <th class="tengah">PENYUSUTAN {{date('Y',strtotime($tahun1))}}</th>
+                            <th class="tengah">{{date('Y',strtotime($tahun1))}}</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td>HARTA BERWUJUD</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @foreach ($kelompok as $no => $k)
+                        @php
+                        $aktiva = DB::select("SELECT a.*, b.beban1, c.beban2
+                        FROM aktiva as a
+                        left join(
+                        SELECT sum(c.b_penyusutan) as beban1 , c.id_aktiva
+                        FROM depresiasi_aktiva as c
+                        where c.tgl between '$tahun2' and '$tahun2_1'
+                        group by c.id_aktiva
+                        ) as b on b.id_aktiva = a.id_aktiva
+
+                        left join(
+                        SELECT sum(c.b_penyusutan) as beban2 , c.id_aktiva
+                        FROM depresiasi_aktiva as c
+                        where c.tgl between '$tahun1' and '$tahun1_1'
+                        group by c.id_aktiva
+                        ) as c on c.id_aktiva = a.id_aktiva
+                        where a.id_kelompok = '$k->id_kelompok'
+                        ");
+                        @endphp
+                        <tr>
+                            <td>{{$no+1}}</td>
+                            <td>{{$k->nm_kelompok}} :</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @foreach ($aktiva as $a)
+                        <tr>
+                            <td></td>
+                            <td>{{$a->nm_aktiva}} </td>
+                            <td align="center">{{date('Y-m',strtotime($a->tgl))}}</td>
+                            <td align="right">{{number_format($a->h_perolehan,0)}}</td>
+                            <td align="right">{{$k->tarif * 100}} %</td>
+                            <td align="right">{{empty($a->beban1) ? '0' : number_format($a->beban1,0)}} </td>
+                            @php
+                            $tgl = date('Y',strtotime($a->tgl));
+                            $tgl2 = date('Y',strtotime($tahun2_1));
+                            @endphp
+                            <td align="right">{{$tgl > $tgl2 ? '0' : $a->h_perolehan - $a->beban1 }}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        @endforeach
+                        @endforeach
+                    </tbody>
                 </table>
 
             </div>

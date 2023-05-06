@@ -90,8 +90,19 @@ class AktivaController extends Controller
 
     public function print()
     {
+        $tahun1 =  date('Y-01-01');
+        $tahun1_1 =  date('Y-12-31');
+
+        $tahun2 =  date('Y-01-01', strtotime("-1 year", strtotime($tahun1)));
+        $tahun2_1 =  date('Y-12-31', strtotime("-1 year", strtotime($tahun1)));
         $data = [
-            'title' => 'Print Aktiva'
+            'title' => 'Print Aktiva',
+            'kelompok' => DB::table('kelompok_aktiva')->get(),
+            'tahun1' => $tahun1,
+            'tahun1_1' => $tahun1_1,
+            'tahun2' => $tahun2,
+            'tahun2_1' => $tahun2_1
+
         ];
         return view('aktiva.print_aktiva', $data);
     }

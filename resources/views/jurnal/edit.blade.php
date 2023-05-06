@@ -73,7 +73,7 @@
                                     <div class="collapse join{{$no + 1}}">
                                         <label for="" class="mt-2 ">No CFM</label>
                                         <input type="text" class="form-control " name="no_urut[]"
-                                            value="{{$j->no_dokumen}}">
+                                            value="{{$j->no_urut}}">
                                     </div>
 
                                 </td>
