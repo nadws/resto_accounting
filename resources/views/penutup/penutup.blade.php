@@ -5,6 +5,8 @@
             <div class="col-lg-6">
                 <a data-bs-toggle="modal" data-bs-target="#delete" href="#" class="btn btn-primary float-end"><i
                         class="fas fa-window-close"></i> Save</a>
+                <a data-bs-toggle="modal" data-bs-target="#history" href="#"
+                    class="btn btn-primary float-end me-2 history"><i class="fas fa-history"></i> History</a>
             </div>
         </div>
     </x-slot>
@@ -88,12 +90,20 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger">Hapus</button>
+                            <button type="submit" class="btn btn-danger">Save</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
+
+        {{-- history --}}
+        <form action="" method="get">
+            <x-theme.modal title="History Penutup" size="modal-lg" btnSave="" idModal="history">
+                <div id="load-history"></div>
+            </x-theme.modal>
+        </form>
+        {{-- end history --}}
     </x-slot>
     @section('scripts')
         <script>
@@ -103,6 +113,16 @@
                     window.location.href = row.getAttribute('data-href');
                 });
             });
+
+            $(document).on('click', '.history', function() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('penutup.history') }}",
+                    success: function(r) {
+                        $("#load-history").html(r);
+                    }
+                });
+            })
         </script>
     @endsection
 

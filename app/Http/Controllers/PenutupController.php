@@ -23,7 +23,7 @@ class PenutupController extends Controller
             'buku' => DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
             FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
-            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' 
+            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
             group by a.id_akun
             ORDER by b.kode_akun ASC;"),
             'tgl' => $tgl,
@@ -31,7 +31,7 @@ class PenutupController extends Controller
             'tgl1Tutup' => $tgl1Tutup,
             'tgl2Tutup' => $tgl2Tutup,
         ];
-        return view('penutup.penutup',$data);
+        return view('penutup.penutup', $data);
     }
 
     public function saldo()
@@ -44,30 +44,46 @@ class PenutupController extends Controller
         $saldo = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
             FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
-            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' 
+            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
             group by a.id_akun
             ORDER by b.kode_akun ASC;");
 
-        foreach($saldo as $d) {
+        $no_nota = "PEN-" . strtoupper(str()->random(5));
+
+        foreach ($saldo as $d) {
             $data = [
                 'id_akun' => $d->id_akun,
                 'debit' => $d->debit,
                 'kredit' => $d->kredit,
                 'ket' => 'Saldo Penutup',
                 'id_buku' => '1',
-                'tgl' => $tgl2,
+                'no_nota' => $no_nota,
+                'tgl' => date('Y-m-d'),
                 'admin' => auth()->user()->name,
                 'penutup' => 'Y'
             ];
+
             Jurnal::create($data);
 
             Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y']);
         }
 
         return redirect()->route('penutup.index')->with('sukses', 'Berhasil Tutup Saldo');
+    }
 
-
-        
-
+    public function history()
+    {
+        $saldo = DB::select("SELECT a.tgl,a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
+            FROM jurnal as a 
+            left join akun as b on b.id_akun = a.id_akun
+            WHERE a.ket = 'Saldo Penutup'
+            group by a.no_nota
+            ORDER by b.kode_akun ASC;");
+            
+        $data = [
+            'title' => 'History',
+            'history' => $saldo
+        ];
+        return view('penutup.history',$data);
     }
 }
