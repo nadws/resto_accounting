@@ -21,7 +21,8 @@
                 'nama' => 'Buku Besar',
                 'route' => 'buku_besar',
                 'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index', 'saldo_awal',
-                'summary_buku_besar.detail', 'profit', 'cashflow.index'],
+                'summary_buku_besar.detail', 'profit',
+                'cashflow.index','jurnal_penyesuaian','jurnal_aktiva','jurnal_penyesuaian'],
                 ],
                 [
                 'nama' => 'Penjualan',

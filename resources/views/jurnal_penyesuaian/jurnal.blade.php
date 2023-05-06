@@ -2,11 +2,10 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
-                    teks="Import" />
-                <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
+                <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2,'id_buku' => '4']) }}"
                     class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
-                <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
+
+                <x-theme.button modal="T" href="{{ route('jurnal_penyesuaian') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
             </div>
@@ -61,16 +60,6 @@
                                     <i class="fas fa-ellipsis-v text-primary"></i>
                                 </span>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item text-primary edit_akun"
-                                            href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
-                                                class="me-2 fas fa-pen"></i>Edit</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{ $a->no_nota }}"
-                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                    </li>
                                     <li><a class="dropdown-item  text-info detail_nota" href="#"
                                             no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
                                             data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
@@ -112,17 +101,6 @@
                                     <input type="date" name="tgl2" class="form-control tgl">
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Proyek</td>
-                                <td colspan="2">
-                                    <select name="id_proyek" id="selectView" class="">
-                                        <option value="0">All</option>
-                                        @foreach ($proyek as $p)
-                                        <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
                         </table>
                     </div>
                 </div>
@@ -153,7 +131,6 @@
                                 <input type="hidden" class="no_nota" name="no_nota">
                                 <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
                                 <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
-                                <input type="hidden" name="id_proyek" value="{{ $id_proyek }}">
                             </div>
                         </div>
                         <div class="modal-footer">

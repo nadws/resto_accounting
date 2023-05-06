@@ -7,6 +7,7 @@ use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\FakturPenjualanController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
@@ -181,4 +182,10 @@ Route::controller(AktivaController::class)->group(function () {
     Route::get('/tambah_baris_aktiva', 'tambah_baris_aktiva')->name('tambah_baris_aktiva');
     Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
     Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+});
+
+Route::controller(JurnalPenyesuaianController::class)->group(function () {
+    Route::get('/jurnal_penyesuaian', 'index')->name('jurnal_penyesuaian');
+    Route::get('/jurnal_aktiva', 'jurnal')->name('jurnal_aktiva');
+    Route::post('/save_penyesuaian_aktiva', 'save_penyesuaian_aktiva')->name('save_penyesuaian_aktiva');
 });

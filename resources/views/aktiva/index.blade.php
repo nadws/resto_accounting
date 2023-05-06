@@ -34,8 +34,8 @@
                         <td>{{$a->nm_kelompok}}</td>
                         <td>{{number_format($a->h_perolehan,0)}}</td>
                         <td>{{number_format($a->biaya_depresiasi,0)}}</td>
-                        <td>{{number_format($a->h_perolehan,0)}}</td>
-                        <td>{{number_format($a->h_perolehan,0)}}</td>
+                        <td>{{number_format($a->beban,0)}}</td>
+                        <td>{{number_format($a->h_perolehan - $a->beban,0)}}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <span class="btn btn-sm" data-bs-toggle="dropdown">

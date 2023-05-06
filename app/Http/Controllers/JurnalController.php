@@ -15,7 +15,7 @@ use App\Imports\JurnalImport;
 
 class JurnalController extends Controller
 {
-    protected $tgl1, $tgl2, $id_proyek, $period;
+    protected $tgl1, $tgl2, $id_proyek, $period, $id_buku;
     public function __construct(Request $r)
     {
         if (empty($r->period)) {
@@ -37,6 +37,7 @@ class JurnalController extends Controller
 
 
         $this->id_proyek = $r->id_proyek ?? 0;
+        $this->id_buku = $r->id_buku ?? 2;
     }
 
     public function index()
@@ -74,7 +75,7 @@ class JurnalController extends Controller
 
     public function add()
     {
-        $max = DB::table('notas')->latest('nomor_nota')->first();
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
 
         if (empty($max)) {
             $nota_t = '1000';
@@ -123,14 +124,14 @@ class JurnalController extends Controller
         $no_urut = $r->no_urut;
         $id_post = $r->id_post;
 
-        $max = DB::table('notas')->latest('nomor_nota')->first();
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
 
         if (empty($max)) {
             $nota_t = '1000';
         } else {
             $nota_t = $max->nomor_nota + 1;
         }
-        DB::table('notas')->insert(['nomor_nota' => $nota_t]);
+        DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
 
         for ($i = 0; $i < count($id_akun); $i++) {
             $data = [
@@ -169,21 +170,25 @@ class JurnalController extends Controller
 
     public function export(Request $r)
     {
-        $tgl1 =  $this->tgl1;
-        $tgl2 =  $this->tgl2;
+        $tgl1 =  $r->tgl1;
+        $tgl2 =  $r->tgl2;
+        $id_proyek = $r->id_proyek;
+        $id_buku = $r->id_buku;
 
-        $id_proyek = $this->id_proyek;
 
         if ($id_proyek == 0) {
-            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.tgl between '$tgl1' and '$tgl2'");
+            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku='$id_buku' and a.tgl between '$tgl1' and '$tgl2'");
         } else {
-            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.tgl between '$tgl1' and '$tgl2' and a.id_proyek = '$id_proyek'");
+            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku='$id_buku' and a.tgl between '$tgl1' and '$tgl2' and a.id_proyek = '$id_proyek'");
         }
 
         $totalrow = $total->jumlah;
 
 
-        return Excel::download(new JurnalExport($tgl1, $tgl2, $id_proyek, $totalrow), 'jurnal.xlsx');
+
+
+
+        return Excel::download(new JurnalExport($tgl1, $tgl2, $id_proyek, $id_buku, $totalrow), 'jurnal.xlsx');
     }
 
     public function edit(Request $r)
