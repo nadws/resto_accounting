@@ -91,11 +91,12 @@
                         </thead>
                         <tbody>
                             @foreach ($aktiva as $no => $a)
-                            <tr>
+                            @if (round(($a->h_perolehan - $a->beban),0) <= '0' ) @php continue; @endphp @else @endif
+                                <tr>
                                 <td>{{date('d-m-Y',strtotime($a->tgl))}}</td>
                                 <td>{{$a->nm_aktiva}}</td>
                                 <td>{{number_format($a->h_perolehan,0)}}</td>
-                                <td>{{number_format($a->h_perolehan - $a->beban,0)}}</td>
+                                <td>{{number_format($a->h_perolehan - $a->beban,0)}} </td>
                                 <td>
                                     <input type="text" class="form-control beban beban{{$no+1}}" count="{{$no+1}}"
                                         value="Rp {{number_format($a->biaya_depresiasi,2,',','.')}}">
@@ -104,8 +105,8 @@
                                         value="{{round($a->biaya_depresiasi,2)}}">
                                     <input type="hidden" name="id_aktiva[]" value="{{$a->id_aktiva}}">
                                 </td>
-                            </tr>
-                            @endforeach
+                                </tr>
+                                @endforeach
                         </tbody>
                     </table>
                 </div>

@@ -4,8 +4,10 @@
             <div class="col-lg-6">
                 <x-theme.button modal="T" href="{{ route('aktiva.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
+                <x-theme.button modal="Y" idModal="view" icon="fa-print" addClass="float-end" teks="Print" />
+                {{--
                 <x-theme.button modal="T" href="{{ route('print_aktiva') }}" icon="fa-print" addClass="float-end"
-                    teks="Print" />
+                    teks="Print" /> --}}
             </div>
         </div>
     </x-slot>
@@ -64,6 +66,23 @@
 
             </table>
         </section>
+
+        <form action="{{ route('print_aktiva') }}" method="get">
+            <x-theme.modal title="Pilih Tahun" idModal="view">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="">Tahun</label>
+                        <select name="tahun" id="selectView">
+                            @foreach ($tahun as $t)
+                            <option value="{{$t->tgl}}">{{$t->tahun}}</option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+
+            </x-theme.modal>
+        </form>
 
 
 

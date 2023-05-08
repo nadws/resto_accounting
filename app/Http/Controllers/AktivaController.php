@@ -12,6 +12,10 @@ class AktivaController extends Controller
     {
         $data =  [
             'title' => 'Aktiva',
+            'tahun' => DB::select("SELECT YEAR(a.tgl) as tahun, a.tgl
+            FROM depresiasi_aktiva as a
+            group by YEAR(a.tgl)
+            order by YEAR(a.tgl) ASC;"),
             'aktiva' => DB::select("SELECT a.*, b.*, c.beban FROM aktiva as a 
             left join kelompok_aktiva as b on b.id_kelompok = a.id_kelompok
             left join(
@@ -88,10 +92,10 @@ class AktivaController extends Controller
         return redirect()->route('aktiva')->with('sukses', 'Data berhasil ditambahkan');
     }
 
-    public function print()
+    public function print(Request $r)
     {
-        $tahun1 =  date('Y-01-01');
-        $tahun1_1 =  date('Y-12-31');
+        $tahun1 =  date('Y-m-01', strtotime($r->tahun));
+        $tahun1_1 =  date('Y-m-t', strtotime($r->tahun));
 
         $tahun2 =  date('Y-01-01', strtotime("-1 year", strtotime($tahun1)));
         $tahun2_1 =  date('Y-12-31', strtotime("-1 year", strtotime($tahun1)));

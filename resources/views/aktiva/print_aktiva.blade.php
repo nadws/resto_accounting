@@ -57,7 +57,7 @@
                         </tr>
                         @foreach ($kelompok as $no => $k)
                         @php
-                        $aktiva = DB::select("SELECT a.*, b.beban1, c.beban2
+                        $aktiva = DB::select("SELECT a.*, b.beban1, c.beban2, d.nilai1, e.nilai2
                         FROM aktiva as a
                         left join(
                         SELECT sum(c.b_penyusutan) as beban1 , c.id_aktiva
@@ -72,6 +72,20 @@
                         where c.tgl between '$tahun1' and '$tahun1_1'
                         group by c.id_aktiva
                         ) as c on c.id_aktiva = a.id_aktiva
+
+                        left join(
+                        SELECT sum(c.b_penyusutan) as nilai1 , c.id_aktiva
+                        FROM depresiasi_aktiva as c
+                        where c.tgl between '2017-01-01' and '$tahun2_1'
+                        group by c.id_aktiva
+                        ) as d on d.id_aktiva = a.id_aktiva
+
+                        left join(
+                        SELECT sum(c.b_penyusutan) as nilai2 , c.id_aktiva
+                        FROM depresiasi_aktiva as c
+                        where c.tgl between '2017-01-01' and '$tahun1_1'
+                        group by c.id_aktiva
+                        ) as e on e.id_aktiva = a.id_aktiva
 
                         where a.id_kelompok = '$k->id_kelompok'
                         ");
@@ -99,9 +113,10 @@
                             $tgl = date('Y',strtotime($a->tgl));
                             $tgl2 = date('Y',strtotime($tahun2_1));
                             @endphp
-                            <td align="right">{{$tgl > $tgl2 ? '0' : $a->h_perolehan - $a->beban1 }}</td>
+                            <td align="right">{{$tgl > $tgl2 ? '0' : number_format($a->h_perolehan - $a->nilai1,0) }}
+                            </td>
                             <td align="right">{{number_format($a->beban2,0)}}</td>
-                            <td align="right">{{number_format($a->h_perolehan - $a->beban2 ,0)}}</td>
+                            <td align="right">{{number_format($a->h_perolehan - $a->nilai2 ,0)}}</td>
                         </tr>
                         @endforeach
                         @endforeach
