@@ -218,7 +218,7 @@ class JurnalController extends Controller
         $id_post = $r->id_post;
         $id_jurnal = $r->id_jurnal;
 
-        // Jurnal::where('no_nota', $nota_t)->delete();
+        Jurnal::where('no_nota', $nota_t)->delete();
 
         for ($i = 0; $i < count($id_akun); $i++) {
             $data = [
@@ -236,7 +236,7 @@ class JurnalController extends Controller
                 'no_urut' => $no_urut[$i],
                 'id_post_center' => $id_post[$i]
             ];
-            Jurnal::where('id_jurnal', $id_jurnal[$i])->update($data);
+            Jurnal::insert($data);
         }
         $tgl1 = date('Y-m-01', strtotime($r->tgl));
         $tgl2 = date('Y-m-t', strtotime($r->tgl));
