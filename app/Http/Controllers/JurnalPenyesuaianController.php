@@ -94,36 +94,36 @@ class JurnalPenyesuaianController extends Controller
 
     public function save_penyesuaian_aktiva(Request $r)
     {
-        // $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '4')->first();
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '4')->first();
 
-        // if (empty($max)) {
-        //     $nota_t = '1000';
-        // } else {
-        //     $nota_t = $max->nomor_nota + 1;
-        // }
-        // DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '4']);
-        // $data_kredit = [
-        //     'tgl' => $r->tgl,
-        //     'no_nota' => 'JP-' . $nota_t,
-        //     'id_akun' => $r->id_akun_kredit,
-        //     'id_buku' => '4',
-        //     'ket' => 'Penyesuaian Aktiva',
-        //     'kredit' => $r->debit_kredit,
-        //     'debit' => '0',
-        //     'admin' => Auth::user()->name,
-        // ];
-        // Jurnal::create($data_kredit);
-        // $data_debit = [
-        //     'tgl' => $r->tgl,
-        //     'no_nota' => 'JP-' . $nota_t,
-        //     'id_akun' => $r->id_akun_debit,
-        //     'id_buku' => '4',
-        //     'ket' => 'Penyesuaian Aktiva',
-        //     'debit' => $r->debit_kredit,
-        //     'kredit' => '0',
-        //     'admin' => Auth::user()->name,
-        // ];
-        // Jurnal::create($data_debit);
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->nomor_nota + 1;
+        }
+        DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '4']);
+        $data_kredit = [
+            'tgl' => $r->tgl,
+            'no_nota' => 'JP-' . $nota_t,
+            'id_akun' => $r->id_akun_kredit,
+            'id_buku' => '4',
+            'ket' => 'Penyesuaian Aktiva',
+            'kredit' => $r->debit_kredit,
+            'debit' => '0',
+            'admin' => Auth::user()->name,
+        ];
+        Jurnal::create($data_kredit);
+        $data_debit = [
+            'tgl' => $r->tgl,
+            'no_nota' => 'JP-' . $nota_t,
+            'id_akun' => $r->id_akun_debit,
+            'id_buku' => '4',
+            'ket' => 'Penyesuaian Aktiva',
+            'debit' => $r->debit_kredit,
+            'kredit' => '0',
+            'admin' => Auth::user()->name,
+        ];
+        Jurnal::create($data_debit);
 
         for ($x = 0; $x < count($r->id_aktiva); $x++) {
             $data = [
