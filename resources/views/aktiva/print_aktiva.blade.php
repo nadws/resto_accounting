@@ -107,7 +107,7 @@
                             <td>{{$a->nm_aktiva}} </td>
                             <td align="center">{{date('Y-m',strtotime($a->tgl))}}</td>
                             <td align="right">{{number_format($a->h_perolehan,0)}}</td>
-                            <td align="right" style="white-space: nowrap">{{$k->tarif * 100}} %</td>
+                            <td align="right" style="white-space: nowrap">{{$k->tarif * 100}}%</td>
                             <td align="right">{{empty($a->beban1) ? '0' : number_format($a->beban1,0)}} </td>
                             @php
                             $tgl = date('Y',strtotime($a->tgl));
