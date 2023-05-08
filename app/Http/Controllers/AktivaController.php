@@ -94,8 +94,8 @@ class AktivaController extends Controller
 
     public function print(Request $r)
     {
-        $tahun1 =  date('Y-m-01', strtotime($r->tahun));
-        $tahun1_1 =  date('Y-m-t', strtotime($r->tahun));
+        $tahun1 =  date('Y-01-01', strtotime($r->tahun));
+        $tahun1_1 =  date('Y-12-t', strtotime($r->tahun));
 
         $tahun2 =  date('Y-01-01', strtotime("-1 year", strtotime($tahun1)));
         $tahun2_1 =  date('Y-12-31', strtotime("-1 year", strtotime($tahun1)));
