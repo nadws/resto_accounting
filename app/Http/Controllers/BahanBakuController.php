@@ -237,4 +237,19 @@ class BahanBakuController extends Controller
         ];
         return view('persediaan_barang.bahan_baku.opname.opname_detail', $data);
     }
+
+    public function opname_cetak(Request $r)
+    {
+        if(strlen($r->no_nota) > 228 || strlen($r->no_nota) < 228){
+            return redirect()->back()->with('error', 'No nota tidak terdaftar !');
+        }
+        $no_nota = decrypt($r->no_nota);
+        
+        $data = [
+            'title' => 'Opname Cetak',
+            'stok' => Stok::getCetak($no_nota),
+            'detail' => Stok::getStatus($no_nota),
+        ];
+        return view('persediaan_barang.bahan_baku.opname.cetak', $data);
+    }
 }

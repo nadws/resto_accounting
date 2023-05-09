@@ -85,7 +85,7 @@ class Stok extends Model
 
     public static function getCetak($no_nota)
     {
-      return DB::select("SELECT b.nm_produk,a.jml_sebelumnya, a.debit, a.kredit, a.selisih, c.rp, c.ttl FROM `tb_stok_produk` as a
+      return DB::select("SELECT a.jml_sesudahnya,b.nm_produk,a.jml_sebelumnya, a.debit, a.kredit, a.selisih, c.rp, c.ttl FROM `tb_stok_produk` as a
       LEFT JOIN tb_produk as b ON a.id_produk = b.id_produk
       LEFT JOIN (
           SELECT a.id_produk, sum(a.debit - a.kredit) as ttl, sum(a.rp_satuan) as rp FROM `tb_stok_produk` as a

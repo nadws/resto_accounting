@@ -54,9 +54,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
             Route::get('/opname', 'opname')->name('opname');
             Route::get('/opname/add', 'opname_add')->name('opname.add');
-            Route::get('/opname/cetak', 'opname_cetak')->name('opname.cetak');
             Route::post('/opname/add', 'opname_store')->name('opname.save');
             Route::get('/opname/add/{gudang_id}', 'opname_add')->name('opname.add_detail');
+            Route::get('/opname/cetak/{no_nota}', 'opname_cetak')->name('opname.cetak');
             Route::get('/opname/detail/{gudang_id}', 'opname_detail')->name('opname.detail');
             Route::get('/stok_masuk/{gudang_id}', 'stokMasuk')->name('stok_masuk_segment');
             Route::get('/{gudang_id}', 'index')->name('detail');
