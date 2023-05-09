@@ -28,14 +28,19 @@ class BukuBesarController extends Controller
             $tgl2 =  $r->tgl2;
         }
 
+        $buku = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
+        FROM jurnal as a 
+        left join akun as b on b.id_akun = a.id_akun
+        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
+        group by a.id_akun
+        ORDER by b.kode_akun ASC;");
+
+        $ditutup = DB::selectOne("SELECT * FROM `jurnal` as a WHERE tgl BETWEEN '2023-05-01' AND '2023-05-31';");
+
         $data =  [
             'title' => 'Summary Buku Besar',
-            'buku' => DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
-            FROM jurnal as a 
-            left join akun as b on b.id_akun = a.id_akun
-            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
-            group by a.id_akun
-            ORDER by b.kode_akun ASC;"),
+            'buku' => $buku,
+            'penutup' => $ditutup,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
 

@@ -48,8 +48,20 @@ Route::middleware('auth')->group(function () {
             Route::get('/stok_masuk', 'stokMasuk')->name('stok_masuk');
             Route::get('/add', 'add')->name('stok_masuk_add');
             Route::get('/opname', 'opname')->name('opname');
+            Route::post('/edit', 'edit')->name('edit');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/load_menu', 'load_menu')->name('load_menu');
+            Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::get('/opname', 'opname')->name('opname');
+            Route::get('/opname/add', 'opname_add')->name('opname.add');
+            Route::get('/opname/cetak', 'opname_cetak')->name('opname.cetak');
+            Route::post('/opname/add', 'opname_store')->name('opname.save');
+            Route::get('/opname/add/{gudang_id}', 'opname_add')->name('opname.add_detail');
+            Route::get('/opname/detail/{gudang_id}', 'opname_detail')->name('opname.detail');
             Route::get('/stok_masuk/{gudang_id}', 'stokMasuk')->name('stok_masuk_segment');
             Route::get('/{gudang_id}', 'index')->name('detail');
+            Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
+            Route::get('/opname/{gudang_id}', 'opname')->name('opname.detail');
         });
 
     Route::controller(CashflowController::class)

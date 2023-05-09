@@ -2,7 +2,9 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
+            @if ($penutup->penutup == "Y")
+            <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
+            @endif
             </div>
         </div>
     </x-slot>

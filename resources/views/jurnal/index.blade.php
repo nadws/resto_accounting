@@ -41,7 +41,7 @@
                         @if (strlen($a->ket) > 60)
                         <td>
                             <span class="teksLimit{{ $a->id_jurnal }}">
-                                {{ Str::limit($a->ket, 60, '...') }}
+                                {{ Str::limit($a->ket, 30, '...') }}
                                 <a href="#" class="readMore" id="{{ $a->id_jurnal }}">read
                                     more</a>
                             </span>

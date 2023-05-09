@@ -100,7 +100,7 @@ class OpnameController extends Controller
                 'id_produk' => $r->id_produk[$i],
                 'tgl' => date('Y-m-d'),
                 'urutan' => $no_nota,
-                'no_nota' => 'OPN-'.$no_nota,
+                'no_nota' => 'OPNBAKU-'.$no_nota,
                 'departemen_id' => '1',
                 'kategori_id' => 1,
                 'status' => 'opname',

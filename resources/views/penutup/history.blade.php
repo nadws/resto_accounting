@@ -23,12 +23,14 @@
                 $ttlKredit = 0;
                 $ttlSaldo = 0;
             @endphp
+            
             @foreach ($history as $no => $d)
                 @php
                     $ttlDebit += $d->debit;
                     $ttlKredit += $d->kredit;
                     $ttlSaldo += $d->debit - $d->kredit;
                 @endphp
+
                 <tr>
                     <td>{{ $no + 1 }}</td>
                     <td>{{ tanggal($d->tgl) }}</td>

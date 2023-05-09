@@ -27,7 +27,7 @@ class StokMasukController extends Controller
                 ->when($gudang_id, function ($q, $gudang_id) {
                     return $q->where('gudang_id', $gudang_id);
                 })
-                ->where('status', '!=', 'opname')
+                ->where([['status', '!=', 'opname'],['kategori_id', '1']])
                 ->groupBy('no_nota')
                 ->orderBy('id_stok_produk', 'DESC')
                 ->get()

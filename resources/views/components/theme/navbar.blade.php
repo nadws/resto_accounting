@@ -37,7 +37,7 @@
                         [
                             'nama' => 'persediaan barang',
                             'route' => 'persediaan_barang',
-                            'isi' => ['persediaan_barang', 'produk', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment'],
+                            'isi' => ['persediaan_barang', 'produk', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname'],
                         ],
                         [
                             'nama' => 'Asset',

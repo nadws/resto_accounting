@@ -63,7 +63,7 @@ class NavbarController extends Controller
             [
                 'judul' => 'Data Bahan Baku',
                 'route' => 'bahan_baku.index',
-                'img' => 'product.png',
+                'img' => 'bahan_baku.png',
                 'deskripsi' => 'mengelola data barang atk dan peralatan',
             ],
             [

@@ -188,6 +188,14 @@ sizeCard="12">
         </form>
         {{-- ------ --}}
 
+        {{-- edit bahan_baku --}}
+        <form action="{{ route('bahan_baku.edit') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <x-theme.modal size="modal-lg" title="Edit Bahan Baku" idModal="edit">
+                <div id="load-edit"></div>
+            </x-theme.modal>
+        </form>
+
     </x-slot>
 
     @section('scripts')
@@ -200,7 +208,7 @@ sizeCard="12">
                 });
 
                 // edit
-                // edit('edit', 'id_produk', 'produk/edit', 'load-edit')
+                edit('edit', 'id_produk', 'bahan_baku/edit', 'load-edit')
             });
         </script>
     @endsection

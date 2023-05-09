@@ -1,33 +1,33 @@
 <x-theme.app 
 title="{{ $title }}" 
-nav="Y"
+nav="Y" 
 rot1="bahan_baku.index"
 rot2="bahan_baku.stok_masuk"
 rot3="bahan_baku.opname"
-table="Y"
-sizeCard="12"
->
-<x-slot name="cardHeader">
-        
-    <div class="row justify-content-end">
-        <div class="col-lg-4">
-            <select name="example" class="form-control float-end select-gudang" id="select2">
-                <option value="" selected>All Warehouse </option>
-                @foreach ($gudang as $g)
-                    <option {{ Request::segment(3) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
-                        {{ ucwords($g->nm_gudang) }}</option>
-                @endforeach
-            </select>
+table="Y" 
+sizeCard="12">
+    <x-slot name="cardHeader">
+
+        <div class="row justify-content-end">
+            <div class="col-lg-4">
+                <select name="example" class="form-control float-end select-gudang" id="select2">
+                    <option value="" selected>All Warehouse </option>
+                    @foreach ($gudang as $g)
+                        <option {{ Request::segment(3) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
+                            {{ ucwords($g->nm_gudang) }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-lg-2">
+                <a href="{{ route('bahan_baku.opname.add') }}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i>
+                    Tambah</a>
+            </div>
+
         </div>
-        <div class="col-lg-3">
-            <a href="{{route('bahan_baku.stok_masuk_add')}}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i> Tambah</a>
-        </div>
-       
-    </div>
-    
 
 
-</x-slot>
+
+    </x-slot>
     <x-slot name="cardBody">
 
         <section class="row">
@@ -38,14 +38,12 @@ sizeCard="12"
                         <th class="text-center">Tanggal</th>
                         <th>No Nota</th>
                         <th>Status</th>
-                        <th class="text-center">Jumlah Barang</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
-                {{-- <tbody>
+                <tbody>
                     @foreach ($stok as $no => $d)
-                        <tr class="tbl"
-                            data-href="javascript:void(0)">
+                        <tr class="tbl" data-href="javascript:void(0)">
                             <td class="td-href">{{ $no + 1 }}</td>
                             <td class="td-href" align="center">{{ tanggal($d->tgl) }}</td>
                             <td class="td-href">{{ $d->no_nota }}</td>
@@ -53,7 +51,6 @@ sizeCard="12"
                                 <div class="btn btn-sm btn-{{ $d->jenis == 'draft' ? 'warning' : 'success' }}">
                                     {{ ucwords($d->jenis) }}</div>
                             </td>
-                            <td class="td-href" align="center">{{ $d->debit }}</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <span class="btn btn-sm" data-bs-toggle="dropdown">
@@ -61,17 +58,18 @@ sizeCard="12"
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         @if ($d->jenis == 'draft')
-                                        <li>
-                                            <a class="dropdown-item text-primary edit"
-                                                href="{{ route('stok_masuk.add', ['no_nota' => encrypt($d->no_nota)]) }}"><i class="me-2 fas fa-pen"></i>
-                                                Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-danger"
-                                                onclick="return confirm('Yakin dihapus ?')"
-                                                href="{{ route('stok_masuk.delete', $d->no_nota) }}"><i
-                                                    class="me-2 fas fa-trash"></i> Delete</a>
-                                        </li>
+                                            <li>
+                                                <a class="dropdown-item text-primary edit"
+                                                    href="{{ route('bahan_baku.opname.edit', ['no_nota' => encrypt($d->no_nota)]) }}"><i
+                                                        class="me-2 fas fa-pen"></i>
+                                                    Edit</a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item text-danger"
+                                                    onclick="return confirm('Yakin dihapus ?')"
+                                                    href="{{ route('bahan_baku.opname.delete', $d->no_nota) }}"><i
+                                                        class="me-2 fas fa-trash"></i> Delete</a>
+                                            </li>
                                         @endif
                                         <li>
                                             <a class="dropdown-item text-info detail_nota"
@@ -81,7 +79,8 @@ sizeCard="12"
                                         </li>
                                         <li>
                                             <a class="dropdown-item text-info"
-                                                 href="{{ route('stok_masuk.cetak', ['no_nota' => encrypt($d->no_nota)]) }}"><i class="me-2 fas fa-print"></i>
+                                                href="{{ route('bahan_baku.opname.cetak', ['no_nota' => encrypt($d->no_nota)]) }}"><i
+                                                    class="me-2 fas fa-print"></i>
                                                 Cetak</a>
                                         </li>
                                     </ul>
@@ -91,11 +90,13 @@ sizeCard="12"
                         </tr>
                     @endforeach
 
-                </tbody> --}}
+                </tbody>
             </table>
         </section>
+        <x-theme.modal size="modal-lg-max" btnSave="" title="Detail Opname" idModal="detail">
+            <div id="load-edit"></div>
+        </x-theme.modal>
 
-    
     </x-slot>
 
     @section('scripts')
@@ -106,11 +107,11 @@ sizeCard="12"
                 $(".select-gudang").change(function(e) {
                     e.preventDefault();
                     var gudang_id = $(this).val()
-                    document.location.href = `/bahan_baku/stok_masuk/${gudang_id}`
+                    document.location.href = `/bahan_baku/opname/${gudang_id}`
                 });
-                edit('detail_nota', 'no_nota', 'stok_masuk/edit', 'load-edit')
 
-                pencarian('pencarian', 'tableProduk')
+                edit('detail_nota', 'no_nota', 'opname/detail', 'load-edit')
+                pencarian('searchInput', 'tblId')
 
                 document.querySelectorAll('tbody .tbl').forEach(function(row) {
                     row.addEventListener('click', function() {
