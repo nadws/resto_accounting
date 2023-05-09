@@ -3,8 +3,8 @@
         <div class="row justify-content-end">
             <div class="col-lg-6">
             @if ($penutup->penutup == "Y")
-            <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
             @endif
+            <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
             </div>
         </div>
     </x-slot>

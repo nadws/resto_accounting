@@ -1,4 +1,4 @@
-<x-theme.app title="Table" table="Y" sizeCard="8">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
     <x-slot name="cardHeader">
         <x-theme.button modal="Y" idModal="tambahModal" icon="fa-plus" addClass="float-end" teks="Tambah" />
     </x-slot>
@@ -9,8 +9,10 @@
                 <thead>
                     <tr>
                         <th width="5">#</th>
+                        <th>NPWP</th>
                         <th>Nama</th>
-                        <th>Posisi</th>
+                        <th>Email</th>
+                        <th>Telepon</th>
                         <th width="20%">Aksi</th>
                     </tr>
                 </thead>
