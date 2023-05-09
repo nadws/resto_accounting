@@ -5,6 +5,7 @@ use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PoController;
+use App\Http\Controllers\SuplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -82,6 +83,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/saldo', 'saldo')->name('saldo');
             Route::get('/history', 'history')->name('history');
+        });
+
+    Route::controller(SuplierController::class)
+        ->prefix('suplier')
+        ->name('suplier.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 
 

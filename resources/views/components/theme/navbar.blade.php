@@ -17,7 +17,7 @@
                         [
                             'nama' => 'data master',
                             'route' => 'data_master',
-                            'isi' => ['data_master', 'gudang', 'proyek'],
+                            'isi' => ['data_master', 'gudang', 'proyek', 'suplier.index'],
                         ],
                         [
                             'nama' => 'Buku Besar',

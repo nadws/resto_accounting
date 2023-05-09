@@ -28,9 +28,9 @@ class NavbarController extends Controller
                 'deskripsi' => 'Membuat dan mengelola data proyek beserta anggaran pendapatan dan biaya.',
             ],
             [
-                'judul' => 'Daftar Akun',
-                'route' => 'user',
-                'img' => 'accounting.png',
+                'judul' => 'Data Suplier',
+                'route' => 'suplier.index',
+                'img' => 'suplier.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
             [

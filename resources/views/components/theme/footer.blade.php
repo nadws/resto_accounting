@@ -41,10 +41,8 @@
     });
 
 
-    $('#select2').select2({
-    });
-    $('.select2_add').select2({
-    });
+    $('#select2').select2({});
+    $('.select2_add').select2({});
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -94,6 +92,39 @@
             var debit = $("." + classTotal).text(totalRupiah);
 
 
+
+        });
+    }
+
+    function convertRpKoma(classNoHide,classHide, kreditHide, total) {
+        $(document).on("keyup", "."+classNoHide, function() {
+            var count = $(this).attr("count");
+            var input = $(this).val();
+            input = input.replace(/[^\d\,]/g, "");
+            input = input.replace(".", ",");
+            input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+
+            if (input === "") {
+                $(this).val("");
+                $('.'+classHide + count).val(0)
+            } else {
+                $(this).val("Rp " + input);
+                input = input.replaceAll(".", "");
+                input2 = input.replace(",", ".");
+                $('.'+classHide + count).val(input2)
+
+            }
+
+            var total_debit = 0;
+            $("."+classHide).each(function() {
+                total_debit += parseFloat($(this).val());
+            });
+
+            var totalRupiah = total_debit.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            $("."+total).text(totalRupiah);
 
         });
     }
@@ -172,8 +203,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -185,11 +216,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-</script>
+    </script>
 @endif
 @if (session()->has('error'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -203,7 +234,7 @@
 
 
         });
-</script>
+    </script>
 @endif
 @yield('scripts')
 
