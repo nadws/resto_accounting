@@ -38,7 +38,7 @@ class JurnalExport  implements FromView, WithEvents
         $jurnal =  DB::select("SELECT a.admin, a.no_urut, b.kode_akun,  a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
             left join tb_post_center as c on c.id_post_center = a.id_post_center
-            where a.id_buku = '$this->id_buku' and a.tgl between '$this->tgl1' and '$this->tgl2' $idp order by a.no_urut DESC");
+            where a.id_buku = '$this->id_buku' and a.tgl between '$this->tgl1' and '$this->tgl2' $idp order by a.no_urut ASC");
 
 
         return view('exports.jurnal', [
