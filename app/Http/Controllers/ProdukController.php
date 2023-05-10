@@ -33,6 +33,7 @@ class ProdukController extends Controller
     public function create(Request $r)
     {
         $route = $r->url;
+        
         $file = $r->file('img');
         $fileDiterima = ['jpg', 'png', 'jpeg'];
         $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);

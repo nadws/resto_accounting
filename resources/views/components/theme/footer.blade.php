@@ -29,7 +29,24 @@
 <script src="{{ asset('theme') }}/assets/js/pages/datatables.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
 <script>
+    // untuk file upload ada preview
+    $(document).on('change', '#image', function(){
+        var file = this.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                $('#image-preview').html('<img src="' + event.target.result +
+                    '" class="img-fluid">');
+            }
+            reader.readAsDataURL(file);
+        } else {
+            $('#image-preview').html('');
+        }
+    })
+    // ----
+
     $('.select2').select2({
         dropdownParent: $('#tambah .modal-content')
     });
@@ -110,8 +127,8 @@
         });
     }
 
-    function convertRpKoma(classNoHide,classHide, kreditHide, total) {
-        $(document).on("keyup", "."+classNoHide, function() {
+    function convertRpKoma(classNoHide, classHide, kreditHide, total) {
+        $(document).on("keyup", "." + classNoHide, function() {
             var count = $(this).attr("count");
             var input = $(this).val();
             input = input.replace(/[^\d\,]/g, "");
@@ -120,17 +137,17 @@
 
             if (input === "") {
                 $(this).val("");
-                $('.'+classHide + count).val(0)
+                $('.' + classHide + count).val(0)
             } else {
                 $(this).val("Rp " + input);
                 input = input.replaceAll(".", "");
                 input2 = input.replace(",", ".");
-                $('.'+classHide + count).val(input2)
+                $('.' + classHide + count).val(input2)
 
             }
 
             var total_debit = 0;
-            $("."+classHide).each(function() {
+            $("." + classHide).each(function() {
                 total_debit += parseFloat($(this).val());
             });
 
@@ -138,7 +155,7 @@
                 style: "currency",
                 currency: "IDR",
             });
-            $("."+total).text(totalRupiah);
+            $("." + total).text(totalRupiah);
 
         });
     }

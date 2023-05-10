@@ -103,12 +103,14 @@ sizeCard="12">
                 <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
                 <div class="row">
                     <div class="col-lg-12">
-                        <input type="hidden" name="segment" value="{{ Request::segment(2) }}">
                         <div class="form-group">
                             <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah
-                                    1MB</span></label>
-                            <input type="file" name="img" class="form-control">
+                                1MB</span></label>
+                            <input type="file" class="form-control" id="image" name="img" accept="image/*">
                         </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div id="image-preview"></div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">

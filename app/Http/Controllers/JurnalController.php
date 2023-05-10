@@ -174,18 +174,11 @@ class JurnalController extends Controller
         $id_proyek = $r->id_proyek;
         $id_buku = $r->id_buku;
 
-
-        if ($id_proyek == 0) {
-            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku='$id_buku' and a.tgl between '$tgl1' and '$tgl2'");
-        } else {
-            $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku='$id_buku' and a.tgl between '$tgl1' and '$tgl2' and a.id_proyek = '$id_proyek'");
-        }
+        $idp = $id_proyek == 0 ? '' : "and a.id_proyek = '$id_proyek'";
+        
+        $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku='$id_buku' and a.tgl between '$tgl1' and '$tgl2' $idp");
 
         $totalrow = $total->jumlah;
-
-
-
-
 
         return Excel::download(new JurnalExport($tgl1, $tgl2, $id_proyek, $id_buku, $totalrow), 'jurnal.xlsx');
     }

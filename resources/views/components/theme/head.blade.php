@@ -26,7 +26,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -35,6 +34,10 @@
     {{--
     <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
+        #image-preview img {
+                width: 200px;
+                height: 200px;
+            }
         .modal-lg-max {
             max-width: 1200px;
         }
