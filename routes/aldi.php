@@ -90,6 +90,10 @@ Route::middleware('auth')->group(function () {
         ->name('suplier.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::post('/update', 'update')->name('update');
+            Route::get('/delete/{id_suplier}', 'delete')->name('delete');
+            Route::get('/edit/{id_suplier}', 'edit')->name('edit');
         });
 
 

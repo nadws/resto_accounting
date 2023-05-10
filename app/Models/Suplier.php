@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Suplier extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+    protected $primaryKey = 'id_suplier';
+    protected $table = 'tb_suplier';
+    protected $guarded = [];
+    
 }
