@@ -34,12 +34,6 @@ class NavbarController extends Controller
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
             [
-                'judul' => 'Data Harta Tetap',
-                'route' => 'user',
-                'img' => 'asset.png',
-                'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
-            ],
-            [
                 'judul' => 'Data Satuan',
                 'route' => 'user',
                 'img' => 'measure-cup.png',

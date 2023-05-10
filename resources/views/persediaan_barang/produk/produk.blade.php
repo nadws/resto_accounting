@@ -9,22 +9,6 @@ sizeCard="12">
     <x-slot name="cardHeader">
      
         <div class="row justify-content-end">
-            {{-- <div class="col-lg-6">
-                <ul class="nav nav-pills">
-                    @php
-                        $rotName = request()->route()->getName();
-                    @endphp
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'produk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('produk.index') }}">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'stok_masuk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('stok_masuk.index') }}">Stok Masuk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'opname.index' ? 'active' : ''}}" href="{{ route('opname.index') }}">Opname</a>
-                    </li>
-                </ul>
-            </div> --}}
             <div class="col-lg-4">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
@@ -154,12 +138,14 @@ sizeCard="12">
                 <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
                 <div class="row">
                     <div class="col-lg-12">
-                        <input type="hidden" name="segment" value="{{ Request::segment(2) }}">
                         <div class="form-group">
                             <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah
-                                    1MB</span></label>
-                            <input type="file" name="img" class="form-control">
+                                1MB</span></label>
+                            <input type="file" class="form-control" id="image" name="img" accept="image/*">
                         </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div id="image-preview"></div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
