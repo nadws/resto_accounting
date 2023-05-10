@@ -9,6 +9,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
@@ -189,4 +190,10 @@ Route::controller(JurnalPenyesuaianController::class)->group(function () {
     Route::get('/jurnal_penyesuaian', 'index')->name('jurnal_penyesuaian');
     Route::get('/jurnal_aktiva', 'jurnal')->name('jurnal_aktiva');
     Route::post('/save_penyesuaian_aktiva', 'save_penyesuaian_aktiva')->name('save_penyesuaian_aktiva');
+});
+Route::controller(PembelianBahanBakuController::class)->group(function () {
+    Route::get('/pembelian_bk', 'index')->name('pembelian_bk');
+    Route::get('/pembelian_bk.add', 'add')->name('pembelian_bk.add');
+    Route::get('/get_satuan_produk', 'get_satuan_produk')->name('get_satuan_produk');
+    Route::get('/tambah_baris_bk', 'tambah_baris_bk')->name('tambah_baris_bk');
 });

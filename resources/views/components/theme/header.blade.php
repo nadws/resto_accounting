@@ -2,18 +2,18 @@
     <div class="container">
         <div class="logo">
             <a href="dashboard"><img src="/assets/login/img/empat.svg" alt="Logo"></a>
-            <h5>KAS DLL</h5>
+            <h5>KAS AGA</h5>
         </div>
         <div class="header-top-right">
 
             <div class="dropdown">
                 <a href="#" id="topbarUserDropdown"
-                    class="user-dropdown d-flex align-items-center dropend dropdown-toggle "
-                    data-bs-toggle="dropdown" aria-expanded="false">
+                    class="user-dropdown d-flex align-items-center dropend dropdown-toggle " data-bs-toggle="dropdown"
+                    aria-expanded="false">
                     <div class="avatar avatar-md2">
                         @php
-                            $idPosisi = auth()->user()->posisi->id_posisi;
-                            $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
+                        $idPosisi = auth()->user()->posisi->id_posisi;
+                        $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
                         @endphp
                         <img src='{{ asset("img/$gambar.png") }}' alt="Avatar">
                     </div>

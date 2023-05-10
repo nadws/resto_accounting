@@ -196,7 +196,7 @@
                     })
                 }
                 readMore()
-                $('.delete_nota').click(function() {
+                $(document).on('click', '.delete_nota', function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
 
@@ -218,20 +218,7 @@
 
                 });
 
-                $('.costume_muncul').hide();
-                $('.tgl').prop('disabled', true);
-
-                $(document).on("change", ".filter_tgl", function() {
-                    var period = $(this).val();
-
-                    if (period === 'costume') {
-                        $('.costume_muncul').show();
-                        $('.tgl').prop('disabled', false);
-                    } else {
-                        $('.costume_muncul').hide();
-                        $('.tgl').prop('disabled', true);
-                    }
-                });
+                
 
             });
     </script>

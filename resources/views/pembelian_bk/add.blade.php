@@ -1,0 +1,288 @@
+<x-theme.app title="{{$title}}" table="Y" sizeCard="12">
+
+    <x-slot name="cardHeader">
+        <div class="row justify-content-end">
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+    </x-slot>
+
+
+    <x-slot name="cardBody">
+        <form action="" method="post" class="save_jurnal">
+            @csrf
+            <section class="row">
+
+                <div class="col-lg-2 col-6">
+                    <label for="">Tanggal</label>
+                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                </div>
+                <div class="col-lg-2 col-6">
+                    <label for="">No Nota</label>
+                    <input type="text" class="form-control" name="no_nota" value="BI{{$nota}}" readonly>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <label for="">Suplier Awal</label>
+                    <select name="suplier_awal" id="select2" class="">
+                        <option value="">Pilih Suplier</option>
+                        @foreach ($suplier as $s)
+                        <option value="{{$s->id_suplier}}">{{$s->nm_suplier}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <label for="">Suplier Akhir</label>
+                    <input type="text" class="form-control" name="suplier_akhir" value="">
+                </div>
+
+                <div class="col-lg-12">
+                    <hr style="border: 1px solid black">
+                </div>
+                <div class="col-lg-12">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th width="2%">#</th>
+                                <th width="15%">Produk</th>
+                                <th width="7%">Qty</th>
+                                <th width="10%">Satuan</th>
+                                <th width="12%" style="text-align: right;">Harga Satuan</th>
+                                <th width="12%" style="text-align: right;">Total Harga</th>
+                                <th width="5%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="baris1">
+                                <td style="vertical-align: top;">
+                                    {{-- <button type="button" data-bs-toggle="collapse" href=".join1"
+                                        class="btn rounded-pill " count="1"><i class="fas fa-angle-down"></i>
+                                    </button> --}}
+                                </td>
+                                <td>
+                                    <select name="" id="" class="select2_add pilih_produk pilih_produk1" count='1'>
+                                        <option value="">Pilih Produk</option>
+                                        @foreach ($produk as $p)
+                                        <option value="{{$p->id_produk}}">{{$p->nm_produk}}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+
+                                <td style="vertical-align: top;">
+                                    <input type="text" class="form-control qty qty1" count='1'
+                                        style="vertical-align: top">
+                                    <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa1"
+                                        count='1' style="vertical-align: top">
+
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <select name="id_satuan[]" id="" class="select2_add satuan1">
+
+                                    </select>
+
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <input type="text" class="form-control h_satuan h_satuan1 text-end" value="Rp 0"
+                                        count="1">
+                                    <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1" value="0"
+                                        name="h_satuan[]">
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <input type="text" class="form-control total_harga1 text-end" value="" count="1"
+                                        readonly>
+                                    <input type="hidden"
+                                        class="form-control total_harga_biasa total_harga_biasa1 text-end" value=""
+                                        readonly>
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <button type="button" class="btn rounded-pill remove_baris" count="1"><i
+                                            class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                        <tbody id="tb_baris">
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="9">
+                                    <button type="button" class="btn btn-block btn-lg tbh_baris"
+                                        style="background-color: #F4F7F9; color: #8FA8BD; font-size: 14px; padding: 13px;">
+                                        <i class="fas fa-plus"></i> Tambah Baris Baru
+
+                                    </button>
+                                </th>
+                            </tr>
+                        </tfoot>
+
+
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        {{-- <x-theme.toggle name="Pilihan Lainnya">
+
+                        </x-theme.toggle>
+                        <div class="col-lg-12"></div>
+                        <div class="col-lg-6 pilihan_l">
+                            <label for="">No Dokumen</label>
+                            <input type="text" class="form-control inp-lain" name="no_dokumen">
+                        </div>
+                        <div class="col-lg-6 pilihan_l">
+                            <label for="">Tanggal Dokumen</label>
+                            <input type="date" class="form-control inp-lain" name="tgl_dokumen">
+                        </div> --}}
+
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <hr style="border: 1px solid blue">
+                    <table class="" width="100%">
+                        <tr>
+                            <td width="20%">Total</td>
+                            <td width="40%" class="total" style="text-align: right;">Rp.0</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </section>
+    </x-slot>
+    <x-slot name="cardFooter">
+        <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
+            <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+            Loading...
+        </button>
+        <a href="{{route('jurnal')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
+        </form>
+    </x-slot>
+
+
+
+    @section('scripts')
+
+
+    <script>
+        $(document).ready(function () {
+            $(document).on("change", ".pilih_produk", function () {
+                var count = $(this).attr("count");
+                var id_produk = $(".pilih_produk" + count).val();
+                $.ajax({
+                    url: "/get_satuan_produk?id_produk=" + id_produk,
+                    type: "Get",
+                   
+                    success: function (data) {
+                        $(".satuan" + count).html(data);
+                    },
+                });
+            });
+            $(document).on("keyup", ".qty", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.qty_biasa' + count).val(0)
+                } else {
+                    $(this).val(input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.qty_biasa' + count).val(input2)
+                    
+                }
+
+                
+
+                
+                var h_satuan = $(".h_satuan_biasa" + count).val()
+                var total = parseFloat(input2) * parseFloat(h_satuan);
+                var totalRupiah = total.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+
+                $('.total_harga_biasa' + count).val(total);
+                var debit = $(".total_harga" + count).val(totalRupiah);
+
+                var total_all = 0;
+                $(".total_harga_biasa").each(function () {
+                    total_all += parseFloat($(this).val());
+                });
+
+                var totalRupiahall = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                var debit = $(".total").text(totalRupiahall);
+
+                
+            });
+            $(document).on("keyup", ".h_satuan", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.h_satuan_biasa' + count).val(0)
+                } else {
+                    $(this).val("Rp " + input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.h_satuan_biasa' + count).val(input2)
+                    
+                }
+                var qty_biasa = $(".qty_biasa" + count).val()
+                var total = parseFloat(input2) * parseFloat(qty_biasa);
+                var totalRupiah = total.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $('.total_harga_biasa' + count).val(total);
+                var debit = $(".total_harga" + count).val(totalRupiah);
+
+                var total_all = 0;
+                $(".total_harga_biasa").each(function () {
+                    total_all += parseFloat($(this).val());
+                });
+
+                var totalRupiahall = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                var debit = $(".total").text(totalRupiahall);
+            });
+
+            var count = 2;
+            $(document).on("click", ".tbh_baris", function () {
+                count = count + 1;
+                $.ajax({
+                    url: "/tambah_baris_bk?count=" + count,
+                    type: "Get",
+                    success: function (data) {
+                        $("#tb_baris").append(data);
+                        $(".select").select2();
+                    },
+                });
+            });
+
+            $(document).on("click", ".remove_baris", function () {
+            var delete_row = $(this).attr("count");
+            $(".baris" + delete_row).remove();
+
+            
+            });
+
+
+        });
+    </script>
+    @endsection
+</x-theme.app>

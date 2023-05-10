@@ -39,6 +39,20 @@
     $('#selectView').select2({
         dropdownParent: $('#view .modal-content')
     });
+    $('.costume_muncul').hide();
+                $('.tgl').prop('disabled', true);
+
+                $(document).on("change", ".filter_tgl", function() {
+                    var period = $(this).val();
+
+                    if (period === 'costume') {
+                        $('.costume_muncul').show();
+                        $('.tgl').prop('disabled', false);
+                    } else {
+                        $('.costume_muncul').hide();
+                        $('.tgl').prop('disabled', true);
+                    }
+                });
 
 
     $('#select2').select2({});
@@ -203,8 +217,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -216,11 +230,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-    </script>
+</script>
 @endif
 @if (session()->has('error'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -234,7 +248,7 @@
 
 
         });
-    </script>
+</script>
 @endif
 @yield('scripts')
 
