@@ -11,30 +11,34 @@
 
 
     <x-slot name="cardBody">
-        <form action="{{route('save_pembelian_bk')}}" method="post" class="save_jurnal">
+        <form action="{{route('edit_pembelian_bk')}}" method="post" class="save_jurnal">
             @csrf
             <section class="row">
 
                 <div class="col-lg-2 col-6">
                     <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                    <input type="date" class="form-control" name="tgl"
+                        value="{{date('Y-m-d',strtotime($invoice->tgl))}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control" name="no_nota" value="BI{{$nota}}" readonly>
+                    <input type="text" class="form-control" name="no_nota" value="{{$nota}}" readonly>
+
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier Awal</label>
                     <select name="suplier_awal" id="select2" class="">
                         <option value="">Pilih Suplier</option>
                         @foreach ($suplier as $s)
-                        <option value="{{$s->id_suplier}}">{{$s->nm_suplier}}</option>
+                        <option value="{{$s->id_suplier}}" {{$invoice->id_suplier ==$s->id_suplier ?'Selected':''
+                            }}>{{$s->nm_suplier}}
+                        </option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier Akhir</label>
-                    <input type="text" class="form-control" name="suplier_akhir" value="">
+                    <input type="text" class="form-control" name="suplier_akhir" value="{{$invoice->suplier_akhir}}">
                 </div>
 
                 <div class="col-lg-12">
@@ -54,7 +58,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="baris1">
+                            @php
+                            $total_all =0;
+                            @endphp
+                            @foreach ($gram as $no => $g)
+                            @php
+                            $total_all += $g->qty * $g->h_satuan;
+                            @endphp
+                            <input type="hidden" class="form-control" name="urutan_nota" value="{{$g->urutan_nota}}"
+                                readonly>
+                            <tr class="baris{{$no+1}}">
                                 <td style="vertical-align: top;">
                                     {{-- <button type="button" data-bs-toggle="collapse" href=".join1"
                                         class="btn rounded-pill " count="1"><i class="fas fa-angle-down"></i>
@@ -65,36 +78,44 @@
                                         count='1'>
                                         <option value="">Pilih Produk</option>
                                         @foreach ($produk as $p)
-                                        <option value="{{$p->id_produk}}">{{$p->nm_produk}}</option>
+                                        <option value="{{$p->id_produk}}" {{$g->id_produk == $p->id_produk ? 'Selected'
+                                            : ''}}>{{$p->nm_produk}}</option>
                                         @endforeach
                                     </select>
                                 </td>
 
                                 <td style="vertical-align: top;">
                                     <input type="text" class="form-control qty qty1" count='1'
-                                        style="vertical-align: top" value="0">
+                                        style="vertical-align: top" value="{{number_format($g->qty,0,',','.')}}">
                                     <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa1"
-                                        count='1' style="vertical-align: top" value="0">
+                                        count='1' style="vertical-align: top" value="{{$g->qty}}">
 
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <select name="id_satuan[]" id="" class="select2_add satuan1">
-
+                                    @php
+                                    $produk2 = DB::table('tb_produk')->where('id_produk', $g->id_produk)->first();
+                                    $satuan = DB::table('tb_satuan')->where('id_satuan',$produk2->satuan_id )->get();
+                                    @endphp
+                                    <select name="id_satuan[]" id="" class="select2_add satuan1" style="width: 120px">
+                                        @foreach ($satuan as $s)
+                                        <option value="{{$s->id_satuan}}">{{$s->nm_satuan}}</option>
+                                        @endforeach
                                     </select>
 
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <input type="text" class="form-control h_satuan h_satuan1 text-end" value="Rp 0"
-                                        count="1">
-                                    <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1" value="0"
-                                        name="h_satuan[]">
+                                    <input type="text" class="form-control h_satuan h_satuan1 text-end"
+                                        value="Rp {{number_format($g->h_satuan,0,',','.')}}" count="1">
+                                    <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1"
+                                        value="{{$g->h_satuan}}" name="h_satuan[]">
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <input type="text" class="form-control total_harga1 text-end" value="" count="1"
+                                    <input type="text" class="form-control total_harga1 text-end"
+                                        value="Rp. {{number_format($g->qty * $g->h_satuan,2,',','.')}}" count="1"
                                         readonly>
                                     <input type="hidden"
-                                        class="form-control total_harga_biasa total_harga_biasa1 text-end" value=""
-                                        readonly>
+                                        class="form-control total_harga_biasa total_harga_biasa1 text-end"
+                                        value="{{$g->qty * $g->h_satuan}}" readonly>
                                 </td>
                                 <td style="vertical-align: top;">
                                     <button type="button" class="btn rounded-pill remove_baris" count="1"><i
@@ -102,6 +123,8 @@
                                     </button>
                                 </td>
                             </tr>
+                            @endforeach
+
 
                         </tbody>
                         <tbody id="tb_baris">
@@ -145,8 +168,9 @@
                     <table class="" width="100%">
                         <tr>
                             <td width="20%">Total</td>
-                            <td width="40%" class="total" style="text-align: right;">Rp.0</td>
-                            <input type="hidden" class="total_biasa" name="total_harga" value="0">
+                            <td width="40%" class="total" style="text-align: right;">Rp.
+                                {{number_format($total_all,0,',','.')}}</td>
+                            <input type="hidden" class="total_biasa" name="total_harga" value="{{$total_all}}">
                         </tr>
                     </table>
                     {{--
@@ -303,8 +327,19 @@
             });
 
             $(document).on("click", ".remove_baris", function () {
-            var delete_row = $(this).attr("count");
-            $(".baris" + delete_row).remove();
+                var delete_row = $(this).attr("count");
+                $(".baris" + delete_row).remove();
+                var total_all = 0;
+                $(".total_harga_biasa").each(function () {
+                    total_all += parseFloat($(this).val());
+                });
+
+                var totalRupiahall = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                var tl = $(".total_biasa").val(total_all);
+                var debit = $(".total").text(totalRupiahall);
 
             
             });

@@ -175,7 +175,7 @@ class JurnalController extends Controller
         $id_buku = $r->id_buku;
 
         $idp = $id_proyek == 0 ? '' : "and a.id_proyek = '$id_proyek'";
-        
+
         $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku='$id_buku' and a.tgl between '$tgl1' and '$tgl2' $idp");
 
         $totalrow = $total->jumlah;

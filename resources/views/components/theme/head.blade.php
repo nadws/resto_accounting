@@ -35,9 +35,10 @@
     <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
         #image-preview img {
-                width: 200px;
-                height: 200px;
-            }
+            width: 200px;
+            height: 200px;
+        }
+
         .modal-lg-max {
             max-width: 1200px;
         }
@@ -49,7 +50,7 @@
 
         .select2-container--default .select2-selection--single {
             background-color: #fff;
-            border: 1px solid rgb(237, 238, 241);
+            border: 1px solid rgb(183, 182, 182);
             border-radius: 4px;
             height: 35px;
         }
@@ -58,6 +59,7 @@
             color: #000000;
             line-height: 36px;
             /* font-size: 12px; */
+
 
         }
 

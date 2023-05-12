@@ -16,13 +16,62 @@
                         <th width="5">#</th>
                         <th>Tanggal</th>
                         <th>No Nota</th>
-                        <th>Suplier</th>
-                        <th>Total Harga</th>
+                        <th>Suplier Awal</th>
+                        <th>Suplier Akhir</th>
+                        <th style="text-align: right">Total Harga</th>
+                        <th style="text-align: right">Terbayar</th>
+                        <th style="text-align: right">Sisa</th>
+                        <th style="text-align: center">Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-
+                    @foreach ($pembelian as $no => $p)
+                    <tr>
+                        <td>{{$no+1}}</td>
+                        <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
+                        <td>{{$p->no_nota}}</td>
+                        <td>{{$p->nm_suplier}}</td>
+                        <td>{{$p->suplier_akhir}}</td>
+                        <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
+                        <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
+                        <td align="right">Rp. {{number_format($p->total_harga - $p->kredit,0)}}</td>
+                        <td align="center">
+                            <span
+                                class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
+                                {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga - $p->kredit == 0 ? 'Paid' :
+                                'Unpaid')}}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v text-primary"></i>
+                                </span>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <li>
+                                        <a class="dropdown-item text-primary edit_akun"
+                                            href="{{route('edit_pembelian_bk',['nota' =>$p->no_nota ])}}">
+                                            <i class="me-2 fas fa-pen"></i> Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{ $p->no_nota }}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                class="me-2 fas fa-trash"></i>Delete
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item  text-info detail_nota" target="_blank"
+                                            href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
+                                                class="me-2 fas fa-print"></i>Print
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </section>
@@ -62,6 +111,26 @@
             </x-theme.modal>
         </form>
 
+        <form action="{{ route('delete_bk') }}" method="get">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <input type="hidden" class="no_nota" name="no_nota">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
 
 
 
@@ -70,7 +139,10 @@
     @section('scripts')
     <script>
         $(document).ready(function() {
-                
+            $(document).on('click', '.delete_nota', function(){
+                    var no_nota = $(this).attr('no_nota');
+                    $('.no_nota').val(no_nota);
+            })
 
         });
     </script>

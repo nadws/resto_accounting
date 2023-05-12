@@ -9,6 +9,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
@@ -196,4 +197,16 @@ Route::controller(PembelianBahanBakuController::class)->group(function () {
     Route::get('/pembelian_bk.add', 'add')->name('pembelian_bk.add');
     Route::get('/get_satuan_produk', 'get_satuan_produk')->name('get_satuan_produk');
     Route::get('/tambah_baris_bk', 'tambah_baris_bk')->name('tambah_baris_bk');
+    Route::post('/save_pembelian_bk', 'save_pembelian_bk')->name('save_pembelian_bk');
+    Route::get('/print_bk', 'print')->name('print_bk');
+    Route::get('/delete_bk', 'delete_bk')->name('delete_bk');
+    Route::get('/edit_pembelian_bk', 'edit_pembelian_bk')->name('edit_pembelian_bk');
+    Route::post('/edit_pembelian_bk', 'edit_save')->name('edit_pembelian_bk');
+});
+
+Route::controller(PembayaranBkController::class)->group(function () {
+    Route::get('/pembayaranbk', 'index')->name('pembayaranbk');
+    Route::get('/pembayaranbk.add', 'add')->name('pembayaranbk.add');
+    Route::get('/pembayaranbk.tambah', 'tambah')->name('pembayaranbk.tambah');
+    Route::post('/pembayaranbk.save_pembayaran', 'save_pembayaran')->name('pembayaranbk.save_pembayaran');
 });

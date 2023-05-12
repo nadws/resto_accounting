@@ -32,7 +32,7 @@
                 [
                 'nama' => 'Pembelian',
                 'route' => 'pembelian',
-                'isi' => ['pembelian', 'po.index','pembelian_bk','pembelian_bk.add'],
+                'isi' => ['pembelian', 'po.index','pembelian_bk','pembelian_bk.add','pembayaranbk'],
                 ],
                 [
                 'nama' => 'persediaan barang',

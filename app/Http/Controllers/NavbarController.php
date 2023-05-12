@@ -137,8 +137,8 @@ class NavbarController extends Controller
                 'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
             ],
             [
-                'judul' => 'Piutang',
-                'route' => 'po.index',
+                'judul' => 'Pembayaran',
+                'route' => 'pembayaranbk',
                 'img' => 'finance.png',
                 'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
             ],

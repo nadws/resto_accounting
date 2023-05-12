@@ -16,7 +16,7 @@
         @if ($table == 'T')
         {{ $slot }}
         @else
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-lg-{{$sizeCard}}">
                 <div class="card">
                     <div class="card-header">
@@ -25,26 +25,28 @@
                             <div class="col-lg-6">
                                 <ul class="nav nav-pills">
                                     @php
-                                        $rotName = request()->route()->getName();
+                                    $rotName = request()->route()->getName();
                                     @endphp
                                     <li class="nav-item">
-                                        <a class="nav-link {{$rotName == $rot1 ? 'active' : ''}}" aria-current="page" href="{{ route($rot1) }}">Produk</a>
+                                        <a class="nav-link {{$rotName == $rot1 ? 'active' : ''}}" aria-current="page"
+                                            href="{{ route($rot1) }}">Produk</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{$rotName == $rot2 ? 'active' : ''}}" aria-current="page" href="{{ route($rot2) }}">Stok Masuk</a>
+                                        <a class="nav-link {{$rotName == $rot2 ? 'active' : ''}}" aria-current="page"
+                                            href="{{ route($rot2) }}">Stok Masuk</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link {{$rotName == $rot3 ? 'active' : ''}}" href="{{ route($rot3) }}">Opname</a>
+                                        <a class="nav-link {{$rotName == $rot3 ? 'active' : ''}}"
+                                            href="{{ route($rot3) }}">Opname</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         @endif
                         <h3 class="float-start mt-1">{{ $title }}</h3>
-                        
                         {{ $cardHeader }}
                     </div>
-                    <div class="card-body" >
+                    <div class="card-body">
 
                         {{ $cardBody }}
                     </div>

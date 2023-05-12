@@ -53,23 +53,30 @@
     $('.select2-tambah2').select2({
         dropdownParent: $('#tambah2 .modal-content')
     });
-    $('#selectView').select2({
+    $('.selectView').select2({
         dropdownParent: $('#view .modal-content')
     });
     $('.costume_muncul').hide();
-                $('.tgl').prop('disabled', true);
-
-                $(document).on("change", ".filter_tgl", function() {
-                    var period = $(this).val();
-
-                    if (period === 'costume') {
-                        $('.costume_muncul').show();
-                        $('.tgl').prop('disabled', false);
-                    } else {
-                        $('.costume_muncul').hide();
-                        $('.tgl').prop('disabled', true);
-                    }
-                });
+    $('.bulan_muncul').hide();
+    $('.tgl').prop('disabled', true);
+    $(document).on("change", ".filter_tgl", function() {
+        var period = $(this).val();
+        if (period === 'costume') {
+            $('.costume_muncul').show();
+            $('.tgl').prop('disabled', false);
+        } else {
+            $('.costume_muncul').hide();
+            $('.tgl').prop('disabled', true);
+        }
+        if (period === 'mounthly') {
+            $('.bulan_muncul').show();
+            $('.bulan').prop('disabled', false);
+        } else {
+            $('.bulan_muncul').hide();
+            $('.bulan').prop('disabled', true);
+        }
+    });
+                
 
 
     $('#select2').select2({});

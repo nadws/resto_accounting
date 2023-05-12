@@ -5,7 +5,7 @@
         </button> --}}
     </td>
     <td>
-        <select name="" id="" class="select pilih_produk pilih_produk{{$count}}" count='{{$count}}'>
+        <select name="id_produk[]" id="" class="select pilih_produk pilih_produk{{$count}}" count='{{$count}}'>
             <option value="">Pilih Produk</option>
             @foreach ($produk as $p)
             <option value="{{$p->id_produk}}">{{$p->nm_produk}}</option>
