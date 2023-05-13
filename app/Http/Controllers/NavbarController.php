@@ -135,7 +135,15 @@ class NavbarController extends Controller
                 'route' => 'pembelian_bk',
                 'img' => 'buy.png',
                 'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
-            ],
+            ]
+
+        ];
+        $title = 'Pembelian';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
+    public function pembayaran()
+    {
+        $data = [
             [
                 'judul' => 'Pembayaran',
                 'route' => 'pembayaranbk',
@@ -144,7 +152,7 @@ class NavbarController extends Controller
             ],
 
         ];
-        $title = 'Pembelian';
+        $title = 'Pembayaran';
         return view('navbar.data_master', compact(['data', 'title']));
     }
     public function penjualan()

@@ -53,6 +53,9 @@
     $('.select2-tambah2').select2({
         dropdownParent: $('#tambah2 .modal-content')
     });
+    $('#selectView').select2({
+        dropdownParent: $('#view .modal-content')
+    });
     $('.selectView').select2({
         dropdownParent: $('#view .modal-content')
     });

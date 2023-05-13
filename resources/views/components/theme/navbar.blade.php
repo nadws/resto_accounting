@@ -30,9 +30,14 @@
                 'isi' => ['penjualan', 'faktur_penjualan'],
                 ],
                 [
-                'nama' => 'Pembelian',
+                'nama' => 'Pembelian BK',
                 'route' => 'pembelian',
-                'isi' => ['pembelian', 'po.index','pembelian_bk','pembelian_bk.add','pembayaranbk'],
+                'isi' => ['pembelian', 'po.index','pembelian_bk','pembelian_bk.add'],
+                ],
+                [
+                'nama' => 'Pembayaran BK',
+                'route' => 'pembayaran',
+                'isi' => ['pembayaran','pembayaranbk','pembayaranbk.add'],
                 ],
                 [
                 'nama' => 'persediaan barang',
