@@ -19,8 +19,8 @@
                         <th>Suplier Awal</th>
                         <th>Suplier Akhir</th>
                         <th style="text-align: right">Total Harga</th>
-                        <th style="text-align: right">Terbayar</th>
-                        <th style="text-align: right">Sisa</th>
+                        {{-- <th style="text-align: right">Terbayar</th>
+                        <th style="text-align: right">Sisa</th> --}}
                         <th style="text-align: center">Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -34,12 +34,12 @@
                         <td>{{$p->nm_suplier}}</td>
                         <td>{{$p->suplier_akhir}}</td>
                         <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
-                        <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
-                        <td align="right">Rp. {{number_format($p->total_harga - $p->kredit,0)}}</td>
+                        {{-- <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
+                        <td align="right">Rp. {{number_format($p->total_harga + $p->debit - $p->kredit,0)}}</td> --}}
                         <td align="center">
                             <span
-                                class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
-                                {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga - $p->kredit == 0 ? 'Paid' :
+                                class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
+                                {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'Paid' :
                                 'Unpaid')}}
                             </span>
                         </td>
@@ -89,7 +89,7 @@
                                         <option value="daily">Hari ini</option>
                                         <option value="weekly">Minggu ini</option>
                                         <option value="mounthly">Bulan ini</option>
-                                        <option value="costume">Costume</option>
+                                        <option value="costume">Custom</option>
                                     </select>
                                 </td>
                             </tr>

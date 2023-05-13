@@ -90,6 +90,11 @@
             color: #ffffff !important;
         }
 
+        .active-nvs {
+            text-decoration: underline;
+            color: #435EBE !important;
+        }
+
         .card-hover .card-front {
             position: relative;
             z-index: 2;

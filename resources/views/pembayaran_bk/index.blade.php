@@ -1,6 +1,27 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
+
         <div class="row justify-content-end">
+            <div class="col-lg-12">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active-nvs" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
+                            aria-controls="home" aria-selected="true">All</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                            aria-controls="profile" aria-selected="false">Draft</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
+                            aria-controls="profile" aria-selected="false">Paid</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab"
+                            aria-controls="contact" aria-selected="false">Unpaid</a>
+                    </li>
+                </ul>
+            </div>
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
             </div>
@@ -32,7 +53,8 @@
                         @endphp
                         @foreach ($pembelian as $no => $p)
                         @php
-                        $bayar = DB::select("SELECT a.no_nota, a.tgl, c.nm_suplier, b.suplier_akhir, a.kredit, d.nm_akun
+                        $bayar = DB::select("SELECT a.no_nota, a.tgl, c.nm_suplier, b.suplier_akhir, a.debit, a.kredit,
+                        d.nm_akun
                         FROM bayar_bk as a
                         left join invoice_bk as b on b.no_nota = a.no_nota
                         left join tb_suplier as c on c.id_suplier = b.id_suplier
@@ -50,8 +72,9 @@
                             <td align="right">Rp. 0</td>
                             <td>
                                 <span
-                                    class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
-                                    {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga - $p->kredit == 0 ? 'Paid' :
+                                    class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
+                                    {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ?
+                                    'Paid' :
                                     'Unpaid')}}
                                 </span>
                             </td>
@@ -59,7 +82,7 @@
                                 @if ($p->lunas == 'D' )
 
                                 @else
-                                @if ($p->total_harga - $p->kredit == 0 )
+                                @if ($p->total_harga + $p->debit - $p->kredit == 0 )
 
                                 @else
                                 <a href="{{route('pembayaranbk.add',['nota' => $p->no_nota])}}"
@@ -77,7 +100,7 @@
                             <td>{{$b->no_nota}}</td>
                             <td>{{$b->nm_suplier}}</td>
                             <td>{{$b->suplier_akhir}}</td>
-                            <td align="right">Rp. 0</td>
+                            <td align="right">Rp. {{number_format($b->debit,0)}}</td>
                             <td align="right">Rp. {{number_format($b->kredit,0)}}</td>
                             <td></td>
                             <td></td>
@@ -103,7 +126,7 @@
                                         <option value="daily">Hari ini</option>
                                         <option value="weekly">Minggu ini</option>
                                         <option value="mounthly">Bulan ini</option>
-                                        <option value="costume">Costume</option>
+                                        <option value="costume">Custom</option>
                                     </select>
                                 </td>
                             </tr>

@@ -10,11 +10,11 @@ class PembelianBahanBakuController extends Controller
 {
     public function index(Request $r)
     {
-        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit
+        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
         FROM invoice_bk as a 
         left join tb_suplier as b on b.id_suplier = a.id_suplier
         left join (
-        SELECT c.no_nota , sum(c.kredit) as kredit  FROM bayar_bk as c
+        SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
         order by a.no_nota DESC");
@@ -129,6 +129,17 @@ class PembelianBahanBakuController extends Controller
             ];
             DB::table('invoice_bk')->insert($data);
         }
+
+        $data_tambahan = [
+            'no_nota' => "BI-" . $nota_t,
+            'debit' => $r->debit_tambahan,
+            'kredit' => 0,
+            'id_akun' => '35',
+            'tgl' => $tgl,
+            'admin' => Auth::user()->name,
+            'ket' => $r->ket_lainnya
+        ];
+        DB::table('bayar_bk')->insert($data_tambahan);
 
 
         return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');

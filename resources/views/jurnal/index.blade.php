@@ -97,7 +97,7 @@
                                         <option value="daily">Hari ini</option>
                                         <option value="weekly">Minggu ini</option>
                                         <option value="mounthly">Bulan ini</option>
-                                        <option value="costume">Costume</option>
+                                        <option value="costume">Custom</option>
                                     </select>
                                 </td>
                             </tr>

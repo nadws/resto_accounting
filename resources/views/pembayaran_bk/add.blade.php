@@ -16,7 +16,7 @@
                 color: #000000;
                 line-height: 36px;
                 /* font-size: 12px; */
-                width: 250px;
+                width: 170px;
 
             }
         </style>
@@ -39,36 +39,41 @@
                             <tr>
                                 <th width="10%">Tanggal</th>
                                 <th width="10%">Akun</th>
-                                <th width="15%">Suplier Awal</th>
-                                <th width="15%">Suplier Akhir</th>
-                                <th width="20%" style="text-align: right">Debit</th>
-                                <th width="20%" style="text-align: right">Kredit</th>
+                                <th width="20%">Keterangan</th>
+                                <th width="10%">Suplier Awal</th>
+                                <th width="10%">Suplier Akhir</th>
+                                <th width="15%" style="text-align: right">Debit</th>
+                                <th width="15%" style="text-align: right">Kredit</th>
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
-                                <td>BKIN</td>
+                                <td>Bkin</td>
+                                <td>Pembayaran BKIN {{$p->no_nota}}</td>
                                 <td>{{$p->nm_suplier}}</td>
                                 <td>{{$p->suplier_akhir}}</td>
                                 <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
                                 <td align="right">0</td>
-                                <td><input type="hidden" class="debit" value="{{$p->total_harga}}"></td>
+                                <td></td>
                             </tr>
                             @php
                             $total = 0;
+                            $total_debit = 0;
                             @endphp
                             @foreach ($bayar as $b)
                             @php
                             $total += $b->kredit;
+                            $total_debit = $b->debit;
                             @endphp
                             <tr>
                                 <td>{{date('d-m-Y',strtotime($b->tgl))}}</td>
-                                <td>{{$b->nm_akun}}</td>
+                                <td>{{ucwords(strtolower($b->nm_akun))}}</td>
+                                <td>{{$b->ket}}</td>
                                 <td>{{$b->nm_suplier}}</td>
                                 <td>{{$b->suplier_akhir}}</td>
-                                <td align="right"></td>
+                                <td align="right">Rp. {{number_format($b->debit ,0)}}</td>
                                 <td align="right">
                                     Rp. {{number_format($b->kredit ,0)}}
                                     <input type="hidden" class="form-control bayarbiasa " value="{{$b->kredit}}">
@@ -76,7 +81,7 @@
                                 <td></td>
                             </tr>
                             @endforeach
-
+                            <input type="hidden" class="debit" value="{{$p->total_harga + $total_debit}}">
                             <tr class="baris1">
                                 <td><input type="date" class="form-control" name="tgl_pembayaran[]"
                                         value="{{date('Y-m-d')}}"></td>
@@ -85,14 +90,24 @@
                                         <option value="">Pilih Akun Pembayaran</option>
                                         <option value="4">KAS BESAR</option>
                                         <option value="10">BANK MANDIRI NO.REK 031-00-5108889-9</option>
+                                        <option value="45">PENDAPATAN  DILUAR USAHA</option>
                                     </select>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="ket[]"
+                                        value="Pembayaran BKIN {{$p->no_nota}}">
                                 </td>
                                 <td>{{$p->nm_suplier}}</td>
                                 <td>{{$p->suplier_akhir}}</td>
-                                <td align="right">Rp. 0</td>
+                                <td align="right">
+                                    <input type="text" class="form-control bayardebit bayardebit1 text-end" count="1">
+                                    <input type="hidden" name="debit[]"
+                                        class="form-control bayardebitbiasa bayardebitbiasa1" value="0">
+                                </td>
                                 <td align="right">
                                     <input type="text" class="form-control bayar bayar1 text-end" count="1">
-                                    <input type="hidden" name="kredit[]" class="form-control bayarbiasa bayarbiasa1">
+                                    <input type="hidden" name="kredit[]" class="form-control bayarbiasa bayarbiasa1"
+                                        value="0">
                                 </td>
                                 <td>
                                     <button type="button" class="btn rounded-pill remove_baris" count="1"><i
@@ -130,18 +145,21 @@
 
                     <hr style="border: 1px solid blue">
                     <table class="" width="100%">
+                        {{-- <input type="text" class="totaldebitbiasa">
+                        <input type="text" class="totalkreditbiasa"> --}}
                         <tr>
+
                             <td width="20%">Total</td>
                             <td width="40%" class="total" style="text-align: right;">Rp.{{number_format($p->total_harga
-                                - $p->jumlah_pembayaran,0)}}</td>
+                                + $total_debit - $p->jumlah_pembayaran,2)}}</td>
                             <td width="40%" class="total_kredit" style="text-align: right;">
-                                Rp. {{number_format($total,0)}}
+                                Rp. {{number_format($total,2)}}
                             </td>
                         </tr>
                         <tr>
                             <td class="cselisih" colspan="2">Sisa Hutang</td>
                             <td style="text-align: right;" class="selisih cselisih">Rp.
-                                {{number_format($p->total_harga-$total,0)}}</td>
+                                {{number_format($p->total_harga + $total_debit -$total,2)}}</td>
                         </tr>
                     </table>
 
@@ -185,10 +203,15 @@
                 $(".bayarbiasa").each(function () {
                     total_kredit += parseFloat($(this).val());
                 });
+                var total_debit = 0;
+                $(".bayardebitbiasa").each(function () {
+                    total_debit += parseFloat($(this).val());
+                });
                 var debit = $('.debit').val();
+                var total_debitall = parseFloat(debit) + total_debit;
                 
 
-                var selisih = parseFloat(debit) - total_kredit;
+                var selisih = total_debitall - total_kredit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
@@ -201,10 +224,9 @@
 
                 if (selisih === 0) {
                     $(".cselisih").css("color", "green");
-                    $(".button-save").removeAttr("hidden");
+                    
                 } else {
                     $(".cselisih").css("color", "red");
-                    $(".button-save").attr("hidden", true);
                 }
                 $(".selisih").text(selisih_total);
                 
@@ -231,10 +253,17 @@
                 $(".bayarbiasa").each(function () {
                     total_kredit += parseFloat($(this).val());
                 });
+
+
+                var total_debit = 0;
+                $(".bayardebitbiasa").each(function () {
+                    total_debit += parseFloat($(this).val());
+                });
                 var debit = $('.debit').val();
+                var total_debitall = parseFloat(debit) + total_debit;
                 
 
-                var selisih = parseFloat(debit) - total_kredit;
+                var selisih = total_debitall - total_kredit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
@@ -244,6 +273,57 @@
                     currency: "IDR",
                 });
                 $(".total_kredit").text(totalRupiah);
+
+                if (selisih === 0) {
+                    $(".cselisih").css("color", "green");
+                    
+                } else {
+                    $(".cselisih").css("color", "red");
+                    
+                }
+                $(".selisih").text(selisih_total);
+            });
+
+            $(document).on("keyup", ".bayardebit", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.bayardebitbiasa' + count).val(0)
+                } else {
+                    $(this).val("Rp " + input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.bayardebitbiasa' + count).val(input2)
+                    
+                }
+                var total_kredit = 0;
+                $(".bayarbiasa").each(function () {
+                    total_kredit += parseFloat($(this).val());
+                });
+                var total_debit = 0;
+                $(".bayardebitbiasa").each(function () {
+                    total_debit += parseFloat($(this).val());
+                });
+
+                var debit = $('.debit').val();
+                var total_debitall = parseFloat(debit) + total_debit;
+                
+
+                var selisih = total_debitall - total_kredit;
+                var selisih_total = selisih.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                var totalRupiahDebit = total_debitall.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total").text(totalRupiahDebit);
 
                 if (selisih === 0) {
                     $(".cselisih").css("color", "green");
