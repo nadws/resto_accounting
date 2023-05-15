@@ -16,7 +16,7 @@
             <th width="19%">Keterangan</th>
             <th width="12%" style="text-align: right;">Debit</th>
             <th width="12%" style="text-align: right;">Kredit</th>
-            <th width="12%" style="text-align: right;">Saldo</th>
+            {{-- <th width="12%" style="text-align: right;">Saldo</th> --}}
             <th width="5%">Aksi</th>
         </tr>
     </thead>
@@ -58,9 +58,9 @@
                 <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="1">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa1" value="0" name="kredit[]">
             </td>
-            <td style="vertical-align: top;">
+            {{-- <td style="vertical-align: top;">
                 <p class="saldo_akun1 text-end" style="font-size: 12px"></p>
-            </td>
+            </td> --}}
             <td style="vertical-align: top;">
                 <button type="button" class="btn rounded-pill remove_baris" count="1"><i
                         class="fas fa-trash text-danger"></i>
@@ -103,9 +103,9 @@
                 <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="2">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa2" value="0" name="kredit[]">
             </td>
-            <td style="vertical-align: top;">
+            {{-- <td style="vertical-align: top;">
                 <p class="saldo_akun2 text-end" style="font-size: 12px"></p>
-            </td>
+            </td> --}}
             <td style="vertical-align: top;">
                 <button type="button" class="btn rounded-pill remove_baris" count="2"><i
                         class="fas fa-trash text-danger"></i>

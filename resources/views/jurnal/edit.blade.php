@@ -56,7 +56,6 @@
                                 <th width="19%">Keterangan</th>
                                 <th width="12%" style="text-align: right;">Debit</th>
                                 <th width="12%" style="text-align: right;">Kredit</th>
-                                <th width="12%" style="text-align: right;">Saldo</th>
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
@@ -118,9 +117,7 @@
                                     <input type="hidden" class="form-control kredit_biasa kredit_biasa{{ $no + 1 }}"
                                         value="{{ $j->kredit }}" name="kredit[]">
                                 </td>
-                                <td style="vertical-align: top;">
-                                    <p class="saldo_akun{{ $no + 1 }} text-end" style="font-size: 12px"></p>
-                                </td>
+
                                 <td style="vertical-align: top;">
                                     <button type="button" class="btn rounded-pill remove_baris" count="{{ $no + 1 }}"><i
                                             class="fas fa-trash text-danger"></i>
