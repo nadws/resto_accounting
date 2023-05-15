@@ -14,6 +14,7 @@
                         <th>Foto</th>
                         <th>NPWP</th>
                         <th>Nama</th>
+                        <th>Alamat</th>
                         <th>Email</th>
                         <th>Telepon</th>
                         <th width="20%">Aksi</th>
@@ -28,6 +29,7 @@
                         </td>
                         <td>{{ $d->npwp }}</td>
                         <td>{{ ucwords($d->nm_suplier) }}</td>
+                        <td>{{ ucwords($d->alamat) }}</td>
                         <td>{{ $d->email }}</td>
                         <td>{{ $d->telepon }}</td>
                         <td align="center">
@@ -65,6 +67,12 @@
                         <div class="form-group">
                             <label for="">Nama</label>
                             <input type="text" name="nm_suplier" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="">Alamat</label>
+                            <input type="text" name="alamat" class="form-control">
                         </div>
                     </div>
                     <div class="col-lg-12">

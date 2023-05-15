@@ -1,11 +1,14 @@
 <?php
 
+use App\Http\Controllers\AksesController;
 use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\SuplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
@@ -96,5 +99,37 @@ Route::middleware('auth')->group(function () {
             Route::get('/edit/{id_suplier}', 'edit')->name('edit');
         });
 
+    Route::controller(JurnalPenyesuaianController::class)
+        ->prefix('penyesuaian')
+        ->name('penyesuaian.')
+        ->group(function () {
+            Route::get('/', 'jurnal')->name('index');
+            Route::get('/aktiva', 'index')->name('aktiva');
+            Route::post('/aktiva', 'save_aktiva')->name('save_aktiva');
 
+            Route::get('/atk', 'atk')->name('atk');
+        });
+
+    Route::controller(UserController::class)
+        ->prefix('user')
+        ->name('user.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::post('/edit', 'update')->name('update');
+            Route::get('/delete', 'delete')->name('delete');
+        });
+
+    Route::controller(AksesController::class)
+        ->prefix('akses')
+        ->name('akses.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{id}', 'detail')->name('detail');
+            Route::post('/', 'save')->name('save');
+            Route::post('/add_menu', 'addMenu')->name('add_menu');
+            Route::post('/edit_menu', 'editMenu')->name('edit_menu');
+        });
+    
 });

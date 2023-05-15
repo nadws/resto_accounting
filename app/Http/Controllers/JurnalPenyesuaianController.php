@@ -135,6 +135,14 @@ class JurnalPenyesuaianController extends Controller
             DB::table('depresiasi_aktiva')->insert($data);
         }
 
-        return redirect()->route('jurnal_penyesuaian')->with('sukses', 'Data berhasil ditambahkan');
+        return redirect()->route('penyesuaian.aktiva')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function atk(Request $r) 
+    {
+        $data = [
+            'title' => 'Penyesuaian Atk'
+        ];  
+        return view('jurnal_penyesuaian.atk.index', $data);
     }
 }

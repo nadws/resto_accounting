@@ -11,7 +11,7 @@ class NavbarController extends Controller
         $data = [
             [
                 'judul' => 'Data User',
-                'route' => 'user',
+                'route' => 'user.index',
                 'img' => 'team.png',
                 'deskripsi' => 'ini adalah data user',
             ],
@@ -35,7 +35,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Data Satuan',
-                'route' => 'user',
+                'route' => 'user.index',
                 'img' => 'measure-cup.png',
                 'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
             ],
@@ -112,7 +112,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Jurnal Penyesuaian',
-                'route' => 'jurnal_aktiva',
+                'route' => 'penyesuaian.index',
                 'img' => 'journalism.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],

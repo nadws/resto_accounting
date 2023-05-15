@@ -2,6 +2,7 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
+
                 <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
                     teks="Import" />
                 <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
@@ -9,6 +10,52 @@
                 <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+
+                <x-theme.akses />
+                <form action="{{ route('akses.save') }}" method="post">
+                    @csrf
+                    <div id="akses" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog  modal-lg-max" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel33">
+                                        Akses {{ $title }}
+                                    </h4>
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                        <i data-feather="x"></i>
+                                    </button>
+                                </div>
+                                <input type="hidden" name="route" value="sistem_po">
+                                <div class="modal-body">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama</th>
+                                                <th>Halaman</th>
+                                                <th>Create</th>
+                                                <th>Read</th>
+                                                <th>Update</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Save</span>
+                                    </button>
+                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                                        <i class="bx bx-x d-block d-sm-none"></i>
+                                        <span class="d-none d-sm-block">Close</span>
+                                    </button>
+                                </div>
+                
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </x-slot>
@@ -31,54 +78,54 @@
                 </thead>
                 <tbody>
                     @foreach ($jurnal as $no => $a)
-                    <tr>
-                        <td>{{ $no + 1 }}</td>
-                        <td class="nowrap">{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
-                        <td>{{ $a->no_nota }}</td>
-                        <td>{{ $a->no_urut }}</td>
-                        <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
-                        <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
-                        @if (strlen($a->ket) > 60)
-                        <td>
-                            <span class="teksLimit{{ $a->id_jurnal }}">
-                                {{ Str::limit($a->ket, 30, '...') }}
-                                <a href="#" class="readMore" id="{{ $a->id_jurnal }}">read
-                                    more</a>
-                            </span>
-                            <span class="teksFull{{ $a->id_jurnal }}" style="display:none">{{ $a->ket }}
-                                <a href="#" class="less" id="{{ $a->id_jurnal }}">less</a></span>
-                        </td>
-                        @else
-                        <td>
-                            {{ $a->ket }}
-                        </td>
-                        @endif
-                        <td align="right">{{ number_format($a->debit, 2) }}</td>
-                        <td align="right">{{ number_format($a->kredit, 2) }}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v text-primary"></i>
-                                </span>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item text-primary edit_akun"
-                                            href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
-                                                class="me-2 fas fa-pen"></i>Edit</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{ $a->no_nota }}"
-                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                    </li>
-                                    <li><a class="dropdown-item  text-info detail_nota" href="#"
-                                            no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td class="nowrap">{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
+                            <td>{{ $a->no_nota }}</td>
+                            <td>{{ $a->no_urut }}</td>
+                            <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                            <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
+                            @if (strlen($a->ket) > 60)
+                                <td>
+                                    <span class="teksLimit{{ $a->id_jurnal }}">
+                                        {{ Str::limit($a->ket, 30, '...') }}
+                                        <a href="#" class="readMore" id="{{ $a->id_jurnal }}">read
+                                            more</a>
+                                    </span>
+                                    <span class="teksFull{{ $a->id_jurnal }}" style="display:none">{{ $a->ket }}
+                                        <a href="#" class="less" id="{{ $a->id_jurnal }}">less</a></span>
+                                </td>
+                            @else
+                                <td>
+                                    {{ $a->ket }}
+                                </td>
+                            @endif
+                            <td align="right">{{ number_format($a->debit, 2) }}</td>
+                            <td align="right">{{ number_format($a->kredit, 2) }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <li><a class="dropdown-item text-primary edit_akun"
+                                                href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
+                                                    class="me-2 fas fa-pen"></i>Edit</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item  text-danger delete_nota"
+                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
+                                            </a>
+                                        </li>
+                                        <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -118,7 +165,7 @@
                                     <select name="id_proyek" id="selectView" class="">
                                         <option value="0">All</option>
                                         @foreach ($proyek as $p)
-                                        <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
+                                            <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -143,7 +190,8 @@
         </form>
 
         <form action="{{ route('jurnal-delete') }}" method="get">
-            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -157,7 +205,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="button" class="btn btn-outline-danger"
+                                data-bs-dismiss="modal">Batal</button>
                             <button type="submit" class="btn btn-danger">Hapus</button>
                         </div>
                     </div>
@@ -179,8 +228,8 @@
 
     </x-slot>
     @section('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
                 function readMore() {
                     $(document).on('click', '.readMore', function(e) {
                         e.preventDefault()
@@ -196,7 +245,7 @@
                     })
                 }
                 readMore()
-                $(document).on('click', '.delete_nota', function(){
+                $(document).on('click', '.delete_nota', function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
                 })
@@ -217,9 +266,9 @@
 
                 });
 
-                
+
 
             });
-    </script>
+        </script>
     @endsection
 </x-theme.app>

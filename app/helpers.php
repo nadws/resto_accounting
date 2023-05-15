@@ -69,3 +69,22 @@ if (!function_exists('buatNota')) {
         return empty($max) ? 1000 : $max->$kolom + 1;
     }
 }
+
+class Nonaktif {
+    public static function edit($tbl, $kolom, $kolomValue, $data)
+    {
+        DB::table($tbl)->where($kolom, $kolomValue)->update([
+            'nonaktif' => 'Y'
+        ]);
+
+        DB::table($tbl)->insert($data);
+    }
+    
+    public static function delete($tbl, $kolom, $kolomValue)
+    {
+        DB::table($tbl)->where($kolom, $kolomValue)->update([
+            'nonaktif' => 'Y'
+        ]);
+    }
+
+}

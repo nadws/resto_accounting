@@ -66,7 +66,6 @@ class JurnalController extends Controller
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
             'id_proyek' => $id_proyek
-
         ];
         return view('jurnal.index', $data);
     }
