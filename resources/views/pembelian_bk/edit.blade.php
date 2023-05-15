@@ -147,18 +147,64 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        {{-- <x-theme.toggle name="Pilihan Lainnya">
+                        <div class="col-lg-1">
 
-                        </x-theme.toggle>
-                        <div class="col-lg-12"></div>
-                        <div class="col-lg-6 pilihan_l">
-                            <label for="">No Dokumen</label>
-                            <input type="text" class="form-control inp-lain" name="no_dokumen">
+                            <div class="form-check form-switch form-switch2">
+                                <input class="form-check-input form-check-input2" {{empty($invoice2) ? '' : 'checked' }}
+                                    value="Y" type="checkbox" id="Pilihan_Lainnya" />
+                            </div>
                         </div>
-                        <div class="col-lg-6 pilihan_l">
-                            <label for="">Tanggal Dokumen</label>
-                            <input type="date" class="form-control inp-lain" name="tgl_dokumen">
-                        </div> --}}
+                        <div class="col-lg-6">
+                            <label for="Biaya lain-lain">Biaya lain-lain</label>
+                        </div>
+                        <div class="col-lg-12"></div>
+                        @if (empty($invoice2))
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Akun</label>
+                            <select name="id_akun_lainnya" id="" class="select2_add inp-lain">
+                                <option value="">Pilih Akun</option>
+                                @foreach ($akun as $a)
+                                <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Keterangan</label>
+                            <input type="text" class="form-control inp-lain" name="ket_lainnya">
+                        </div>
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Rupiah</label>
+                            <input type="text" class="form-control inp-lain debit-lain">
+                            <input type="hidden" class="form-control inp-lain debit-lain_biasa" name="debit_tambahan">
+                        </div>
+                        @else
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Akun</label>
+                            <select name="id_akun_lainnya" id="" class="select2_add inp-lain">
+                                <option value="">Pilih Akun</option>
+                                @foreach ($akun as $a)
+                                <option value="{{$a->id_akun}}" {{$invoice2->id_akun == $a->id_akun ? 'Selected' :
+                                    ''}}>{{$a->nm_akun}}</option>
+                                @endforeach
+
+                            </select>
+                            <input type="hidden" class="id_cek" value="{{empty($invoice2) ? '1' : '2' }}">
+                        </div>
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Keterangan</label>
+                            <input type="text" class="form-control inp-lain" name="ket_lainnya"
+                                value="{{$invoice2->ket}}">
+                        </div>
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Rupiah</label>
+                            <input type="text" class="form-control inp-lain debit-lain"
+                                value="Rp {{number_format($invoice2->debit,0,',','.')}}">
+                            <input type="hidden" class="form-control inp-lain debit-lain_biasa" name="debit_tambahan"
+                                value="{{$invoice2->debit}}">
+                        </div>
+                        @endif
+
 
                     </div>
                 </div>
@@ -342,6 +388,43 @@
                 var debit = $(".total").text(totalRupiahall);
 
             
+            });
+
+            var id_cek = $('.id_cek').val();
+            if (id_cek === '2') {
+                $(".pilihan_l").show();
+            } else {
+                $(".pilihan_l").hide();
+            }
+            
+
+            $(document).on("click", "#Pilihan_Lainnya", function () {
+                if ($(this).prop("checked") == true) {
+                    $(".pilihan_l").show();
+                    $(".inp-lain").removeAttr("disabled");
+                } else if ($(this).prop("checked") == false) {
+                    $(".pilihan_l").hide();
+                }
+            });
+            $(document).on("keyup", ".debit-lain", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.debit-lain_biasa').val(0)
+                } else {
+                    $(this).val(input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.debit-lain_biasa').val(input2)
+                    
+                }
+
+                
             });
 
 

@@ -1,24 +1,52 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
+        @php
+        $total_paid =0;
+        $total_unpaid =0;
+        $total_draft =0;
+        @endphp
+        @foreach ($paid as $p)
+        @php
+        $total_paid += $p->total_harga + $p->debit ;
+        @endphp
+        @endforeach
+
+        @foreach ($unpaid as $u)
+        @php
+        $total_unpaid += $u->total_harga + $u->debit - $u->kredit ;
+        @endphp
+        @endforeach
+
+        @foreach ($draft as $d)
+        @php
+        $total_draft += $d->total_harga + $d->debit - $d->kredit ;
+        @endphp
+        @endforeach
 
         <div class="row justify-content-end">
             <div class="col-lg-12">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link active-nvs" id="home-tab" data-bs-toggle="tab" href="#home" role="tab"
-                            aria-controls="home" aria-selected="true">All</a>
+                        <a class="nav-link {{empty($tipe) ? 'active' : ''}}" href="{{route('pembayaranbk')}}"
+                            type="button" role="tab" aria-controls="pills-home" aria-selected="true">All</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
-                            aria-controls="profile" aria-selected="false">Draft</a>
+                        <a class="nav-link {{$tipe == 'D' ? 'active' : ''}}"
+                            href="{{route('pembayaranbk',['tipe' => 'D'])}}" type="button" role="tab"
+                            aria-controls="pills-home" aria-selected="true">Draft <br>
+                            Rp {{number_format($total_draft,0)}}</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
-                            aria-controls="profile" aria-selected="false">Paid</a>
+                        <a class="nav-link {{$tipe == 'Y' ? 'active' : ''}}"
+                            href="{{route('pembayaranbk',['tipe' => 'Y'])}}" type="button" role="tab"
+                            aria-controls="pills-home" aria-selected="true">Paid <br>
+                            Rp {{number_format($total_paid,0)}}</a>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab"
-                            aria-controls="contact" aria-selected="false">Unpaid</a>
+                        <a class="nav-link {{$tipe == 'T' ? 'active' : ''}}"
+                            href="{{route('pembayaranbk',['tipe' => 'T'])}}" type="button" role="tab"
+                            aria-controls="pills-home" aria-selected="true">Unpaid <br>
+                            Rp {{number_format($total_unpaid,0)}}</a>
                     </li>
                 </ul>
             </div>
@@ -39,6 +67,7 @@
                             <th width="5">#</th>
                             <th>Tanggal</th>
                             <th>No Nota</th>
+                            <th>Akun</th>
                             <th>Suplier Awal</th>
                             <th>Suplier Akhir</th>
                             <th style="text-align: right">Debit</th>
@@ -46,6 +75,7 @@
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
+
                     </thead>
                     <tbody>
                         @php
@@ -66,6 +96,7 @@
                             <td>{{$i++}}</td>
                             <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
                             <td>{{$p->no_nota}}</td>
+                            <td>Bkin</td>
                             <td>{{$p->nm_suplier}}</td>
                             <td>{{$p->suplier_akhir}}</td>
                             <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
@@ -80,17 +111,18 @@
                             </td>
                             <td>
                                 @if ($p->lunas == 'D' )
-
+                                <a href="#" class="btn btn-primary btn-sm disabled">Bayar</a>
                                 @else
                                 @if ($p->total_harga + $p->debit - $p->kredit == 0 )
-
+                                <a href="#" class="btn btn-primary btn-sm disabled">Bayar</a>
                                 @else
                                 <a href="{{route('pembayaranbk.add',['nota' => $p->no_nota])}}"
                                     class="btn btn-primary btn-sm">Bayar</a>
                                 @endif
 
                                 @endif
-
+                                <a href="{{route('pembayaranbk.edit',['nota' => $p->no_nota])}}"
+                                    class="btn btn-primary btn-sm"><i class="fas fa-pen"></i> Edit</a>
                             </td>
                         </tr>
                         @foreach ($bayar as $n => $b)
@@ -98,6 +130,7 @@
                             <td>{{$i++}}</td>
                             <td>{{date('d-m-Y',strtotime($b->tgl))}}</td>
                             <td>{{$b->no_nota}}</td>
+                            <td>{{ucwords(strtolower($b->nm_akun))}}</td>
                             <td>{{$b->nm_suplier}}</td>
                             <td>{{$b->suplier_akhir}}</td>
                             <td align="right">Rp. {{number_format($b->debit,0)}}</td>
@@ -146,9 +179,10 @@
                                 <td>
                                     <label for="">Bulan</label>
                                     <select name="bulan" id="bulan" class="selectView bulan">
-                                        @foreach($listbulan as $key => $value)
-                                        <option value="{{ $key }}" {{ (int) date('m')==$key ? 'selected' : '' }}>{{
-                                            $value }}</option>
+                                        @foreach($listbulan as $l)
+                                        <option value="{{ $l->bulan }}" {{ (int) date('m')==$l->bulan ? 'selected' : ''
+                                            }}>{{
+                                            $l->nm_bulan }}</option>
                                         @endforeach
                                     </select>
                                 </td>

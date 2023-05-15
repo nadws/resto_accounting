@@ -31,8 +31,8 @@
                         <td>{{$no+1}}</td>
                         <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
                         <td>{{$p->no_nota}}</td>
-                        <td>{{$p->nm_suplier}}</td>
-                        <td>{{$p->suplier_akhir}}</td>
+                        <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
+                        <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
                         <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
                         {{-- <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
                         <td align="right">Rp. {{number_format($p->total_harga + $p->debit - $p->kredit,0)}}</td> --}}
