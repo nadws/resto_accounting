@@ -1,12 +1,3 @@
-<style>
-    .select2-container--default .select2-selection--single .select2-selection__rendered {
-        color: #000000;
-        line-height: 36px;
-        /* font-size: 12px; */
-        width: 150px;
-
-    }
-</style>
 <tr class="baris{{$count}}">
     <td style="vertical-align: top;">
         <button type="button" data-bs-toggle="collapse" href=".join{{$count}}" class="btn rounded-pill " count="1"><i
