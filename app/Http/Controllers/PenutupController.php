@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurnal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +24,7 @@ class PenutupController extends Controller
             'buku' => DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
             FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
-            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
+            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T'
             group by a.id_akun
             ORDER by b.kode_akun ASC;"),
             'tgl' => $tgl,
@@ -40,21 +41,21 @@ class PenutupController extends Controller
 
         $tgl1 = date('Y-m-01', strtotime($tgl));
         $tgl2 = date('Y-m-t', strtotime($tgl));
+        $nextMonth = Carbon::parse($tgl1)->addMonth()->toDateString();
 
         $saldo = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
             FROM jurnal as a 
             left join akun as b on b.id_akun = a.id_akun
-            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
+            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T'
             group by a.id_akun
             ORDER by b.kode_akun ASC;");
 
-        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
-
-        $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
-
-        DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
-
         foreach ($saldo as $d) {
+            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+
+            $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
+            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
+
             $data = [
                 'id_akun' => $d->id_akun,
                 'debit' => $d->debit,
@@ -62,10 +63,10 @@ class PenutupController extends Controller
                 'ket' => 'Saldo Penutup',
                 'id_buku' => '5',
                 'no_nota' => "PEN-$no_nota",
-                'tgl' => date('Y-m-d'),
+                'tgl' => $nextMonth,
                 'tgl_dokumen' => $tgl2,
                 'admin' => auth()->user()->name,
-                'penutup' => 'Y'
+                'penutup' => 'T'
             ];
             Jurnal::create($data);
 

@@ -5,7 +5,7 @@
                 <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2,'id_buku' => '4']) }}"
                     class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
 
-                <x-theme.button modal="T" href="{{ route('jurnal_penyesuaian') }}" icon="fa-plus" addClass="float-end"
+                <x-theme.button modal="T" href="{{ route('penyesuaian.aktiva') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
             </div>

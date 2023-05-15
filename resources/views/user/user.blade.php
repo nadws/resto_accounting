@@ -1,4 +1,4 @@
-<x-theme.app title="Table" table="Y" sizeCard="8">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
     <x-slot name="cardHeader">
         <x-theme.button modal="Y" idModal="tambahModal" icon="fa-plus" addClass="float-end" teks="Tambah" />
     </x-slot>
@@ -16,25 +16,25 @@
                 </thead>
                 <tbody>
                     @foreach ($user as $no => $d)
-                    <tr>
-                        <td>{{ $no + 1 }}</td>
-                        <td>{{ ucwords($d->name) }}</td>
-                        <td>{{ ucwords($d->posisi->nm_posisi) }}</td>
-                        <td>
-                            <x-theme.button hapus="Y" href="{{ route('users.delete', $d->id) }}" icon="fa-trash"
-                                addClass="float-end" teks="" variant="danger" />
-                            <x-theme.button modal="Y" idModal="edit-modal" icon="fa-pen"
-                                addClass="me-1 float-end edit-btn" teks=""
-                                data="url={{ route('users.edit', $d->id) }}" />
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ ucwords($d->name) }}</td>
+                            <td>{{ ucwords($d->posisi->nm_posisi) }}</td>
+                            <td>
+                                <x-theme.button hapus="Y" href="{{ route('user.delete', $d->id) }}" icon="fa-trash"
+                                    addClass="float-end" teks="" variant="danger" />
+                                <x-theme.button modal="Y" idModal="edit-modal" icon="fa-pen"
+                                    addClass="me-1 float-end edit-btn" teks=""
+                                    data="url={{ route('user.edit', $d->id) }}" />
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
         </section>
 
         {{-- ALL MODAL --}}
-        <form action="{{ route('users.create') }}" method="post">
+        <form action="{{ route('user.create') }}" method="post">
             @csrf
             <x-theme.modal idModal="tambahModal" title="tambah user" btnSave="Y" size="modal-lg">
                 <div class="row">
@@ -50,7 +50,7 @@
                             <select name="id_posisi" class="form-control" id="">
                                 <option value="">- Pilih Posisi -</option>
                                 @foreach ($posisi as $p)
-                                <option value="{{ $p->id }}">{{ $p->nm_posisi }}</option>
+                                    <option value="{{ $p->id }}">{{ $p->nm_posisi }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -71,7 +71,7 @@
             </x-theme.modal>
         </form>
 
-        <form action="{{ route('users.update') }}" method="post">
+        <form action="{{ route('user.update') }}" method="post">
             @csrf
             <x-theme.modal idModal="edit-modal" title="tambah user" btnSave="Y" size="modal-lg">
                 <div id="editBody"></div>
@@ -81,8 +81,8 @@
     </x-slot>
 
     @section('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
                 $(document).on('click', '.edit-btn', function() {
                     var url = $(this).attr('url')
                     $.ajax({
@@ -95,6 +95,6 @@
 
                 })
             });
-    </script>
+        </script>
     @endsection
 </x-theme.app>

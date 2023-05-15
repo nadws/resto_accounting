@@ -6,17 +6,20 @@
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        <form action="{{route('save_penyesuaian_aktiva')}}" method="post" class="save_jurnal">
+        <form action="{{route('penyesuaian.save_aktiva')}}" method="post" class="save_jurnal">
             @csrf
             <div class="row mb-4">
                 <div class="col-lg-12">
                     <ul class="nav nav-pills float-start">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page"
-                                href="{{route('jurnal_penyesuaian')}}">Aktiva</a>
+                            <a class="nav-link {{request()->route()->getName() == 'penyesuaian.aktiva' ? 'active' : ''}}" aria-current="page"
+                                href="{{route('penyesuaian.aktiva')}}">Aktiva</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Peralatan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{request()->route()->getName() == 'penyesuaian.atk' ? 'active' : ''}}" href="{{ route('penyesuaian.atk') }}">Atk</a>
                         </li>
                     </ul>
 
@@ -118,7 +121,7 @@
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...
         </button>
-        <a href="{{route('jurnal_aktiva')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
+        <a href="{{route('penyesuaian.aktiva')}}" class="float-end btn btn-outline-primary me-2">Batal</a>
         {{-- <a href="{{route('jurnal')}}" class="float-end btn btn-outline-primary me-2">Batal</a> --}}
         </form>
     </x-slot>

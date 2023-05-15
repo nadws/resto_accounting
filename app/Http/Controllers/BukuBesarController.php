@@ -31,7 +31,7 @@ class BukuBesarController extends Controller
         $buku = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
         FROM jurnal as a 
         left join akun as b on b.id_akun = a.id_akun
-        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
+        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T'
         group by a.id_akun
         ORDER by b.kode_akun ASC;");
 
@@ -62,7 +62,7 @@ class BukuBesarController extends Controller
                             WHERE j.id_akun != '$r->id_akun'
                             GROUP BY j.no_nota
                         ) d ON a.no_nota = d.no_nota AND d.id_akun != a.id_akun
-                        WHERE a.id_akun = '$r->id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'
+                        WHERE a.id_akun = '$r->id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.penutup = 'T'
                         order by a.saldo DESC, a.id_jurnal ASC
             "),
             'id_akun' => $r->id_akun,
@@ -79,7 +79,7 @@ class BukuBesarController extends Controller
         $tgl2 =  $this->tgl2;
         $id_akun =  $this->id_akun;
 
-        $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_akun = '$id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.ket != 'Saldo Penutup'");
+        $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_akun = '$id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.penutup = 'T'");
 
         $totalrow = $total->jumlah;
 

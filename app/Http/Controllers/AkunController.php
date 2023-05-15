@@ -7,6 +7,7 @@ use App\Models\PostCenter;
 use App\Models\SubklasifikasiAkun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Nonaktif;
 
 class AkunController extends Controller
 {
@@ -14,7 +15,7 @@ class AkunController extends Controller
     {
         $data =  [
             'title' => 'Daftar Akun',
-            'akun' => Akun::all(),
+            'akun' => Akun::where('nonaktif', 'T')->get(),
             'subklasifikasi' => SubklasifikasiAkun::all()
         ];
         return view('Akun.index', $data);
@@ -66,7 +67,7 @@ class AkunController extends Controller
             'kode_akun' => $r->kode_akun,
             'nm_akun' => $r->nm_akun,
         ];
-        Akun::where('id_akun', $r->id_akun)->update($data);
+        Nonaktif::edit('akun', 'id_akun', $r->id_akun, $data);
         return redirect()->route('akun');
     }
 
@@ -89,6 +90,6 @@ class AkunController extends Controller
 
     public function remove_sub(Request $r)
     {
-        PostCenter::where('id_post_center', $r->id)->delete();
+        PostCenter::where('id_post_center', $r->id)->update(['nonaktif', 'T']);
     }
 }
