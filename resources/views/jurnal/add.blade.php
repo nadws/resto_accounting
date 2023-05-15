@@ -8,7 +8,15 @@
         </div>
 
     </x-slot>
+    <style>
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #000000;
+            line-height: 36px;
+            /* font-size: 12px; */
+            width: 150px;
 
+        }
+    </style>
 
     <x-slot name="cardBody">
         <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
