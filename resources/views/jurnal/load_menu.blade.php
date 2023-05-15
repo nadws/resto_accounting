@@ -1,3 +1,12 @@
+<style>
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #000000;
+        line-height: 36px;
+        /* font-size: 12px; */
+        width: 150px;
+
+    }
+</style>
 <table class="table table-striped">
     <thead>
         <tr>
