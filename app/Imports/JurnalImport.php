@@ -21,7 +21,7 @@ class JurnalImport implements ToModel, WithHeadingRow
                 'id_akun' => $row['akun'],
                 'ket' => $row['keterangan'],
                 'debit' => $row['debit'],
-                'kredit' => 0,
+                'kredit' => $row['kredit'],
                 'admin' => $row['admin'],
             ]
         );

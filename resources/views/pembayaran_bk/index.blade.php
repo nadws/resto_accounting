@@ -67,7 +67,7 @@
                             <th width="5">#</th>
                             <th>Tanggal</th>
                             <th>No Nota</th>
-                            <th>Akun</th>
+                            <th width="10%">Akun</th>
                             <th>Suplier Awal</th>
                             <th>Suplier Akhir</th>
                             <th style="text-align: right">Debit</th>
@@ -97,8 +97,8 @@
                             <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
                             <td>{{$p->no_nota}}</td>
                             <td>Bkin</td>
-                            <td>{{$p->nm_suplier}}</td>
-                            <td>{{$p->suplier_akhir}}</td>
+                            <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
+                            <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
                             <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
                             <td align="right">Rp. 0</td>
                             <td>
@@ -131,8 +131,8 @@
                             <td>{{date('d-m-Y',strtotime($b->tgl))}}</td>
                             <td>{{$b->no_nota}}</td>
                             <td>{{ucwords(strtolower($b->nm_akun))}}</td>
-                            <td>{{$b->nm_suplier}}</td>
-                            <td>{{$b->suplier_akhir}}</td>
+                            <td>{{ucwords(strtolower($b->nm_suplier))}}</td>
+                            <td>{{ucwords(strtolower($b->suplier_akhir))}}</td>
                             <td align="right">Rp. {{number_format($b->debit,0)}}</td>
                             <td align="right">Rp. {{number_format($b->kredit,0)}}</td>
                             <td></td>
