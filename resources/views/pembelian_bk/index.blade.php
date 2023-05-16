@@ -54,11 +54,13 @@
                                     'Unpaid')}}
                                 </span>
                             </td>
-                            <td>
-                                @if (empty($p->tgl_grade))
+                            <td align="center">
+                                @if (empty($p->id_invoice))
                                 <i class="fas fa-times text-danger"></i>
                                 @else
-                                <a href="" class="btn btn-sm"><i class="fas fa-eye"></i></a>
+                                <a href="#" class="btn btn-sm btn-success grading_nota"
+                                    id_invoice="{{ $p->id_invoice_bk }}" data-bs-toggle="modal"
+                                    data-bs-target="#grading"><i class="fas fa-eye"></i></a>
                                 @endif
 
                             </td>
@@ -108,7 +110,7 @@
                                         </li>
                                         <li>
                                             <a href="#" class="dropdown-item  text-info grading_nota"
-                                                no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
+                                                id_invoice="{{ $p->id_invoice_bk }}" data-bs-toggle="modal"
                                                 data-bs-target="#grading"><i
                                                     class="me-2 fas fa-balance-scale-right"></i>Grading
                                             </a>
@@ -200,14 +202,14 @@
                     $('.no_nota').val(no_nota);
             })
             $(document).on('click', '.grading_nota', function(){
-                var no_nota = $(this).attr('no_nota');
+                var id_invoice = $(this).attr('id_invoice');
                 $.ajax({
                     type: "get",
-                    url: "/get_grading?nota=" + no_nota,
+                    url: "/get_grading?id_invoice=" + id_invoice,
                     success: function (data) {
                         $('#grading_nota').html(data);
-                        $('.nota_grading').val(no_nota);
-                        $('.nota_grading_text').text(no_nota);
+                        $('.nota_grading').val(id_invoice);
+                        $('.nota_grading_text').text(id_invoice);
                     }
                 });
                 

@@ -10,14 +10,14 @@ class PembelianBahanBakuController extends Controller
 {
     public function index(Request $r)
     {
-        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.tgl as tgl_grade
+        $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.id_invoice
         FROM invoice_bk as a 
         left join tb_suplier as b on b.id_suplier = a.id_suplier
-        left join grading as d on d.no_nota =  a.no_nota
         left join (
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
+        left join grading as d on d.id_invoice = a.id_invoice_bk
         order by a.no_nota DESC");
         $data =  [
             'title' => 'Pembelian Bahan Baku',
@@ -307,16 +307,15 @@ class PembelianBahanBakuController extends Controller
             ];
             DB::table('bayar_bk')->insert($data_tambahan);
         }
-
-
         return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function grading(Request $r)
     {
+        DB::table('grading')->where('id_invoice', $r->id_invoice)->delete();
         $data = [
             'tgl' => $r->tgl,
-            'no_nota' => $r->no_nota,
+            'id_invoice' => $r->id_invoice,
             'no_campur' => $r->no_campur,
             'gr_basah' => $r->gr_basah,
             'pcs_awal' => $r->pcs_awal,
@@ -340,7 +339,8 @@ class PembelianBahanBakuController extends Controller
     public function get_grading(Request $r)
     {
         $data = [
-            'grading' => DB::table('grading')->where('no_nota', $r->nota)->first()
+            'grading' => DB::table('grading')->where('id_invoice', $r->id_invoice)->first(),
+            'invoice' => DB::table('invoice_bk')->where('id_invoice_bk', $r->id_invoice)->first()
         ];
 
         return view('pembelian_bk.grading', $data);
