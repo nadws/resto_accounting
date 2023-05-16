@@ -197,6 +197,9 @@ Route::controller(PembelianBahanBakuController::class)->group(function () {
     Route::get('/delete_bk', 'delete_bk')->name('delete_bk');
     Route::get('/edit_pembelian_bk', 'edit_pembelian_bk')->name('edit_pembelian_bk');
     Route::post('/edit_pembelian_bk', 'edit_save')->name('edit_pembelian_bk');
+    Route::post('/grading', 'grading')->name('grading');
+    Route::post('/approve_invoice_bk', 'approve_invoice_bk')->name('approve_invoice_bk');
+    Route::get('/get_grading', 'get_grading')->name('get_grading');
 });
 
 Route::controller(PembayaranBkController::class)->group(function () {

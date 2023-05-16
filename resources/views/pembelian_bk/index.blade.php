@@ -9,72 +9,128 @@
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        <section class="row">
-            <table class="table table-hover" id="table1">
-                <thead>
-                    <tr>
-                        <th width="5">#</th>
-                        <th>Tanggal</th>
-                        <th>No Nota</th>
-                        <th>Suplier Awal</th>
-                        <th>Suplier Akhir</th>
-                        <th style="text-align: right">Total Harga</th>
-                        {{-- <th style="text-align: right">Terbayar</th>
-                        <th style="text-align: right">Sisa</th> --}}
-                        <th style="text-align: center">Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($pembelian as $no => $p)
-                    <tr>
-                        <td>{{$no+1}}</td>
-                        <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
-                        <td>{{$p->no_nota}}</td>
-                        <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
-                        <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
-                        <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
-                        {{-- <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
-                        <td align="right">Rp. {{number_format($p->total_harga + $p->debit - $p->kredit,0)}}</td> --}}
-                        <td align="center">
-                            <span
-                                class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
-                                {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'Paid' :
-                                'Unpaid')}}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v text-primary"></i>
+        <form action="{{route('approve_invoice_bk')}}" method="post">
+            @csrf
+            <button class="float-end btn btn-primary btn-sm"><i class="fas fa-check"></i> Approve</button>
+            <br>
+            <br>
+            <section class="row">
+                <table class="table table-hover" id="tableScroll">
+                    <thead>
+                        <tr>
+                            <th width="5">#</th>
+                            <th>Tanggal</th>
+                            <th>No Nota</th>
+                            <th>Suplier Awal</th>
+                            <th>Suplier Akhir</th>
+                            <th style="text-align: right">Total Harga</th>
+                            {{-- <th style="text-align: right">Terbayar</th>
+                            <th style="text-align: right">Sisa</th> --}}
+                            <th style="text-align: center">Status</th>
+                            <th style="text-align: center">Grading</th>
+                            <th style="text-align: center">Approve <br> <input type="checkbox" name="" id="checkAll"
+                                    id="">
+                            </th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($pembelian as $no => $p)
+                        <tr>
+                            <td>{{$no+1}}</td>
+                            <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
+                            <td>{{$p->no_nota}}</td>
+                            <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
+                            <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
+                            <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
+                            {{-- <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
+                            <td align="right">Rp. {{number_format($p->total_harga + $p->debit - $p->kredit,0)}}</td>
+                            --}}
+                            <td align="center">
+                                <span
+                                    class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
+                                    {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ?
+                                    'Paid' :
+                                    'Unpaid')}}
                                 </span>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li>
-                                        <a class="dropdown-item text-primary edit_akun"
-                                            href="{{route('edit_pembelian_bk',['nota' =>$p->no_nota ])}}">
-                                            <i class="me-2 fas fa-pen"></i> Edit
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item  text-danger delete_nota" no_nota="{{ $p->no_nota }}"
-                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item  text-info detail_nota" target="_blank"
-                                            href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
-                                                class="me-2 fas fa-print"></i>Print
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </section>
+                            </td>
+                            <td>
+                                @if (empty($p->tgl_grade))
+                                <i class="fas fa-times text-danger"></i>
+                                @else
+                                <a href="" class="btn btn-sm"><i class="fas fa-eye"></i></a>
+                                @endif
+
+                            </td>
+                            <td style="text-align: center">
+                                @if ($p->approve == 'Y')
+                                <i class="fas fa-check text-success"></i>
+                                <input type="hidden" name="ceknota[]" id="" value="Y">
+                                @else
+                                <input type="checkbox" name="ceknota[]" class="checkbox-item" id=""
+                                    value="{{$p->no_nota}}">
+                                @endif
+
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        @if ($p->approve == 'Y')
+
+                                        @else
+                                        <li>
+                                            <a class="dropdown-item text-primary edit_akun"
+                                                href="{{route('edit_pembelian_bk',['nota' =>$p->no_nota ])}}">
+                                                <i class="me-2 fas fa-pen"></i> Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item  text-danger delete_nota"
+                                                no_nota="{{ $p->no_nota }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
+                                            </a>
+                                        </li>
+                                        @endif
+                                        <li>
+                                            <a class="dropdown-item  text-info detail_nota" target="_blank"
+                                                href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
+                                                    class="me-2 fas fa-print"></i>Detail
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item  text-info detail_nota" target="_blank"
+                                                href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
+                                                    class="me-2 fas fa-print"></i>Print
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="dropdown-item  text-info grading_nota"
+                                                no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
+                                                data-bs-target="#grading"><i
+                                                    class="me-2 fas fa-balance-scale-right"></i>Grading
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </section>
+        </form>
+
+        <form action="{{route('grading')}}" method="post">
+            @csrf
+            <x-theme.modal title="Campur BKIN" idModal="grading">
+                <div id="grading_nota"></div>
+
+            </x-theme.modal>
+        </form>
 
         <form action="" method="get">
             <x-theme.modal title="Filter Jurnal Umum" idModal="view">
@@ -143,6 +199,24 @@
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
             })
+            $(document).on('click', '.grading_nota', function(){
+                var no_nota = $(this).attr('no_nota');
+                $.ajax({
+                    type: "get",
+                    url: "/get_grading?nota=" + no_nota,
+                    success: function (data) {
+                        $('#grading_nota').html(data);
+                        $('.nota_grading').val(no_nota);
+                        $('.nota_grading_text').text(no_nota);
+                    }
+                });
+                
+            });
+
+            $(document).on('click', '#checkAll', function(){
+                // Setel properti checked dari kotak centang individu sesuai dengan status "cek semua"
+                $('.checkbox-item').prop('checked', $(this).prop('checked'));
+            });
 
         });
     </script>

@@ -10,9 +10,10 @@ class PembelianBahanBakuController extends Controller
 {
     public function index(Request $r)
     {
-        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
+        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.tgl as tgl_grade
         FROM invoice_bk as a 
         left join tb_suplier as b on b.id_suplier = a.id_suplier
+        left join grading as d on d.no_nota =  a.no_nota
         left join (
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
@@ -309,5 +310,39 @@ class PembelianBahanBakuController extends Controller
 
 
         return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function grading(Request $r)
+    {
+        $data = [
+            'tgl' => $r->tgl,
+            'no_nota' => $r->no_nota,
+            'no_campur' => $r->no_campur,
+            'gr_basah' => $r->gr_basah,
+            'pcs_awal' => $r->pcs_awal,
+            'gr_kering' => $r->gr_kering
+        ];
+        DB::table('grading')->insert($data);
+        return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function approve_invoice_bk(Request $r)
+    {
+        for ($x = 0; $x < count($r->ceknota); $x++) {
+            $data = [
+                'approve' => "Y"
+            ];
+            DB::table('invoice_bk')->where('no_nota', $r->ceknota[$x])->update($data);
+        }
+        return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil diapprove');
+    }
+
+    public function get_grading(Request $r)
+    {
+        $data = [
+            'grading' => DB::table('grading')->where('no_nota', $r->nota)->first()
+        ];
+
+        return view('pembelian_bk.grading', $data);
     }
 }

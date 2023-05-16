@@ -34,6 +34,7 @@
             <th class="dhead">Keterangan</th>
             <th class="dhead" style="text-align: right">Debit</th>
             <th class="dhead" style="text-align: right">Kredit</th>
+            <th class="dhead" style="text-align: right">Admin</th>
         </tr>
     </thead>
     <tbody>
@@ -44,6 +45,7 @@
             <td>{{$a->ket}}</td>
             <td align="right">{{number_format($a->debit,0)}}</td>
             <td align="right">{{number_format($a->kredit,0)}}</td>
+            <td>{{$a->admin}}</td>
         </tr>
         @endforeach
     </tbody>

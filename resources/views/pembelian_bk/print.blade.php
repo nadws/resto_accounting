@@ -29,8 +29,8 @@
  */
     .corner-ribbon {
         position: absolute;
-        top: -3px;
-        left: -3px;
+        bottom: -3px;
+        right: -3px;
         height: 5.5em;
         width: 5.5em;
         padding: 8px;
@@ -40,8 +40,8 @@
             inset: 0;
             background: #47469B;
             color: white;
-            border-radius: 16px 8px 0 8px;
-            clip-path: polygon(0 0, 100% 0, 0 100%);
+            border-radius: 16px 8px 16px 8px;
+            clip-path: polygon(100% 0, 0 100%, 100% 100%);
         }
 
         .cr-text {
@@ -49,7 +49,7 @@
             font-weight: bold;
             font-size: .8em;
             line-height: 1.3;
-            transform: rotate(-45deg) translateY(.1em) translateX(-1.8em);
+            transform: rotate(313deg) translateY(4.1em) translateX(-2.8em);
 
             strong {
                 display: block;
@@ -99,7 +99,7 @@
     <div class="Panel">
         <div class="corner-ribbon">
             <span class="cr-inner">
-                <span class="cr-text">Untuk <br> Customer</span>
+                <span class="cr-text"> Mitra</span>
             </span>
 
         </div>
@@ -109,7 +109,8 @@
 
             <table style="font-size: small; white-space: nowrap;  " width="100%">
                 <tr>
-                    <td rowspan="3" width="80%"><img src="/assets/login/img/empat.svg" width="100" alt=""></td>
+                    <td rowspan="3" width="80%" align="left"><img src="/assets/login/img/empat.svg" width="100" alt="">
+                    </td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>Tanggal</td>
@@ -200,7 +201,7 @@
     <div class="Panel">
         <div class="corner-ribbon">
             <span class="cr-inner">
-                <span class="cr-text">Untuk <br> Kantor</span>
+                <span class="cr-text">Kantor</span>
             </span>
 
         </div>
