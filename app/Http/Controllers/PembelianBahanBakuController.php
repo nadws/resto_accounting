@@ -10,18 +10,74 @@ class PembelianBahanBakuController extends Controller
 {
     public function index(Request $r)
     {
-        $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
-        FROM invoice_bk as a 
-        left join tb_suplier as b on b.id_suplier = a.id_suplier
-        left join (
-        SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-        group by c.no_nota
-        ) as c on c.no_nota = a.no_nota
-        left join grading as d on d.no_nota = a.no_nota
-        order by a.no_nota DESC");
+        if (empty($r->period)) {
+            $tgl1 =  date('Y-m-01');
+            $tgl2 = date('Y-m-t');
+            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
+            FROM invoice_bk as a 
+            left join tb_suplier as b on b.id_suplier = a.id_suplier
+            left join (
+            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
+            group by c.no_nota
+            ) as c on c.no_nota = a.no_nota
+            left join grading as d on d.no_nota = a.no_nota
+            where a.tgl between '$tgl1' and '$tgl2'
+            order by a.no_nota DESC");
+        } elseif ($r->period == 'daily') {
+            $tgl1 = date('Y-m-d');
+            $tgl2 = date('Y-m-d');
+            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
+            FROM invoice_bk as a 
+            left join tb_suplier as b on b.id_suplier = a.id_suplier
+            left join (
+            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
+            group by c.no_nota
+            ) as c on c.no_nota = a.no_nota
+            left join grading as d on d.no_nota = a.no_nota
+            where a.tgl between '$tgl1' and '$tgl2'
+            order by a.no_nota DESC");
+        } elseif ($r->period == 'mounthly') {
+            $bulan = $r->bulan;
+            $tahun = $r->tahun;
+            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
+            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+
+            $tgl1 = date('Y-m-01', strtotime($tglawal));
+            $tgl2 = date('Y-m-t', strtotime($tglakhir));
+
+            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
+            FROM invoice_bk as a 
+            left join tb_suplier as b on b.id_suplier = a.id_suplier
+            left join (
+            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
+            group by c.no_nota
+            ) as c on c.no_nota = a.no_nota
+            left join grading as d on d.no_nota = a.no_nota
+            where a.tgl between '$tgl1' and '$tgl2'
+            order by a.no_nota DESC");
+        } elseif ($r->period == 'costume') {
+            $tgl1 = $r->tgl1;
+            $tgl2 = $r->tgl2;
+
+            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
+            FROM invoice_bk as a 
+            left join tb_suplier as b on b.id_suplier = a.id_suplier
+            left join (
+            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
+            group by c.no_nota
+            ) as c on c.no_nota = a.no_nota
+            left join grading as d on d.no_nota = a.no_nota
+            where a.tgl between '$tgl1' and '$tgl2'
+            order by a.no_nota DESC");
+        }
+
+
+
+        $listBulan = DB::table('bulan')->get();
         $data =  [
             'title' => 'Pembelian Bahan Baku',
-            'pembelian' => $pembelian
+            'pembelian' => $pembelian,
+            'listbulan' => $listBulan,
 
         ];
         return view('pembelian_bk.index', $data);
@@ -87,18 +143,17 @@ class PembelianBahanBakuController extends Controller
         $h_satuan = $r->h_satuan;
         $total_harga = $r->total_harga;
 
-        $b = date('m');
-        $max = DB::table('pembelian')->whereMonth('tgl', $b)->latest('urutan_nota')->first();;
+        $year = date("Y", strtotime($tgl));
+        $b = date('m', strtotime($tgl));
+        $max = DB::table('pembelian')->whereMonth('tgl', $b)->whereYear('tgl', $year)->latest('urutan_nota')->first();
 
-        $year = date("Y");
         $year = DB::table('tahun')->where('tahun', $year)->first();
         if (empty($max)) {
             $nota_t = '1';
         } else {
             $nota_t = $max->urutan_nota + 1;
         }
-        $date = date('m');
-        $bulan = DB::table('bulan')->where('bulan', $date)->first();
+        $bulan = DB::table('bulan')->where('bulan', $b)->first();
         $sub_po = "BI$year->kode" . "$bulan->kode" . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
 
         for ($x = 0; $x < count($id_produk); $x++) {
@@ -161,8 +216,9 @@ class PembelianBahanBakuController extends Controller
         }
 
 
-
-        return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
+        $tgl1 = date('Y-m-01', strtotime($r->tgl));
+        $tgl2 = date('Y-m-t', strtotime($r->tgl));
+        return redirect()->route('pembelian_bk', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2])->with('sukses', 'Data berhasil ditambahkan');
     }
 
 
@@ -307,7 +363,10 @@ class PembelianBahanBakuController extends Controller
             ];
             DB::table('bayar_bk')->insert($data_tambahan);
         }
-        return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
+
+        $tgl1 = date('Y-m-01', strtotime($r->tgl));
+        $tgl2 = date('Y-m-t', strtotime($r->tgl));
+        return redirect()->route('pembelian_bk', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2])->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function grading(Request $r)
@@ -357,5 +416,24 @@ class PembelianBahanBakuController extends Controller
         ];
 
         return view('pembelian_bk.grading2', $data);
+    }
+
+    public function nota_invoice_bk(Request $r)
+    {
+        $b = date('m', strtotime($r->tgl));
+        $year = date("Y", strtotime($r->tgl));
+        $max = DB::table('pembelian')->whereMonth('tgl', $b)->whereYear('tgl', $year)->latest('urutan_nota')->first();
+
+
+        $year = DB::table('tahun')->where('tahun', $year)->first();
+        if (empty($max)) {
+            $nota_t = '1';
+        } else {
+            $nota_t = $max->urutan_nota + 1;
+        }
+        $bulan = DB::table('bulan')->where('bulan', $b)->first();
+        $sub_po = "BI$year->kode" . "$bulan->kode" . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
+
+        echo "$sub_po";
     }
 }

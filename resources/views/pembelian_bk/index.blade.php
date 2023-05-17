@@ -95,12 +95,12 @@
                                             </a>
                                         </li>
                                         @endif
-                                        <li>
+                                        {{-- <li>
                                             <a class="dropdown-item  text-info detail_nota" target="_blank"
                                                 href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
                                                     class="me-2 fas fa-print"></i>Detail
                                             </a>
-                                        </li>
+                                        </li> --}}
                                         <li>
                                             <a class="dropdown-item  text-info detail_nota" target="_blank"
                                                 href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
@@ -142,32 +142,40 @@
         <form action="" method="get">
             <x-theme.modal title="Filter Jurnal Umum" idModal="view">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-3">Tanggal :</div>
+                    <div class="col-lg-1">:</div>
+                    <div class="col-lg-8">
+                        <select name="period" id="" class="form-control filter_tgl">
+                            <option value="daily">Hari ini</option>
 
-                        <table width="100%" cellpadding="10px">
-                            <tr>
-                                <td>Tanggal</td>
-                                <td colspan="2">
-                                    <select name="period" id="" class="form-control filter_tgl">
-                                        <option value="daily">Hari ini</option>
-                                        <option value="weekly">Minggu ini</option>
-                                        <option value="mounthly">Bulan ini</option>
-                                        <option value="costume">Custom</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr class="costume_muncul">
-                                <td></td>
-                                <td>
-                                    <label for="">Dari</label>
-                                    <input type="date" name="tgl1" class="form-control tgl">
-                                </td>
-                                <td>
-                                    <label for="">Sampai</label>
-                                    <input type="date" name="tgl2" class="form-control tgl">
-                                </td>
-                            </tr>
-                        </table>
+                            <option value="mounthly">Bulan ini</option>
+                            <option value="costume">Custom</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-4 mt-2"></div>
+                    <div class="col-lg-4 costume_muncul mt-2">
+                        <label for="">Dari</label>
+                        <input type="date" name="tgl1" class="form-control tgl">
+                    </div>
+                    <div class="col-lg-4 costume_muncul mt-2">
+                        <label for="">Sampai</label>
+                        <input type="date" name="tgl2" class="form-control tgl">
+                    </div>
+                    <div class="col-lg-4 bulan_muncul mt-2">
+                        <label for="">Bulan</label>
+                        <select name="bulan" id="bulan" class="selectView bulan">
+                            @foreach($listbulan as $l)
+                            <option value="{{ $l->bulan }}" {{ (int) date('m')==$l->bulan ? 'selected' : ''
+                                }}>{{
+                                $l->nm_bulan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-lg-4 bulan_muncul mt-2">
+                        <label for="">Tahun</label>
+                        <select name="tahun" id="" class="selectView bulan">
+                            <option value="2023">2023</option>
+                        </select>
                     </div>
                 </div>
 

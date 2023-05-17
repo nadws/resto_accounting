@@ -17,11 +17,11 @@
 
                 <div class="col-lg-2 col-6">
                     <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                    <input type="date" class="form-control tgl_nota" name="tgl" value="{{date('Y-m-d')}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control" name="no_nota" value="{{$sub_po}}" readonly>
+                    <input type="text" class="form-control nota_bk" name="no_nota" value="{{$sub_po}}" readonly>
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier Awal</label>
@@ -356,6 +356,17 @@
                 } else if ($(this).prop("checked") == false) {
                     $(".pilihan_l").hide();
                 }
+            });
+
+            $(document).on("change", ".tgl_nota", function () {
+               var tgl = $(this).val();
+               $.ajax({
+                type: "get",
+                url: "/nota_invoice_bk?tgl=" + tgl,
+                success: function (data) {
+                    $('.nota_bk').val(data);
+                }
+               });
             });
 
 
