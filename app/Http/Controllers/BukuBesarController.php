@@ -63,7 +63,7 @@ class BukuBesarController extends Controller
                             GROUP BY j.no_nota
                         ) d ON a.no_nota = d.no_nota AND d.id_akun != a.id_akun
                         WHERE a.id_akun = '$r->id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.penutup = 'T'
-                        order by a.saldo DESC, a.id_jurnal ASC
+                        order by a.saldo DESC, a.tgl ASC
             "),
             'id_akun' => $r->id_akun,
             'tgl1' => $tgl1,
