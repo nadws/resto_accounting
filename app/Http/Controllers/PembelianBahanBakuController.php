@@ -10,14 +10,14 @@ class PembelianBahanBakuController extends Controller
 {
     public function index(Request $r)
     {
-        $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.id_invoice
+        $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
         FROM invoice_bk as a 
         left join tb_suplier as b on b.id_suplier = a.id_suplier
         left join (
         SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
-        left join grading as d on d.id_invoice = a.id_invoice_bk
+        left join grading as d on d.no_nota = a.no_nota
         order by a.no_nota DESC");
         $data =  [
             'title' => 'Pembelian Bahan Baku',
@@ -339,8 +339,8 @@ class PembelianBahanBakuController extends Controller
     public function get_grading(Request $r)
     {
         $data = [
-            'grading' => DB::table('grading')->where('id_invoice', $r->id_invoice)->first(),
-            'invoice' => DB::table('invoice_bk')->where('id_invoice_bk', $r->id_invoice)->first()
+            'grading' => DB::table('grading')->where('no_nota', $r->no_nota)->first(),
+            'invoice' => DB::table('invoice_bk')->where('no_nota', $r->no_nota)->first()
         ];
 
         return view('pembelian_bk.grading', $data);

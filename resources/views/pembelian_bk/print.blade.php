@@ -38,8 +38,8 @@
         .cr-inner {
             position: absolute;
             inset: 0;
-            background: #47469B;
-            color: white;
+            /* background: #47469B; */
+            color: #47469B;
             border-radius: 16px 8px 16px 8px;
             clip-path: polygon(100% 0, 0 100%, 100% 100%);
         }
@@ -62,7 +62,7 @@
         &::after {
             content: '';
             position: absolute;
-            background: #47469B;
+            /* background: #47469B; */
             z-index: -1;
         }
 

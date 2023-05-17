@@ -1,4 +1,4 @@
-<div class="row">
+{{-- <div class="row">
     <div class="col-lg-12">
         <h5>{{$invoice->no_nota}}</h5>
     </div>
@@ -10,7 +10,7 @@
     <div class="col-lg-4">
         <label for="">No Campur</label>
         <input type="text" class="form-control" name="no_campur">
-        <input type="hidden" class="form-control nota_grading" name="id_invoice" required>
+        <input type="hidden" class="form-control nota_grading" name="no_nota" required>
     </div>
     <div class="col-lg-4">
         <label for="">Gram Basah</label>
@@ -33,7 +33,7 @@
         <label for="">No Campur</label>
         <input type="text" class="form-control" name="no_campur" value="{{$grading->no_campur}}"
             {{empty($grading->no_campur) ? '' : 'readonly'}}>
-        <input type="hidden" class="form-control nota_grading" name="id_invoice" value="{{$grading->id_invoice}}">
+        <input type="hidden" class="form-control nota_grading" name="no_nota" value="{{$grading->no_nota}}">
     </div>
     <div class="col-lg-4">
         <label for="">Gram Basah</label>
@@ -53,4 +53,31 @@
     </div>
     @endif
 
+</div> --}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Gr Basah</th>
+                    <th>Pcs Awal</th>
+                    <th>Gr Gdg Kering</th>
+                    <th>Susut Gram Beli / Kering</th>
+                    <th>Gr Kering / Basah</th>
+                    <th>No Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{number_format($grading->gr_basah,0)}}</td>
+                    <td>{{number_format($grading->pcs_awal,0)}}</td>
+                    <td>{{number_format($grading->gr_kering,0)}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
