@@ -200,6 +200,7 @@ Route::controller(PembelianBahanBakuController::class)->group(function () {
     Route::post('/grading', 'grading')->name('grading');
     Route::post('/approve_invoice_bk', 'approve_invoice_bk')->name('approve_invoice_bk');
     Route::get('/get_grading', 'get_grading')->name('get_grading');
+    Route::get('/get_grading2', 'get_grading2')->name('get_grading2');
 });
 
 Route::controller(PembayaranBkController::class)->group(function () {

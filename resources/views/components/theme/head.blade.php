@@ -34,6 +34,11 @@
     {{--
     <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+
         #image-preview img {
             width: 200px;
             height: 200px;

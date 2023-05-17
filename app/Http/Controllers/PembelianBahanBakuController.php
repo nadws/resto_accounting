@@ -339,10 +339,23 @@ class PembelianBahanBakuController extends Controller
     public function get_grading(Request $r)
     {
         $data = [
-            'grading' => DB::table('grading')->where('no_nota', $r->no_nota)->first(),
+            'grading' => DB::selectOne("SELECT sum(a.qty) as qty, b.tgl, b.no_nota, b.no_campur, b.gr_basah, b.pcs_awal, b.gr_kering
+            FROM pembelian as a  
+            left join grading as b on b.no_nota = a.no_nota
+            where a.no_nota = '$r->no_nota'
+            group by a.no_nota;"),
             'invoice' => DB::table('invoice_bk')->where('no_nota', $r->no_nota)->first()
         ];
 
         return view('pembelian_bk.grading', $data);
+    }
+    public function get_grading2(Request $r)
+    {
+        $data = [
+            'grading' => DB::table('grading')->where('no_nota', $r->no_nota)->first(),
+            'invoice' => DB::table('invoice_bk')->where('no_nota', $r->no_nota)->first()
+        ];
+
+        return view('pembelian_bk.grading2', $data);
     }
 }

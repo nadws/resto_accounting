@@ -109,7 +109,7 @@
                                         </li>
                                         <li>
                                             <a href="#" class="dropdown-item  text-info grading_notatambah"
-                                                id_invoice="{{ $p->id_invoice_bk }}" data-bs-toggle="modal"
+                                                no_nota="{{ $p->no_nota }}" data-bs-toggle="modal"
                                                 data-bs-target="#grading"><i
                                                     class="me-2 fas fa-balance-scale-right"></i>Grading
                                             </a>
@@ -128,37 +128,12 @@
         <form action="{{route('grading')}}" method="post">
             @csrf
             <x-theme.modal title="Campur BKIN" idModal="grading">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h5></h5>
-                    </div>
-                    <div class="col-lg-4">
-                        <label for="">Tanggal</label>
-                        <input type="date" class="form-control" name="tgl" required>
-                    </div>
-                    <div class="col-lg-4">
-                        <label for="">No Campur</label>
-                        <input type="text" class="form-control" name="no_campur">
-                        <input type="hidden" class="form-control nota_grading" name="no_nota" required>
-                    </div>
-                    <div class="col-lg-4">
-                        <label for="">Gram Basah</label>
-                        <input type="text" class="form-control" name="gr_basah" value="0" required>
-                    </div>
-                    <div class="col-lg-4 mt-2">
-                        <label for="">Pcs Awal</label>
-                        <input type="text" class="form-control" name="pcs_awal" value="0" required>
-                    </div>
-                    <div class="col-lg-4 mt-2">
-                        <label for="">Gr Kering</label>
-                        <input type="text" class="form-control" name="gr_kering" value="0" required>
-                    </div>
-                </div>
+                <div id="grading_nota2"></div>
             </x-theme.modal>
         </form>
 
 
-        <x-theme.modal title="Campur BKIN" size="modal-lg-max" idModal="viewgrading" btnSave="T">
+        <x-theme.modal title="Campur BKIN" size="modal-lg" idModal="viewgrading" btnSave="T">
             <div id="grading_nota"></div>
 
         </x-theme.modal>
@@ -246,8 +221,17 @@
             });
             $(document).on('click', '.grading_notatambah', function(){
                 var no_nota = $(this).attr('no_nota');
-                $('.nota_grading').val(no_nota);
-                $('.nota_grading_text').text(no_nota);
+
+                $.ajax({
+                    type: "get",
+                    url: "/get_grading2?no_nota=" + no_nota,
+                    success: function (data) {
+                        $('#grading_nota2').html(data);
+                        $('.nota_grading').val(no_nota);
+                        $('.nota_grading_text').text(no_nota); 
+                    }
+                });
+                
                 
             });
 
