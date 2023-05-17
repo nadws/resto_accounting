@@ -47,9 +47,9 @@
         .cr-text {
             display: block;
             font-weight: bold;
-            font-size: .8em;
+            font-size: 20px;
             line-height: 1.3;
-            transform: rotate(313deg) translateY(4.1em) translateX(-2.8em);
+            transform: rotate(313deg) translateY(2.1em) translateX(-1.8em);
 
             strong {
                 display: block;
@@ -211,7 +211,8 @@
 
             <table style="font-size: small; white-space: nowrap;  " width="100%">
                 <tr>
-                    <td rowspan="3" width="80%"><img src="/assets/login/img/empat.svg" width="100" alt=""></td>
+                    <td rowspan="3" align="left" width="80%"><img src="/assets/login/img/empat.svg" width="100" alt="">
+                    </td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                     <td>Tanggal</td>
