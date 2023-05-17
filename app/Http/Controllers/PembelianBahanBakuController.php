@@ -264,7 +264,10 @@ class PembelianBahanBakuController extends Controller
         DB::table('invoice_bk')->where('no_nota', $nota)->delete();
         DB::table('bayar_bk')->where('no_nota', $nota)->delete();
         DB::table('pembelian')->where('no_nota', $nota)->delete();
-        return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
+        DB::table('grading')->where('no_nota', $nota)->delete();
+
+
+        return redirect()->back()->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function edit_pembelian_bk(Request $r)
@@ -371,17 +374,19 @@ class PembelianBahanBakuController extends Controller
 
     public function grading(Request $r)
     {
-        DB::table('grading')->where('id_invoice', $r->id_invoice)->delete();
+        DB::table('grading')->where('no_nota', $r->no_nota)->delete();
         $data = [
             'tgl' => $r->tgl,
-            'id_invoice' => $r->id_invoice,
+            'no_nota' => $r->no_nota,
             'no_campur' => $r->no_campur,
             'gr_basah' => $r->gr_basah,
             'pcs_awal' => $r->pcs_awal,
             'gr_kering' => $r->gr_kering
         ];
         DB::table('grading')->insert($data);
-        return redirect()->route('pembelian_bk')->with('sukses', 'Data berhasil ditambahkan');
+        $tgl1 = date('Y-m-01', strtotime($r->tgl));
+        $tgl2 = date('Y-m-t', strtotime($r->tgl));
+        return redirect()->route('pembelian_bk', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2])->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function approve_invoice_bk(Request $r)
