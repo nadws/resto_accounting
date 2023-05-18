@@ -241,9 +241,14 @@
     $('#tableScroll').DataTable({
         "searching": true,
         scrollY: '400px',
+        scrollX: false,
         scrollCollapse: true,
         "autoWidth": true,
         "paging": false,
+    });
+    $('#nanda').DataTable({
+        scrollY: 200,
+        scrollX: true,
     });
 </script>
 @if (session()->has('sukses'))
