@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/pembayaran', 'pembayaran')->name('pembayaran');
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
         Route::get('/asset', 'asset')->name('asset');
+        Route::get('/testing', 'testing')->name('testing');
     });
 
 
