@@ -2,60 +2,26 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
+                @if (!empty($import))
+                    <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
+                        teks="Import" />
+                @endif
 
-                <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
-                    teks="Import" />
-                <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
-                    class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
-                <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
-                    teks="Buat Baru" />
+                @if (!empty($export))
+                    <x-theme.button modal="T"
+                        href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
+                        icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                @endif
+
+                @if (!empty($tambah))
+                    <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
+                        teks="Buat Baru" />
+                @endif
+
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
 
-                <x-theme.akses />
-                <form action="{{ route('akses.save') }}" method="post">
-                    @csrf
-                    <div id="akses" class="modal hide fade" role="dialog" aria-labelledby="myModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog  modal-lg-max" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h4 class="modal-title" id="myModalLabel33">
-                                        Akses {{ $title }}
-                                    </h4>
-                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                        <i data-feather="x"></i>
-                                    </button>
-                                </div>
-                                <input type="hidden" name="route" value="sistem_po">
-                                <div class="modal-body">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama</th>
-                                                <th>Halaman</th>
-                                                <th>Create</th>
-                                                <th>Read</th>
-                                                <th>Update</th>
-                                                <th>Delete</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Save</span>
-                                    </button>
-                                    <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                        <i class="bx bx-x d-block d-sm-none"></i>
-                                        <span class="d-none d-sm-block">Close</span>
-                                    </button>
-                                </div>
-                
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                <x-theme.akses :halaman="$halaman" route="jurnal" />
+
             </div>
         </div>
     </x-slot>
@@ -108,20 +74,33 @@
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <li><a class="dropdown-item text-primary edit_akun"
-                                                href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
-                                                    class="me-2 fas fa-pen"></i>Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item  text-danger delete_nota"
-                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
-                                            </a>
-                                        </li>
-                                        <li><a class="dropdown-item  text-info detail_nota" href="#"
-                                                no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
-                                        </li>
+                                        <x-theme.dropdown_kosong :edit="$edit" :hapus="$hapus"
+                                            :detail="$detail" />
+
+                                        @if (!empty($edit))
+                                            <li><a class="dropdown-item text-primary edit_akun"
+                                                    href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
+                                                        class="me-2 fas fa-pen"></i>Edit</a>
+                                            </li>
+                                        @endif
+
+
+                                        @if (!empty($hapus))
+                                            <li>
+                                                <a class="dropdown-item  text-danger delete_nota"
+                                                    no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
+                                                </a>
+                                            </li>
+                                        @endif
+
+                                        @if (!empty($detail))
+                                            <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                                    no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#detail"><i
+                                                        class="me-2 fas fa-search"></i>Detail</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </td>
@@ -176,6 +155,7 @@
 
             </x-theme.modal>
         </form>
+
         <form action="{{ route('import_jurnal') }}" method="post" enctype="multipart/form-data">
             @csrf
             <x-theme.modal title="Import Jurnal" idModal="import">
@@ -244,7 +224,9 @@
                         $(".teksFull" + id).css('display', 'none')
                     })
                 }
+
                 readMore()
+
                 $(document).on('click', '.delete_nota', function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
@@ -252,8 +234,6 @@
                 $('.selectView').select2({
                     dropdownParent: $('#view .modal-content')
                 });
-
-
                 $(document).on("click", ".detail_nota", function() {
                     var no_nota = $(this).attr('no_nota');
                     $.ajax({
@@ -265,9 +245,6 @@
                     });
 
                 });
-
-
-
             });
         </script>
     @endsection

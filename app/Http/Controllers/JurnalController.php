@@ -11,13 +11,16 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\JurnalImport;
-
+use App\Models\User;
+use SettingHal;
 
 class JurnalController extends Controller
 {
     protected $tgl1, $tgl2, $id_proyek, $period, $id_buku;
     public function __construct(Request $r)
     {
+
+        
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -40,11 +43,21 @@ class JurnalController extends Controller
         $this->id_buku = $r->id_buku ?? 2;
     }
 
+    
+
     public function index()
     {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
         $id_proyek = $this->id_proyek;
+        $id_user = auth()->user()->id;
+
+        $cekP = DB::table('permission')->where('url', request()->route()->getName())->first();
+        $cek = DB::table('permission_perpage')->where([['id_user', $id_user], ['permission_id', $cekP->id_permission]])->first();
+        if (empty($cek)) {
+            return view('error.403');
+        }
+        
 
         if ($id_proyek == '0') {
             $jurnal =  DB::select("SELECT a.id_jurnal,a.no_urut,a.admin, a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post, d.nm_proyek FROM jurnal as a 
@@ -59,13 +72,25 @@ class JurnalController extends Controller
             left join proyek as d on d.id_proyek = a.id_proyek
             where a.id_buku = '2' and a.id_proyek = $id_proyek and a.tgl between '$tgl1' and '$tgl2' order by a.id_jurnal DESC");
         }
+    
+
         $data =  [
             'title' => 'Jurnal Umum',
             'jurnal' => $jurnal,
             'proyek' => proyek::where('status', 'berjalan')->get(),
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
-            'id_proyek' => $id_proyek
+            'id_proyek' => $id_proyek,
+            // button
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 1,
+            'tambah' => SettingHal::btnHal(1, $id_user),
+            'import' => SettingHal::btnHal(2, $id_user),
+            'export' => SettingHal::btnHal(3, $id_user),
+            'detail' => SettingHal::btnHal(6, $id_user),
+            'edit' => SettingHal::btnHal(4, $id_user),
+            'hapus' => SettingHal::btnHal(5, $id_user),
         ];
         return view('jurnal.index', $data);
     }
