@@ -20,7 +20,7 @@ class JurnalController extends Controller
     public function __construct(Request $r)
     {
 
-        
+
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -43,7 +43,7 @@ class JurnalController extends Controller
         $this->id_buku = $r->id_buku ?? 2;
     }
 
-    
+
 
     public function index()
     {
@@ -52,12 +52,12 @@ class JurnalController extends Controller
         $id_proyek = $this->id_proyek;
         $id_user = auth()->user()->id;
 
-        $cekP = DB::table('permission')->where('url', request()->route()->getName())->first();
-        $cek = DB::table('permission_perpage')->where([['id_user', $id_user], ['permission_id', $cekP->id_permission]])->first();
-        if (empty($cek)) {
-            return view('error.403');
-        }
-        
+        // $cekP = DB::table('permission')->where('url', request()->route()->getName())->first();
+        // $cek = DB::table('permission_perpage')->where([['id_user', $id_user], ['permission_id', $cekP->id_permission]])->first();
+        // if (empty($cek)) {
+        //     return view('error.403');
+        // }
+
 
         if ($id_proyek == '0') {
             $jurnal =  DB::select("SELECT a.id_jurnal,a.no_urut,a.admin, a.id_akun, a.tgl, a.debit, a.kredit, a.ket,a.no_nota, b.nm_akun, c.nm_post, d.nm_proyek FROM jurnal as a 
@@ -72,7 +72,7 @@ class JurnalController extends Controller
             left join proyek as d on d.id_proyek = a.id_proyek
             where a.id_buku = '2' and a.id_proyek = $id_proyek and a.tgl between '$tgl1' and '$tgl2' order by a.id_jurnal DESC");
         }
-    
+
 
         $data =  [
             'title' => 'Jurnal Umum',

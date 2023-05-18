@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\BkinExport;
 
 class PembelianBahanBakuController extends Controller
 {
@@ -78,6 +80,8 @@ class PembelianBahanBakuController extends Controller
             'title' => 'Pembelian Bahan Baku',
             'pembelian' => $pembelian,
             'listbulan' => $listBulan,
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2
 
         ];
         return view('pembelian_bk.index', $data);
@@ -440,5 +444,15 @@ class PembelianBahanBakuController extends Controller
         $sub_po = "BI$year->kode" . "$bulan->kode" . str_pad($nota_t, 3, '0', STR_PAD_LEFT);
 
         echo "$sub_po";
+    }
+    public function export_bk(Request $r)
+    {
+        $tgl1 =  $r->tgl1;
+        $tgl2 =  $r->tgl2;
+        $total = DB::selectOne("SELECT count(a.id_invoice_bk) as jumlah FROM invoice_bk as a where a.tgl between '$tgl1' and '$tgl2' ");
+
+        $totalrow = $total->jumlah;
+
+        return Excel::download(new BkinExport($tgl1, $tgl2, $totalrow), 'pembelian_bk.xlsx');
     }
 }

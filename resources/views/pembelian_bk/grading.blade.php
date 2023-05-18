@@ -59,31 +59,33 @@
     <div class="col-lg-12">
         <h5> Nota : {{$invoice->no_nota}}</h5>
         <br>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th style="text-align: center">Tanggal</th>
-                    <th style="text-align: center">No Grade</th>
-                    <th style="text-align: right">Gr Basah</th>
-                    <th style="text-align: right">Pcs Awal</th>
-                    <th style="text-align: right">Gr Gdg Kering</th>
-                    <th style="text-align: right">Susut Gram Beli / Kering</th>
-                    <th style="text-align: right">Gr Kering / Basah</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td align="center">{{date('d-m-Y',strtotime($grading->tgl))}}</td>
-                    <td align="center">{{$grading->no_campur}}</td>
-                    <td style="text-align: right">{{number_format($grading->gr_basah,0)}}</td>
-                    <td style="text-align: right">{{number_format($grading->pcs_awal,0)}}</td>
-                    <td style="text-align: right">{{number_format($grading->gr_kering,0)}}</td>
-                    <td style="text-align: right">{{number_format((1 - ($grading->qty / $grading->gr_kering)) *
-                        -100,0)}} %</td>
-                    <td style="text-align: right">{{number_format((1 - ($grading->gr_kering / $grading->gr_basah)) *
-                        100,0)}} %</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-bordered ">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;white-space: nowrap;">Tanggal</th>
+                        <th style="text-align: center;white-space: nowrap;">No Grade</th>
+                        <th style="text-align: right; white-space: nowrap;">Gr Basah</th>
+                        <th style="text-align: right; white-space: nowrap;">Pcs Awal</th>
+                        <th style="text-align: right; white-space: nowrap;">Gr Gdg Kering</th>
+                        <th style="text-align: right; white-space: nowrap;">Susut Gram Beli / Kering</th>
+                        <th style="text-align: right; white-space: nowrap;">Gr Kering / Basah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td align="center">{{date('d-m-Y',strtotime($grading->tgl))}}</td>
+                        <td align="center">{{$grading->no_campur}}</td>
+                        <td style="text-align: right">{{number_format($grading->gr_basah,0)}}</td>
+                        <td style="text-align: right">{{number_format($grading->pcs_awal,0)}}</td>
+                        <td style="text-align: right">{{number_format($grading->gr_kering,0)}}</td>
+                        <td style="text-align: right">{{number_format((1 - ($grading->qty / $grading->gr_kering)) *
+                            -100,0)}} %</td>
+                        <td style="text-align: right">{{number_format((1 - ($grading->gr_kering / $grading->gr_basah)) *
+                            100,0)}} %</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

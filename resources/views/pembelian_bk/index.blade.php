@@ -5,6 +5,8 @@
                 <x-theme.button modal="T" href="{{ route('pembelian_bk.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+                <x-theme.button modal="T" href="/export_bk?tgl1={{$tgl1}}&tgl2={{$tgl2}}" icon="fa-file-excel"
+                    addClass="float-end float-end btn btn-success me-2" teks="Export" />
             </div>
         </div>
     </x-slot>
@@ -15,7 +17,7 @@
             <br>
             <br>
             <section class="row">
-                <table class="table table-hover" id="tableScroll">
+                <table class="table table-hover" id="nanda" width="100%">
                     <thead>
                         <tr>
                             <th width="5">#</th>
@@ -24,8 +26,7 @@
                             <th>Suplier Awal</th>
                             <th>Suplier Akhir</th>
                             <th style="text-align: right">Total Harga</th>
-                            {{-- <th style="text-align: right">Terbayar</th>
-                            <th style="text-align: right">Sisa</th> --}}
+
                             <th style="text-align: center">Status</th>
                             <th style="text-align: center">Grading</th>
                             <th style="text-align: center">Approve <br> <input type="checkbox" name="" id="checkAll"
@@ -43,13 +44,12 @@
                             <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
                             <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
                             <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
-                            {{-- <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
-                            <td align="right">Rp. {{number_format($p->total_harga + $p->debit - $p->kredit,0)}}</td>
-                            --}}
+
                             <td align="center">
                                 <span
                                     class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
-                                    {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ?
+                                    {{$p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit
+                                    == 0 ?
                                     'Paid' :
                                     'Unpaid')}}
                                 </span>
@@ -95,12 +95,7 @@
                                             </a>
                                         </li>
                                         @endif
-                                        {{-- <li>
-                                            <a class="dropdown-item  text-info detail_nota" target="_blank"
-                                                href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
-                                                    class="me-2 fas fa-print"></i>Detail
-                                            </a>
-                                        </li> --}}
+
                                         <li>
                                             <a class="dropdown-item  text-info detail_nota" target="_blank"
                                                 href="{{route('print_bk',['no_nota' => $p->no_nota])}}"><i
@@ -122,6 +117,7 @@
                         @endforeach
                     </tbody>
                 </table>
+
             </section>
         </form>
 
@@ -188,7 +184,8 @@
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="row">
-                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data
+                                </h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
                                 <input type="hidden" class="no_nota" name="no_nota">
                             </div>
