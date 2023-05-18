@@ -247,8 +247,9 @@
         "paging": false,
     });
     $('#nanda').DataTable({
-        scrollY: 200,
+        scrollY: '200',
         scrollX: true,
+        "paging": false,
     });
 </script>
 @if (session()->has('sukses'))
