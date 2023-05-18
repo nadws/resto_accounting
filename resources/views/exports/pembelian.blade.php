@@ -22,9 +22,9 @@
         <tr>
             <td>{{$no+1}}</td>
             <td>{{$p->tgl}}</td>
-            <td>{{$p->nm_suplier}}</td>
+            <td>{{strtoupper($p->nm_suplier)}}</td>
             <td>{{$p->no_nota}}</td>
-            <td>{{$p->suplier_akhir}}</td>
+            <td>{{strtoupper($p->suplier_akhir)}}</td>
             <td></td>
             <td>{{$p->gr_beli}}</td>
             <td>{{$p->total_harga}}</td>

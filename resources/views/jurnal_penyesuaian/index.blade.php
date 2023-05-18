@@ -1,7 +1,9 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
-
+            <div class="col-lg-6">
+                <h3 class="float-start mt-1">{{ $title }}</h3>
+            </div>
 
         </div>
     </x-slot>
@@ -12,14 +14,15 @@
                 <div class="col-lg-12">
                     <ul class="nav nav-pills float-start">
                         <li class="nav-item">
-                            <a class="nav-link {{request()->route()->getName() == 'penyesuaian.aktiva' ? 'active' : ''}}" aria-current="page"
-                                href="{{route('penyesuaian.aktiva')}}">Aktiva</a>
+                            <a class="nav-link {{request()->route()->getName() == 'penyesuaian.aktiva' ? 'active' : ''}}"
+                                aria-current="page" href="{{route('penyesuaian.aktiva')}}">Aktiva</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Peralatan</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{request()->route()->getName() == 'penyesuaian.atk' ? 'active' : ''}}" href="{{ route('penyesuaian.atk') }}">Atk</a>
+                            <a class="nav-link {{request()->route()->getName() == 'penyesuaian.atk' ? 'active' : ''}}"
+                                href="{{ route('penyesuaian.atk') }}">Atk</a>
                         </li>
                     </ul>
 

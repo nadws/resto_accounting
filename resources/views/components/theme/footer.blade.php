@@ -26,6 +26,7 @@
 <script src="https://cdn.datatables.net/v/bs5/dt-1.12.1/datatables.min.js"></script>
 <script src="{{ asset('theme') }}/assets/js/pages/datatables.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('theme') }}/assets/js/pages/horizontal-layout.js"></script>
 
 
 <script>

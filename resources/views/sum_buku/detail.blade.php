@@ -1,6 +1,9 @@
-<x-theme.app title="{{$title}} : {{ucwords(strtolower($nm_akun->nm_akun))}}" table="Y" sizeCard="12">
+<x-theme.app title="{{$title}} " table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
+            <div class="col-lg-6">
+                <h3 class="float-start mt-1">{{ $title }} : {{ucwords(strtolower($nm_akun->nm_akun))}}</h3>
+            </div>
             <div class="col-lg-6">
                 <a href="{{ route('summary_buku_besar.export_detail',['id_akun' => $id_akun,'tgl1' => $tgl1,'tgl2' => $tgl2]) }}"
                     class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
