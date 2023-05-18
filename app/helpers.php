@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 if (!function_exists('tanggal')) {
@@ -71,7 +72,8 @@ if (!function_exists('buatNota')) {
 }
 
 
-class Nonaktif {
+class Nonaktif
+{
     public static function edit($tbl, $kolom, $kolomValue, $data)
     {
         DB::table($tbl)->where($kolom, $kolomValue)->update([
@@ -80,14 +82,13 @@ class Nonaktif {
 
         DB::table($tbl)->insert($data);
     }
-    
+
     public static function delete($tbl, $kolom, $kolomValue)
     {
         DB::table($tbl)->where($kolom, $kolomValue)->update([
             'nonaktif' => 'Y'
         ]);
     }
-
 }
 
 class SettingHal

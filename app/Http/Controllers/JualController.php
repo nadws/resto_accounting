@@ -88,7 +88,7 @@ class JualController extends Controller
             'no_nota' => 'PNJL-' . $no_nota,
             'total_rp' => $r->total_rp,
             'setor' => $r->setor,
-            'status' => 'paid',
+            'status' => 'unpaid',
             'tgl' => date('Y-m-d'),
             'admin' => auth()->user()->name
         ]);
@@ -142,7 +142,7 @@ class JualController extends Controller
         ];
         Jurnal::create($dataK);
 
-        DB::table('tb_jual')->where('no_nota', $no_nota)->update(['status' => 'unpaid']);
+        DB::table('tb_jual')->where('no_nota', $no_nota)->update(['status' => 'paid']);
         return redirect()->route($this->route)->with('sukses', 'Data Berhasil Dibuat');
     }
 
