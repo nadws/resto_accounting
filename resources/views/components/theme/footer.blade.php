@@ -241,6 +241,15 @@
     $('#tableScroll').DataTable({
         "searching": true,
         scrollY: '400px',
+        scrollX: true,
+        scrollCollapse: true,
+        "autoWidth": true,
+        "paging": false,
+    });
+    $('#nanda').DataTable({
+        "searching": true,
+        scrollY: '400px',
+        scrollX: true,
         scrollCollapse: true,
         "autoWidth": true,
         "paging": false,

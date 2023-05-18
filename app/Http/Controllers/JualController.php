@@ -98,11 +98,28 @@ class JualController extends Controller
     public function create(Request $r)
     {
         $no_nota = $r->no_nota;
+        $getRow = DB::table('jurnal')->where([['no_nota', $r->no_nota], ['kredit', 0]])->first();
+
+
+        // pendapatan lain2
+        if($getRow->debit > $r->total_rp || $getRow->debit < $r->total_rp) {
+            $dataD = [
+                'tgl' => $r->tgl,
+                'no_nota' => $no_nota,
+                'id_akun' => 136,
+                'id_buku' => '2',
+                'ket' => 'Penjualan-' . $r->no_penjualan,
+                'kredit' => $r->total_rp > $getRow->debit ? 0 : $getRow->debit - $r->total_rp,
+                'debit' => $r->total_rp > $getRow->debit ? $r->total_rp - $getRow->debit : 0,
+                'admin' => auth()->user()->name,
+            ];
+            Jurnal::create($dataD);
+        }
 
         // masuk penjualan di debit
         $dataD = [
             'tgl' => $r->tgl,
-            'no_nota' => 'PNJL-' . $no_nota,
+            'no_nota' => $no_nota,
             'id_akun' => 135,
             'id_buku' => '2',
             'ket' => 'Penjualan-' . $r->no_penjualan,
@@ -115,7 +132,7 @@ class JualController extends Controller
         // masuk penjualan di kredit
         $dataK = [
             'tgl' => $r->tgl,
-            'no_nota' => 'PNJL-' . $no_nota,
+            'no_nota' => $no_nota,
             'id_akun' => 134,
             'id_buku' => '2',
             'ket' => 'Penjualan-' . $r->no_penjualan,
@@ -131,6 +148,7 @@ class JualController extends Controller
 
     public function delete(Request $r)
     {
-
+        DB::table('tb_jual')->where('no_nota', $r->no_nota)->delete();
+        return redirect()->route($this->route)->with('sukses', 'Data Berhasil Dihapus');
     }
 }

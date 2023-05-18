@@ -1,6 +1,7 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="9">
     <x-slot name="cardHeader">
         <x-theme.button modal="Y" idModal="jual" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
+        <x-theme.btn_filter/>
     </x-slot>
 
     <x-slot name="cardBody">
@@ -47,7 +48,7 @@
 
                                         <li>
                                             <a class="dropdown-item  text-danger delete_nota"
-                                                no_penjualan="{{ $d->no_penjualan }}" href="#"
+                                                no_nota="{{ $d->no_nota }}" href="#"
                                                 data-bs-toggle="modal" data-bs-target="#delete"><i
                                                     class="me-2 fas fa-trash"></i>Delete
                                             </a>
@@ -107,14 +108,14 @@
             @csrf
             <x-theme.modal title="Terima Pembayaran" idModal="tambah">
                 <div class="row">
-                    <input type="text" id="no_nota">
-                    <div class="col-lg-4">
+                    <input type="text" id="no_nota" name="no_nota">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">Tanggal</label>
                             <input type="date" name="tgl" class="form-control">
                         </div>
                     </div>
-                    <div class="col-lg-8">
+                    <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">Total Rp</label>
                             <input type="text" name="total_rp" class="form-control">
@@ -144,7 +145,7 @@
                             <div class="row">
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
-                                <input type="hidden" class="no_nota" name="no_nota">
+                                <input type="hidden" class="no_nota_delete" name="no_nota">
                                 <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
                                 <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
                             </div>
@@ -161,11 +162,15 @@
     </x-slot>
 
     @section('scripts')
-    <script>
-        $(document).on('click', '.bayar_nota', function(){
-            var no_nota = $(this).attr('no_nota')
-            $("#no_nota").val(no_nota);
-        })
-    </script>
+        <script>
+            $(document).on('click', '.bayar_nota', function() {
+                var no_nota = $(this).attr('no_nota')
+                $("#no_nota").val(no_nota);
+            })
+            $(document).on('click', '.delete_nota', function() {
+                var no_nota = $(this).attr('no_nota')
+                $(".no_nota_delete").val(no_nota);
+            })
+        </script>
     @endsection
 </x-theme.app>

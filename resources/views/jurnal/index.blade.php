@@ -9,7 +9,7 @@
 
                 @if (!empty($export))
                     <x-theme.button modal="T"
-                        href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
+                        href="export_jurnal?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}&id_proyek={{ $id_proyek }}&id_buku=2"
                         icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
                 @endif
 
@@ -17,8 +17,7 @@
                     <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
                         teks="Buat Baru" />
                 @endif
-
-                <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+                <x-theme.btn_filter />
 
                 <x-theme.akses :halaman="$halaman" route="jurnal" />
 
@@ -109,53 +108,6 @@
                 </tbody>
             </table>
         </section>
-
-        <form action="" method="get">
-            <x-theme.modal title="Filter Jurnal Umum" idModal="view">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <table width="100%" cellpadding="10px">
-                            <tr>
-                                <td>Tanggal</td>
-                                <td colspan="2">
-                                    <select name="period" id="" class="form-control filter_tgl">
-                                        <option value="daily">Hari ini</option>
-                                        <option value="weekly">Minggu ini</option>
-                                        <option value="mounthly">Bulan ini</option>
-                                        <option value="costume">Custom</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr class="costume_muncul">
-                                <td></td>
-                                <td>
-                                    <label for="">Dari</label>
-                                    <input type="date" name="tgl1" class="form-control tgl">
-                                </td>
-                                <td>
-                                    <label for="">Sampai</label>
-                                    <input type="date" name="tgl2" class="form-control tgl">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Proyek</td>
-                                <td colspan="2">
-                                    <select name="id_proyek" id="selectView" class="">
-                                        <option value="0">All</option>
-                                        @foreach ($proyek as $p)
-                                            <option value="{{ $p->id_proyek }}">{{ $p->nm_proyek }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-            </x-theme.modal>
-        </form>
-
         <form action="{{ route('import_jurnal') }}" method="post" enctype="multipart/form-data">
             @csrf
             <x-theme.modal title="Import Jurnal" idModal="import">
@@ -178,7 +130,7 @@
                             <div class="row">
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
-                                <input type="hidden" class="no_nota" name="no_nota">
+                                <input type="text" class="no_nota" name="no_nota">
                                 <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
                                 <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
                                 <input type="hidden" name="id_proyek" value="{{ $id_proyek }}">
@@ -231,9 +183,11 @@
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
                 })
+
                 $('.selectView').select2({
                     dropdownParent: $('#view .modal-content')
                 });
+
                 $(document).on("click", ".detail_nota", function() {
                     var no_nota = $(this).attr('no_nota');
                     $.ajax({

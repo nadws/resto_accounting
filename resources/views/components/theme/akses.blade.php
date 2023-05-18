@@ -108,4 +108,18 @@
         </table>
     </x-theme.modal>
 </form>
+@section('scripts')
+    <script>
+        $(document).on('click', '.akses_h', function() {
+            var id_user = $(this).attr('id_user');
+            if ($('.akses_h' + id_user).prop("checked") == true) {
+                $('.open_check' + id_user).removeAttr('disabled');
+            } else {
+                $('.open_check' + id_user).prop('disabled', true);
+
+            }
+
+        });
+    </script>
+@endsection
 {{-- end modal setting --}}
