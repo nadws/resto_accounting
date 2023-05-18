@@ -41,86 +41,89 @@
                     <hr style="border: 1px solid black">
                 </div>
                 <div class="col-lg-12">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th width="2%">#</th>
-                                <th width="15%">Produk</th>
-                                <th width="7%">Qty</th>
-                                <th width="10%">Satuan</th>
-                                <th width="12%" style="text-align: right;">Harga Satuan</th>
-                                <th width="12%" style="text-align: right;">Total Harga</th>
-                                <th width="5%">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="baris1">
-                                <td style="vertical-align: top;">
-                                    {{-- <button type="button" data-bs-toggle="collapse" href=".join1"
-                                        class="btn rounded-pill " count="1"><i class="fas fa-angle-down"></i>
-                                    </button> --}}
-                                </td>
-                                <td>
-                                    <select name="id_produk[]" id="" class="select2_add pilih_produk pilih_produk1"
-                                        count='1'>
-                                        <option value="">Pilih Produk</option>
-                                        @foreach ($produk as $p)
-                                        <option value="{{$p->id_produk}}">{{$p->nm_produk}}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
+                    <div class="table-responsive">
+                        <table class="table table-striped ">
+                            <thead>
+                                <tr>
+                                    <th width="2%">#</th>
+                                    <th width="15%">Produk</th>
+                                    <th width="7%">Qty</th>
+                                    <th width="10%">Satuan</th>
+                                    <th width="12%" style="text-align: right;white-space: nowrap;">Harga Satuan</th>
+                                    <th width="12%" style="text-align: right;white-space: nowrap;">Total Harga</th>
+                                    <th width="5%">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="baris1">
+                                    <td style="vertical-align: top;">
+                                        {{-- <button type="button" data-bs-toggle="collapse" href=".join1"
+                                            class="btn rounded-pill " count="1"><i class="fas fa-angle-down"></i>
+                                        </button> --}}
+                                    </td>
+                                    <td>
+                                        <select name="id_produk[]" id="" class="select2_add pilih_produk pilih_produk1"
+                                            count='1'>
+                                            <option value="">Pilih Produk</option>
+                                            @foreach ($produk as $p)
+                                            <option value="{{$p->id_produk}}">{{$p->nm_produk}}</option>
+                                            @endforeach
+                                        </select>
+                                    </td>
 
-                                <td style="vertical-align: top;">
-                                    <input type="text" class="form-control qty qty1" count='1'
-                                        style="vertical-align: top" value="0">
-                                    <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa1"
-                                        count='1' style="vertical-align: top" value="0">
+                                    <td style="vertical-align: top;">
+                                        <input type="text" class="form-control qty qty1 input-nanda" count='1'
+                                            style="vertical-align: top; width: 110px;" value="0">
+                                        <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa1"
+                                            count='1' style="vertical-align: top" value="0">
 
-                                </td>
-                                <td style="vertical-align: top;">
-                                    <select name="id_satuan[]" id="" class="select2_add satuan1">
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <select name="id_satuan[]" id="" style="width: 110px;"
+                                            class="select2_add satuan1">
 
-                                    </select>
+                                        </select>
 
-                                </td>
-                                <td style="vertical-align: top;">
-                                    <input type="text" class="form-control h_satuan h_satuan1 text-end" value="Rp 0"
-                                        count="1">
-                                    <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1" value="0"
-                                        name="h_satuan[]">
-                                </td>
-                                <td style="vertical-align: top;">
-                                    <input type="text" class="form-control total_harga1 text-end" value="" count="1"
-                                        readonly>
-                                    <input type="hidden"
-                                        class="form-control total_harga_biasa total_harga_biasa1 text-end" value=""
-                                        readonly>
-                                </td>
-                                <td style="vertical-align: top;">
-                                    <button type="button" class="btn rounded-pill remove_baris" count="1"><i
-                                            class="fas fa-trash text-danger"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <input type="text" class="form-control h_satuan h_satuan1 text-end "
+                                            value="Rp 0" count="1" style="width: 100%;">
+                                        <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1"
+                                            value="0" name="h_satuan[]">
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <input type="text" class="form-control total_harga1 text-end input-mobile"
+                                            value="" count="1" style="width: 100%;" readonly>
+                                        <input type="hidden"
+                                            class="form-control total_harga_biasa total_harga_biasa1 text-end" value=""
+                                            readonly>
+                                    </td>
+                                    <td style="vertical-align: top;">
+                                        <button type="button" class="btn rounded-pill remove_baris" count="1"><i
+                                                class="fas fa-trash text-danger"></i>
+                                        </button>
+                                    </td>
+                                </tr>
 
-                        </tbody>
-                        <tbody id="tb_baris">
+                            </tbody>
+                            <tbody id="tb_baris">
 
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="9">
-                                    <button type="button" class="btn btn-block btn-lg tbh_baris"
-                                        style="background-color: #F4F7F9; color: #8FA8BD; font-size: 14px; padding: 13px;">
-                                        <i class="fas fa-plus"></i> Tambah Baris Baru
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="9">
+                                        <button type="button" class="btn btn-block btn-lg tbh_baris"
+                                            style="background-color: #F4F7F9; color: #8FA8BD; font-size: 14px; padding: 13px;">
+                                            <i class="fas fa-plus"></i> Tambah Baris Baru
 
-                                    </button>
-                                </th>
-                            </tr>
-                        </tfoot>
+                                        </button>
+                                    </th>
+                                </tr>
+                            </tfoot>
 
 
-                    </table>
+                        </table>
+                    </div>
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
