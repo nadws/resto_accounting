@@ -18,7 +18,7 @@
                     teks="Buat Baru" />
                 @endif
 
-                <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+                <x-theme.btn_filter/>
 
                 <x-theme.akses :halaman="$halaman" route="jurnal" />
 
