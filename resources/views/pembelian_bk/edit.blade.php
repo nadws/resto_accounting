@@ -75,7 +75,7 @@
                                 </td>
                                 <td>
                                     <select name="id_produk[]" id=""
-                                        class="select2_add pilih_produk pilih_produk{{$no+1}}" count='1'>
+                                        class="select2_add pilih_produk pilih_produk{{$no+1}}" count='{{$no+1}}'>
                                         <option value="">Pilih Produk</option>
                                         @foreach ($produk as $p)
                                         <option value="{{$p->id_produk}}" {{$g->id_produk == $p->id_produk ? 'Selected'
