@@ -159,8 +159,8 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Faktur Penjualan',
-                'route' => 'faktur_penjualan',
+                'judul' => 'Penjualan',
+                'route' => 'jual.index',
                 'img' => 'invoice.png',
                 'deskripsi' => 'mencatat faktur penjualan untuk pelanggan',
             ],
