@@ -250,6 +250,7 @@
         scrollY: '200',
         scrollX: true,
         "paging": false,
+        "autoWidth": true,
     });
 </script>
 @if (session()->has('sukses'))
