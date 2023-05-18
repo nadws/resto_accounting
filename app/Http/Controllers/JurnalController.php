@@ -35,6 +35,7 @@ class JurnalController extends Controller
             $tahun = $r->tahun;
             $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
             $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+
             $this->tgl1 = date('Y-m-01', strtotime($tglawal));
             $this->tgl2 = date('Y-m-t', strtotime($tglakhir));
         } elseif ($r->period == 'costume') {
