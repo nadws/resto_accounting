@@ -163,9 +163,7 @@
 
     @section('scripts')
         <script>
-            $(document).ready(function () {
-                alert(24)
-            });
+          
             $(document).on('click', '.bayar_nota', function() {
                 var no_nota = $(this).attr('no_nota')
                 $("#no_nota").val(no_nota);
