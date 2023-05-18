@@ -73,7 +73,7 @@
 
                                     <td style="vertical-align: top;">
                                         <input type="text" class="form-control qty qty1 input-nanda" count='1'
-                                            style="vertical-align: top; width: 110px;" value="0">
+                                            style="vertical-align: top; width: 80px;" value="0">
                                         <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa1"
                                             count='1' style="vertical-align: top" value="0">
 
@@ -85,15 +85,15 @@
                                         </select>
 
                                     </td>
-                                    <td style="vertical-align: top;">
+                                    <td style="vertical-align: top;" align="right">
                                         <input type="text" class="form-control h_satuan h_satuan1 text-end "
-                                            value="Rp 0" count="1" style="width: 100%;">
+                                            value="Rp 0" count="1" style="width: 150px;">
                                         <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1"
                                             value="0" name="h_satuan[]">
                                     </td>
-                                    <td style="vertical-align: top;">
-                                        <input type="text" class="form-control total_harga1 text-end input-mobile"
-                                            value="" count="1" style="width: 100%;" readonly>
+                                    <td style="vertical-align: top;" align="right">
+                                        <input type="text" class="form-control total_harga1 text-end " value=""
+                                            count="1" style="width: 150px" readonly>
                                         <input type="hidden"
                                             class="form-control total_harga_biasa total_harga_biasa1 text-end" value=""
                                             readonly>

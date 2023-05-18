@@ -14,9 +14,10 @@
     </td>
 
     <td style="vertical-align: top;">
-        <input type="text" class="form-control qty qty{{$count}}" count='{{$count}}' style="vertical-align: top">
+        <input type="text" class="form-control qty qty{{$count}}" count='{{$count}}'
+            style="vertical-align: top;width: 80px;">
         <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa{{$count}}"
-            style="vertical-align: top">
+            style="vertical-align: top;">
 
     </td>
     <td style="vertical-align: top;">
@@ -25,12 +26,14 @@
         </select>
 
     </td>
-    <td style="vertical-align: top;">
-        <input type="text" class="form-control h_satuan h_satuan{{$count}} text-end" value="Rp 0" count="{{$count}}">
+    <td style="vertical-align: top;" align="right">
+        <input type="text" class="form-control h_satuan h_satuan{{$count}} text-end" value="Rp 0" count="{{$count}}"
+            style="width: 150px;">
         <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa{{$count}}" value="0" name="h_satuan[]">
     </td>
-    <td style="vertical-align: top;">
-        <input type="text" class="form-control total_harga{{$count}} text-end" value="" count="{{$count}}" readonly>
+    <td style="vertical-align: top;" align="right">
+        <input type="text" class="form-control total_harga{{$count}} text-end" value="" count="{{$count}}" readonly
+            style="width: 150px;">
         <input type="hidden" class="form-control total_harga_biasa total_harga_biasa{{$count}} text-end" value=""
             readonly>
     </td>
