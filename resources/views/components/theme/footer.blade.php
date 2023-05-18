@@ -17,11 +17,6 @@
 <script src="{{ asset('theme') }}/assets/js/app.js"></script>
 <script src="{{ asset('theme') }}/assets/extensions/jquery/jquery.min.js"></script>
 <script src="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/scripts/choices.js"></script>
-<script src="{{ asset('theme') }}/assets/js/pages/horizontal-layout.js"></script>
-
-
-
-
 
 <script src="{{ asset('theme') }}/assets/js/pages/form-element-select.js"></script>
 <script src="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.js"></script>
@@ -290,6 +285,7 @@
 </script>
 @endif
 @yield('scripts')
+@yield('js')
 
 </body>
 
