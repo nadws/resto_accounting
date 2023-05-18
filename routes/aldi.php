@@ -3,6 +3,7 @@
 use App\Http\Controllers\AksesController;
 use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenutupController;
@@ -131,5 +132,21 @@ Route::middleware('auth')->group(function () {
             Route::post('/add_menu', 'addMenu')->name('add_menu');
             Route::post('/edit_menu', 'editMenu')->name('edit_menu');
         });
+
+    Route::controller(JualController::class)
+        ->prefix('jual')
+        ->name('jual.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+            Route::post('/piutang', 'piutang')->name('piutang');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::get('/delete', 'delete')->name('delete');
+        });
+
+    Route::get('/403', function(){
+        view('error.403');
+    })->name('403');
+
     
 });

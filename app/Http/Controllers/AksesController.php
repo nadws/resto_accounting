@@ -73,4 +73,36 @@ class AksesController extends Controller
     public function editMenu(Request $r)
     {
     }
+
+    public function save(Request $r)
+    {
+        $id_user = $r->id_user;
+        $permission_id = $r->id_permission_gudang;
+        DB::table('permission_perpage')->where('permission_id', $permission_id)->delete();
+        if (!empty($id_user)) {
+            for ($i = 0; $i < count($id_user); $i++) {
+                $id_permission = "id_permission" . $id_user[$i];
+                $id_permission = $r->$id_permission;
+                if(empty($id_permission)) {
+                    return redirect()->route('dashboard')->with('error', 'Permission Tidak Ada');
+                }
+
+                foreach ($id_permission as $b => $d) {
+                    $data = [
+                        'id_permission_button' => $d,
+                        'id_user' => $id_user[$i],
+                        'permission_id' => $permission_id
+                    ];
+                    DB::table('permission_perpage')->insert($data);
+                }
+            }
+            $pesan = 'sukses';
+        }
+
+        return redirect()->route(
+            !empty($r->id) ? $r->route :
+                $r->route,
+            $r->id
+        )->with($pesan ?? 'error', "Permission " . strtoupper($pesan ?? 'error') . " di input");
+    }
 }
