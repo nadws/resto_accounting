@@ -180,8 +180,7 @@ class JurnalController extends Controller
     }
 
     public function delete(Request $r)
-    {   
-        dd($r->no_nota);
+    {
         $nomer = substr($r->no_nota, 3);
         DB::table('notas')->where('nomor_nota', $nomer)->delete();
         Jurnal::where('no_nota', $r->no_nota)->delete();
