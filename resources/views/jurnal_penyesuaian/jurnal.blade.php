@@ -2,6 +2,9 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
+                <h3 class="float-start mt-1">{{ $title }}</h3>
+            </div>
+            <div class="col-lg-6">
                 <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2,'id_buku' => '4']) }}"
                     class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
 

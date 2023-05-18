@@ -2,6 +2,9 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
+                <h3 class="float-start mt-1">{{ $title }}</h3>
+            </div>
+            <div class="col-lg-6">
                 @if (!empty($import))
                 <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
                     teks="Import" />

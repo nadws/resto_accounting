@@ -2,22 +2,25 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-            <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
+                <h3 class="float-start mt-1">{{ $title }}</h3>
+            </div>
+            <div class="col-lg-6">
+                <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
             </div>
         </div>
     </x-slot>
     <x-slot name="cardBody">
         <section class="row">
             @php
-                $ttlDebit = 0;
-                $ttlKredit = 0;
-                $ttlSaldo = 0;
+            $ttlDebit = 0;
+            $ttlKredit = 0;
+            $ttlSaldo = 0;
 
-                foreach($buku as $d) {
-                    $ttlDebit += $d->debit;
-                    $ttlKredit += $d->kredit;
-                    $ttlSaldo += $d->debit - $d->kredit;
-                }
+            foreach($buku as $d) {
+            $ttlDebit += $d->debit;
+            $ttlKredit += $d->kredit;
+            $ttlSaldo += $d->debit - $d->kredit;
+            }
             @endphp
             <table class="table table-hover table-striped" id="table1">
                 <thead>

@@ -3,7 +3,9 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-2">
-
+                <div class="col-lg-6">
+                    <h3 class="float-start mt-1">{{ $title }}</h3>
+                </div>
             </div>
         </div>
 

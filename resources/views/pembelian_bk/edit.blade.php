@@ -74,8 +74,8 @@
                                     </button> --}}
                                 </td>
                                 <td>
-                                    <select name="id_produk[]" id="" class="select2_add pilih_produk pilih_produk1"
-                                        count='1'>
+                                    <select name="id_produk[]" id=""
+                                        class="select2_add pilih_produk pilih_produk{{$no+1}}" count='1'>
                                         <option value="">Pilih Produk</option>
                                         @foreach ($produk as $p)
                                         <option value="{{$p->id_produk}}" {{$g->id_produk == $p->id_produk ? 'Selected'
@@ -85,9 +85,9 @@
                                 </td>
 
                                 <td style="vertical-align: top;">
-                                    <input type="text" class="form-control qty qty1" count='1'
+                                    <input type="text" class="form-control qty qty{{$no+1}}" count='{{$no+1}}'
                                         style="vertical-align: top" value="{{number_format($g->qty,0,',','.')}}">
-                                    <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa1"
+                                    <input type="hidden" name="qty[]" class="form-control qty_biasa qty_biasa{{$no+1}}"
                                         count='1' style="vertical-align: top" value="{{$g->qty}}">
 
                                 </td>
@@ -96,7 +96,8 @@
                                     $produk2 = DB::table('tb_produk')->where('id_produk', $g->id_produk)->first();
                                     $satuan = DB::table('tb_satuan')->where('id_satuan',$produk2->satuan_id )->get();
                                     @endphp
-                                    <select name="id_satuan[]" id="" class="select2_add satuan1" style="width: 120px">
+                                    <select name="id_satuan[]" id="" class="select2_add satuan{{$no+1}}"
+                                        style="width: 120px">
                                         @foreach ($satuan as $s)
                                         <option value="{{$s->id_satuan}}">{{$s->nm_satuan}}</option>
                                         @endforeach
@@ -104,21 +105,21 @@
 
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <input type="text" class="form-control h_satuan h_satuan1 text-end"
-                                        value="Rp {{number_format($g->h_satuan,0,',','.')}}" count="1">
-                                    <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa1"
+                                    <input type="text" class="form-control h_satuan h_satuan{{$no+1}} text-end"
+                                        value="Rp {{number_format($g->h_satuan,0,',','.')}}" count="{{$no+1}}">
+                                    <input type="hidden" class="form-control h_satuan_biasa h_satuan_biasa{{$no+1}}"
                                         value="{{$g->h_satuan}}" name="h_satuan[]">
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <input type="text" class="form-control total_harga1 text-end"
-                                        value="Rp. {{number_format($g->qty * $g->h_satuan,2,',','.')}}" count="1"
-                                        readonly>
+                                    <input type="text" class="form-control total_harga{{$no+1}} text-end"
+                                        value="Rp. {{number_format($g->qty * $g->h_satuan,2,',','.')}}"
+                                        count="{{$no+1}}" readonly>
                                     <input type="hidden"
-                                        class="form-control total_harga_biasa total_harga_biasa1 text-end"
+                                        class="form-control total_harga_biasa total_harga_biasa{{$no+1}} text-end"
                                         value="{{$g->qty * $g->h_satuan}}" readonly>
                                 </td>
                                 <td style="vertical-align: top;">
-                                    <button type="button" class="btn rounded-pill remove_baris" count="1"><i
+                                    <button type="button" class="btn rounded-pill remove_baris" count="{{$no+1}}"><i
                                             class="fas fa-trash text-danger"></i>
                                     </button>
                                 </td>
