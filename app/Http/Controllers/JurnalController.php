@@ -84,13 +84,13 @@ class JurnalController extends Controller
             // button
 
             'user' => User::where('posisi_id', 1)->get(),
-            // 'halaman' => 1,
-            // 'tambah' => SettingHal::btnHal(1, $id_user),
-            // 'import' => SettingHal::btnHal(2, $id_user),
-            // 'export' => SettingHal::btnHal(3, $id_user),
-            // 'detail' => SettingHal::btnHal(6, $id_user),
-            // 'edit' => SettingHal::btnHal(4, $id_user),
-            // 'hapus' => SettingHal::btnHal(5, $id_user),
+            'halaman' => 1,
+            'tambah' => SettingHal::btnHal(1, $id_user),
+            'import' => SettingHal::btnHal(2, $id_user),
+            'export' => SettingHal::btnHal(3, $id_user),
+            'detail' => SettingHal::btnHal(6, $id_user),
+            'edit' => SettingHal::btnHal(4, $id_user),
+            'hapus' => SettingHal::btnHal(5, $id_user),
         ];
         return view('jurnal.index', $data);
     }

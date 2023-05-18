@@ -203,6 +203,7 @@ Route::controller(PembelianBahanBakuController::class)->group(function () {
     Route::get('/get_grading', 'get_grading')->name('get_grading');
     Route::get('/get_grading2', 'get_grading2')->name('get_grading2');
     Route::get('/nota_invoice_bk', 'nota_invoice_bk')->name('nota_invoice_bk');
+    Route::get('/export_bk', 'export_bk')->name('export_bk');
 });
 
 Route::controller(PembayaranBkController::class)->group(function () {

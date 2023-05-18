@@ -2,26 +2,25 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-
+                @if (!empty($import))
                 <x-theme.button modal="Y" idModal="import" icon="fa-upload" variant="success" addClass="float-end"
                     teks="Import" />
+                @endif
 
-
-
+                @if (!empty($export))
                 <x-theme.button modal="T"
                     href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
                     icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                @endif
 
-
-
+                @if (!empty($tambah))
                 <x-theme.button modal="T" href="{{ route('jurnal.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
-
+                @endif
 
                 <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
 
-                {{--
-                <x-theme.akses :halaman="$halaman" route="jurnal" /> --}}
+                <x-theme.akses :halaman="$halaman" route="jurnal" />
 
             </div>
         </div>
@@ -75,32 +74,31 @@
                                     <i class="fas fa-ellipsis-v text-primary"></i>
                                 </span>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    {{--
-                                    <x-theme.dropdown_kosong :edit="$edit" :hapus="$hapus" :detail="$detail" /> --}}
+                                    <x-theme.dropdown_kosong :edit="$edit" :hapus="$hapus" :detail="$detail" />
 
-
+                                    @if (!empty($edit))
                                     <li><a class="dropdown-item text-primary edit_akun"
                                             href="{{ route('edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
                                                 class="me-2 fas fa-pen"></i>Edit</a>
                                     </li>
+                                    @endif
 
 
-
-
+                                    @if (!empty($hapus))
                                     <li>
                                         <a class="dropdown-item  text-danger delete_nota" no_nota="{{ $a->no_nota }}"
                                             href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
                                                 class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
+                                    @endif
 
-
-
+                                    @if (!empty($detail))
                                     <li><a class="dropdown-item  text-info detail_nota" href="#"
                                             no_nota="{{ $a->no_nota }}" href="#" data-bs-toggle="modal"
                                             data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
                                     </li>
-
+                                    @endif
                                 </ul>
                             </div>
                         </td>

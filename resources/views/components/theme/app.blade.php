@@ -43,8 +43,8 @@
                             </div>
                         </div>
                         @endif
-                        {{ $cardHeader }}
                         <h3 class="float-start mt-1">{{ $title }}</h3>
+                        {{ $cardHeader }}
                     </div>
                     <div class="card-body">
 
