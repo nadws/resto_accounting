@@ -18,7 +18,7 @@
                     teks="Buat Baru" />
                 @endif
 
-                <x-theme.btn_filter/>
+                <x-theme.btn_filter />
 
                 <x-theme.akses :halaman="$halaman" route="jurnal" />
 
