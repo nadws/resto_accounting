@@ -12,7 +12,7 @@
     <link rel="shortcut icon" href="{{ asset('theme') }}/assets/images/logo/favicon.png" type="image/png">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/pages/fontawesome.css">
     <link rel="stylesheet"
-        href="{{ asset('theme') }}/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap5.min.css">
+        href="{{ asset('theme') }}/assets/extensions/datatables.net-bs5/css/dataTables.bootstrap6.min.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/pages/datatables.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/styles/choices.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.css">
@@ -34,6 +34,11 @@
     {{--
     <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 13px;
+        }
+
         #image-preview img {
             width: 200px;
             height: 200px;
@@ -161,6 +166,11 @@
 
         .nowrap {
             white-space: nowrap;
+        }
+
+        th {
+            background-color: #435EBE;
+
         }
     </style>
     @yield('styles')

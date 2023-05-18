@@ -20,7 +20,7 @@
 
             }
         </style>
-        <form action="{{route('pembayaranbk.save_pembayaran')}}" method="post" class="save_jurnal">
+        <form action="{{route('pembayaranbk.save_edit')}}" method="post" class="save_jurnal">
             @csrf
 
             <section class="row justify-content-center">
@@ -82,40 +82,55 @@
                             </tr>
                             @endforeach
                             <input type="hidden" class="debit" value="{{$p->total_harga + $total_debit}}">
-                            <tr class="baris1">
-                                <td><input type="date" class="form-control" name="tgl_pembayaran[]"
-                                        value="{{date('Y-m-d')}}"></td>
+                            @php
+                            $total2=0;
+                            $total_debit2=0;
+                            @endphp
+                            @foreach ($bayar2 as $n => $b)
+                            @php
+                            $total2 += $b->kredit;
+                            $total_debit2 = $b->debit;
+                            @endphp
+                            <input type="hidden" name="nota_jurnal[]" value="{{$b->nota_jurnal}}">
+                            <tr class="baris{{$n+1}}">
+                                <td><input type="date" class="form-control" name="tgl_pembayaran[]" value="{{$b->tgl}}">
+                                </td>
                                 <td>
                                     <select name="id_akun[]" id="" class="select2_add" required>
                                         <option value="">Pilih Akun Pembayaran</option>
-                                        <option value="4">KAS BESAR</option>
-                                        <option value="10">BANK MANDIRI NO.REK 031-00-5108889-9</option>
-                                        <option value="30">HUTANG BANK BCA NO. REK 0513020888</option>
-                                        <option value="45">PENDAPATAN  DILUAR USAHA</option>
+                                        <option value="4" {{$b->id_akun == '4' ? 'Selected' : ''}}>KAS BESAR</option>
+                                        <option value="10" {{$b->id_akun == '10' ? 'Selected' : ''}}>BANK MANDIRI NO.REK
+                                            031-00-5108889-9</option>
+                                        <option value="30" {{$b->id_akun == '30' ? 'Selected' : ''}}>HUTANG BANK BCA NO.
+                                            REK 0513020888</option>
+                                        <option value="45" {{$b->id_akun == '45' ? 'Selected' : ''}}>PENDAPATAN  DILUAR
+                                            USAHA</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="ket[]"
-                                        value="Pembayaran BKIN {{$p->no_nota}}">
+                                    <input type="text" class="form-control" name="ket[]" value="{{$b->ket}}">
                                 </td>
                                 <td>{{$p->nm_suplier}}</td>
                                 <td>{{$p->suplier_akhir}}</td>
                                 <td align="right">
-                                    <input type="text" class="form-control bayardebit bayardebit1 text-end" count="1">
+                                    <input type="text" class="form-control bayardebit bayardebit1 text-end" count="1"
+                                        value="Rp. {{number_format($b->debit,0,'.',',')}}">
                                     <input type="hidden" name="debit[]"
-                                        class="form-control bayardebitbiasa bayardebitbiasa1" value="0">
+                                        class="form-control bayardebitbiasa bayardebitbiasa1" value="{{$b->debit}}">
                                 </td>
                                 <td align="right">
-                                    <input type="text" class="form-control bayar bayar1 text-end" count="1">
+                                    <input type="text" class="form-control bayar bayar1 text-end" count="1"
+                                        value="Rp. {{number_format($b->kredit,0,'.',',')}}">
                                     <input type="hidden" name="kredit[]" class="form-control bayarbiasa bayarbiasa1"
-                                        value="0">
+                                        value="{{$b->kredit}}">
                                 </td>
                                 <td>
-                                    <button type="button" class="btn rounded-pill remove_baris" count="1"><i
+                                    <button type="button" class="btn rounded-pill remove_baris" count="{{$n+1}}"><i
                                             class="fas fa-trash text-danger"></i>
                                     </button>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                         <tbody id="tb_baris">
 
@@ -152,15 +167,16 @@
 
                             <td width="20%">Total</td>
                             <td width="40%" class="total" style="text-align: right;">Rp.{{number_format($p->total_harga
-                                + $total_debit - $p->jumlah_pembayaran,2)}}</td>
+                                + $total_debit + $total_debit2 - $p->jumlah_pembayaran,2)}} </td>
                             <td width="40%" class="total_kredit" style="text-align: right;">
-                                Rp. {{number_format($total,2)}}
+                                Rp. {{number_format($total + $total2,2)}}
                             </td>
                         </tr>
                         <tr>
                             <td class="cselisih" colspan="2">Sisa Hutang</td>
                             <td style="text-align: right;" class="selisih cselisih">Rp.
-                                {{number_format($p->total_harga + $total_debit -$total,2)}}</td>
+                                {{number_format($p->total_harga + $total_debit + $total_debit2 - $total - $total2 ,2)}}
+                            </td>
                         </tr>
                     </table>
 
@@ -222,6 +238,10 @@
                     currency: "IDR",
                 });
                 $(".total_kredit").text(totalRupiah);
+                var totalRupiahdebit = total_debitall.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
 
                 if (selisih === 0) {
                     $(".cselisih").css("color", "green");
@@ -230,6 +250,7 @@
                     $(".cselisih").css("color", "red");
                 }
                 $(".selisih").text(selisih_total);
+                $(".total").text(totalRupiahdebit)
                 
             });
 

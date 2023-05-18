@@ -5,7 +5,7 @@
             <th width="39px">#</th>
             <th width="110px">Tanggal</th>
             <th width="117px">No Nota</th>
-            <th width="350px">Akun</th>
+            <th width="350px">Akun Vs {{$nm_akun}}</th>
             <th width="149px">Keterangan</th>
             <th width="129px" style="text-align: right">Debit</th>
             <th width="129px" style="text-align: right">Kredit</th>

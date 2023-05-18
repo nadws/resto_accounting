@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/pembayaran', 'pembayaran')->name('pembayaran');
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
         Route::get('/asset', 'asset')->name('asset');
+        Route::get('/testing', 'testing')->name('testing');
     });
 
 
@@ -86,7 +87,7 @@ Route::middleware('auth')->group(function () {
     });
 
 
-    
+
 
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'edit')->name('profile.edit');
@@ -197,6 +198,11 @@ Route::controller(PembelianBahanBakuController::class)->group(function () {
     Route::get('/delete_bk', 'delete_bk')->name('delete_bk');
     Route::get('/edit_pembelian_bk', 'edit_pembelian_bk')->name('edit_pembelian_bk');
     Route::post('/edit_pembelian_bk', 'edit_save')->name('edit_pembelian_bk');
+    Route::post('/grading', 'grading')->name('grading');
+    Route::post('/approve_invoice_bk', 'approve_invoice_bk')->name('approve_invoice_bk');
+    Route::get('/get_grading', 'get_grading')->name('get_grading');
+    Route::get('/get_grading2', 'get_grading2')->name('get_grading2');
+    Route::get('/nota_invoice_bk', 'nota_invoice_bk')->name('nota_invoice_bk');
 });
 
 Route::controller(PembayaranBkController::class)->group(function () {
@@ -204,4 +210,6 @@ Route::controller(PembayaranBkController::class)->group(function () {
     Route::get('/pembayaranbk.add', 'add')->name('pembayaranbk.add');
     Route::get('/pembayaranbk.tambah', 'tambah')->name('pembayaranbk.tambah');
     Route::post('/pembayaranbk.save_pembayaran', 'save_pembayaran')->name('pembayaranbk.save_pembayaran');
+    Route::get('/pembayaranbk.edit', 'edit')->name('pembayaranbk.edit');
+    Route::post('/pembayaranbk.save_edit', 'save_edit')->name('pembayaranbk.save_edit');
 });

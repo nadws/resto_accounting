@@ -14,8 +14,8 @@
                     <tr>
                         <th width="5">#</th>
                         <th>Tanggal</th>
-                        <th>No Nota</th>
-                        <th>Akun</th>
+                        <th style="white-space: nowrap;">No Nota</th>
+                        <th>Akun Vs {{ucwords(strtolower($nm_akun->nm_akun))}}</th>
                         <th>Keterangan</th>
                         <th style="text-align: right">Debit</th>
                         <th style="text-align: right">Kredit</th>
@@ -29,8 +29,6 @@
                     @foreach ($detail as $n => $d)
                     @php
                     $saldo += $d->debit - $d->kredit;
-
-
                     @endphp
                     <tr>
                         <td>{{ $n+1 }}</td>

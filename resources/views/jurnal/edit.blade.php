@@ -28,9 +28,9 @@
                     <select name="id_proyek" id="select2">
                         <option value="">Pilih</option>
                         @foreach ($proyek as $p)
-                            <option value="{{ $p->id_proyek }}"
-                                {{ $head_jurnal->id_proyek == $p->id_proyek ? 'Selected' : '' }}>
-                                {{ $p->nm_proyek }}</option>
+                        <option value="{{ $p->id_proyek }}" {{ $head_jurnal->id_proyek == $p->id_proyek ? 'Selected' :
+                            '' }}>
+                            {{ $p->nm_proyek }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -38,6 +38,15 @@
                     <hr style="border: 1px solid black">
                 </div>
                 <div class="col-lg-12">
+                    <style>
+                        .select2-container--default .select2-selection--single .select2-selection__rendered {
+                            color: #000000;
+                            line-height: 36px;
+                            /* font-size: 12px; */
+                            width: 150px;
+
+                        }
+                    </style>
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -47,82 +56,74 @@
                                 <th width="19%">Keterangan</th>
                                 <th width="12%" style="text-align: right;">Debit</th>
                                 <th width="12%" style="text-align: right;">Kredit</th>
-                                <th width="12%" style="text-align: right;">Saldo</th>
                                 <th width="5%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($jurnal as $no => $j)
-                                @php
-                                    $post = DB::table('tb_post_center')
-                                        ->where('id_akun', $j->id_akun)
-                                        ->get();
-                                @endphp
-                                <tr class="baris{{ $no + 1 }}">
-                                    <td style="vertical-align: top;">
-                                        <button type="button" data-bs-toggle="collapse" href=".join{{ $no + 1 }}"
-                                            class="btn rounded-pill " count="{{ $no + 1 }}"><i
-                                                class="fas fa-angle-down"> </i>
-                                        </button>
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <select name="id_akun[]" id=""
-                                            class="select pilih_akun pilih_akun{{ $no + 1 }}"
-                                            count="{{ $no + 1 }}" required>
-                                            <option value="">Pilih</option>
-                                            @foreach ($akun as $a)
-                                                <option value="{{ $a->id_akun }}"
-                                                    {{ $j->id_akun == $a->id_akun ? 'Selected' : '' }}>
-                                                    {{ $a->nm_akun }}</option>
-                                            @endforeach
-                                        </select>
-                                        <div class="collapse join{{ $no + 1 }}">
-                                            <label for="" class="mt-2 ">No CFM</label>
-                                            <input type="text" class="form-control " name="no_urut[]"
-                                                value="{{ $j->no_urut }}">
-                                        </div>
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <select name="id_post[]" id="" class="select post{{ $no + 1 }}">
-                                            <option value="">Pilih sub akun</option>
-                                            @foreach ($post as $p)
-                                                <option value="{{ $p->id_post_center }}"
-                                                    {{ $p->id_post_center == $j->id_post_center ? 'selected' : '' }}>
-                                                    {{ $p->nm_post }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <input type="text" name="keterangan[]" class="form-control"
-                                            style="vertical-align: top" value="{{ $j->ket }}">
-                                        <input type="hidden" name="id_jurnal[]" class="form-control"
-                                            style="vertical-align: top" value="{{ $j->id_jurnal }}">
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <input type="text" class="form-control debit_rupiah text-end"
-                                            value="Rp {{ number_format($j->debit, 2, '.', '.') }}"
-                                            count="{{ $no + 1 }}">
-                                        <input type="hidden"
-                                            class="form-control debit_biasa debit_biasa{{ $no + 1 }}"
-                                            value="{{ $j->debit }}" name="debit[]">
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <input type="text" class="form-control kredit_rupiah text-end"
-                                            value="Rp {{ number_format($j->kredit, 2, '.', '.') }}"
-                                            count="{{ $no + 1 }}">
-                                        <input type="hidden"
-                                            class="form-control kredit_biasa kredit_biasa{{ $no + 1 }}"
-                                            value="{{ $j->kredit }}" name="kredit[]">
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <p class="saldo_akun{{ $no + 1 }} text-end" style="font-size: 12px"></p>
-                                    </td>
-                                    <td style="vertical-align: top;">
-                                        <button type="button" class="btn rounded-pill remove_baris"
-                                            count="{{ $no + 1 }}"><i class="fas fa-trash text-danger"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                            @php
+                            $post = DB::table('tb_post_center')
+                            ->where('id_akun', $j->id_akun)
+                            ->get();
+                            @endphp
+                            <tr class="baris{{ $no + 1 }}">
+                                <td style="vertical-align: top;">
+                                    <button type="button" data-bs-toggle="collapse" href=".join{{ $no + 1 }}"
+                                        class="btn rounded-pill " count="{{ $no + 1 }}"><i class="fas fa-angle-down">
+                                        </i>
+                                    </button>
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <select name="id_akun[]" id="" class="select pilih_akun pilih_akun{{ $no + 1 }}"
+                                        count="{{ $no + 1 }}" required>
+                                        <option value="">Pilih</option>
+                                        @foreach ($akun as $a)
+                                        <option value="{{ $a->id_akun }}" {{ $j->id_akun == $a->id_akun ? 'Selected' :
+                                            '' }}>
+                                            {{ $a->nm_akun }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="collapse join{{ $no + 1 }}">
+                                        <label for="" class="mt-2 ">No CFM</label>
+                                        <input type="text" class="form-control " name="no_urut[]"
+                                            value="{{ $j->no_urut }}">
+                                    </div>
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <select name="id_post[]" id="" class="select post{{ $no + 1 }}">
+                                        <option value="">Pilih sub akun</option>
+                                        @foreach ($post as $p)
+                                        <option value="{{ $p->id_post_center }}" {{ $p->id_post_center ==
+                                            $j->id_post_center ? 'selected' : '' }}>
+                                            {{ $p->nm_post }}</option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <input type="text" name="keterangan[]" class="form-control"
+                                        style="vertical-align: top" value="{{ $j->ket }}">
+                                    <input type="hidden" name="id_jurnal[]" class="form-control"
+                                        style="vertical-align: top" value="{{ $j->id_jurnal }}">
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <input type="text" class="form-control debit_rupiah text-end"
+                                        value="Rp {{ number_format($j->debit, 2, '.', '.') }}" count="{{ $no + 1 }}">
+                                    <input type="hidden" class="form-control debit_biasa debit_biasa{{ $no + 1 }}"
+                                        value="{{ $j->debit }}" name="debit[]">
+                                </td>
+                                <td style="vertical-align: top;">
+                                    <input type="text" class="form-control kredit_rupiah text-end"
+                                        value="Rp {{ number_format($j->kredit, 2, '.', '.') }}" count="{{ $no + 1 }}">
+                                    <input type="hidden" class="form-control kredit_biasa kredit_biasa{{ $no + 1 }}"
+                                        value="{{ $j->kredit }}" name="kredit[]">
+                                </td>
+
+                                <td style="vertical-align: top;">
+                                    <button type="button" class="btn rounded-pill remove_baris" count="{{ $no + 1 }}"><i
+                                            class="fas fa-trash text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
                             @endforeach
 
 
@@ -181,8 +182,8 @@
 
 
     @section('scripts')
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 load_menu();
 
                 function load_menu() {
@@ -372,9 +373,9 @@
 
                 aksiBtn("form");
             });
-        </script>
-        <script>
-            $(document).ready(function() {
+    </script>
+    <script>
+        $(document).ready(function() {
                 $(document).on("change", ".pilih_akun", function() {
                     var count = $(this).attr("count");
                     var id_akun = $(".pilih_akun" + count).val();
@@ -398,6 +399,6 @@
                     });
                 });
             });
-        </script>
+    </script>
     @endsection
 </x-theme.app>

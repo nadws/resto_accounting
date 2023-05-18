@@ -17,15 +17,15 @@
 
                 <div class="col-lg-2 col-6">
                     <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                    <input type="date" class="form-control tgl_nota" name="tgl" value="{{date('Y-m-d')}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control" name="no_nota" value="BI{{$nota}}" readonly>
+                    <input type="text" class="form-control nota_bk" name="no_nota" value="{{$sub_po}}" readonly>
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier Awal</label>
-                    <select name="suplier_awal" id="select2" class="">
+                    <select name="suplier_awal" id="select2" class="" required>
                         <option value="">Pilih Suplier</option>
                         @foreach ($suplier as $s)
                         <option value="{{$s->id_suplier}}">{{$s->nm_suplier}}</option>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Suplier Akhir</label>
-                    <input type="text" class="form-control" name="suplier_akhir" value="">
+                    <input type="text" class="form-control" name="suplier_akhir" value="" required>
                 </div>
 
                 <div class="col-lg-12">
@@ -129,17 +129,28 @@
                             <div class="form-check form-switch form-switch2">
                                 <input class="form-check-input form-check-input2" value="Y" type="checkbox"
                                     id="Pilihan_Lainnya" />
+
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <label for="Biaya lain-lain">Biaya lain-lain</label>
                         </div>
                         <div class="col-lg-12"></div>
-                        <div class="col-lg-6 pilihan_l">
+                        <div class="col-lg-4 pilihan_l">
+                            <label for="">Akun</label>
+                            <select name="id_akun_lainnya" id="" class="select2_add inp-lain">
+                                <option value="">Pilih Akun</option>
+                                @foreach ($akun as $a)
+                                <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div class="col-lg-4 pilihan_l">
                             <label for="">Keterangan</label>
                             <input type="text" class="form-control inp-lain" name="ket_lainnya">
                         </div>
-                        <div class="col-lg-6 pilihan_l">
+                        <div class="col-lg-4 pilihan_l">
                             <label for="">Rupiah</label>
                             <input type="text" class="form-control inp-lain debit-lain">
                             <input type="hidden" class="form-control inp-lain debit-lain_biasa" name="debit_tambahan">
@@ -336,8 +347,8 @@
 
             
             });
-            $(".pilihan_l").hide();
 
+            $(".pilihan_l").hide();
             $(document).on("click", "#Pilihan_Lainnya", function () {
                 if ($(this).prop("checked") == true) {
                     $(".pilihan_l").show();
@@ -345,6 +356,17 @@
                 } else if ($(this).prop("checked") == false) {
                     $(".pilihan_l").hide();
                 }
+            });
+
+            $(document).on("change", ".tgl_nota", function () {
+               var tgl = $(this).val();
+               $.ajax({
+                type: "get",
+                url: "/nota_invoice_bk?tgl=" + tgl,
+                success: function (data) {
+                    $('.nota_bk').val(data);
+                }
+               });
             });
 
 
