@@ -7,7 +7,7 @@
             <div class="col-lg-6">
                 <x-theme.button modal="T" href="{{ route('pembelian_bk.add') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
-                <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+                <x-theme.btn_filter title="Filter Pembelian Bk" />
                 <x-theme.button modal="T" href="/export_bk?tgl1={{$tgl1}}&tgl2={{$tgl2}}" icon="fa-file-excel"
                     addClass="float-end float-end btn btn-success me-2" teks="Export" />
             </div>
@@ -138,48 +138,7 @@
         </x-theme.modal>
 
 
-        <form action="" method="get">
-            <x-theme.modal title="Filter Jurnal Umum" idModal="view">
-                <div class="row">
-                    <div class="col-lg-3">Tanggal :</div>
-                    <div class="col-lg-1">:</div>
-                    <div class="col-lg-8">
-                        <select name="period" id="" class="form-control filter_tgl">
-                            <option value="daily">Hari ini</option>
 
-                            <option value="mounthly">Bulan ini</option>
-                            <option value="costume">Custom</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-4 mt-2"></div>
-                    <div class="col-lg-4 costume_muncul mt-2">
-                        <label for="">Dari</label>
-                        <input type="date" name="tgl1" class="form-control tgl">
-                    </div>
-                    <div class="col-lg-4 costume_muncul mt-2">
-                        <label for="">Sampai</label>
-                        <input type="date" name="tgl2" class="form-control tgl">
-                    </div>
-                    <div class="col-lg-4 bulan_muncul mt-2">
-                        <label for="">Bulan</label>
-                        <select name="bulan" id="bulan" class="selectView bulan">
-                            @foreach($listbulan as $l)
-                            <option value="{{ $l->bulan }}" {{ (int) date('m')==$l->bulan ? 'selected' : ''
-                                }}>{{
-                                $l->nm_bulan }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-lg-4 bulan_muncul mt-2">
-                        <label for="">Tahun</label>
-                        <select name="tahun" id="" class="selectView bulan">
-                            <option value="2023">2023</option>
-                        </select>
-                    </div>
-                </div>
-
-            </x-theme.modal>
-        </form>
 
         <form action="{{ route('delete_bk') }}" method="get">
             <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

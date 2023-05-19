@@ -6,12 +6,13 @@
 'table' => 'Y',
 'nav' => 'T',
 'sizeCard' => '12',
+'cont' => 'container'
 ])
 <x-theme.head :title="$title" />
 
 <x-theme.navbar />
 
-<div class="content-wrapper container">
+<div class="content-wrapper  {{$cont}}">
     <div class="page-content">
         @if ($table == 'T')
         {{ $slot }}

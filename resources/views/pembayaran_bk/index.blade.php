@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="12" cont="container-fluid">
     <x-slot name="cardHeader">
         @php
         $total_paid =0;
@@ -51,10 +51,13 @@
                 </ul>
             </div>
             <div class="col-lg-6">
-                <h3 class="float-start mt-1">{{ $title }}</h3>
+                <h5 class="float-start mt-1">{{ $title }} : {{date('d-m-Y',strtotime($tgl1))}}
+                    ~ {{date('d-m-Y',strtotime($tgl1))}}
+                </h5>
+
             </div>
             <div class="col-lg-6">
-                <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+                <x-theme.btn_filter title="Filter Pembayaran Bk" />
             </div>
         </div>
     </x-slot>
@@ -64,46 +67,47 @@
 
             </div>
             <section class="row">
-                <table class="table table-hover" id="table1">
+                <table class="table table-hover" id="tableScroll" width="100%">
                     <thead>
                         <tr>
                             <th width="5">#</th>
+                            <th></th>
                             <th>Tanggal</th>
                             <th>No Nota</th>
                             <th width="10%">Akun</th>
                             <th>Suplier Awal</th>
                             <th>Suplier Akhir</th>
-                            <th style="text-align: right">Debit</th>
-                            <th style="text-align: right">Kredit</th>
+                            <th style="text-align: right">Total Rp</th>
+                            <th style="text-align: right">Terbayar</th>
+                            <th style="text-align: right">Sisa Hutang</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
-
                     </thead>
                     <tbody>
                         @php
                         $i = 1;
                         @endphp
                         @foreach ($pembelian as $no => $p)
-                        @php
-                        $bayar = DB::select("SELECT a.no_nota, a.tgl, c.nm_suplier, b.suplier_akhir, a.debit, a.kredit,
-                        d.nm_akun
-                        FROM bayar_bk as a
-                        left join invoice_bk as b on b.no_nota = a.no_nota
-                        left join tb_suplier as c on c.id_suplier = b.id_suplier
-                        left join akun as d on d.id_akun = a.id_akun
-                        where a.no_nota = '$p->no_nota'
-                        group by a.id_bayar_bk;");
-                        @endphp
-                        <tr>
+                        <tr class="fw-bold induk_detail{{$p->no_nota}}">
                             <td>{{$i++}}</td>
+                            <td>
+                                <a href="#" onclick="event.preventDefault();"
+                                    class="detail_bayar detail_bayar{{$p->no_nota}}" no_nota="{{$p->no_nota}}"><i
+                                        class="fas fa-angle-down"></i></a>
+
+                                <a href="#" onclick="event.preventDefault();"
+                                    class="hide_bayar hide_bayar{{$p->no_nota}}" no_nota="{{$p->no_nota}}"><i
+                                        class="fas fa-angle-up"></i></a>
+                            </td>
                             <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
                             <td>{{$p->no_nota}}</td>
                             <td>Bkin</td>
                             <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
                             <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
                             <td align="right">Rp. {{number_format($p->total_harga,0)}}</td>
-                            <td align="right">Rp. 0</td>
+                            <td align="right">Rp. {{number_format($p->kredit,0)}}</td>
+                            <td align="right">Rp. {{number_format($p->total_harga + $p->debit - $p->kredit,0)}}</td>
                             <td>
                                 <span
                                     class="badge {{$p->lunas == 'D' ? 'bg-warning' :  ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger')}}">
@@ -113,95 +117,48 @@
                                 </span>
                             </td>
                             <td>
-                                @if ($p->lunas == 'D' )
-                                <a href="#" class="btn btn-primary btn-sm disabled">Bayar</a>
-                                @else
-                                @if ($p->total_harga + $p->debit - $p->kredit == 0 )
-                                <a href="#" class="btn btn-primary btn-sm disabled">Bayar</a>
-                                @else
-                                <a href="{{route('pembayaranbk.add',['nota' => $p->no_nota])}}"
-                                    class="btn btn-primary btn-sm">Bayar</a>
-                                @endif
-
-                                @endif
-                                <a href="{{route('pembayaranbk.edit',['nota' => $p->no_nota])}}"
-                                    class="btn btn-primary btn-sm"><i class="fas fa-pen"></i> Edit</a>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <li>
+                                            <a class="dropdown-item text-primary edit_akun"
+                                                href="{{route('pembayaranbk.edit',['nota' => $p->no_nota])}}"><i
+                                                    class="me-2 fas fa-pen"></i>Edit
+                                            </a>
+                                        </li>
+                                        <li>
+                                            @if ($p->lunas == 'D' )
+                                            {{-- <a class="dropdown-item text-primary  disabled" href="#"><i
+                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
+                                            @else
+                                            @if ($p->total_harga + $p->debit - $p->kredit == 0 )
+                                            {{-- <a href="#" class="dropdown-item text-primary  disabled"><i
+                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
+                                            @else
+                                            <a href="{{route('pembayaranbk.add',['nota' => $p->no_nota])}}"
+                                                class="dropdown-item text-success  "><i
+                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a>
+                                            @endif
+                                            @endif
+                                        </li>
+                                    </ul>
+                                </div>
                             </td>
                         </tr>
-                        @foreach ($bayar as $n => $b)
-                        <tr>
-                            <td>{{$i++}}</td>
-                            <td>{{date('d-m-Y',strtotime($b->tgl))}}</td>
-                            <td>{{$b->no_nota}}</td>
-                            <td>{{ucwords(strtolower($b->nm_akun))}}</td>
-                            <td>{{ucwords(strtolower($b->nm_suplier))}}</td>
-                            <td>{{ucwords(strtolower($b->suplier_akhir))}}</td>
-                            <td align="right">Rp. {{number_format($b->debit,0)}}</td>
-                            <td align="right">Rp. {{number_format($b->kredit,0)}}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+
+
+
                         @endforeach
-                        @endforeach
+
                     </tbody>
                 </table>
             </section>
         </form>
 
 
-        <form action="" method="get">
-            <x-theme.modal title="Filter Jurnal Umum" idModal="view">
-                <div class="row">
-                    <div class="col-lg-12">
 
-                        <table width="100%" cellpadding="10px">
-                            <tr>
-                                <td>Tanggal</td>
-                                <td colspan="2">
-                                    <select name="period" id="" class="form-control filter_tgl">
-                                        <option value="daily">Hari ini</option>
-                                        <option value="weekly">Minggu ini</option>
-                                        <option value="mounthly">Bulan ini</option>
-                                        <option value="costume">Custom</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr class="costume_muncul">
-                                <td></td>
-                                <td>
-                                    <label for="">Dari</label>
-                                    <input type="date" name="tgl1" class="form-control tgl">
-                                </td>
-                                <td>
-                                    <label for="">Sampai</label>
-                                    <input type="date" name="tgl2" class="form-control tgl">
-                                </td>
-                            </tr>
-                            <tr class="bulan_muncul">
-                                <td></td>
-                                <td>
-                                    <label for="">Bulan</label>
-                                    <select name="bulan" id="bulan" class="selectView bulan">
-                                        @foreach($listbulan as $l)
-                                        <option value="{{ $l->bulan }}" {{ (int) date('m')==$l->bulan ? 'selected' : ''
-                                            }}>{{
-                                            $l->nm_bulan }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <label for="">Tahun</label>
-                                    <select name="tahun" id="" class="selectView bulan">
-                                        <option value="2023">2023</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
-            </x-theme.modal>
-        </form>
 
 
 
@@ -209,7 +166,32 @@
 
     </x-slot>
     @section('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.hide_bayar').hide();
+            $(document).on("click", ".detail_bayar", function() {
+                var no_nota = $(this).attr('no_nota');
+                $.ajax({
+                    type: "get",
+                    url: "/get_kreditBK?no_nota=" + no_nota,
+                    success: function(data) {
+                        $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
+                        $(".show_detail" + no_nota).show();
+                        $(".detail_bayar" + no_nota).hide();
+                        $(".hide_bayar" + no_nota).show();
+                    }
+                });
 
+            });
+            $(document).on("click", ".hide_bayar", function() {
+                var no_nota = $(this).attr('no_nota');
+                $(".show_detail" + no_nota).remove();
+                $(".detail_bayar" + no_nota).show();
+                $(".hide_bayar" + no_nota).hide();
+
+            });
+         });
+    </script>
 
     @endsection
 </x-theme.app>

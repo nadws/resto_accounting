@@ -60,6 +60,7 @@
     });
     $('.costume_muncul').hide();
     $('.bulan_muncul').hide();
+    $('.tahun_muncul').hide();
     $('.tgl').prop('disabled', true);
     $(document).on("change", ".filter_tgl", function() {
         var period = $(this).val();
@@ -77,6 +78,15 @@
             $('.bulan_muncul').hide();
             $('.bulan').prop('disabled', true);
         }
+        if (period === 'years') {
+            $('.tahun_muncul').show();
+            $('.tahun').prop('disabled', false);
+        } else {
+            $('.tahun_muncul').hide();
+            $('.tahun').prop('disabled', true);
+        }
+
+        
     });
                 
 
