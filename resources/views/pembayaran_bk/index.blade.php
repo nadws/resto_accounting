@@ -52,7 +52,7 @@
             </div>
             <div class="col-lg-6">
                 <h5 class="float-start mt-1">{{ $title }} : {{date('d-m-Y',strtotime($tgl1))}}
-                    ~ {{date('d-m-Y',strtotime($tgl1))}}
+                    ~ {{date('d-m-Y',strtotime($tgl2))}}
                 </h5>
 
             </div>
