@@ -2,7 +2,8 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h3 class="float-start mt-1">{{ $title }}</h3>
+                <h5 class="float-start mt-1">{{ $title }} : {{date('d-m-Y',strtotime($tgl1))}}
+                    ~ {{date('d-m-Y',strtotime($tgl2))}}</h5>
             </div>
             <div class="col-lg-6">
                 @if (!empty($import))

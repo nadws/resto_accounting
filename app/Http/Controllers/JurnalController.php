@@ -20,7 +20,6 @@ class JurnalController extends Controller
     protected $tgl1, $tgl2, $id_proyek, $period, $id_buku;
     public function __construct(Request $r)
     {
-
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -41,6 +40,13 @@ class JurnalController extends Controller
         } elseif ($r->period == 'costume') {
             $this->tgl1 = $r->tgl1;
             $this->tgl2 = $r->tgl2;
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
         }
 
         $this->id_proyek = $r->id_proyek ?? 0;

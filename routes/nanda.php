@@ -213,4 +213,5 @@ Route::controller(PembayaranBkController::class)->group(function () {
     Route::post('/pembayaranbk.save_pembayaran', 'save_pembayaran')->name('pembayaranbk.save_pembayaran');
     Route::get('/pembayaranbk.edit', 'edit')->name('pembayaranbk.edit');
     Route::post('/pembayaranbk.save_edit', 'save_edit')->name('pembayaranbk.save_edit');
+    Route::get('/get_kreditBK', 'get_kreditBK')->name('get_kreditBK');
 });

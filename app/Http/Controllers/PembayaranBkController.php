@@ -8,9 +8,42 @@ use Illuminate\Support\Facades\DB;
 
 class PembayaranBkController extends Controller
 {
+    protected $tgl1, $tgl2, $tipe, $period;
+    public function __construct(Request $r)
+    {
+        if (empty($r->period)) {
+            $this->tgl1 = date('2023-01-01');
+            $this->tgl2 = date('Y-12-t');
+        } elseif ($r->period == 'daily') {
+            $this->tgl1 = date('Y-m-d');
+            $this->tgl2 = date('Y-m-d');
+        } elseif ($r->period == 'weekly') {
+            $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
+            $this->tgl2 = date('Y-m-d');
+        } elseif ($r->period == 'mounthly') {
+            $bulan = $r->bulan;
+            $tahun = $r->tahun;
+            $tgl = "$tahun" . "-" . "$bulan" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tgl));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl));
+        } elseif ($r->period == 'costume') {
+            $this->tgl1 = $r->tgl1;
+            $this->tgl2 = $r->tgl2;
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
+        }
+    }
+
     public function index(Request $r)
     {
-
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
         $tipe = $r->tipe;
         if ($tipe == 'D') {
             $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
@@ -20,7 +53,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.lunas = '$tipe'
+            where a.lunas = '$tipe' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif (empty($tipe)) {
@@ -31,6 +64,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
+            where  a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'Y') {
@@ -41,7 +75,7 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.total_harga + c.debit - c.kredit = '0'
+            where a.total_harga + c.debit - c.kredit = '0' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         } elseif ($tipe == 'T') {
@@ -52,11 +86,11 @@ class PembayaranBkController extends Controller
             SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
             group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
+            where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0' and a.tgl between '$tgl1' and '$tgl2'
             order by a.id_invoice_bk ASC
             ");
         }
-        $listBulan = DB::table('bulan')->get();
+
 
         $draft = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit
         FROM invoice_bk as a 
@@ -91,15 +125,16 @@ class PembayaranBkController extends Controller
         order by a.id_invoice_bk ASC;
         ");
 
-
         $data =  [
             'title' => 'Pembayaran Bahan Baku',
             'pembelian' => $pembelian,
-            'listbulan' => $listBulan,
+
             'tipe' => $tipe,
             'draft' => $draft,
             'paid' => $paid,
-            'unpaid' => $unpaid
+            'unpaid' => $unpaid,
+            'tgl1' =>  $tgl1,
+            'tgl2' =>  $tgl2,
 
         ];
         return view('pembayaran_bk.index', $data);
@@ -376,5 +411,22 @@ class PembayaranBkController extends Controller
             }
         }
         return redirect()->route('pembayaranbk')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function get_kreditBK(Request $r)
+    {
+        $bayar = DB::select("SELECT a.no_nota, a.tgl, c.nm_suplier, b.suplier_akhir, a.debit, a.kredit,
+        d.nm_akun
+        FROM bayar_bk as a
+        left join invoice_bk as b on b.no_nota = a.no_nota
+        left join tb_suplier as c on c.id_suplier = b.id_suplier
+        left join akun as d on d.id_akun = a.id_akun
+        where a.no_nota = '$r->no_nota'
+        group by a.id_bayar_bk;");
+
+        $data = [
+            'bayar' => $bayar
+        ];
+        return view('pembayaran_bk.getkredit', $data);
     }
 }

@@ -10,58 +10,42 @@ use App\Exports\BkinExport;
 
 class PembelianBahanBakuController extends Controller
 {
-    public function index(Request $r)
+    protected $tgl1, $tgl2, $period;
+    public function __construct(Request $r)
     {
         if (empty($r->period)) {
-            $tgl1 =  date('Y-m-01');
-            $tgl2 = date('Y-m-t');
-            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
-            FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            left join grading as d on d.no_nota = a.no_nota
-            where a.tgl between '$tgl1' and '$tgl2'
-            order by a.no_nota DESC");
+            $this->tgl1 = date('Y-m-01');
+            $this->tgl2 = date('Y-m-t');
         } elseif ($r->period == 'daily') {
-            $tgl1 = date('Y-m-d');
-            $tgl2 = date('Y-m-d');
-            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
-            FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            left join grading as d on d.no_nota = a.no_nota
-            where a.tgl between '$tgl1' and '$tgl2'
-            order by a.no_nota DESC");
+            $this->tgl1 = date('Y-m-d');
+            $this->tgl2 = date('Y-m-d');
+        } elseif ($r->period == 'weekly') {
+            $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
+            $this->tgl2 = date('Y-m-d');
         } elseif ($r->period == 'mounthly') {
             $bulan = $r->bulan;
             $tahun = $r->tahun;
-            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
-            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+            $tgl = "$tahun" . "-" . "$bulan" . "-" . "01";
 
-            $tgl1 = date('Y-m-01', strtotime($tglawal));
-            $tgl2 = date('Y-m-t', strtotime($tglakhir));
-
-            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
-            FROM invoice_bk as a 
-            left join tb_suplier as b on b.id_suplier = a.id_suplier
-            left join (
-            SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
-            group by c.no_nota
-            ) as c on c.no_nota = a.no_nota
-            left join grading as d on d.no_nota = a.no_nota
-            where a.tgl between '$tgl1' and '$tgl2'
-            order by a.no_nota DESC");
+            $this->tgl1 = date('Y-m-01', strtotime($tgl));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl));
         } elseif ($r->period == 'costume') {
-            $tgl1 = $r->tgl1;
-            $tgl2 = $r->tgl2;
+            $this->tgl1 = $r->tgl1;
+            $this->tgl2 = $r->tgl2;
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
 
-            $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
+        }
+    }
+    public function index(Request $r)
+    {
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
+        $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
             FROM invoice_bk as a 
             left join tb_suplier as b on b.id_suplier = a.id_suplier
             left join (
@@ -71,7 +55,6 @@ class PembelianBahanBakuController extends Controller
             left join grading as d on d.no_nota = a.no_nota
             where a.tgl between '$tgl1' and '$tgl2'
             order by a.no_nota DESC");
-        }
 
 
 
