@@ -33,13 +33,14 @@
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-
+                                        @if ($d->status == 'unpaid')
                                         <li>
                                             <a class="dropdown-item  text-primary bayar_nota"
                                                 no_nota="{{ $d->no_nota }}" href="#" data-bs-toggle="modal"
                                                 data-bs-target="#tambah"><i class="me-2 fas fa-money-bill"></i>Bayar
                                             </a>
                                         </li>
+                                        @endif
                                         <li><a class="dropdown-item text-primary edit_akun"
                                                 href="{{ route('jual.edit', ['no_penjualan' => $d->no_penjualan]) }}"><i
                                                     class="me-2 fas fa-pen"></i>Edit</a>
@@ -75,7 +76,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="">Tanggal</label>
-                            <input type="date" name="tgl" class="form-control">
+                            <input value="{{ date('Y-m-d') }}" type="date" name="tgl" class="form-control">
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -112,7 +113,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">Tanggal</label>
-                            <input type="date" name="tgl" class="form-control">
+                            <input value="{{ date('Y-m-d') }}" type="date" name="tgl" class="form-control">
                         </div>
                     </div>
                     <div class="col-lg-6">

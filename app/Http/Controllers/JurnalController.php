@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\JurnalImport;
 use App\Models\User;
+use Filter;
 use SettingHal;
 
 class JurnalController extends Controller
@@ -40,7 +41,6 @@ class JurnalController extends Controller
             $this->tgl1 = $r->tgl1;
             $this->tgl2 = $r->tgl2;
         }
-
 
         $this->id_proyek = $r->id_proyek ?? 0;
         $this->id_buku = $r->id_buku ?? 2;
