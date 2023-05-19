@@ -138,8 +138,10 @@ Route::middleware('auth')->group(function () {
         ->name('jual.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::post('/', 'create')->name('create');
+            Route::get('/bayar', 'bayar')->name('bayar');
+            Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
             Route::post('/piutang', 'piutang')->name('piutang');
+            Route::post('/', 'create')->name('create');
             Route::get('/edit', 'edit')->name('edit');
             Route::get('/delete', 'delete')->name('delete');
         });

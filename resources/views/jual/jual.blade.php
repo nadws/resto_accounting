@@ -1,12 +1,17 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="9">
     <x-slot name="cardHeader">
+        <div class="col-lg-6">
+            <h3 class="float-start mt-1">{{ $title }}</h3>
+        </div>
+
+        <x-theme.button modal="T" href="#" icon="fa-money-bill" addClass="float-end btn_bayar" teks="Bayar" />
         <x-theme.button modal="Y" idModal="jual" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
-        <x-theme.btn_filter/>
+        <x-theme.btn_filter />
     </x-slot>
 
     <x-slot name="cardBody">
         <section class="row">
-            <table class="table" id="table1">
+            <table class="table" width="100%" id="tableScroll">
                 <thead>
                     <tr>
                         <th width="5">#</th>
@@ -28,41 +33,11 @@
                             <td>{{ number_format($d->total_rp, 0) }}</td>
                             <td>{{ $d->status }}</td>
                             <td>
-                                <div class="btn-group" role="group">
-                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v text-primary"></i>
-                                    </span>
-                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        @if ($d->status == 'unpaid')
-                                        <li>
-                                            <a class="dropdown-item  text-primary bayar_nota"
-                                                no_nota="{{ $d->no_nota }}" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#tambah"><i class="me-2 fas fa-money-bill"></i>Bayar
-                                            </a>
-                                        </li>
-                                        @endif
-                                        <li><a class="dropdown-item text-primary edit_akun"
-                                                href="{{ route('jual.edit', ['no_penjualan' => $d->no_penjualan]) }}"><i
-                                                    class="me-2 fas fa-pen"></i>Edit</a>
-                                        </li>
-
-
-                                        <li>
-                                            <a class="dropdown-item  text-danger delete_nota"
-                                                no_nota="{{ $d->no_nota }}" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                    class="me-2 fas fa-trash"></i>Delete
-                                            </a>
-                                        </li>
-
-                                        <li><a class="dropdown-item  text-info detail_nota" href="#"
-                                                no_penjualan="{{ $d->no_penjualan }}" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#detail"><i
-                                                    class="me-2 fas fa-search"></i>Detail</a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <input type="checkbox" no_nota="{{ $d->no_nota }}"
+                                    no_penjualan="{{ $d->no_penjualan }}"
+                                    class="form-check-glow form-check-input form-check-primary cek_bayar" />
                             </td>
+
                         </tr>
                     @endforeach
 
@@ -91,17 +66,6 @@
                             <input type="text" name="total_rp" class="form-control">
                         </div>
                     </div>
-                    {{-- <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Setor Ke</label>
-                            <select name="setor" class="form-control select2" id="">
-                                <option value="">- Pilih Akun -</option>
-                                @foreach ($akun as $d)
-                                    <option value="{{ $d->id_akun }}">{{ ucwords($d->nm_akun) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div> --}}
                 </div>
             </x-theme.modal>
         </form>
@@ -164,7 +128,29 @@
 
     @section('scripts')
         <script>
-          
+            $(".btn_bayar").hide();
+            $(document).on('change', '.cek_bayar', function() {
+                var anyChecked = $('.cek_bayar:checked').length > 0;
+                $('.btn_bayar').toggle(anyChecked);
+            })
+
+            $(document).on('click', '.btn_bayar', function() {
+                var dipilih = [];
+                $('.cek_bayar:checked').each(function() {
+                    var no_nota = $(this).attr('no_nota');
+                    dipilih.push(no_nota);
+
+                });
+                var params = new URLSearchParams();
+
+                dipilih.forEach(function(orderNumber) {
+                    params.append('no_order', orderNumber);
+                });
+                var queryString = 'no_order[]=' + dipilih.join('&no_order[]=');
+                window.location.href = "/jual/bayar?" + queryString;
+
+            })
+
             $(document).on('click', '.bayar_nota', function() {
                 var no_nota = $(this).attr('no_nota')
                 $("#no_nota").val(no_nota);

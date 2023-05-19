@@ -186,7 +186,6 @@
                 $(document).on('click', '.delete_nota', function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
-                    alert('dsa');
                 })
                 $('.selectView').select2({
                     dropdownParent: $('#view .modal-content')
