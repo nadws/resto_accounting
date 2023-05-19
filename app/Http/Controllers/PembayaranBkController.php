@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ExportbayarBK;
 
 class PembayaranBkController extends Controller
 {
@@ -428,5 +430,16 @@ class PembayaranBkController extends Controller
             'bayar' => $bayar
         ];
         return view('pembayaran_bk.getkredit', $data);
+    }
+
+    public function exportBayarbk(Request $r)
+    {
+        $tgl1 =  $r->tgl1;
+        $tgl2 =  $r->tgl2;
+        $total = DB::selectOne("SELECT count(a.id_invoice_bk) as jumlah FROM invoice_bk as a where a.tgl between '$tgl1' and '$tgl2' ");
+
+        $totalrow = $total->jumlah;
+
+        return Excel::download(new ExportbayarBK($tgl1, $tgl2, $totalrow), 'pembelian_bk.xlsx');
     }
 }
