@@ -26,11 +26,11 @@ class ExportbayarBK implements FromView, WithEvents
     {
 
 
-        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas,  c.debit,c.kredit
+        $pembelian = DB::select("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas,  c.qty
         FROM invoice_bk as a 
         left join tb_suplier as b on b.id_suplier = a.id_suplier
         left join (
-        SELECT c.no_nota , sum(c.debit) as debit, sum(c.kredit) as kredit  FROM bayar_bk as c
+        SELECT c.no_nota , sum(c.qty) as qty  FROM pembelian as c
         group by c.no_nota
         ) as c on c.no_nota = a.no_nota
         where  a.tgl between '$this->tgl1' and '$this->tgl2'
@@ -49,11 +49,11 @@ class ExportbayarBK implements FromView, WithEvents
         return [
             AfterSheet::class    => function (AfterSheet $event) {
                 $totalrow = $this->totalrow + 1;
-                $cellRange = 'A1:N1';
+                $cellRange = 'A1:J1';
                 // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->setAutoFilter($cellRange);
-                $event->sheet->getStyle('A1:N1')->applyFromArray([
+                $event->sheet->getStyle('A1:J1')->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -62,11 +62,11 @@ class ExportbayarBK implements FromView, WithEvents
                     ],
                     'font' => [
                         'name'  =>  'Calibri',
-                        'size'  =>  7,
+                        'size'  =>  12,
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A2:N' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A2:J' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -75,7 +75,7 @@ class ExportbayarBK implements FromView, WithEvents
                     ],
                     'font' => [
                         'name'  =>  'Calibri',
-                        'size'  =>  7,
+                        'size'  =>  12,
                         'bold' => false
                     ]
                 ]);

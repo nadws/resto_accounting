@@ -11,7 +11,8 @@ class CashflowController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Cashflow'
+            'title' => 'Cashflow',
+
         ];
         return view('cashflow.cashflow', $data);
     }
@@ -24,6 +25,7 @@ class CashflowController extends Controller
             'subKategori2' => DB::table('sub_kategori_cashflow')->where('jenis', 2)->orderBy('urutan', 'ASC')->get(),
             'tgl1' => $r->tgl1,
             'tgl2' => $r->tgl2,
+            'pemasukan' => DB::table('sub_kategori_cashflow')->where('jenis', 1)->orderBy('urutan', 'ASC')->get()
         ];
         return view('cashflow.load', $data);
     }

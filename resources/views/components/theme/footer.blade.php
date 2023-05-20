@@ -27,6 +27,8 @@
 <script src="{{ asset('theme') }}/assets/js/pages/datatables.js"></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{{ asset('theme') }}/assets/js/pages/horizontal-layout.js"></script>
+<script src="{{ asset('theme') }}/assets/extensions/dragula/dragula.min.js"></script>
+<script src="{{ asset('theme') }}/assets/js/pages/ui-todolist.js"></script>
 
 
 <script>

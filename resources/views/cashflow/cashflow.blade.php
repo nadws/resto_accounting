@@ -1,7 +1,9 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
-        <a href="#" data-bs-toggle="modal" data-bs-target="#view" class="btn icon icon-left btn-primary "
-            style="float: right; margin-right: 2px"><i class="fas fa-calendar-week"></i> View</a>
+        <div class="col-lg-6">
+            <h5 class="float-start mt-1">{{ $title }}</h5>
+        </div>
+        <x-theme.btn_filter />
     </x-slot>
     <x-slot name="cardBody">
         <div id="tableLoad"></div>
@@ -38,8 +40,8 @@
     </x-slot>
 
     @section('scripts')
-        <script>
-            loadTabel()
+    <script>
+        loadTabel()
 
             function toast(pesan) {
                 Toastify({
@@ -135,7 +137,20 @@
                         $("#modalSubKategori").modal('hide')
                     }
                 });
+
+                $(document).ready(function() {
+                // Inisialisasi fungsi sortable
+                    $("#todo-table tbody").sortable({
+                        update: function(event, ui) {
+                        // Mendapatkan urutan item setelah diurutkan
+                        var itemOrder = $(this).sortable("toArray", { attribute: "data-id" });
+
+                        // Simpan urutan item ke database atau lakukan operasi lain
+                        // saveItemOrder(itemOrder);
+                        }
+                    });
+                });
             })
-        </script>
+    </script>
     @endsection
 </x-theme.app>

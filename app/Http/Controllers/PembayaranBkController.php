@@ -440,6 +440,6 @@ class PembayaranBkController extends Controller
 
         $totalrow = $total->jumlah;
 
-        return Excel::download(new ExportbayarBK($tgl1, $tgl2, $totalrow), 'pembelian_bk.xlsx');
+        return Excel::download(new ExportbayarBK($tgl1, $tgl2, $totalrow), 'pembayaran_bk.xlsx');
     }
 }
