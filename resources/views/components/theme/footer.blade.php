@@ -31,7 +31,7 @@
 
 <script>
     // untuk file upload ada preview
-    $(document).on('change', '#image', function(){
+    $(document).on('change', '#image', function() {
         var file = this.files[0];
         if (file) {
             var reader = new FileReader();
@@ -58,41 +58,95 @@
     $('.selectView').select2({
         dropdownParent: $('#view .modal-content')
     });
+
     $('.costume_muncul').hide();
     $('.bulan_muncul').hide();
     $('.tahun_muncul').hide();
     $('.tgl').prop('disabled', true);
     $(document).on("change", ".filter_tgl", function() {
         var period = $(this).val();
-        if (period === 'costume') {
-            $('.costume_muncul').show();
-            $('.tgl').prop('disabled', false);
-        } else {
-            $('.costume_muncul').hide();
-            $('.tgl').prop('disabled', true);
-        }
-        if (period === 'mounthly') {
-            $('.bulan_muncul').show();
-            $('.bulan').prop('disabled', false);
-        } else {
-            $('.bulan_muncul').hide();
-            $('.bulan').prop('disabled', true);
-        }
-        if (period === 'years') {
-            $('.tahun_muncul').show();
-            $('.tahun').prop('disabled', false);
-        } else {
-            $('.tahun_muncul').hide();
-            $('.tahun').prop('disabled', true);
-        }
+        $('.costume_muncul').toggle(period === 'costume');
+        $('.tgl').prop('disabled', period !== 'costume');
 
-        
+        $('.bulan_muncul').toggle(period === 'mounthly');
+        $('.bulan').prop('disabled', period !== 'mounthly');
+
+        $('.tahun_muncul').toggle(period === 'years');
+        $('.tahun').prop('disabled', period !== 'years');
+
+
     });
-                
-
 
     $('#select2').select2({});
     $('.select2_add').select2({});
+
+    function convertRpSelisih(classNoHide, classHide, classTotal, classTotalhide) {
+        $(document).on("keyup", "." + classNoHide, function() {
+            var count = $(this).attr("count");
+            var rupiah = $(this)
+                .val()
+                .replace(/[^,\d]/g, "")
+                .toString(),
+                split = rupiah.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            var debit = 0;
+            $("." + classNoHide).each(function() {
+                debit += parseFloat($(this).val());
+            });
+
+            if (rupiah === "") {
+                $(this).val("Rp 0");
+                $("." + classHide + count).val("0");
+            } else {
+                $(this).val("Rp " + rupiah);
+                var rupiah_biasa = parseFloat(rupiah.replace(/[^\d]/g, ""));
+                $("." + classHide + count).val(rupiah_biasa);
+            }
+
+
+            var total_debit = 0;
+            $("." + classHide).each(function() {
+                total_debit += parseFloat($(this).val());
+            });
+
+
+            $("." + classTotalhide).val(total_debit);
+
+            var totalRupiah = total_debit.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            var debit = $("." + classTotal).text(totalRupiah);
+            $(".total_kredit").text(totalRupiah);
+            
+            var ttlHutang = $(".total_hutangTetap").val()
+            var selisih = parseFloat(ttlHutang) - parseFloat(total_debit)
+            teksSelisih = selisih.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+
+            if (selisih === 0) {
+                $(".cselisih").css("color", "green");
+
+            } else {
+                $(".cselisih").css("color", "red");
+
+            }
+
+            $(".selisih").text(teksSelisih);
+
+        });
+    }
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -140,7 +194,6 @@
                 currency: "IDR",
             });
             var debit = $("." + classTotal).text(totalRupiah);
-
 
 
         });
@@ -252,6 +305,7 @@
         "autoWidth": true,
         "paging": false,
     });
+
     $('#nanda').DataTable({
         "searching": true,
         scrollY: '400px',
@@ -262,8 +316,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -275,11 +329,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-</script>
+    </script>
 @endif
 @if (session()->has('error'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -293,7 +347,7 @@
 
 
         });
-</script>
+    </script>
 @endif
 @yield('scripts')
 @yield('js')

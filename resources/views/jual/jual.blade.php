@@ -1,11 +1,14 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="9">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="col-lg-6">
             <h3 class="float-start mt-1">{{ $title }}</h3>
         </div>
 
         <x-theme.button modal="T" href="#" icon="fa-money-bill" addClass="float-end btn_bayar" teks="Bayar" />
-        <x-theme.button modal="Y" idModal="jual" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
+        <x-theme.button modal="T" href="{{ route('jual.add') }}" icon="fa-plus" addClass="float-end"
+            teks="Buat Baru" />
+        <x-theme.button modal="T" href="/jual/export?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
+            icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
         <x-theme.btn_filter />
     </x-slot>
 
@@ -15,27 +18,50 @@
                 <thead>
                     <tr>
                         <th width="5">#</th>
+                        <th></th>
                         <th>Tanggal</th>
                         <th>No Nota</th>
                         <th>No Penjual</th>
+                        <th>Keterangan</th>
                         <th>Total Rp</th>
+                        <th>Terbayar</th>
+                        <th>Sisa Piutang</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($jual as $no => $d)
-                        <tr>
+                        <tr class="fw-bold induk_detail{{ $d->no_nota }}">
                             <td>{{ $no + 1 }}</td>
+                            <td>
+                                <a href="#" onclick="event.preventDefault();"
+                                    class="detail_bayar detail_bayar{{ $d->no_nota }}"
+                                    no_nota="{{ $d->no_nota }}"><i class="fas fa-angle-down"></i></a>
+
+                                <a href="#" onclick="event.preventDefault();"
+                                    class="hide_bayar hide_bayar{{ $d->no_nota }}" no_nota="{{ $d->no_nota }}"><i
+                                        class="fas fa-angle-up"></i></a>
+
+                            </td>
                             <td>{{ date('d-m-Y', strtotime($d->tgl)) }}</td>
-                            <td>{{ $d->no_nota }}</td>
+                            <td>
+                                <a href="{{ route('jual.edit', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a>
+                            </td>
                             <td>{{ $d->no_penjualan }}</td>
-                            <td>{{ number_format($d->total_rp, 0) }}</td>
+                            <td>{{ $d->ket }}</td>
+                            <td align="right">Rp. {{ number_format($d->total_rp, 0) }}</td>
+                            <td align="right">Rp. {{ number_format($d->kredit, 0) }}</td>
+                            <td align="right">Rp. {{ number_format($d->total_rp + $d->debit - $d->kredit, 0) }}</td>
                             <td>{{ $d->status }}</td>
                             <td>
-                                <input type="checkbox" no_nota="{{ $d->no_nota }}"
-                                    no_penjualan="{{ $d->no_penjualan }}"
-                                    class="form-check-glow form-check-input form-check-primary cek_bayar" />
+                                @if ($d->status == 'paid')
+                                    <i class="fas fa-check text-success"></i>
+                                @else
+                                    <input type="checkbox" no_nota="{{ $d->no_nota }}"
+                                        no_penjualan="{{ $d->no_penjualan }}"
+                                        class="form-check-glow form-check-input form-check-primary cek_bayar" />
+                                @endif
                             </td>
 
                         </tr>
@@ -128,6 +154,30 @@
 
     @section('scripts')
         <script>
+            $('.hide_bayar').hide();
+            $(document).on("click", ".detail_bayar", function() {
+                var no_nota = $(this).attr('no_nota');
+                $.ajax({
+                    type: "get",
+                    url: "/jual/get_kredit_pi?no_nota=" + no_nota,
+                    success: function(data) {
+
+                        $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
+                        $(".show_detail" + no_nota).show();
+                        $(".detail_bayar" + no_nota).hide();
+                        $(".hide_bayar" + no_nota).show();
+                    }
+                });
+
+            });
+            $(document).on("click", ".hide_bayar", function() {
+                var no_nota = $(this).attr('no_nota');
+                $(".show_detail" + no_nota).remove();
+                $(".detail_bayar" + no_nota).show();
+                $(".hide_bayar" + no_nota).hide();
+
+            });
+
             $(".btn_bayar").hide();
             $(document).on('change', '.cek_bayar', function() {
                 var anyChecked = $('.cek_bayar:checked').length > 0;
@@ -155,6 +205,7 @@
                 var no_nota = $(this).attr('no_nota')
                 $("#no_nota").val(no_nota);
             })
+
             $(document).on('click', '.delete_nota', function() {
                 var no_nota = $(this).attr('no_nota')
                 $(".no_nota_delete").val(no_nota);

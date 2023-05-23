@@ -28,7 +28,6 @@
                 <div class="col-lg-3 col-6">
                     <label for="">Tanggal</label>
                     <input type="date" name="tgl_bayar" class="form-control" value="{{ date('Y-m-d') }}" readonly>
-
                 </div>
                 <div class="col-lg-3 col-6">
                     <label for="">No Pembayaran</label>
@@ -44,40 +43,59 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th width="10%">No Penjualan</th>
+                                <th width="5%">No Penjualan</th>
                                 <th width="15%" style="text-align: right">Total Rp</th>
                                 <th width="15%" style="text-align: right">Bayar</th>
                                 <th width="5%" class="text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $ttlKredit = 0;
+                            @endphp
                             @foreach ($no_order as $no => $p)
                                 @php
-                                    $getRow = DB::table('invoice_pi')
-                                        ->where('no_nota', $p)
-                                        ->first();
+                                    $getRow = DB::selectOne("SELECT a.* FROM invoice_pi as a
+                                        WHERE a.no_nota = '$p'
+                                        ORDER BY a.id_invoice_bk ASC");
+                                    
+                                    $getRowKredit = DB::selectOne("SELECT a.no_nota, a.no_penjualan, a.status,(a.total_rp - c.kredit) as total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
+                                    LEFT JOIN (
+                                        SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
+                                        GROUP BY b.nota_jurnal
+                                    ) c ON c.nota_jurnal = a.no_nota
+                                    WHERE a.no_nota = '$p' ORDER BY a.id_invoice_bk ASC;");
+                                    $kredit = $getRow->total_rp - $getRowKredit->kredit;
+                                    $ttlKredit += $kredit;
+                                    
                                 @endphp
                                 <tr>
-                                    <td><input type="text" readonly class="form-control" name="no_nota[]"
-                                            value="{{ $getRow->no_nota }}"></td>
                                     <input type="hidden" readonly class="form-control" name="total_rp[]"
-                                        value="{{ $getRow->total_rp }}">
-                                    <td><input type="text" readonly class="form-control" style="text-align:right"
-                                            value="Rp. {{ number_format($getRow->total_rp, 0) }}"></td>
+                                        value="{{ $kredit }}">
+                                    <td>
+                                        <input type="hidden" class="form-control" name="no_nota[]"
+                                            value="{{ $getRow->no_nota }}">
+                                        <input type="text" readonly class="form-control" name="no_penjualan[]"
+                                            value="{{ $getRow->no_penjualan }}">
+                                    </td>
+
+                                    <td>
+                                        <input type="text" readonly class="form-control" style="text-align:right"
+                                            value="Rp. {{ number_format($kredit, 0) }}">
+                                    </td>
                                     <td>
                                         <input type="text" class="form-control dikanan rp-nohide text-end"
-                                            value="Rp {{ number_format($getRow->total_rp, 2, '.', '.') }}"
+                                            value="Rp {{ number_format($kredit, 2, '.', '.') }}"
                                             count="{{ $no + 1 }}">
                                         <input type="hidden"
                                             class="form-control dikanan rp-hide rp-hide{{ $no + 1 }}"
-                                            value="{{ $getRow->total_rp }}" name="bayar[]">
+                                            value="{{ $kredit }}" name="bayar[]">
 
                                     </td>
                                     <td></td>
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="1"></td>
                                 <td>
                                     <label for="">Pilih Akun</label>
                                     <select name="id_akun[]" class="form-control select2" id="select2">
@@ -88,12 +106,20 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <label for="">Jumlah Setor</label>
-                                    <input type="text" class="form-control dikanan rp-nohide text-end" value=""
-                                        count="{{ $no + 1 }}">
+                                    <label for="">Debit</label>
+                                    <input type="text" class="form-control dikanan setor-nohide text-end"
+                                        value="Rp. 0" count="{{ $no + 1 }}">
                                     <input type="hidden"
-                                        class="form-control dikanan rp-hide rp-hide{{ $no + 1 }}" value=""
-                                        name="setor[]">
+                                        class="form-control dikanan setor-hide setor-hide{{ $no + 1 }}"
+                                        value="" name="debit[]">
+                                </td>
+                                <td>
+                                    <label for="">Kredit</label>
+                                    <input type="text" class="form-control dikanan kredit-nohide text-end"
+                                        value="Rp 0" count="{{ $no + 1 }}">
+                                    <input type="hidden"
+                                        class="form-control dikanan kredit-hide kredit-hide{{ $no + 1 }}"
+                                        value="" name="kredit[]">
                                 </td>
                                 <td>
 
@@ -114,7 +140,31 @@
                         </tfoot>
 
                     </table>
+                    <div class="col-lg-6 float-end">
 
+                        <hr style="border: 1px solid blue">
+                        <table class="" width="100%">
+
+                            <tr>
+
+                                <td width="20%">Total</td>
+                                <input type="hidden" class="total_hutangTetap" value="{{ $ttlKredit }}">
+                                <td width="40%" class="total" style="text-align: right;">
+                                    Rp.{{ number_format($ttlKredit, 2) }}
+                                </td>
+                                <td width="40%" class="total_kredit" style="text-align: right;">
+                                    Rp. {{ number_format($ttlKredit, 2) }}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="cselisih" colspan="2">Sisa Hutang</td>
+                                <td style="text-align: right;" class="selisih cselisih">Rp.
+                                    0</td>
+                            </tr>
+                        </table>
+
+                    </div>
                 </div>
             </section>
     </x-slot>
@@ -124,7 +174,7 @@
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...
         </button>
-        <a href="{{ route('jurnal') }}" class="float-end btn btn-outline-primary me-2">Batal</a>
+        <a href="{{ route('jual.index') }}" class="float-end btn btn-outline-primary me-2">Batal</a>
         </form>
     </x-slot>
 
@@ -134,7 +184,9 @@
         <script>
             var count = 3;
             plusRow(count, 'tbh_baris', 'tbh_baris')
-            convertRp('rp-nohide', 'rp-hide')
+            convertRpSelisih('rp-nohide', 'rp-hide')
+            convertRpSelisih('setor-nohide', 'setor-hide')
+            convertRpSelisih('kredit-nohide', 'kredit-hide')
         </script>
     @endsection
 </x-theme.app>
