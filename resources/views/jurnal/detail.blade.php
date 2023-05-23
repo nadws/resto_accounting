@@ -1,16 +1,16 @@
 <table width="100%" cellpadding="10px">
     <tr>
-        <th width="10%">Tanggal</th>
-        <th width="2%">:</th>
-        <th>{{date('d-m-Y',strtotime($head_jurnal->tgl))}}</th>
-        <th width="10%">No Nota</th>
-        <th width="2%">:</th>
-        <th>{{$head_jurnal->no_nota}}</th>
+        <th style="background-color: white;" width="10%">Tanggal</th>
+        <th style="background-color: white;" width="2%">:</th>
+        <th style="background-color: white;">{{date('d-m-Y',strtotime($head_jurnal->tgl))}}</th>
+        <th style="background-color: white;" width="10%">No Nota</th>
+        <th style="background-color: white;" width="2%">:</th>
+        <th style="background-color: white;">{{$head_jurnal->no_nota}}</th>
     </tr>
     <tr>
-        <th width="10%">Proyek</th>
-        <th width="2%">:</th>
-        <th>{{$head_jurnal->nm_proyek}}</th>
+        <th style="background-color: white; " width="10%">Proyek</th>
+        <th style="background-color: white; " width="2%">:</th>
+        <th style="background-color: white; ">{{$head_jurnal->nm_proyek}}</th>
     </tr>
 </table>
 <br>

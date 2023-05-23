@@ -24,10 +24,10 @@
         @endforeach
 
         <div class="row justify-content-end">
-            <div class="col-lg-12">
-                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <div class="col-lg-12 mb-2">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {{ empty($tipe) ? 'active' : '' }}" href="{{ route('pembayaranbk') }}"
+                        <a class="nav-link {{empty($tipe) ? 'active' : ''}}" href="{{route('pembayaranbk')}}"
                             type="button" role="tab" aria-controls="pills-home" aria-selected="true">All</a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -49,6 +49,7 @@
                             Rp {{ number_format($total_unpaid, 0) }}</a>
                     </li>
                 </ul>
+                <hr style="border:1px solid #435EBE">
             </div>
             <div class="col-lg-6">
                 <h5 class="float-start mt-1">{{ $title }} : {{ date('d-m-Y', strtotime($tgl1)) }}
@@ -58,6 +59,8 @@
             </div>
             <div class="col-lg-6">
                 <x-theme.btn_filter title="Filter Pembayaran Bk" />
+                <x-theme.button modal="T" href="/exportBayarbk?tgl1={{$tgl1}}&tgl2={{$tgl2}}" icon="fa-file-excel"
+                    addClass="float-end float-end btn btn-success me-2" teks="Export" />
             </div>
         </div>
     </x-slot>
@@ -162,30 +165,29 @@
 
     </x-slot>
     @section('scripts')
-        <script>
-            $(document).ready(function() {
-                $('.hide_bayar').hide();
-                $(document).on("click", ".detail_bayar", function() {
-                    var no_nota = $(this).attr('no_nota');
-                    $.ajax({
-                        type: "get",
-                        url: "/get_kreditBK?no_nota=" + no_nota,
-                        success: function(data) {
-                            $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
-                            $(".show_detail" + no_nota).show();
-                            $(".detail_bayar" + no_nota).hide();
-                            $(".hide_bayar" + no_nota).show();
-                        }
-                    });
-
+    <script>
+        $(document).ready(function() {
+            $('.hide_bayar').hide();
+            $(document).on("click", ".detail_bayar", function() {
+                var no_nota = $(this).attr('no_nota');
+                $.ajax({
+                    type: "get",
+                    url: "/get_kreditBK?no_nota=" + no_nota,
+                    success: function(data) {
+                        $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
+                        $(".show_detail" + no_nota).show();
+                        $(".detail_bayar" + no_nota).hide();
+                        $(".hide_bayar" + no_nota).show();
+                    }
                 });
 
-                $(document).on("click", ".hide_bayar", function() {
-                    var no_nota = $(this).attr('no_nota');
-                    $(".show_detail" + no_nota).remove();
-                    $(".detail_bayar" + no_nota).show();
-                    $(".hide_bayar" + no_nota).hide();
-                });
+            });
+            $(document).on("click", ".hide_bayar", function() {
+                var no_nota = $(this).attr('no_nota');
+                $(".show_detail" + no_nota).remove();
+                $(".detail_bayar" + no_nota).show();
+                $(".hide_bayar" + no_nota).hide();
+
             });
         </script>
     @endsection

@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/choices.js/public/assets/styles/choices.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/widgets/todo.css">
+    <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/dragula/dragula.min.css">
 
 
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -92,7 +94,7 @@
             background-color: #E9ECEF;
         }
 
-        .active {
+        .active_navbar_new {
             text-decoration: underline;
             color: #ffffff !important;
         }

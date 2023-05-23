@@ -29,7 +29,6 @@
                             <th>Suplier Awal</th>
                             <th>Suplier Akhir</th>
                             <th style="text-align: right">Total Harga</th>
-
                             <th style="text-align: center">Status</th>
                             <th style="text-align: center">Grading</th>
                             <th style="text-align: center">Approve <br> <input type="checkbox" name="" id="checkAll"
