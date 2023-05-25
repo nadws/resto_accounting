@@ -165,11 +165,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/load', 'load')->name('load');
             Route::get('/add', 'add')->name('add');
             Route::get('/modal', 'modal')->name('modal');
+            Route::get('/delete', 'delete')->name('delete');
             Route::get('/print', 'print')->name('print');
         });
-
         
-
     Route::get('/403', function(){
         view('error.403');
     })->name('403');

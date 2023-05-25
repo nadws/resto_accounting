@@ -1,14 +1,23 @@
+<style>
+    .dhead {
+        background-color: #435EBE !important;
+        color: white;
+    }
+</style>
 <section class="row">
 
     <table class="table table-bordered">
-
         <tr>
-            <th colspan="4">Uraian</th>
+            <th class="dhead">Uraian</th>
+            <th colspan="2" class="dhead" style="text-align: right">Rupiah</th>
+
         </tr>
         <tr>
-            <th colspan="4"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">PEREDARAN USAHA</a>
+            <th colspan="2"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">Peredaran Usaha</a>
             </th>
         </tr>
+
+
 
         @php
             $total_pendapatan = 0;
@@ -20,16 +29,17 @@
             <tr>
                 <td></td>
                 <td>{{ ucwords(strtolower($p->nm_akun)) }}</td>
-                <td width="5%">Rp</td>
-                <td align="right">{{ number_format($p->kredit - $p->debit, 0) }}</td>
+                <td align="right">Rp. {{ number_format($p->kredit - $p->debit, 0) }}</td>
             </tr>
         @endforeach
         <tr>
-            <td style="border-bottom: 1px solid black;"></td>
-            <td class="fw-bold" style="border-bottom: 1px solid black;">Total Pendapatan</td>
-            <td class="fw-bold" style="border-bottom: 1px solid black;">Rp</td>
+            <td colspan="2" class="fw-bold" style="border-bottom: 1px solid black;">Total Pendapatan</td>
             <td class="fw-bold" align="right" style="border-bottom: 1px solid black;">
-                {{ number_format($total_pendapatan, 0) }}</td>
+                Rp. {{ number_format($total_pendapatan, 0) }}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
         </tr>
         <tr>
             <th colspan="4">BIAYA - BIAYA</th>
@@ -42,23 +52,19 @@
                 $total_biaya += $l->debit - $l->kredit;
             @endphp
             <tr>
-                <td></td>
                 <td>{{ ucwords(strtolower($l->nm_akun)) }}</td>
                 <td width="5%">Rp</td>
                 <td align="right">{{ number_format($l->debit - $l->kredit, 0) }}</td>
             </tr>
         @endforeach
         <tr>
-            <td style="border-bottom: 1px solid black;"></td>
-            <td class="fw-bold" style="border-bottom: 1px solid black;">Total Biaya-biaya</td>
-            <td class="fw-bold" style="border-bottom: 1px solid black;">Rp</td>
+            <td colspan="2" class="fw-bold" style="border-bottom: 1px solid black;">Total Biaya-biaya</td>
             <td class="fw-bold" align="right" style="border-bottom: 1px solid black;">
                 {{ number_format($total_biaya, 0) }}</td>
         </tr>
         <tr>
             <td colspan="2" class="fw-bold">TOTAL LABA BERSIH</td>
-            <td class="fw-bold">Rp</td>
-            <td class="fw-bold" align="right">{{ number_format($total_pendapatan - $total_biaya, 0) }}</td>
+            <td class="fw-bold" align="right">Rp.{{ number_format($total_pendapatan - $total_biaya, 0) }}</td>
         </tr>
 
         <tbody>
@@ -66,5 +72,5 @@
         </tbody>
     </table>
 
-    
+
 </section>

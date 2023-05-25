@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
@@ -12,8 +12,11 @@
     </x-slot>
     <x-slot name="cardBody">
         <div id="tableLoad"></div>
-        <div id="modalLoad"></div>
-
+        <form id="formtabhAkun">
+            <x-theme.modal title="Add Akun" idModal="tambah-profit" size="modal-lg">
+                <div id="modalLoad"></div>
+            </x-theme.modal>
+        </form>
         <form action="" method="get">
             <x-theme.modal title="Filter Profit & Loss" idModal="view">
                 <div class="row">
@@ -106,6 +109,23 @@
                     success: function(r) {
                         $('#tambah-profit').off('hide.bs.modal');;
                         toast('Berhasil tambah akun')
+                        loadModal()
+                        loadTabel()
+                    }
+                });
+            })
+
+            $(document).on('click', '.btnHapus', function() {
+                var id_profit = $(this).attr("id_profit")
+
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('profit.delete') }}",
+                    data: {
+                        id_profit: id_profit,
+                    },
+                    success: function(r) {
+                        toast('Berhasil hapus akun')
                         loadModal()
                         loadTabel()
                     }
