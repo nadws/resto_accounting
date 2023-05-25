@@ -12,7 +12,16 @@
         <form id="tambah_saldo">
             @csrf
             <section class="row">
-                <table class="table table-hover" id="tableScroll">
+                <div class="col-lg-8"></div>
+                <div class="col-lg-4 mb-2">
+                    <table class="float-end">
+                        <td>Pencarian :</td>
+                        <td><input type="text" id="pencarian" class="form-control float-end"></td>
+                    </table>
+
+
+                </div>
+                <table class="table table-hover" id="tablealdi">
                     <thead>
                         <tr>
                             <th width="5">#</th>
@@ -116,7 +125,7 @@
             // convertRp('rp-nohides', 'rp-hides','totalKredit','totalKredithide')
 
             $(document).ready(function() {
-
+                pencarian('pencarian', 'tablealdi')
                 $(document).on('submit', '#tambah_saldo', function(event) {
                     event.preventDefault();
 
