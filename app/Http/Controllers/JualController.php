@@ -18,7 +18,6 @@ class JualController extends Controller
 
     public function __construct(Request $r)
     {
-
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -29,11 +28,23 @@ class JualController extends Controller
             $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
             $this->tgl2 = date('Y-m-d');
         } elseif ($r->period == 'mounthly') {
-            $this->tgl1 = date('Y-m-01');
-            $this->tgl2 = date('Y-m-t');
+            $bulan = $r->bulan;
+            $tahun = $r->tahun;
+            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
+            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tglawal));
+            $this->tgl2 = date('Y-m-t', strtotime($tglakhir));
         } elseif ($r->period == 'costume') {
             $this->tgl1 = $r->tgl1;
             $this->tgl2 = $r->tgl2;
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
         }
 
         $this->id_proyek = $r->id_proyek ?? 0;
