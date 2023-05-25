@@ -100,9 +100,9 @@ class BukuBesarController extends Controller
 
     public function export_detail(Request $r)
     {
-        $tgl1 =  $this->tgl1;
-        $tgl2 =  $this->tgl2;
-        $id_akun =  $this->id_akun;
+        $tgl1 =  $r->tgl1;
+        $tgl2 =  $r->tgl2;
+        $id_akun =  $r->id_akun;
 
         $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_akun = '$id_akun' and a.tgl between '$tgl1' and '$tgl2' AND a.penutup = 'T'");
 

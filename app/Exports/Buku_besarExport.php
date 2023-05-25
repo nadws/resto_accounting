@@ -16,6 +16,7 @@ class Buku_besarExport implements FromView, WithEvents
     protected $tgl1;
     protected $tgl2;
     protected $id_akun;
+    protected $totalrow;
 
     public function __construct($tgl1, $tgl2, $id_akun, $totalrow)
     {
@@ -27,6 +28,7 @@ class Buku_besarExport implements FromView, WithEvents
 
     public function view(): View
     {
+
 
         $jurnal = DB::select("SELECT d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
         LEFT JOIN (
@@ -43,7 +45,8 @@ class Buku_besarExport implements FromView, WithEvents
 
         return view('exports.detail_bukubesar', [
             'detail' => $jurnal,
-            'nm_akun' => $nm_akun->nm_akun
+            'nm_akun' => $nm_akun->nm_akun,
+            'tgl1' => $this->tgl1
         ]);
     }
 
