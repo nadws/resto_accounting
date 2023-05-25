@@ -71,10 +71,10 @@
                             <th></th>
                             <th></th>
                             <th class="text-end">
-                                <p class="totalDebit">Rp. {{ number_format($t_debit, 2, '.', '.') }}</p>
+                                <p class="totalDebit">Rp. {{ number_format($t_debit, 2, ',', '.') }}</p>
                             </th>
                             <th class="text-end">
-                                <p class="totalKredit">Rp. {{ number_format($t_kredit, 2, '.', '.') }}
+                                <p class="totalKredit">Rp. {{ number_format($t_kredit, 2, ',', '.') }}
                                 </p>
                             </th>
                             <input type="text" style="display: none" class="totalDebithide"
