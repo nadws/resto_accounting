@@ -15,7 +15,7 @@ class BukuBesarController extends Controller
     public function __construct(Request $r)
     {
         if (empty($r->period)) {
-            $this->tgl1 = date('Y-m-01');
+            $this->tgl1 = date('2022-01-01');
             $this->tgl2 = date('Y-m-t');
         } elseif ($r->period == 'daily') {
             $this->tgl1 = date('Y-m-d');
