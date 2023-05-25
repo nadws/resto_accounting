@@ -72,7 +72,7 @@ class BkinExport  implements FromView, WithEvents
                     ],
                     'font' => [
                         'name'  =>  'Calibri',
-                        'size'  =>  7,
+                        'size'  =>  12,
                         'bold' => true
                     ]
                 ]);
@@ -85,7 +85,7 @@ class BkinExport  implements FromView, WithEvents
                     ],
                     'font' => [
                         'name'  =>  'Calibri',
-                        'size'  =>  7,
+                        'size'  =>  12,
                         'bold' => false
                     ]
                 ]);
