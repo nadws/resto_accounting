@@ -14,15 +14,26 @@
         <section class="row">
             <table class="table table-hover table-striped" id="table1">
                 <thead>
+                    @php
+                        $ttlDebit = 0;
+                        $ttlKredit = 0;
+                        $ttlSaldo = 0;
+
+                        foreach($detail as $d) {
+                            $ttlDebit += $d->debit;
+                            $ttlKredit += $d->kredit;
+                            $ttlSaldo += $d->debit - $d->kredit;
+                        }
+                    @endphp
                     <tr>
                         <th width="5">#</th>
                         <th>Tanggal</th>
                         <th style="white-space: nowrap;">No Nota</th>
                         <th>Akun Vs {{ucwords(strtolower($nm_akun->nm_akun))}}</th>
                         <th>Keterangan</th>
-                        <th style="text-align: right">Debit</th>
-                        <th style="text-align: right">Kredit</th>
-                        <th style="text-align: right">Saldo</th>
+                        <th style="text-align: right">Debit <br> ({{number_format($ttlDebit,2)}})</th>
+                        <th style="text-align: right">Kredit <br> ({{number_format($ttlKredit,2)}})</th>
+                        <th style="text-align: right">Saldo <br> ({{number_format($ttlSaldo,2)}})</th>
                     </tr>
                 </thead>
                 <tbody>
