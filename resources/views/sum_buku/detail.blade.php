@@ -2,7 +2,8 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h3 class="float-start mt-1">{{ $title }} : {{ucwords(strtolower($nm_akun->nm_akun))}}</h3>
+                <h5 class="float-start mt-1">{{ $title }} : {{ucwords(strtolower($nm_akun->nm_akun))}}
+                    ({{date('d-m-Y',strtotime($tgl1))}}~{{date('d-m-Y',strtotime($tgl2))}})</h5>
             </div>
             <div class="col-lg-6">
                 <a href="{{ route('summary_buku_besar.export_detail',['id_akun' => $id_akun,'tgl1' => $tgl1,'tgl2' => $tgl2]) }}"
@@ -15,15 +16,15 @@
             <table class="table table-hover table-striped" id="table1">
                 <thead>
                     @php
-                        $ttlDebit = 0;
-                        $ttlKredit = 0;
-                        $ttlSaldo = 0;
+                    $ttlDebit = 0;
+                    $ttlKredit = 0;
+                    $ttlSaldo = 0;
 
-                        foreach($detail as $d) {
-                            $ttlDebit += $d->debit;
-                            $ttlKredit += $d->kredit;
-                            $ttlSaldo += $d->debit - $d->kredit;
-                        }
+                    foreach($detail as $d) {
+                    $ttlDebit += $d->debit;
+                    $ttlKredit += $d->kredit;
+                    $ttlSaldo += $d->debit - $d->kredit;
+                    }
                     @endphp
                     <tr>
                         <th width="5">#</th>
