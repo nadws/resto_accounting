@@ -27,8 +27,7 @@
                 $total_pendapatan += $p->kredit - $p->debit;
             @endphp
             <tr>
-                <td></td>
-                <td>{{ ucwords(strtolower($p->nm_akun)) }}</td>
+                <td colspan="2" style="padding-left: 20px">{{ ucwords(strtolower($p->nm_akun)) }}</td>
                 <td align="right">Rp. {{ number_format($p->kredit - $p->debit, 0) }}</td>
             </tr>
         @endforeach

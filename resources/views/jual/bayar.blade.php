@@ -38,7 +38,7 @@
                         <tr>
                             <td>
                                 <input type="date" name="tgl_bayar" class="form-control" value="{{ date('Y-m-d') }}"
-                                    readonly>
+                                    >
                             </td>
                             <td>
                                 <input type="text" class="form-control" value="PBYR-{{ $no_pembayaran }}" readonly>
