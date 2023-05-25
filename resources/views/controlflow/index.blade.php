@@ -4,42 +4,29 @@
             <h6 class="float-start mt-1">{{ $title }}: {{date('d-m-Y',strtotime($tgl1))}} ~
                 {{date('d-m-Y',strtotime($tgl2))}}</h6>
         </div>
-        <x-theme.button modal="Y" idModal="akun" icon="fa-book" variant="primary" addClass="float-end"
+        <x-theme.button modal="T" icon="fa-print" href="/print_cashflow?tgl1={{$tgl1}}&tgl2={{$tgl2}}" variant="success"
+            addClass="float-end" teks="Print" />
+        <x-theme.button modal="Y" idModal="daftarakun" icon="fa-book" variant="primary" addClass="float-end view_akun"
             teks="Daftar Akun" />
         <x-theme.btn_filter />
     </x-slot>
     <x-slot name="cardBody">
         <div id="loadcontrolflow"></div>
 
-        {{-- view --}}
-        <form id="formView">
-            <x-theme.modal title="View Cashflow" idModal="view">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Dari</label>
-                            <input type="date" id="tgl1" name="tgl1" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Sampai</label>
-                            <input type="date" id="tgl2" name="tgl2" class="form-control">
-                        </div>
-                    </div>
-                </div>
 
-            </x-theme.modal>
-        </form>
-        {{-- end view --}}
 
         {{-- form sub kategori --}}
 
         <x-theme.modal title="Kategori" size="modal-lg" btnSave='T' idModal="modalPendapatan">
             <div id="loadPendapatan"></div>
         </x-theme.modal>
+
         <x-theme.modal title="Pilih Akun" size="modal-lg" btnSave='T' idModal="modalAkunPendapatan">
             <div id="loadAkunPendapatan"></div>
+        </x-theme.modal>
+
+        <x-theme.modal title="Daftar Akun yang belum terdaftar" size="modal-lg" btnSave='T' idModal="daftarakun">
+            <div id="viewdaftarakun"></div>
         </x-theme.modal>
 
 
@@ -86,11 +73,6 @@
                 success: function(r) {
                     $("#loadPendapatan").html(r);
                     $('.jenisSub').val(jenis)
-                    $("#table2").DataTable({
-                        "lengthChange": false,
-                        "autoWidth": false,
-                        "stateSave": true,
-                    });
                     $('.select').select2({
                         dropdownParent: $('#modalPendapatan .modal-content')
                     });
@@ -109,11 +91,7 @@
                 success: function(r) {
                     $("#loadAkunPendapatan").html(r);
                     // $('.jenisSub').val(jenis)
-                    $("#table2").DataTable({
-                        "lengthChange": false,
-                        "autoWidth": false,
-                        "stateSave": true,
-                    });
+
                     $('.select').select2({
                         dropdownParent: $('#modalAkunPendapatan .modal-content')
                     });
@@ -200,6 +178,20 @@
                     loadInputAkun(jenis);
                     loadTabel()
                     // $("#modalSubKategori").modal('hide')
+                }
+            });
+        });
+        $(document).on('click', '.view_akun', function() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('view_akun') }}",
+                success: function(data) {
+                    $("#viewdaftarakun").html(data);
+                    $("#table2").DataTable({
+                        "lengthChange": false,
+                        "autoWidth": false,
+                        "stateSave": true,
+                    });
                 }
             });
         });
