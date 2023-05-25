@@ -101,8 +101,8 @@
                                         <option value="4" {{$b->id_akun == '4' ? 'Selected' : ''}}>KAS BESAR</option>
                                         <option value="10" {{$b->id_akun == '10' ? 'Selected' : ''}}>BANK MANDIRI NO.REK
                                             031-00-5108889-9</option>
-                                        <option value="30" {{$b->id_akun == '30' ? 'Selected' : ''}}>HUTANG BANK BCA NO.
-                                            REK 0513020888</option>
+                                        <option value="30" {{$b->id_akun == '30' ? 'Selected' : ''}}>Bca No. Rek
+                                            0513020888 (untuk Hutang)</option>
                                         <option value="45" {{$b->id_akun == '45' ? 'Selected' : ''}}>PENDAPATAN  DILUAR
                                             USAHA</option>
                                     </select>

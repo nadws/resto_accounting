@@ -227,4 +227,6 @@ Route::controller(ControlflowController::class)->group(function () {
     Route::get('/SaveSubAkunCashflow', 'SaveSubAkunCashflow')->name('SaveSubAkunCashflow');
     Route::get('/deleteSubAkunCashflow', 'deleteSubAkunCashflow')->name('deleteSubAkunCashflow');
     Route::get('/deleteAkunCashflow', 'deleteAkunCashflow')->name('deleteAkunCashflow');
+    Route::get('/view_akun', 'view_akun')->name('view_akun');
+    Route::get('/print_cashflow', 'print')->name('print_cashflow');
 });

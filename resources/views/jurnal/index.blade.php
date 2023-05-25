@@ -12,8 +12,12 @@
                 @endif
 
                 @if (!empty($export))
+                {{--
                 <x-theme.button modal="T"
                     href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
+                    icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" /> --}}
+                <x-theme.button modal="T"
+                    href="/export_jurnal?tgl1={{$tgl1}}&tgl2={{$tgl2}}&id_proyek={{$id_proyek}}&id_buku=2"
                     icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
                 @endif
 
