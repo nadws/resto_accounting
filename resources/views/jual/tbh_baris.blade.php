@@ -1,5 +1,4 @@
 <tr class="baris{{$count}}">
-    <td colspan="1"></td>
     <td>
         <select name="id_akun[]" class="form-control select2" count="{{ $count }}">
             <option value="">- Pilih Akun -</option>
@@ -9,10 +8,16 @@
         </select>
     </td>
     <td>
-        <input type="text" class="form-control debit_rupiah text-end"
+        <input type="text" class="form-control setor-nohide text-end"
             value="Rp 0" count="{{ $count }}">
-        <input type="hidden" class="form-control debit_biasa debit_biasa{{$count}}" count="{{ $count }}"
-            value="" name="setor[]">
+        <input type="hidden" class="form-control setor-hide setor-hide{{$count}}" count="{{ $count }}"
+            value="" name="debit[]">
+    </td>
+    <td>
+        <input type="text" class="form-control kredit-nohide text-end"
+            value="Rp 0" count="{{ $count }}">
+        <input type="hidden" class="form-control kredit-hide kredit-hide{{$count}}" count="{{ $count }}"
+            value="" name="kredit[]">
     </td>
     <td align="center">
         <button type="button" class="btn rounded-pill remove_baris" count="{{$count}}"><i

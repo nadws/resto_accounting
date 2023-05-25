@@ -145,6 +145,7 @@ class PembayaranBkController extends Controller
     public function add(Request $r)
     {
         $nota = $r->nota;
+
         $p = DB::selectOne("SELECT a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir,
         a.total_harga, a.lunas,a.jumlah_pembayaran
         FROM invoice_bk as a
@@ -152,6 +153,7 @@ class PembayaranBkController extends Controller
         where a.no_nota = '$nota'
         order by a.id_invoice_bk ASC
         ");
+
         $bayar = DB::select("SELECT a.tgl, c.nm_suplier, b.suplier_akhir, a.kredit, d.nm_akun, a.ket, a.debit
         FROM bayar_bk as a
         left join invoice_bk as b on b.no_nota = a.no_nota
@@ -190,8 +192,6 @@ class PembayaranBkController extends Controller
             }
             DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
 
-
-
             $data = [
                 'no_nota' => $cfm_pembayaran,
                 'debit' => $debit[$x],
@@ -204,6 +204,7 @@ class PembayaranBkController extends Controller
                 'bayar' => 'Y'
             ];
             DB::table('bayar_bk')->insert($data);
+
             if ($debit[$x] == '0') {
                 $data_kredit = [
                     'tgl' => $tgl[$x],
@@ -216,7 +217,6 @@ class PembayaranBkController extends Controller
                     'admin' => Auth::user()->name,
                 ];
                 DB::table('jurnal')->insert($data_kredit);
-
 
                 $data_debit = [
                     'tgl' => $tgl[$x],
@@ -373,7 +373,6 @@ class PembayaranBkController extends Controller
                 ];
                 DB::table('jurnal')->insert($data_kredit);
 
-
                 $data_debit = [
                     'tgl' => $tgl[$x],
                     'no_nota' => 'JU-' . $nota_t,
@@ -397,7 +396,6 @@ class PembayaranBkController extends Controller
                     'admin' => Auth::user()->name,
                 ];
                 DB::table('jurnal')->insert($data_kredit);
-
 
                 $data_debit = [
                     'tgl' => $tgl[$x],
@@ -429,6 +427,7 @@ class PembayaranBkController extends Controller
         $data = [
             'bayar' => $bayar
         ];
+
         return view('pembayaran_bk.getkredit', $data);
     }
 

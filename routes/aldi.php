@@ -142,10 +142,14 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/bayar', 'bayar')->name('bayar');
+            Route::get('/add', 'add')->name('add');
             Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::get('/get_kredit_pi', 'get_kredit_pi')->name('get_kredit_pi');
+            Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
+            Route::get('/export', 'export')->name('export');
+            Route::get('/edit', 'edit')->name('edit');
             Route::post('/piutang', 'piutang')->name('piutang');
             Route::post('/', 'create')->name('create');
-            Route::get('/edit', 'edit')->name('edit');
             Route::get('/delete', 'delete')->name('delete');
         });
 
