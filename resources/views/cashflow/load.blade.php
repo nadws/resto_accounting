@@ -22,10 +22,10 @@
     <tbody>
         <input type="hidden" class="id_sub_kategori" value="1">
         @foreach ($pemasukan as $n => $p)
-        <tr class="todo-item" data-id="{{$n+1}}">
+        <tr>
             <td width="2%"></td>
-            <td><a href="#" class="btnSubKategoriAkun" id="{{$p->id}}">{{$p->sub_kategori}}</a></td>
-            <td>Rp. 0</td>
+            <td><a href="#" class="btnSubKategoriAkun" id_sub="{{$p->id}}">{{$p->sub_kategori}}</a></td>
+            <td>Rp. {{number_format($p->kredit,0)}}</td>
             {{-- <td><button class="btn btn-sm btn-primary  btnSubKategoriAkun" id="1"><i class="bi bi-plus-circle"></i>
                     Akun</button></td> --}}
         </tr>
