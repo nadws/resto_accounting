@@ -24,38 +24,36 @@
                     </thead>
                     <tbody>
                         @php
-                            $t_debit = 0;
-                            $t_kredit = 0;
+                        $t_debit = 0;
+                        $t_kredit = 0;
                         @endphp
                         @foreach ($akun as $no => $a)
-                            @php
-                                $t_debit += $a->debit;
-                                $t_kredit += $a->kredit;
-                            @endphp
-                            <tr>
-                                <td>{{ $no + 1 }}</td>
-                                <td>{{ $a->kode_akun }}</td>
-                                <td>
-                                    {{ ucwords(strtolower($a->nm_akun)) }}
-                                    <input type="hidden" name="id_akun[]" value="{{ $a->id_akun }}">
-                                </td>
-                                <td>
-                                    <input type="text"
-                                        class="form-control text-end rp-nohide  rp-nohide{{ $no + 1 }}"
-                                        count="{{ $no + 1 }}" value="Rp. {{ number_format($a->debit, 2, '.', '.') }}">
-                                    <input type="hidden" name="debit[]"
-                                        class="form-control text-end rp-hide rp-hide{{ $no + 1 }}"
-                                        value="{{ empty($a->debit) ? '0' : $a->debit }}">
-                                </td>
-                                <td>
-                                    <input type="text"
-                                        class="form-control text-end rp-nohides rp-nohides{{ $no + 1 }}"
-                                        count="{{ $no + 1 }}" value="Rp. {{ number_format($a->kredit,2, '.', '.') }}">
-                                    <input type="hidden" name="kredit[]"
-                                        class="form-control text-end rp-hides rp-hides{{ $no + 1 }}"
-                                        value="{{ empty($a->kredit) ? '0' : $a->kredit }}">
-                                </td>
-                            </tr>
+                        @php
+                        $t_debit += $a->debit;
+                        $t_kredit += $a->kredit;
+                        @endphp
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ $a->kode_akun }}</td>
+                            <td>
+                                {{ ucwords(strtolower($a->nm_akun)) }}
+                                <input type="hidden" name="id_akun[]" value="{{ $a->id_akun }}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control text-end rp-nohide  rp-nohide{{ $no + 1 }}"
+                                    count="{{ $no + 1 }}" value="Rp. {{ number_format($a->debit, 2, '.', '.') }}">
+                                <input type="hidden" name="debit[]"
+                                    class="form-control text-end rp-hide rp-hide{{ $no + 1 }}"
+                                    value="{{ empty($a->debit) ? '0' : $a->debit }}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control text-end rp-nohides rp-nohides{{ $no + 1 }}"
+                                    count="{{ $no + 1 }}" value="Rp. {{ number_format($a->kredit,2, '.', '.') }}">
+                                <input type="hidden" name="kredit[]"
+                                    class="form-control text-end rp-hides rp-hides{{ $no + 1 }}"
+                                    value="{{ empty($a->kredit) ? '0' : $a->kredit }}">
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
@@ -79,8 +77,7 @@
                 </table>
             </section>
 
-            <div class="modal fade" id="myModal" role="dialog" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
+            <div class="modal fade" id="myModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg-max" role="document">
                     <div class="modal-content ">
                         <div class="modal-header bg-costume">
@@ -113,9 +110,8 @@
         </form>
     </x-slot>
     @section('scripts')
-        <script>
-            
-            convertRpKoma('rp-nohide', 'rp-hide','rp-hides','totalDebit')
+    <script>
+        convertRpKoma('rp-nohide', 'rp-hide','rp-hides','totalDebit')
             convertRpKoma('rp-nohides', 'rp-hides','rp-hide','totalKredit')
             // convertRp('rp-nohides', 'rp-hides','totalKredit','totalKredithide')
 
@@ -149,6 +145,6 @@
                 });
 
             });
-        </script>
+    </script>
     @endsection
 </x-theme.app>
