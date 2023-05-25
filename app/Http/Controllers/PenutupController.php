@@ -70,7 +70,7 @@ class PenutupController extends Controller
             ];
             Jurnal::create($data);
 
-            Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y']);
+            Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y', 'saldo' => 'Y']);
         }
 
         return redirect()->route('penutup.index')->with('sukses', 'Berhasil Tutup Saldo');

@@ -45,7 +45,7 @@
                                         name="tgl[]">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" name="no_penjualan[]">
+                                    <input type="text" required class="form-control" name="no_penjualan[]">
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="ket[]">
@@ -91,7 +91,7 @@
         <script>
             var count = 3;
             plusRow(count, 'tbh_baris', 'tbh_add')
-            convertRp('setor-nohide', 'setor-hide')
+            convertRpKoma('setor-nohide', 'setor-hide')
         </script>
     @endsection
 </x-theme.app>

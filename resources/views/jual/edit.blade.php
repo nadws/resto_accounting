@@ -22,6 +22,7 @@
         </style>
         <form action="{{ route('jual.edit_save_penjualan') }}" method="post" class="save_jurnal">
             @csrf
+            <input type="hidden" name="nota_jurnal" value="{{ $edit->no_nota }}">
             <section class="row">
                 <div class="col-lg-12">
                     <table class="table table-striped">
@@ -48,7 +49,7 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control dikanan setor-nohide text-end"
-                                        value="Rp. {{ $edit->total_rp }}" count="1">
+                                        value="Rp. {{ number_format($edit->total_rp,2) }}" count="1">
                                     <input value="{{ $edit->total_rp }}" type="hidden" class="form-control dikanan setor-hide setor-hide1"
                                         value="" name="total_rp">
                                 </td>
@@ -75,7 +76,7 @@
         <script>
             var count = 3;
             plusRow(count, 'tbh_baris', 'tbh_add')
-            convertRp('setor-nohide', 'setor-hide')
+            convertRpKoma('setor-nohide', 'setor-hide')
         </script>
     @endsection
 </x-theme.app>

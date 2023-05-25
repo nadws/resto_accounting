@@ -4,24 +4,32 @@
             <h5 class="float-start mt-1">{{ $title }} {{ date('d-m-Y', strtotime($tgl1)) }} ~
                 {{ date('d-m-Y', strtotime($tgl2)) }}</h5>
         </div>
-
-        <x-theme.button modal="T" href="#" icon="fa-money-bill" addClass="float-end btn_bayar" teks="Bayar" />
-        <x-theme.button modal="T" href="{{ route('jual.add') }}" icon="fa-plus" addClass="float-end"
-            teks="Buat Baru" />
+        <button class="btn btn-sm icon icon-left btn-primary me-2 float-end btn_bayar"><i class="fas fa-money-bill"></i>
+            Bayar</button>
+        <x-theme.button modal="T" href="{{ route('jual.add') }}" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
         <x-theme.button modal="T" href="/jual/export?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
             icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
         <x-theme.btn_filter />
     </x-slot>
 
     <x-slot name="cardBody">
+        <div class="card piutang_cek">
+            <div class="card-body px-4 py-4-5">
+              <div class="row float-end text-center">
+                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                  <h6 class="font-extrabold mb-0"> Piutang Diceklis : Rp. <span class="piutangBayar"></span></h6>
+                </div>
+              </div>
+            </div>
+          </div>
         <section class="row">
             <table class="table" width="100%" id="tableScroll">
                 @php
                     $ttlRp = 0;
                     $ttlTerbayar = 0;
                     $ttlPiutang = 0;
-
-                    foreach($jual as $d) {
+                    
+                    foreach ($jual as $d) {
                         $ttlRp += $d->total_rp;
                         $ttlTerbayar += $d->kredit;
                         $ttlPiutang += $d->total_rp + $d->debit - $d->kredit;
@@ -76,6 +84,7 @@
                                 @else
                                     <input type="checkbox" no_nota="{{ $d->no_nota }}"
                                         no_penjualan="{{ $d->no_penjualan }}"
+                                        piutang="{{ $d->total_rp + $d->debit - $d->kredit }}"
                                         class="form-check-glow form-check-input form-check-primary cek_bayar" />
                                 @endif
                             </td>
@@ -205,9 +214,17 @@
             });
 
             $(".btn_bayar").hide();
+            $(".piutang_cek").hide();
             $(document).on('change', '.cek_bayar', function() {
+                var totalPiutang = 0
+                $('.cek_bayar:checked').each(function() {
+                    var piutang = $(this).attr('piutang');
+                    totalPiutang += parseInt(piutang);
+                });
                 var anyChecked = $('.cek_bayar:checked').length > 0;
                 $('.btn_bayar').toggle(anyChecked);
+                $(".piutang_cek").toggle(anyChecked);
+                $('.piutangBayar').text(totalPiutang.toLocaleString('en-US'));
             })
 
             $(document).on('click', '.btn_bayar', function() {

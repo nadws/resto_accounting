@@ -242,6 +242,12 @@ class JualController extends Controller
 
     public function edit_save_penjualan(Request $r)
     {
+        DB::table('jurnal')->where([['no_nota', $r->nota_jurnal], ['debit', 0]])->update([
+            'kredit' => $r->total_rp,
+        ]);
+        DB::table('jurnal')->where([['no_nota', $r->nota_jurnal], ['kredit', 0]])->update([
+            'debit' => $r->total_rp,
+        ]);
         DB::table('invoice_pi')->where('id_invoice_bk', $r->id_invoice_bk)->update([
             'no_penjualan' => $r->no_penjualan,
             'ket' => $r->ket,
