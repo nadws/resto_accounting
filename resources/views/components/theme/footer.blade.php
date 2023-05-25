@@ -301,7 +301,7 @@
 
     $('#tableScroll').DataTable({
         "searching": true,
-        scrollY: '100%',
+        scrollY: '400px',
         scrollX: true,
         scrollCollapse: true,
         "autoWidth": true,

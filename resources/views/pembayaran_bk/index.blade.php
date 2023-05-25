@@ -70,7 +70,11 @@
 
             </div>
             <section class="row">
-                <table class="table table-hover" id="tableScroll" width="100%">
+                <div class="col-lg-2 justify-content-end">
+                    <label for="" class="float-start">Pencarian :</label>
+                    <input type="text" id="pencarian" class="form-control float-end">
+                </div>
+                <table class="table table-hover" id="tablealdi" width="100%">
                     <thead>
                         <tr>
                             <th width="5">#</th>
@@ -160,6 +164,7 @@
     @section('scripts')
     <script>
         $(document).ready(function() {
+            pencarian('pencarian', 'tablealdi')
             $('.hide_bayar').hide();
             $(document).on("click", ".detail_bayar", function() {
                 var no_nota = $(this).attr('no_nota');
