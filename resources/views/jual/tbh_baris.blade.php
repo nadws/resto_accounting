@@ -1,7 +1,7 @@
 <tr class="baris{{$count}}">
     <td>
         <select name="id_akun[]" class="form-control select2" count="{{ $count }}">
-            <option value="">- Pilih Akun -</option>
+            <option value="">- Pilih Akun Setor -</option>
             @foreach ($akun as $d)
                 <option value="{{ $d->id_akun }}">{{ ucwords($d->nm_akun) }}</option>
             @endforeach

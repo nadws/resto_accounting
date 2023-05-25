@@ -15,6 +15,19 @@ class ProfitController extends Controller
     }
     public function index()
     {
+
+
+        $data =  [
+            'title' => 'Profit and Loss',
+            'tgl1' => $this->tgl1,
+            'tgl2' => $this->tgl2,
+
+        ];
+        return view('profit.index', $data);
+    }
+
+    public function load(Request $r)
+    {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
 
@@ -30,15 +43,36 @@ class ProfitController extends Controller
         WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' and b.id_klasifikasi ='2'
         group by a.id_akun;");
 
-        $data =  [
-            'title' => 'Profit and Loss',
+        $akun = DB::table('akun')->get();
+
+        $data = [
+            'title' => 'Load Profit',
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
             'profit' => $profit,
-            'loss' => $loss
-
+            'loss' => $loss,
+            'akun' => $akun
         ];
-        return view('profit.index', $data);
+        return view('profit.load', $data);
+    }
+
+    public function modal()
+    {
+        $akunProfit = DB::table('profit_akun')->get();
+        $akun = DB::table('akun')->get();
+        $data = [
+            'akunProfit' => $akunProfit,
+            'akun' => $akun
+        ];
+        return view('profit.modal',$data);
+    }
+
+    public function add(Request $r)
+    {
+        DB::table('profit_akun')->insert([
+            'urutan' => $r->urutan,
+            'id_akun' => $r->id_akun,
+        ]);
     }
 
     public function print(Request $r)

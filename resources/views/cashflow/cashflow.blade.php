@@ -40,8 +40,8 @@
     </x-slot>
 
     @section('scripts')
-    <script>
-        loadTabel()
+        <script>
+            loadTabel()
 
             function toast(pesan) {
                 Toastify({
@@ -139,18 +139,20 @@
                 });
 
                 $(document).ready(function() {
-                // Inisialisasi fungsi sortable
+                    // Inisialisasi fungsi sortable
                     $("#todo-table tbody").sortable({
                         update: function(event, ui) {
-                        // Mendapatkan urutan item setelah diurutkan
-                        var itemOrder = $(this).sortable("toArray", { attribute: "data-id" });
+                            // Mendapatkan urutan item setelah diurutkan
+                            var itemOrder = $(this).sortable("toArray", {
+                                attribute: "data-id"
+                            });
 
-                        // Simpan urutan item ke database atau lakukan operasi lain
-                        // saveItemOrder(itemOrder);
+                            // Simpan urutan item ke database atau lakukan operasi lain
+                            // saveItemOrder(itemOrder);
                         }
                     });
                 });
             })
-    </script>
+        </script>
     @endsection
 </x-theme.app>

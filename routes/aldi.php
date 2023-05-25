@@ -8,6 +8,7 @@ use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PoController;
+use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -145,10 +146,26 @@ Route::middleware('auth')->group(function () {
             Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
             Route::get('/export', 'export')->name('export');
             Route::get('/edit', 'edit')->name('edit');
+            Route::get('/edit_pembayaran', 'edit_pembayaran')->name('edit_pembayaran');
+            Route::post('/edit_save_penjualan', 'edit_save_penjualan')->name('edit_save_penjualan');
+            Route::post('/edit_save_pembayaran', 'edit_save_pembayaran')->name('edit_save_pembayaran');
             Route::post('/piutang', 'piutang')->name('piutang');
             Route::post('/', 'create')->name('create');
             Route::get('/delete', 'delete')->name('delete');
         });
+
+    Route::controller(ProfitController::class)
+        ->prefix('profit')
+        ->name('profit.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/load', 'load')->name('load');
+            Route::get('/add', 'add')->name('add');
+            Route::get('/modal', 'modal')->name('modal');
+            Route::get('/print', 'print')->name('print');
+        });
+
+        
 
     Route::get('/403', function(){
         view('error.403');

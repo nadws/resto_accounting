@@ -1,7 +1,8 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="col-lg-6">
-            <h3 class="float-start mt-1">{{ $title }}</h3>
+            <h5 class="float-start mt-1">{{ $title }} {{ date('d-m-Y', strtotime($tgl1)) }} ~
+                {{ date('d-m-Y', strtotime($tgl2)) }}</h5>
         </div>
 
         <x-theme.button modal="T" href="#" icon="fa-money-bill" addClass="float-end btn_bayar" teks="Bayar" />
@@ -42,11 +43,15 @@
                                 <a href="#" onclick="event.preventDefault();"
                                     class="hide_bayar hide_bayar{{ $d->no_nota }}" no_nota="{{ $d->no_nota }}"><i
                                         class="fas fa-angle-up"></i></a>
-
                             </td>
                             <td>{{ date('d-m-Y', strtotime($d->tgl)) }}</td>
                             <td>
-                                <a href="{{ route('jual.edit', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a>
+                                @if (!$d->kredit)
+                                    <a
+                                        href="{{ route('jual.edit', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a>
+                                @else
+                                    <p>{{ $d->no_nota }}</p>
+                                @endif
                             </td>
                             <td>{{ $d->no_penjualan }}</td>
                             <td>{{ $d->ket }}</td>
@@ -157,6 +162,9 @@
             $('.hide_bayar').hide();
             $(document).on("click", ".detail_bayar", function() {
                 var no_nota = $(this).attr('no_nota');
+                var clickedElement = $(this);
+
+                clickedElement.prop('disabled', true);
                 $.ajax({
                     type: "get",
                     url: "/jual/get_kredit_pi?no_nota=" + no_nota,
@@ -166,6 +174,13 @@
                         $(".show_detail" + no_nota).show();
                         $(".detail_bayar" + no_nota).hide();
                         $(".hide_bayar" + no_nota).show();
+
+                        clickedElement.prop('disabled', false);
+                    },
+                    error: function() {
+                        clickedElement.prop('disabled',
+                            false
+                        ); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
                     }
                 });
 
