@@ -55,42 +55,10 @@ class ControlflowController extends Controller
     {
         $tgl1 =  $r->tgl1;
         $tgl2 =  $r->tgl2;
-        $cash = DB::select("SELECT a.id_kategori_cashcontrol,  a.nama, b.debit , b.kredit
-        FROM kategori_cashcontrol as a 
-        left join (
-        SELECT b.id_akuncontrol, b.id_kategori_cashcontrol, sum(c.debit) as debit , sum(c.kredit) as kredit
-            FROM akuncontrol as b 
-            left join (
-            SELECT c.id_akun , sum(c.debit) as debit , sum(c.kredit) as kredit
-                FROM jurnal as c
-                where c.tgl between '$tgl1' and '$tgl2'
-                group by c.id_akun
-            ) as c on c.id_akun = b.id_akun
-            group by b.id_kategori_cashcontrol
-        ) as b on b.id_kategori_cashcontrol = a.id_kategori_cashcontrol
-        where a.jenis = '1'
-        order by a.urutan ASC;");
 
-        $pengeluaran = DB::select("SELECT a.id_kategori_cashcontrol,  a.nama, b.debit , b.kredit
-        FROM kategori_cashcontrol as a 
-        left join (
-        SELECT b.id_akuncontrol, b.id_kategori_cashcontrol, sum(c.debit) as debit , sum(c.kredit) as kredit
-            FROM akuncontrol as b 
-            left join (
-            SELECT c.id_akun , sum(c.debit) as debit , sum(c.kredit) as kredit
-                FROM jurnal as c
-                where c.tgl between '$tgl1' and '$tgl2'
-                group by c.id_akun
-            ) as c on c.id_akun = b.id_akun
-            group by b.id_kategori_cashcontrol
-        ) as b on b.id_kategori_cashcontrol = a.id_kategori_cashcontrol
-        where a.jenis = '2'
-        order by a.urutan ASC;");
 
         $data = [
             'title' => 'load',
-            'cash' => $cash,
-            'pengeluaran' => $pengeluaran,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2
 
@@ -135,6 +103,10 @@ class ControlflowController extends Controller
     {
         $tgl1 =  $r->tgl1;
         $tgl2 =  $r->tgl2;
+        $id_kategori_akun =  $r->id_kategori_akun;
+        $jenis =  $r->jenis;
+
+        dd($id_kategori_akun);
 
         $data = [
             'akun' => DB::Select("SELECT * FROM akun as a where a.id_akun not in (SELECT b.id_akun FROM akuncontrol as b ) "),
