@@ -6,6 +6,9 @@
             <div class="col-lg-6">
                 <h6 class="float-start mt-1">{{ $title }}</h6>
             </div>
+            <div class="col-lg-6">
+
+            </div>
 
         </div>
 
