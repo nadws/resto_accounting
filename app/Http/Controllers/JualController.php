@@ -11,8 +11,8 @@ use Maatwebsite\Excel\Facades\Excel;
 class JualController extends Controller
 {
     public $route = 'jual.index';
-    public $akunPiutangDagang = '135';
-    public $akunPenjualan = '134';
+    public $akunPiutangDagang = '12';
+    public $akunPenjualan = '34';
 
     protected $tgl1, $tgl2, $id_proyek, $period, $id_buku;
 
