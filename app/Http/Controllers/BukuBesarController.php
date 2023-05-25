@@ -50,13 +50,8 @@ class BukuBesarController extends Controller
     }
     public function index(Request $r)
     {
-        if (empty($r->tgl1)) {
-            $tgl1 =  '2023-01-01';
-            $tgl2 =  date('Y-m-t');
-        } else {
-            $tgl1 =  $r->tgl1;
-            $tgl2 =  $r->tgl2;
-        }
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
 
         $buku = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
         FROM jurnal as a 
