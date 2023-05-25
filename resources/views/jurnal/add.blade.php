@@ -33,7 +33,7 @@
                     <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
                 </div>
                 <div class="col-lg-3">
-                    <label for="">No Nota</label>
+                    <label for="">No Urut Jurnal Umum</label>
                     <input type="text" class="form-control" name="no_nota" value="JU-{{$max}}" readonly>
                 </div>
                 <div class="col-lg-3">
