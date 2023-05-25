@@ -14,10 +14,6 @@ class BukuBesarController extends Controller
     protected $tgl1, $tgl2, $id_akun;
     public function __construct(Request $r)
     {
-<<<<<<< HEAD
-        $this->tgl1 = $r->tgl1 ?? date('Y-m-01');
-        $this->tgl2 = $r->tgl2 ?? date('Y-m-t');
-=======
         if (empty($r->period)) {
             $this->tgl1 = date('2022-01-01');
             $this->tgl2 = date('Y-m-t');
@@ -50,7 +46,6 @@ class BukuBesarController extends Controller
         $this->id_proyek = $r->id_proyek ?? 0;
         $this->id_buku = $r->id_buku ?? 2;
 
->>>>>>> 9605830b22d9340e42e530415502cb9496a07e3f
         $this->id_akun = $r->id_akun;
     }
     public function index(Request $r)
