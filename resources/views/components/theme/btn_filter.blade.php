@@ -40,7 +40,6 @@
             <div class="col-lg-4 bulan_muncul mt-2">
                 <label for="">Tahun</label>
                 <select name="tahun" id="" class="selectView bulan">
-                    <option value="2021">2021</option>
                     <option value="2022">2022</option>
                     <option value="2023">2023</option>
                 </select>
@@ -48,6 +47,7 @@
             <div class="col-lg-8 tahun_muncul mt-2">
                 <label for="">Tahun</label>
                 <select name="tahunfilter" id="" class="selectView tahun">
+                    <option value="2022">2022</option>
                     <option value="2023">2023</option>
                 </select>
             </div>
