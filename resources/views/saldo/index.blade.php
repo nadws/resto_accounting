@@ -15,7 +15,7 @@
                 <div class="col-lg-8"></div>
                 <div class="col-lg-4 mb-2">
                     <table class="float-end">
-                        <td>Pencarian :</td>
+                        <td>Search :</td>
                         <td><input type="text" id="pencarian" class="form-control float-end"></td>
                     </table>
 
