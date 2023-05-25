@@ -16,6 +16,17 @@
     <x-slot name="cardBody">
         <section class="row">
             <table class="table" width="100%" id="tableScroll">
+                @php
+                    $ttlRp = 0;
+                    $ttlTerbayar = 0;
+                    $ttlPiutang = 0;
+
+                    foreach($jual as $d) {
+                        $ttlRp += $d->total_rp;
+                        $ttlTerbayar += $d->kredit;
+                        $ttlPiutang += $d->total_rp + $d->debit - $d->kredit;
+                    }
+                @endphp
                 <thead>
                     <tr>
                         <th width="5">#</th>
@@ -24,9 +35,9 @@
                         <th>No Nota</th>
                         <th>No Penjual</th>
                         <th>Keterangan</th>
-                        <th>Total Rp</th>
-                        <th>Terbayar</th>
-                        <th>Sisa Piutang</th>
+                        <th>Total Rp <br> ({{ number_format($ttlRp, 0) }})</th>
+                        <th>Terbayar <br> ({{ number_format($ttlTerbayar, 0) }})</th>
+                        <th>Sisa Piutang <br> ({{ number_format($ttlPiutang, 0) }})</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
