@@ -316,10 +316,18 @@
         "autoWidth": true,
         "paging": false,
     });
+    $('#tablealdi').DataTable({
+        "searching": false,
+        scrollY: '400px',
+        scrollX: true,
+        scrollCollapse: true,
+        "autoWidth": true,
+        "paging": false,
+    });
 </script>
 @if (session()->has('sukses'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -331,11 +339,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-    </script>
+</script>
 @endif
 @if (session()->has('error'))
-    <script>
-        $(document).ready(function() {
+<script>
+    $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -349,7 +357,7 @@
 
 
         });
-    </script>
+</script>
 @endif
 @yield('scripts')
 @yield('js')
