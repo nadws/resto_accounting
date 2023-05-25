@@ -36,6 +36,12 @@
                 <div id="loadSubKategori"></div>
             </x-theme.modal>
         </form>
+
+        <form id="formtabhAkun">
+            <x-theme.modal title="Akun" btnSave="T" idModal="modalSubKategoriAkun">
+                <div id="loadTambahAkun"></div>
+            </x-theme.modal>
+        </form>
         {{-- end form sub kategori --}}
     </x-slot>
 
@@ -98,10 +104,11 @@
 
             $(document).on('click', '.btnSubKategori', function() {
                 $("#modalSubKategori").modal('show')
-                var jenis = $(this).attr('jenis')
+                var jenis = $(this).attr('jenis');
                 loadSubKategori(jenis)
 
-            })
+            });
+            
 
             $(document).on('click', '#btnFormSubKategori', function() {
                 var sub_kategori = $('#sub_kategori').val()
@@ -137,22 +144,59 @@
                         $("#modalSubKategori").modal('hide')
                     }
                 });
+            });
 
-                $(document).ready(function() {
-                    // Inisialisasi fungsi sortable
-                    $("#todo-table tbody").sortable({
-                        update: function(event, ui) {
-                            // Mendapatkan urutan item setelah diurutkan
-                            var itemOrder = $(this).sortable("toArray", {
-                                attribute: "data-id"
-                            });
 
-                            // Simpan urutan item ke database atau lakukan operasi lain
-                            // saveItemOrder(itemOrder);
-                        }
-                    });
+
+            // tambah akun
+
+            function loadtambahAkun(id_sub) {
+                $.ajax({
+                    type: "GET",
+                    url: "/cashflow/tmbahAkunCashflow?id_sub=" + id_sub,
+                    success: function (data) {
+                        $('#loadTambahAkun').html(data);
+                        $('.select').select2({
+                            dropdownParent: $('#modalSubKategoriAkun .modal-content')
+                        });
+                    }
                 });
-            })
-        </script>
+            }
+            $(document).on('click', '.btnSubKategoriAkun', function() {
+                $("#modalSubKategoriAkun").modal('show')
+                var id_sub = $(this).attr('id_sub');
+                loadtambahAkun(id_sub)
+                
+
+            });
+            $(document).on('click', '.delete_akun', function() {
+                var id_akun = $(this).attr('id_akun');
+                var id_sub = $(this).attr('id_sub');
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('cashflow.hapus_akunCashflow') }}?id_akun=" + id_akun ,
+                    success: function(response) {
+                        toast('Berhasil tambah hapus'); 
+                        loadtambahAkun(id_sub);
+                        loadTabel()
+                    }
+                });
+            });
+
+            $(document).on('submit', '#formtabhAkun', function(e) {
+                e.preventDefault()
+                var data = $("#formtabhAkun").serialize();
+                var id_sub = $('.id_subklasifikasi').val()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('cashflow.savetbhAkun') }}?" + data,
+                    success: function(response) {
+                        toast('Berhasil tambah akun'); 
+                        loadtambahAkun(id_sub);
+                        loadTabel()
+                    }
+                });
+            });
+    </script>
     @endsection
 </x-theme.app>

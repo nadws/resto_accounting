@@ -1,4 +1,4 @@
-{{-- <table class="table" id="table2">
+<table class="table" id="table2">
     <thead>
         <tr>
             <th width="30px" style="white-space: nowrap">Sort No</th>
@@ -34,4 +34,4 @@
         </tr>
         @endforeach
     </tbody>
-</table> --}}
+</table>

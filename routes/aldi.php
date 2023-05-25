@@ -79,6 +79,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/loadSubKategori', 'loadSubKategori')->name('loadSubKategori');
             Route::get('/editSubKategori', 'editSubKategori')->name('editSubKategori');
             Route::get('/saveSubKategori', 'saveSubKategori')->name('saveSubKategori');
+            Route::get('/tmbahAkunCashflow', 'tmbahAkunCashflow')->name('tmbahAkunCashflow');
+            Route::get('/savetbhAkun', 'savetbhAkun')->name('savetbhAkun');
+            Route::get('/hapus_akunCashflow', 'hapus_akunCashflow')->name('hapus_akunCashflow');
         });
 
     Route::controller(PenutupController::class)
@@ -170,6 +173,4 @@ Route::middleware('auth')->group(function () {
     Route::get('/403', function(){
         view('error.403');
     })->name('403');
-
-    
 });

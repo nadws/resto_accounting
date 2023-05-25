@@ -3,6 +3,7 @@
 use App\Http\Controllers\AktivaController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\BukuBesarController;
+use App\Http\Controllers\ControlflowController;
 use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\FakturPenjualanController;
 use App\Http\Controllers\GudangController;
@@ -215,4 +216,15 @@ Route::controller(PembayaranBkController::class)->group(function () {
     Route::post('/pembayaranbk.save_edit', 'save_edit')->name('pembayaranbk.save_edit');
     Route::get('/get_kreditBK', 'get_kreditBK')->name('get_kreditBK');
     Route::get('/exportBayarbk', 'exportBayarbk')->name('exportBayarbk');
+});
+Route::controller(ControlflowController::class)->group(function () {
+    Route::get('/controlflow', 'index')->name('controlflow');
+    Route::get('/loadcontrolflow', 'loadcontrolflow')->name('loadcontrolflow');
+    Route::get('/loadInputAkunCashflow', 'loadInputAkunCashflow')->name('loadInputAkunCashflow');
+    Route::get('/save_kategoriCashcontrol', 'save_kategoriCashcontrol')->name('save_kategoriCashcontrol');
+    Route::get('/edit_kategoriCashcontrol', 'edit_kategoriCashcontrol')->name('edit_kategoriCashcontrol');
+    Route::get('/loadInputsub', 'loadInputsub')->name('loadInputsub');
+    Route::get('/SaveSubAkunCashflow', 'SaveSubAkunCashflow')->name('SaveSubAkunCashflow');
+    Route::get('/deleteSubAkunCashflow', 'deleteSubAkunCashflow')->name('deleteSubAkunCashflow');
+    Route::get('/deleteAkunCashflow', 'deleteAkunCashflow')->name('deleteAkunCashflow');
 });

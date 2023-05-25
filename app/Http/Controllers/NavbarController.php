@@ -106,7 +106,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Cash Flow',
-                'route' => 'cashflow.index',
+                'route' => 'controlflow',
                 'img' => 'money-flow.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
@@ -122,6 +122,12 @@ class NavbarController extends Controller
                 'img' => 'penutup.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
+            // [
+            //     'judul' => 'Control Flow',
+            //     'route' => 'controlflow',
+            //     'img' => 'evaluation.png',
+            //     'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            // ],
         ];
         $title = 'Buku Besar';
         return view('navbar.data_master', compact(['data', 'title']));
