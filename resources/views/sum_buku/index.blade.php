@@ -5,7 +5,7 @@
                 <h3 class="float-start mt-1">{{ $title }}</h3>
             </div>
             <div class="col-lg-6">
-                <x-theme.button modal="Y" idModal="view" icon="fas fa-filter" addClass="float-end" teks="" />
+                <x-theme.btn_filter />
             </div>
         </div>
     </x-slot>
@@ -50,27 +50,7 @@
             </table>
         </section>
 
-        <form action="" method="get">
-            <x-theme.modal title="Filter Buku" idModal="view">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <table width="100%" cellpadding="10px">
-                            <tr>
-                                <td><label for="">&nbsp;</label> <br>Tanggal</td>
-                                <td>
-                                    <label for="">Dari</label>
-                                    <input type="date" name="tgl1" class="form-control">
-                                </td>
-                                <td>
-                                    <label for="">Sampai</label>
-                                    <input type="date" name="tgl2" class="form-control">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </x-theme.modal>
-        </form>
+        
     </x-slot>
     @section('scripts')
     <script>
