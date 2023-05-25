@@ -29,7 +29,7 @@
                     <tr>
                         <th width="5">#</th>
                         <th>Tanggal</th>
-                        <th style="white-space: nowrap;">No Nota</th>
+                        <th style="white-space: nowrap;">No Urut JU</th>
                         <th>Akun Vs {{ucwords(strtolower($nm_akun->nm_akun))}}</th>
                         <th>Keterangan</th>
                         <th style="text-align: right">Debit <br> ({{number_format($ttlDebit,2)}})</th>
