@@ -11,9 +11,13 @@ use App\Exports\Buku_besarExport;
 
 class BukuBesarController extends Controller
 {
-    protected $tgl1, $tgl2, $id_akun, $id_proyek, $period, $id_buku;
+    protected $tgl1, $tgl2, $id_akun;
     public function __construct(Request $r)
     {
+<<<<<<< HEAD
+        $this->tgl1 = $r->tgl1 ?? date('Y-m-01');
+        $this->tgl2 = $r->tgl2 ?? date('Y-m-t');
+=======
         if (empty($r->period)) {
             $this->tgl1 = date('2022-01-01');
             $this->tgl2 = date('Y-m-t');
@@ -46,12 +50,18 @@ class BukuBesarController extends Controller
         $this->id_proyek = $r->id_proyek ?? 0;
         $this->id_buku = $r->id_buku ?? 2;
 
+>>>>>>> 9605830b22d9340e42e530415502cb9496a07e3f
         $this->id_akun = $r->id_akun;
     }
     public function index(Request $r)
     {
-        $tgl1 = $this->tgl1;
-        $tgl2 = $this->tgl2;
+        if (empty($r->tgl1)) {
+            $tgl1 =  '2023-01-01';
+            $tgl2 =  date('Y-m-t');
+        } else {
+            $tgl1 =  $r->tgl1;
+            $tgl2 =  $r->tgl2;
+        }
 
         $buku = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
         FROM jurnal as a 
