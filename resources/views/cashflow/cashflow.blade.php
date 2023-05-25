@@ -46,8 +46,8 @@
     </x-slot>
 
     @section('scripts')
-    <script>
-        loadTabel()
+        <script>
+            loadTabel()
 
             function toast(pesan) {
                 Toastify({

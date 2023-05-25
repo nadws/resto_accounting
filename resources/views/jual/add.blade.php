@@ -2,7 +2,7 @@
 
     <x-slot name="cardHeader">
         <div class="col-lg-6">
-            <h3 class="float-start mt-1">{{ $title }}</h3>
+            <h6 class="float-start mt-1">{{ $title }} Penjualan</h6>
         </div>
 
     </x-slot>
@@ -15,6 +15,13 @@
                 line-height: 36px;
                 /* font-size: 12px; */
                 width: 170px;
+
+
+            }
+
+            .dhead {
+                background-color: #435EBE !important;
+                color: white;
             }
         </style>
         <form action="{{ route('jual.piutang') }}" method="post" class="save_jurnal">
@@ -24,11 +31,11 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th width="5%">Tanggal</th>
-                                <th width="10%">No Penjualan</th>
-                                <th width="15%">Keterangan</th>
-                                <th width="15%" style="text-align: right">Total Rp</th>
-                                <th width="5%" class="text-center">Aksi</th>
+                                <th width="5%" class="dhead">Tanggal</th>
+                                <th width="10%" class="dhead">No Penjualan</th>
+                                <th width="15%" class="dhead">Keterangan</th>
+                                <th width="15%" class="dhead" style="text-align: right">Total Rp</th>
+                                <th width="5%" class="text-center dhead">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>

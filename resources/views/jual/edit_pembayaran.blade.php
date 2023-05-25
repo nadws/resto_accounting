@@ -23,7 +23,7 @@
                 color: white;
             }
         </style>
-        <form action="{{ route('jual.create') }}" method="post" class="save_jurnal">
+        <form action="{{ route('jual.edit_save_pembayaran') }}" method="post" class="save_jurnal">
             @csrf
 
             <section class="row">
@@ -37,13 +37,14 @@
                     <tbody>
                         <tr>
                             <td>
-                                <input type="date" name="tgl_bayar" class="form-control" value="{{ date('Y-m-d') }}"
+                                <input type="date" name="tgl_bayar" class="form-control" value="{{ $edit[0]->tgl }}"
                                     readonly>
                             </td>
                             <td>
-                                <input type="text" class="form-control" value="PBYR-{{ $no_pembayaran }}" readonly>
+
+                                <input type="text" class="form-control" value="{{ $edit[0]->no_nota }}" readonly>
                                 <input type="hidden" class="form-control" name="no_pembayaran"
-                                    value="PBYR-{{ $no_pembayaran }}" readonly>
+                                    value="{{ $edit[0]->no_nota }}" readonly>
                             </td>
                         </tr>
                     </tbody>
@@ -62,84 +63,82 @@
                                 <th width="5%" class="text-center dhead">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        @php
+                            $ttlKredit = 0;
+                        @endphp
+                        @foreach ($edit as $no => $d)
                             @php
-                                $ttlKredit = 0;
+                                $ttlKredit += $d->kredit;
                             @endphp
-                            @foreach ($no_order as $no => $p)
-                                @php
-                                    $getRow = DB::selectOne("SELECT a.* FROM invoice_pi as a
-                                        WHERE a.no_nota = '$p'
-                                        ORDER BY a.id_invoice_bk ASC");
-                                    
-                                    $getRowKredit = DB::selectOne("SELECT a.no_nota, a.no_penjualan, a.status,(a.total_rp - c.kredit) as total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
-                                    LEFT JOIN (
-                                        SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
-                                        GROUP BY b.nota_jurnal
-                                    ) c ON c.nota_jurnal = a.no_nota
-                                    WHERE a.no_nota = '$p' ORDER BY a.id_invoice_bk ASC;");
-                                    $kredit = $getRow->total_rp - $getRowKredit->kredit;
-                                    $ttlKredit += $kredit;
-                                @endphp
+                            <tbody>
                                 <tr>
                                     <input type="hidden" readonly class="form-control" name="total_rp[]"
-                                        value="{{ $kredit }}">
+                                        value="{{ $d->kredit }}">
                                     <td>
                                         <input type="hidden" class="form-control" name="no_nota[]"
-                                            value="{{ $getRow->no_nota }}">
+                                            value="{{ $d->nota_jurnal }}">
                                         <input type="text" readonly class="form-control" name="no_penjualan[]"
-                                            value="{{ $getRow->no_penjualan }}">
+                                            value="{{ $d->no_penjualan }}">
                                     </td>
-
                                     <td>
                                         <input type="text" readonly class="form-control" style="text-align:right"
-                                            value="Rp. {{ number_format($kredit, 0) }}">
+                                            value="Rp. {{ number_format($d->total_rp, 0) }}">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control dikanan rp-nohide text-end"
-                                            value="Rp {{ number_format($kredit, 2, '.', '.') }}"
+                                            value="Rp {{ number_format($d->kredit, 2, '.', '.') }}"
                                             count="{{ $no + 1 }}">
                                         <input type="hidden"
                                             class="form-control dikanan rp-hide rp-hide{{ $no + 1 }}"
-                                            value="{{ $kredit }}" name="bayar[]">
+                                            value="{{ $d->kredit }}" name="bayar[]">
                                     </td>
                                     <td></td>
                                 </tr>
-                            @endforeach
+                            </tbody>
+                        @endforeach
+                        <tbody>
                             <tr>
                                 <th class="dhead">Pilih Akun Setor</th>
                                 <th class="dhead">Debit</th>
                                 <th class="dhead">Kredit</th>
                                 <th class="dhead"></th>
                             </tr>
-                            <tr>
-                                <td>
-                                    <select name="id_akun[]" class="form-control select2" id="select2">
-                                        <option value="">- Pilih Akun Setor -</option>
-                                        @foreach ($akun as $d)
-                                            <option value="{{ $d->id_akun }}">{{ ucwords($d->nm_akun) }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control dikanan setor-nohide text-end"
-                                        value="Rp. 0" count="{{ $no + 1 }}">
-                                    <input type="hidden"
-                                        class="form-control dikanan setor-hide setor-hide{{ $no + 1 }}"
-                                        value="" name="debit[]">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control dikanan kredit-nohide text-end"
-                                        value="Rp 0" count="{{ $no + 1 }}">
-                                    <input type="hidden"
-                                        class="form-control dikanan kredit-hide kredit-hide{{ $no + 1 }}"
-                                        value="" name="kredit[]">
-                                </td>
-                                <td></td>
-                            </tr>
-
+                            @php
+                                $akunPembayaran = DB::table('jurnal')
+                                    ->where([['no_nota', $edit[0]->no_nota], ['kredit', '0']])
+                                    ->get();
+                            @endphp
+                            @foreach ($akunPembayaran as $no => $a)
+                                <tr>
+                                    <td>
+                                        <select name="id_akun[]" class="form-control select2" id="select2">
+                                            <option value="">- Pilih Akun Setor -</option>
+                                            @foreach ($akun as $d)
+                                                <option {{ $d->id_akun == $a->id_akun ? 'selected' : '' }}
+                                                    value="{{ $d->id_akun }}">{{ ucwords($d->nm_akun) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control dikanan setor-nohide text-end"
+                                            value="Rp. {{ number_format($a->debit, 2) }}" count="{{ $no + 1 }}">
+                                        <input type="hidden"
+                                            class="form-control dikanan setor-hide setor-hide{{ $no + 1 }}"
+                                            value="{{ $a->debit }}" name="debit[]">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control dikanan kredit-nohide text-end"
+                                            value="Rp {{ number_format($a->kredit, 2) }}" count="{{ $no + 1 }}">
+                                        <input type="hidden"
+                                            class="form-control dikanan kredit-hide kredit-hide{{ $no + 1 }}"
+                                            value="{{ $a->kredit }}" name="kredit[]">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            @endforeach
                         </tbody>
-                        <tbody id="tbh_baris">
+                        ` <tbody id="tbh_baris">
                         </tbody>
                         <tfoot>
                             <tr>

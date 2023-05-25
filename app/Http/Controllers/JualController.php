@@ -11,11 +11,13 @@ use Maatwebsite\Excel\Facades\Excel;
 class JualController extends Controller
 {
     public $route = 'jual.index';
+    public $akunPiutangDagang = '135';
+    public $akunPenjualan = '134';
+
     protected $tgl1, $tgl2, $id_proyek, $period, $id_buku;
+
     public function __construct(Request $r)
     {
-
-
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -26,13 +28,24 @@ class JualController extends Controller
             $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
             $this->tgl2 = date('Y-m-d');
         } elseif ($r->period == 'mounthly') {
-            $this->tgl1 = date('Y-m-01');
-            $this->tgl2 = date('Y-m-t');
+            $bulan = $r->bulan;
+            $tahun = $r->tahun;
+            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
+            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tglawal));
+            $this->tgl2 = date('Y-m-t', strtotime($tglakhir));
         } elseif ($r->period == 'costume') {
             $this->tgl1 = $r->tgl1;
             $this->tgl2 = $r->tgl2;
-        }
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
 
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
+        }
 
         $this->id_proyek = $r->id_proyek ?? 0;
         $this->id_buku = $r->id_buku ?? 2;
@@ -85,7 +98,7 @@ class JualController extends Controller
             $dataD = [
                 'tgl' => $r->tgl[$i],
                 'no_nota' => 'PNJL-' . $no_nota,
-                'id_akun' => 135,
+                'id_akun' => $this->akunPiutangDagang,
                 'id_buku' => '2',
                 'ket' => 'Penjualan-' . $r->no_penjualan[$i],
                 'kredit' => 0,
@@ -98,7 +111,7 @@ class JualController extends Controller
             $dataK = [
                 'tgl' => $r->tgl[$i],
                 'no_nota' => 'PNJL-' . $no_nota,
-                'id_akun' => 134,
+                'id_akun' => $this->akunPenjualan,
                 'id_buku' => '2',
                 'ket' => 'Penjualan-' . $r->no_penjualan[$i],
                 'debit' => 0,
@@ -157,7 +170,7 @@ class JualController extends Controller
             // masuk penjualan di debit
             $dataD = [
                 'tgl' => $tgl_bayar,
-                'no_nota' => 'PBYR-' . $no_pembayaran,
+                'no_nota' => $no_pembayaran,
                 'id_akun' => $r->id_akun[$i],
                 'id_buku' => '2',
                 'ket' => '',
@@ -173,8 +186,8 @@ class JualController extends Controller
             // masuk penjualan di kredit
             $dataK = [
                 'tgl' => $tgl_bayar,
-                'no_nota' => 'PBYR-' . $no_pembayaran,
-                'id_akun' => 135,
+                'no_nota' => $no_pembayaran,
+                'id_akun' => $this->akunPiutangDagang,
                 'id_buku' => '2',
                 'ket' => 'Pembayaran-' . $r->no_penjualan[$i],
                 'debit' => 0,
@@ -220,22 +233,108 @@ class JualController extends Controller
     public function edit(Request $r)
     {
         $data = [
-            'title' => 'Edit Penjualan'
+            'title' => 'Edit Penjualan',
+            'edit' => DB::table('invoice_pi')->where('no_nota', $r->no_nota)->first(),
         ];
-        
+
         return view('jual.edit', $data);
+    }
+
+    public function edit_save_penjualan(Request $r)
+    {
+        DB::table('invoice_pi')->where('id_invoice_bk', $r->id_invoice_bk)->update([
+            'no_penjualan' => $r->no_penjualan,
+            'ket' => $r->ket,
+            'total_rp' => $r->total_rp,
+            'tgl' => $r->tgl,
+            'admin' => auth()->user()->name
+        ]);
+
+        return redirect()->route('jual.index')->with('sukses', 'Data Berhasil Diedit');
+    }
+
+    public function edit_pembayaran(Request $r)
+    {
+        $data = [
+            'title' => 'Edit Pembayaran',
+            'akun' => DB::table('akun')->get(),
+            'edit' => DB::select("SELECT a.nota_jurnal,a.tgl, a.no_nota, b.no_penjualan,b.total_rp,a.kredit FROM `bayar_pi` as a
+            LEFT JOIN invoice_pi b ON a.nota_jurnal = b.no_nota
+            WHERE a.no_nota = '$r->no_nota';"),
+        ];
+
+        return view('jual.edit_pembayaran', $data);
+    }
+
+    public function edit_save_pembayaran(Request $r)
+    {
+        $no_pembayaran = $r->no_pembayaran;
+        $tgl_bayar = $r->tgl_bayar;
+
+        Jurnal::where('no_nota', $no_pembayaran)->delete();
+        DB::table('bayar_pi')->where('no_nota', $no_pembayaran)->delete();
+
+        for ($i = 0; $i < count($r->id_akun); $i++) {
+            // masuk penjualan di debit
+            $dataD = [
+                'tgl' => $tgl_bayar,
+                'no_nota' => $no_pembayaran,
+                'id_akun' => $r->id_akun[$i],
+                'id_buku' => '2',
+                'ket' => '',
+                'kredit' => $r->kredit[$i] ?? 0,
+                'debit' => $r->debit[$i] ?? 0,
+                'admin' => auth()->user()->name,
+            ];
+            Jurnal::create($dataD);
+        }
+
+        for ($i = 0; $i < count($r->bayar); $i++) {
+
+            // masuk penjualan di kredit
+            $dataK = [
+                'tgl' => $tgl_bayar,
+                'no_nota' => $no_pembayaran,
+                'id_akun' => $this->akunPiutangDagang,
+                'id_buku' => '2',
+                'ket' => 'Pembayaran-' . $r->no_penjualan[$i],
+                'debit' => 0,
+                'kredit' => $r->bayar[$i],
+                'admin' => auth()->user()->name,
+            ];
+            Jurnal::create($dataK);
+
+            $no_nota = $r->no_nota[$i];
+            $bayar = $r->bayar[$i];
+            $total_rp = $r->total_rp[$i];
+
+            DB::table('bayar_pi')->insert([
+                'tgl' => $tgl_bayar,
+                'no_nota' => $no_pembayaran,
+                'debit' => 0,
+                'kredit' => $bayar,
+                'ket' => '',
+                'admin' => auth()->user()->name,
+                'nota_jurnal' => $no_nota,
+            ]);
+
+            DB::table('invoice_pi')->where('no_nota', $no_nota)->update(['status' => $bayar < $total_rp ? 'unpaid' : 'paid']);
+        }
+        return redirect()->route($this->route)->with('sukses', 'Data Berhasil Diedit');
     }
 
     public function export(Request $r)
     {
         $tgl1 =  $r->tgl1;
         $tgl2 =  $r->tgl2;
+
         $tbl = DB::select("SELECT a.ket,a.no_nota, a.no_penjualan, a.status,a.total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
         LEFT JOIN (
             SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
             GROUP BY b.nota_jurnal
         ) c ON c.nota_jurnal = a.no_nota
         WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2' ORDER BY a.id_invoice_bk ASC;");
+
         $totalrow = count($tbl) + 1;
 
         return Excel::download(new JualExport($tbl, $totalrow), 'Export Penjualan.xlsx');

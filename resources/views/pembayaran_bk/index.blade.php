@@ -27,7 +27,7 @@
             <div class="col-lg-12 mb-2">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link {{empty($tipe) ? 'active' : ''}}" href="{{route('pembayaranbk')}}"
+                        <a class="nav-link {{ empty($tipe) ? 'active' : '' }}" href="{{ route('pembayaranbk') }}"
                             type="button" role="tab" aria-controls="pills-home" aria-selected="true">All</a>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -59,8 +59,8 @@
             </div>
             <div class="col-lg-6">
                 <x-theme.btn_filter title="Filter Pembayaran Bk" />
-                <x-theme.button modal="T" href="/exportBayarbk?tgl1={{$tgl1}}&tgl2={{$tgl2}}" icon="fa-file-excel"
-                    addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                <x-theme.button modal="T" href="/exportBayarbk?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
+                    icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
             </div>
         </div>
     </x-slot>
@@ -156,13 +156,6 @@
             </section>
         </form>
 
-
-
-
-
-
-
-
     </x-slot>
     @section('scripts')
     <script>
@@ -170,18 +163,27 @@
             $('.hide_bayar').hide();
             $(document).on("click", ".detail_bayar", function() {
                 var no_nota = $(this).attr('no_nota');
+                var clickedElement = $(this); // Simpan elemen yang diklik dalam variabel
+
+                clickedElement.prop('disabled', true); // Menonaktifkan elemen yang diklik
+
                 $.ajax({
                     type: "get",
                     url: "/get_kreditBK?no_nota=" + no_nota,
                     success: function(data) {
-                        $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
-                        $(".show_detail" + no_nota).show();
-                        $(".detail_bayar" + no_nota).hide();
-                        $(".hide_bayar" + no_nota).show();
+                    $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
+                    $(".show_detail" + no_nota).show();
+                    $(".detail_bayar" + no_nota).hide();
+                    $(".hide_bayar" + no_nota).show();
+
+                    clickedElement.prop('disabled', false); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
+                    },
+                    error: function() {
+                    clickedElement.prop('disabled', false); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
                     }
                 });
-
             });
+
             $(document).on("click", ".hide_bayar", function() {
                 var no_nota = $(this).attr('no_nota');
                 $(".show_detail" + no_nota).remove();
@@ -189,6 +191,7 @@
                 $(".hide_bayar" + no_nota).hide();
 
             });
-        </script>
+         });
+    </script>
     @endsection
 </x-theme.app>
