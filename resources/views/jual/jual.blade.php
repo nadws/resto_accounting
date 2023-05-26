@@ -54,7 +54,7 @@
                         <th>Tanggal</th>
                         <th>No Nota</th>
                         <th>No Penjual</th>
-                        <th>Keterangan</th>
+                        <th>Ket</th>
                         <th>Total Rp <br> ({{ number_format($ttlRp, 0) }})</th>
                         <th>Terbayar <br> ({{ number_format($ttlTerbayar, 0) }})</th>
                         <th>Sisa Piutang <br> ({{ number_format($ttlPiutang, 0) }})</th>
