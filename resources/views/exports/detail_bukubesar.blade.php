@@ -4,7 +4,7 @@
         <tr>
             <th width="39px">#</th>
             <th width="117px">No Urut Akun</th>
-            <th width="110px">Tanggal {{$tgl1}}</th>
+            <th width="110px">Tanggal</th>
             <th width="350px">Nama Akun Lawan</th>
             <th width="350px">Sub Akun</th>
             <th width="149px">Keterangan</th>

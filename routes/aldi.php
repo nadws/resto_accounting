@@ -142,6 +142,7 @@ Route::middleware('auth')->group(function () {
         ->name('jual.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/aldiexport', 'aldiexport')->name('aldiexport');
             Route::get('/bayar', 'bayar')->name('bayar');
             Route::get('/add', 'add')->name('add');
             Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
