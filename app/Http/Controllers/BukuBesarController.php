@@ -147,7 +147,7 @@ class BukuBesarController extends Controller
             $spreadsheet->setActiveSheetIndex($i);
             $s = 'sheet' . $i;
             $s = $spreadsheet->getActiveSheet();
-            $s->setTitle(ucwords('aldi'));
+            $s->setTitle(ucwords(substr($r->nm_akun, 0, 30)));
 
             if (empty($detail)) {
                 $s
@@ -163,6 +163,7 @@ class BukuBesarController extends Controller
                     ->setCellValue('H2', 'Kredit')
                 ->setCellValue('I2', 'Saldo');
                 $s->getStyle('A2:I2')->applyFromArray($style);
+                $s->getStyle("A1")->getFont()->setBold( true );
             } else {
                 $kolom = 3;
                 $s
@@ -197,6 +198,7 @@ class BukuBesarController extends Controller
                 
                 $bataskun = $kolom - 1;
                 $s->getStyle('A2:I' . $bataskun)->applyFromArray($style);
+                $s->getStyle("A1")->getFont()->setBold( true );
             }
         }
 
