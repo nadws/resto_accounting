@@ -1,5 +1,6 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
     <x-slot name="cardHeader">
+        <h3 class="float-start mt-1">{{ $title }}</h3>
         <x-theme.button modal="Y" idModal="tambahModal" icon="fa-plus" addClass="float-end" teks="Tambah" />
     </x-slot>
 
@@ -21,7 +22,7 @@
                             <td>{{ ucwords($d->name) }}</td>
                             <td>{{ ucwords($d->posisi->nm_posisi) }}</td>
                             <td>
-                                <x-theme.button hapus="Y" href="{{ route('user.delete', $d->id) }}" icon="fa-trash"
+                                <x-theme.button hapus="Y" href="{{ route('user.delete', ['id_user' => $d->id]) }}" icon="fa-trash"
                                     addClass="float-end" teks="" variant="danger" />
                                 <x-theme.button modal="Y" idModal="edit-modal" icon="fa-pen"
                                     addClass="me-1 float-end edit-btn" teks=""
@@ -41,24 +42,24 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">Nama</label>
-                            <input type="text" name="nama" class="form-control">
+                            <input type="text" name="name" class="form-control">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="">Posisi</label>
-                            <select name="id_posisi" class="form-control" id="">
+                            <select name="posisi_id" class="form-control" id="">
                                 <option value="">- Pilih Posisi -</option>
                                 @foreach ($posisi as $p)
-                                    <option value="{{ $p->id }}">{{ $p->nm_posisi }}</option>
+                                    <option value="{{ $p->id_posisi }}">{{ $p->nm_posisi }}</option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="">Username</label>
-                            <input type="text" name="username" class="form-control">
+                            <label for="">Email</label>
+                            <input type="email" name="email" class="form-control">
                         </div>
                     </div>
                     <div class="col-lg-6">

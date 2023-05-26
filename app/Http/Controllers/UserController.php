@@ -17,4 +17,22 @@ class UserController extends Controller
         ];
         return view('user.user', $data);
     }
+
+    public function create(Request $r)
+    {
+        User::create([
+            'name' => $r->name, 
+            'email' => $r->email,
+            'posisi_id' => $r->posisi_id,
+            'password' => bcrypt($r->password),
+        ]);
+
+        return redirect()->route('user.index')->with('sukses', 'Data Berhasil Dibuat');
+    }
+    
+    public function delete(Request $r)
+    {
+        User::find($r->id_user)->delete();
+        return redirect()->route('user.index')->with('sukses', 'Data Berhasil Dihapus');
+    }
 }
