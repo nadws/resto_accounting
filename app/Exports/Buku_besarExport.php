@@ -35,6 +35,7 @@ class Buku_besarExport implements FromView, WithEvents
             SELECT j.no_nota, j.id_akun, GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
             FROM jurnal as j
             LEFT JOIN akun as b ON b.id_akun = j.id_akun
+            LEFT JOIN tb_post_center as b ON b.id_akun = j.id_akun
             WHERE j.id_akun != '$this->id_akun'
             GROUP BY j.no_nota
         ) d ON a.no_nota = d.no_nota AND d.id_akun != a.id_akun

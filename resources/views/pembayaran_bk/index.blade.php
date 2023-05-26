@@ -99,6 +99,7 @@
                             <th class="dhead" style="text-align: right">Terbayar</th>
                             <th class="dhead" style="text-align: right">Sisa Hutang</th>
                             <th class="dhead">Status</th>
+                            <th class="dhead">Admin</th>
                             <th class="dhead">Aksi</th>
                         </tr>
                     </thead>
@@ -134,6 +135,7 @@
                                     'Paid' : 'Unpaid') }}
                                 </span>
                             </td>
+                            <td>{{ $p->admin }}</td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <span class="btn btn-sm" data-bs-toggle="dropdown">
@@ -164,6 +166,7 @@
                                     </ul>
                                 </div>
                             </td>
+                            
                         </tr>
                         @endforeach
 
