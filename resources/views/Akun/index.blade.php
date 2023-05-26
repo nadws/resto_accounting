@@ -1,6 +1,9 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
+
+        <h5 class="float-start mt-1">{{ $title }}</h5>
         <div class="row justify-content-end">
+
             <div class="col-lg-2">
                 <x-theme.button modal="Y" idModal="tambah" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
             </div>
@@ -15,6 +18,7 @@
                     <tr>
                         <th width="5">#</th>
                         <th>Kode</th>
+                        <th>Inisial</th>
                         <th>Nama Akun</th>
                         <th>Subklasifikasi</th>
                         <th>Status</th>
@@ -26,6 +30,7 @@
                     <tr>
                         <td>{{ $no + 1 }}</td>
                         <td>{{ $a->kode_akun }}</td>
+                        <td>{{ ucwords($a->inisial) }}</td>
                         <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
                         <td>
                             {{ $a->klasifikasi->nm_subklasifikasi }}
@@ -74,22 +79,56 @@
                             <select name="id_klasifikasi" id="" class="select2 get_kode">
                                 <option value="">Pilih Subklasifikasi</option>
                                 @foreach ($subklasifikasi as $s)
-                                <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi }}
-                                </option>
-                                @endforeach
+                                <<<<<<< HEAD <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi
+                                    }}
+                                    </option>
+                                    =======
+                                    <option value="{{ $s->id_subklasifikasi_akun }}">{{ ucwords($s->nm_subklasifikasi)
+                                        }}
+                                    </option>
+                                    >>>>>>> d3a2a869a9bd14bdecf1dbb999a2881767202984
+                                    @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-3">
                         <div class="form-group">
                             <label for="">Kode Akun</label>
                             <input type="text" class="form-control kode" name="kode_akun" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label for="">Inisial</label>
+                            <input type="text" class="form-control" name="inisial" required>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="">Nama Akun</label>
                             <input type="text" name="nm_akun" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="">Iktisar Laba Rugi</label>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-check">
+                            <input value="Y" required class="form-check-input" type="radio" name="iktisar" id="check1">
+                            <label class="form-check-label" for="check1">
+                                Ya
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-check">
+                            <input value="T" required class="form-check-input" type="radio" name="iktisar" id="check2">
+                            <label class="form-check-label" for="check2">
+                                Tidak
+                            </label>
                         </div>
                     </div>
                 </div>

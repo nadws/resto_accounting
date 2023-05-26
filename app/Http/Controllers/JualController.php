@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\JualExport;
+use App\Exports\KlasifikasiExport;
 use App\Models\Jurnal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -239,7 +240,7 @@ class JualController extends Controller
 
         return view('jual.edit', $data);
     }
-
+    
     public function edit_save_penjualan(Request $r)
     {
         DB::table('jurnal')->where([['no_nota', $r->nota_jurnal], ['debit', 0]])->update([

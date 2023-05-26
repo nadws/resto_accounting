@@ -30,7 +30,7 @@ class JualExport  implements FromView, WithEvents
     {
         return [
             AfterSheet::class    => function (AfterSheet $event) {
-                $sheet = $event->sheet;
+                $sheet = $event->sheet; 
                 $cellRange = 'A1:I1';
                 $cellRangeLoop = 'A1:I' . $this->totalrow;
                 // $sheet->setAutoFilter($cellRange);

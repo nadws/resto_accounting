@@ -319,8 +319,9 @@
     $('#tablealdi').DataTable({
         "searching": false,
         scrollY: '400px',
-        scrollX: true,
-        scrollCollapse: true,
+        scrollX: false,
+        scrollCollapse: false,
+        "stateSave": true,
         "autoWidth": true,
         "paging": false,
     });

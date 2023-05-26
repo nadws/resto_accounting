@@ -1,26 +1,26 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12" cont="container-fluid">
     <x-slot name="cardHeader">
         @php
-        $total_paid = 0;
-        $total_unpaid = 0;
-        $total_draft = 0;
+            $total_paid = 0;
+            $total_unpaid = 0;
+            $total_draft = 0;
         @endphp
         @foreach ($paid as $p)
-        @php
-        $total_paid += $p->total_harga + $p->debit;
-        @endphp
+            @php
+                $total_paid += $p->total_harga + $p->debit;
+            @endphp
         @endforeach
 
         @foreach ($unpaid as $u)
-        @php
-        $total_unpaid += $u->total_harga + $u->debit - $u->kredit;
-        @endphp
+            @php
+                $total_unpaid += $u->total_harga + $u->debit - $u->kredit;
+            @endphp
         @endforeach
 
         @foreach ($draft as $d)
-        @php
-        $total_draft += $d->total_harga + $d->debit - $d->kredit;
-        @endphp
+            @php
+                $total_draft += $d->total_harga + $d->debit - $d->kredit;
+            @endphp
         @endforeach
 
         <div class="row justify-content-end">
@@ -59,8 +59,8 @@
             </div>
             <div class="col-lg-6">
                 <x-theme.btn_filter title="Filter Pembayaran Bk" />
-                <x-theme.button modal="T" href="/exportBayarbk?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}" icon="fa-file-excel"
-                    addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                <x-theme.button modal="T" href="/exportBayarbk?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
+                    icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
             </div>
         </div>
     </x-slot>
@@ -99,72 +99,74 @@
                             <th class="dhead" style="text-align: right">Terbayar</th>
                             <th class="dhead" style="text-align: right">Sisa Hutang</th>
                             <th class="dhead">Status</th>
+                            <th class="dhead">Admin</th>
                             <th class="dhead">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
-                        $i = 1;
+                            $i = 1;
                         @endphp
                         @foreach ($pembelian as $no => $p)
-                        <tr class="fw-bold induk_detail{{ $p->no_nota }}">
-                            <td>{{ $i++ }}</td>
-                            <td>
-                                <a href="#" onclick="event.preventDefault();"
-                                    class="detail_bayar detail_bayar{{ $p->no_nota }}" no_nota="{{ $p->no_nota }}"><i
-                                        class="fas fa-angle-down"></i></a>
+                            <tr class="fw-bold induk_detail{{ $p->no_nota }}">
+                                <td>{{ $i++ }}</td>
+                                <td>
+                                    <a href="#" onclick="event.preventDefault();"
+                                        class="detail_bayar detail_bayar{{ $p->no_nota }}"
+                                        no_nota="{{ $p->no_nota }}"><i class="fas fa-angle-down"></i></a>
 
-                                <a href="#" onclick="event.preventDefault();"
-                                    class="hide_bayar hide_bayar{{ $p->no_nota }}" no_nota="{{ $p->no_nota }}"><i
-                                        class="fas fa-angle-up"></i></a>
-                            </td>
-                            <td>{{ date('d-m-Y', strtotime($p->tgl)) }}</td>
-                            <td>{{ $p->no_nota }}</td>
-                            <td>Bkin</td>
-                            <td>{{ ucwords(strtolower($p->nm_suplier)) }}</td>
-                            <td>{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
-                            <td align="right">Rp. {{ number_format($p->total_harga, 0) }}</td>
-                            <td align="right">Rp. {{ number_format($p->kredit, 0) }}</td>
-                            <td align="right">Rp. {{ number_format($p->total_harga + $p->debit - $p->kredit, 0) }}
-                            </td>
-                            <td>
-                                <span
-                                    class="badge {{ $p->lunas == 'D' ? 'bg-warning' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger') }}">
-                                    {{ $p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ?
-                                    'Paid' : 'Unpaid') }}
-                                </span>
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    <a href="#" onclick="event.preventDefault();"
+                                        class="hide_bayar hide_bayar{{ $p->no_nota }}"
+                                        no_nota="{{ $p->no_nota }}"><i class="fas fa-angle-up"></i></a>
+                                </td>
+                                <td>{{ date('d-m-Y', strtotime($p->tgl)) }}</td>
+                                <td>{{ $p->no_nota }}</td>
+                                <td>Bkin</td>
+                                <td>{{ ucwords(strtolower($p->nm_suplier)) }}</td>
+                                <td>{{ ucwords(strtolower($p->suplier_akhir)) }}</td>
+                                <td align="right">Rp. {{ number_format($p->total_harga, 0) }}</td>
+                                <td align="right">Rp. {{ number_format($p->kredit, 0) }}</td>
+                                <td align="right">Rp. {{ number_format($p->total_harga + $p->debit - $p->kredit, 0) }}
+                                </td>
+                                <td>
+                                    <span
+                                        class="badge {{ $p->lunas == 'D' ? 'bg-warning' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'bg-success' : 'bg-danger') }}">
+                                        {{ $p->lunas == 'D' ? 'Draft' : ($p->total_harga + $p->debit - $p->kredit == 0 ? 'Paid' : 'Unpaid') }}
                                     </span>
-                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <li>
-                                            <a class="dropdown-item text-primary edit_akun"
-                                                href="{{ route('pembayaranbk.edit', ['nota' => $p->no_nota]) }}"><i
-                                                    class="me-2 fas fa-pen"></i>Edit
-                                            </a>
-                                        </li>
-                                        <li>
-                                            @if ($p->lunas == 'D')
-                                            {{-- <a class="dropdown-item text-primary  disabled" href="#"><i
+                                </td>
+                                <td>{{ $p->admin }}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v text-primary"></i>
+                                        </span>
+                                        <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                            <li>
+                                                <a class="dropdown-item text-primary edit_akun"
+                                                    href="{{ route('pembayaranbk.edit', ['nota' => $p->no_nota]) }}"><i
+                                                        class="me-2 fas fa-pen"></i>Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                @if ($p->lunas == 'D')
+                                                    {{-- <a class="dropdown-item text-primary  disabled" href="#"><i
                                                     class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
-                                            @else
-                                            @if ($p->total_harga + $p->debit - $p->kredit == 0)
-                                            {{-- <a href="#" class="dropdown-item text-primary  disabled"><i
+                                                @else
+                                                    @if ($p->total_harga + $p->debit - $p->kredit == 0)
+                                                        {{-- <a href="#" class="dropdown-item text-primary  disabled"><i
                                                     class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
-                                            @else
-                                            <a href="{{ route('pembayaranbk.add', ['nota' => $p->no_nota]) }}"
-                                                class="dropdown-item text-success  "><i
-                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a>
-                                            @endif
-                                            @endif
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                                                    @else
+                                                        <a href="{{ route('pembayaranbk.add', ['nota' => $p->no_nota]) }}"
+                                                            class="dropdown-item text-success  "><i
+                                                                class="fas fa-money-bill-wave me-2"></i>Bayar</a>
+                                                    @endif
+                                                @endif
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+
+                            </tr>
                         @endforeach
 
                     </tbody>
@@ -174,41 +176,43 @@
 
     </x-slot>
     @section('scripts')
-    <script>
-        $(document).ready(function() {
-            pencarian('pencarian', 'tablealdi')
-            $('.hide_bayar').hide();
-            $(document).on("click", ".detail_bayar", function() {
-                var no_nota = $(this).attr('no_nota');
-                var clickedElement = $(this); // Simpan elemen yang diklik dalam variabel
+        <script>
+            $(document).ready(function() {
+                pencarian('pencarian', 'tablealdi')
+                $('.hide_bayar').hide();
+                $(document).on("click", ".detail_bayar", function() {
+                    var no_nota = $(this).attr('no_nota');
+                    var clickedElement = $(this); // Simpan elemen yang diklik dalam variabel
 
-                clickedElement.prop('disabled', true); // Menonaktifkan elemen yang diklik
+                    clickedElement.prop('disabled', true); // Menonaktifkan elemen yang diklik
 
-                $.ajax({
-                    type: "get",
-                    url: "/get_kreditBK?no_nota=" + no_nota,
-                    success: function(data) {
-                    $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
-                    $(".show_detail" + no_nota).show();
-                    $(".detail_bayar" + no_nota).hide();
-                    $(".hide_bayar" + no_nota).show();
+                    $.ajax({
+                        type: "get",
+                        url: "/get_kreditBK?no_nota=" + no_nota,
+                        success: function(data) {
+                            $('.induk_detail' + no_nota).after("<tr>" + data + "</tr>");
+                            $(".show_detail" + no_nota).show();
+                            $(".detail_bayar" + no_nota).hide();
+                            $(".hide_bayar" + no_nota).show();
 
-                    clickedElement.prop('disabled', false); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
-                    },
-                    error: function() {
-                    clickedElement.prop('disabled', false); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
-                    }
+                            clickedElement.prop('disabled',
+                            false); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
+                        },
+                        error: function() {
+                            clickedElement.prop('disabled',
+                            false); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
+                        }
+                    });
+                });
+
+                $(document).on("click", ".hide_bayar", function() {
+                    var no_nota = $(this).attr('no_nota');
+                    $(".show_detail" + no_nota).remove();
+                    $(".detail_bayar" + no_nota).show();
+                    $(".hide_bayar" + no_nota).hide();
+
                 });
             });
-
-            $(document).on("click", ".hide_bayar", function() {
-                var no_nota = $(this).attr('no_nota');
-                $(".show_detail" + no_nota).remove();
-                $(".detail_bayar" + no_nota).show();
-                $(".hide_bayar" + no_nota).hide();
-
-            });
-         });
-    </script>
+        </script>
     @endsection
 </x-theme.app>

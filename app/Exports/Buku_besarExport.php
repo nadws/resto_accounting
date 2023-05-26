@@ -29,12 +29,12 @@ class Buku_besarExport implements FromView, WithEvents
     public function view(): View
     {
 
-
-        $jurnal = DB::select("SELECT d.no_cfm, d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
+        $jurnal = DB::select("SELECT d.nm_post, d.no_cfm, d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
         LEFT JOIN (
-            SELECT j.no_nota, j.id_akun,  GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT j.no_urut SEPARATOR ', ') as no_cfm, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
+            SELECT c.nm_post,j.no_nota, j.id_akun,  GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT j.no_urut SEPARATOR ', ') as no_cfm, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
             FROM jurnal as j
             LEFT JOIN akun as b ON b.id_akun = j.id_akun
+            LEFT JOIN tb_post_center as c ON c.id_post_center = j.id_post_center
             WHERE j.id_akun != '$this->id_akun'
             GROUP BY j.no_nota
         ) d ON a.no_nota = d.no_nota AND d.id_akun != a.id_akun
@@ -57,11 +57,11 @@ class Buku_besarExport implements FromView, WithEvents
         return [
             AfterSheet::class    => function (AfterSheet $event) {
                 $totalrow = $this->totalrow + 2;
-                $cellRange = 'A2:H2';
+                $cellRange = 'A2:I2';
                 // All headers
                 $event->sheet->getDelegate()->getStyle($cellRange)->getFont()->setSize(12);
                 $event->sheet->setAutoFilter($cellRange);
-                $event->sheet->getStyle('A2:H2')->applyFromArray([
+                $event->sheet->getStyle('A2:I2')->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -74,7 +74,7 @@ class Buku_besarExport implements FromView, WithEvents
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A3:H' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A3:I' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
@@ -87,6 +87,10 @@ class Buku_besarExport implements FromView, WithEvents
                         'bold' => false
                     ]
                 ]);
+
+
+                $sheet = $event->sheet->getParent()->createSheet();
+                $sheet->setTitle('Sheet Baru');
             },
         ];
     }
