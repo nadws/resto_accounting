@@ -316,14 +316,14 @@
         "autoWidth": true,
         "paging": false,
     });
-    $('#tablealdi').DataTable({
-        "searching": false,
-        scrollY: '400px',
-        scrollX: true,
-        scrollCollapse: true,
-        "autoWidth": true,
-        "paging": false,
-    });
+    // $('#tablealdi').DataTable({
+    //     "searching": false,
+    //     scrollY: '400px',
+    //     scrollX: true,
+    //     scrollCollapse: true,
+    //     "autoWidth": true,
+    //     "paging": false,
+    // });
 </script>
 @if (session()->has('sukses'))
 <script>
