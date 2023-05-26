@@ -3,7 +3,7 @@
 ])
 <x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end" teks="" />
 <form action="" method="get">
-    <x-theme.modal title="{{$title}}" idModal="view">
+    <x-theme.modal title="Filter Tanggal" idModal="view">
         <div class="row">
             <div class="col-lg-3">Filter</div>
             <div class="col-lg-1">:</div>
