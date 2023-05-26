@@ -1,8 +1,8 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="col-lg-6">
-            <h5 class="float-start mt-1">{{ $title }} {{ date('d-m-Y', strtotime($tgl1)) }} ~
-                {{ date('d-m-Y', strtotime($tgl2)) }}</h5>
+            <h5 class="float-start mt-1">{{ $title }} {{ tanggal($tgl1) }} ~
+                {{ tanggal($tgl2) }}</h5>
         </div>
         <button class="btn btn-sm icon icon-left btn-primary me-2 float-end btn_bayar"><i class="fas fa-money-bill"></i>
             Bayar</button>
@@ -13,11 +13,23 @@
     </x-slot>
 
     <x-slot name="cardBody">
-        <div class="card piutang_cek">
+        <div class="card">
             <div class="card-body px-4 py-4-5">
+              <div class="row float-start text-center">
+                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                    @php
+                    $ttlAllPiutang = 0;
+                    
+                    foreach ($semuaPiutang as $d) {
+                        $ttlAllPiutang += $d->total_rp + $d->debit - $d->kredit;
+                    }
+                @endphp
+                  <button type="button" class="btn btn-outline-primary btn-md font-extrabold mb-0"> Semua Piutang : Rp. {{number_format($ttlAllPiutang, 2)}}</button>
+                </div>
+              </div>
               <div class="row float-end text-center">
                 <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
-                  <h6 class="font-extrabold mb-0"> Piutang Diceklis : Rp. <span class="piutangBayar"></span></h6>
+                  <h6 class="font-extrabold mb-0"> Piutang Diceklis : Rp. <span class="piutangBayar">0</span></h6>
                 </div>
               </div>
             </div>
@@ -47,6 +59,7 @@
                         <th>Terbayar <br> ({{ number_format($ttlTerbayar, 0) }})</th>
                         <th>Sisa Piutang <br> ({{ number_format($ttlPiutang, 0) }})</th>
                         <th>Status</th>
+                        <th>Admin</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -63,13 +76,13 @@
                                     class="hide_bayar hide_bayar{{ $d->no_nota }}" no_nota="{{ $d->no_nota }}"><i
                                         class="fas fa-angle-up"></i></a>
                             </td>
-                            <td>{{ date('d-m-Y', strtotime($d->tgl)) }}</td>
+                            <td>{{ tanggal($d->tgl) }}</td>
                             <td>
                                 @if (!$d->kredit)
                                     <a
                                         href="{{ route('jual.edit', ['no_nota' => $d->no_nota]) }}">{{ $d->no_nota }}</a>
                                 @else
-                                    <p>{{ $d->no_nota }}</p>
+                                    {{ $d->no_nota }}
                                 @endif
                             </td>
                             <td>{{ $d->no_penjualan }}</td>
@@ -78,6 +91,7 @@
                             <td align="right">Rp. {{ number_format($d->kredit, 0) }}</td>
                             <td align="right">Rp. {{ number_format($d->total_rp + $d->debit - $d->kredit, 0) }}</td>
                             <td>{{ $d->status }}</td>
+                            <td>{{ $d->admin }}</td>
                             <td>
                                 @if ($d->status == 'paid')
                                     <i class="fas fa-check text-success"></i>

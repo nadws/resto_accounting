@@ -56,15 +56,25 @@ class JualController extends Controller
     {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
+
+        $jual = DB::select("SELECT a.admin,a.ket,a.no_nota, a.no_penjualan, a.status,a.total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
+                    LEFT JOIN (
+                        SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
+                        GROUP BY b.nota_jurnal
+                    ) c ON c.nota_jurnal = a.no_nota
+                    WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2' ORDER BY a.id_invoice_bk ASC;");
+
+        $semuaPiutang = DB::select("SELECT a.admin,a.ket,a.no_nota, a.no_penjualan, a.status,a.total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
+                LEFT JOIN (
+                    SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
+                    GROUP BY b.nota_jurnal
+                ) c ON c.nota_jurnal = a.no_nota
+                WHERE a.tgl BETWEEN '2022-01-01' AND '$tgl2' ORDER BY a.id_invoice_bk ASC;");
         $data = [
             'title' => 'Penjualan',
             'akun' => DB::table('akun')->get(),
-            'jual' => DB::select("SELECT a.ket,a.no_nota, a.no_penjualan, a.status,a.total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
-            LEFT JOIN (
-                SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
-                GROUP BY b.nota_jurnal
-            ) c ON c.nota_jurnal = a.no_nota
-            WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2' ORDER BY a.id_invoice_bk ASC;"),
+            'jual' => $jual,
+            'semuaPiutang' => $semuaPiutang,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
         ];
@@ -151,7 +161,7 @@ class JualController extends Controller
 
     public function get_kredit_pi(Request $r)
     {
-        $bayar = DB::select("SELECT a.nota_jurnal,a.no_nota,a.tgl,a.debit,a.kredit FROM bayar_pi as a
+        $bayar = DB::select("SELECT a.admin,a.nota_jurnal,a.no_nota,a.tgl,a.debit,a.kredit FROM bayar_pi as a
         LEFT JOIN invoice_pi as b ON a.nota_jurnal = b.no_nota
         WHERE a.nota_jurnal = '$r->no_nota'
         GROUP BY a.id_bayar_bk");

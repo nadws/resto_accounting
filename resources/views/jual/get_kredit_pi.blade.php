@@ -12,6 +12,7 @@
     <td align="right">Rp. {{number_format($b->kredit,0)}}</td>
     <td></td>
     <td></td>
+    <td>{{ $b->admin }}</td>
     <td></td>
 </tr>
 @endforeach
