@@ -192,7 +192,7 @@ class BukuBesarController extends Controller
                         ->setCellValue("F$kolom", $d->ket)
                         ->setCellValue("G$kolom", $d->debit)
                         ->setCellValue("H$kolom", $d->kredit)
-                        ->setCellValue("I$kolom", $d->saldo);
+                        ->setCellValue("I$kolom", $saldo);
                     $kolom++;
                 }
                 
