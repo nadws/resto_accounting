@@ -115,7 +115,7 @@ class JurnalController extends Controller
             $nota_t = $max->nomor_nota + 1;
         }
         $data =  [
-            'title' => 'Jurnal Umum',
+            'title' => 'Tambah Jurnal Umum',
             'max' => $nota_t,
             'proyek' => proyek::where('status', 'berjalan')->get()
 
@@ -166,6 +166,14 @@ class JurnalController extends Controller
         DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
 
         for ($i = 0; $i < count($id_akun); $i++) {
+            $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun[$i])->first();
+            $akun = DB::table('akun')->where('id_akun', $id_akun[$i])->first();
+            if ($max_akun->urutan == 0) {
+                $urutan = '1001';
+            } else {
+                $urutan = $max_akun->urutan + 1;
+            }
+
             $data = [
                 'tgl' => $tgl,
                 'no_nota' => 'JU-' . $nota_t,
@@ -178,7 +186,8 @@ class JurnalController extends Controller
                 'no_dokumen' => $r->no_dokumen,
                 'tgl_dokumen' => $r->tgl_dokumen,
                 'id_proyek' => $id_proyek,
-                'no_urut' => $no_urut[$i],
+                'no_urut' => $akun->inisial . '-' . $urutan,
+                'urutan' => $urutan,
                 'id_post_center' => $id_post[$i]
             ];
             Jurnal::create($data);
@@ -220,7 +229,7 @@ class JurnalController extends Controller
     public function edit(Request $r)
     {
         $data =  [
-            'title' => 'Jurnal Umum',
+            'title' => 'Edit Jurnal Umum',
             'proyek' => proyek::all(),
             'jurnal' => Jurnal::where('no_nota', $r->no_nota)->get(),
             'akun' => Akun::all(),
@@ -236,6 +245,7 @@ class JurnalController extends Controller
         $tgl = $r->tgl;
         // $no_nota = $r->no_nota;
         $id_akun = $r->id_akun;
+        $id_akun2 = $r->id_akun2;
         $keterangan = $r->keterangan;
         $debit = $r->debit;
         $kredit = $r->kredit;
@@ -248,6 +258,19 @@ class JurnalController extends Controller
         Jurnal::where('no_nota', $nota_t)->delete();
 
         for ($i = 0; $i < count($id_akun); $i++) {
+            if ($id_akun[$i] == $id_akun2[$i] || !empty($id_akun2[$i])) {
+                $no_urutan = $no_urut[$i];
+            } else {
+                $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun[$i])->first();
+                $akun = DB::table('akun')->where('id_akun', $id_akun[$i])->first();
+                if ($max_akun->urutan == 0) {
+                    $urutan = '1001';
+                } else {
+                    $urutan = $max_akun->urutan + 1;
+                }
+                $no_urutan = $akun->inisial . '-' . $urutan;
+            }
+
             $data = [
                 'tgl' => $tgl,
                 'no_nota' => $nota_t,
@@ -260,7 +283,7 @@ class JurnalController extends Controller
                 'no_dokumen' => $r->no_dokumen,
                 'tgl_dokumen' => $r->tgl_dokumen,
                 'id_proyek' => $id_proyek,
-                'no_urut' => $no_urut[$i],
+                'no_urut' => $no_urutan,
                 'id_post_center' => $id_post[$i]
             ];
             Jurnal::insert($data);

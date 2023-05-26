@@ -1,9 +1,9 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app cont="container-fluid" title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h5 class="float-start mt-1">{{ $title }} : {{date('d-m-Y',strtotime($tgl1))}}
-                    ~ {{date('d-m-Y',strtotime($tgl2))}}</h5>
+                <h6 class="float-start mt-1">{{ $title }} : {{tanggal($tgl1)}}
+                    ~ {{tanggal($tgl2)}}</h6>
             </div>
             <div class="col-lg-6">
                 @if (!empty($import))
@@ -12,10 +12,6 @@
                 @endif
 
                 @if (!empty($export))
-                {{--
-                <x-theme.button modal="T"
-                    href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => '2']) }}"
-                    icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" /> --}}
                 <x-theme.button modal="T"
                     href="/export_jurnal?tgl1={{$tgl1}}&tgl2={{$tgl2}}&id_proyek={{$id_proyek}}&id_buku=2"
                     icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
@@ -39,9 +35,9 @@
                 <thead>
                     <tr>
                         <th width="5">#</th>
+                        <th style="white-space: nowrap;">No Urut Jurnal</th>
+                        <th style="white-space: nowrap;">No Urut Akun</th>
                         <th>Tanggal</th>
-                        <th>No Nota</th>
-                        <th>No Cfm</th>
                         <th>Akun</th>
                         <th>Sub Akun</th>
                         <th>Keterangan</th>
@@ -54,10 +50,12 @@
                     @foreach ($jurnal as $no => $a)
                     <tr>
                         <td>{{ $no + 1 }}</td>
-                        <td class="nowrap">{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
                         <td>{{ $a->no_nota }}</td>
                         <td>{{ $a->no_urut }}</td>
-                        <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                        <td class="nowrap">{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
+                        <td><a
+                                href="{{ route('summary_buku_besar.detail', ['id_akun' => $a->id_akun,'tgl1' => $tgl1,'tgl2' => $tgl2]) }}">{{
+                                ucwords(strtolower($a->nm_akun)) }}</a></td>
                         <td>{{ ucwords(strtolower($a->nm_post ?? '')) }}</td>
                         @if (strlen($a->ket) > 60)
                         <td>

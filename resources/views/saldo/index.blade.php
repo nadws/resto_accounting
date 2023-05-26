@@ -50,14 +50,14 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control text-end rp-nohide  rp-nohide{{ $no + 1 }}"
-                                    count="{{ $no + 1 }}" value="Rp. {{ number_format($a->debit, 2, '.', '.') }}">
+                                    count="{{ $no + 1 }}" value="Rp. {{ number_format($a->debit, 2, ',', '.') }}">
                                 <input type="hidden" name="debit[]"
                                     class="form-control text-end rp-hide rp-hide{{ $no + 1 }}"
                                     value="{{ empty($a->debit) ? '0' : $a->debit }}">
                             </td>
                             <td>
                                 <input type="text" class="form-control text-end rp-nohides rp-nohides{{ $no + 1 }}"
-                                    count="{{ $no + 1 }}" value="Rp. {{ number_format($a->kredit,2, '.', '.') }}">
+                                    count="{{ $no + 1 }}" value="Rp. {{ number_format($a->kredit,2, ',', '.') }}">
                                 <input type="hidden" name="kredit[]"
                                     class="form-control text-end rp-hides rp-hides{{ $no + 1 }}"
                                     value="{{ empty($a->kredit) ? '0' : $a->kredit }}">

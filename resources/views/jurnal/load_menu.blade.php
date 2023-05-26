@@ -23,9 +23,9 @@
     <tbody>
         <tr class="baris1">
             <td style="vertical-align: top;">
-                <button type="button" data-bs-toggle="collapse" href=".join1" class="btn rounded-pill " count="1"><i
-                        class="fas fa-angle-down"></i>
-                </button>
+                {{-- <button type="button" data-bs-toggle="collapse" href=".join1" class="btn rounded-pill "
+                    count="1"><i class="fas fa-angle-down"></i>
+                </button> --}}
             </td>
             <td style="vertical-align: top;">
                 <select name="id_akun[]" id="" class="select pilih_akun pilih_akun1" count="1" required>
@@ -34,10 +34,10 @@
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
                     @endforeach
                 </select>
-                <div class="collapse join1">
+                {{-- <div class="collapse join1">
                     <label for="" class="mt-2 ">No CFM</label>
                     <input type="text" class="form-control " name="no_urut[]">
-                </div>
+                </div> --}}
 
             </td>
             <td style="vertical-align: top;">
@@ -70,9 +70,9 @@
 
         <tr class="baris2">
             <td style="vertical-align: top;">
-                <button type="button" data-bs-toggle="collapse" href=".join2" class="btn rounded-pill " count="1"><i
-                        class="fas fa-angle-down"></i>
-                </button>
+                {{-- <button type="button" data-bs-toggle="collapse" href=".join2" class="btn rounded-pill "
+                    count="1"><i class="fas fa-angle-down"></i>
+                </button> --}}
             </td>
             <td style="vertical-align: top;">
                 <select name="id_akun[]" id="" class="select pilih_akun pilih_akun2" count="2" required>
@@ -81,10 +81,10 @@
                     <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
                     @endforeach
                 </select>
-                <div class="collapse join2">
+                {{-- <div class="collapse join2">
                     <label for="" class="mt-2 ">No CFM</label>
                     <input type="text" class="form-control " name="no_urut[]">
-                </div>
+                </div> --}}
             </td>
             <td style="vertical-align: top;">
                 <select name="id_post[]" id="" class="select post2">

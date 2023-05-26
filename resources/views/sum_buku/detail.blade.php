@@ -16,15 +16,15 @@
             <table class="table table-hover table-striped" id="table1">
                 <thead>
                     @php
-                        $ttlDebit = 0;
-                        $ttlKredit = 0;
-                        $ttlSaldo = 0;
-                        
-                        foreach ($detail as $d) {
-                            $ttlDebit += $d->debit;
-                            $ttlKredit += $d->kredit;
-                            $ttlSaldo += $d->debit - $d->kredit;
-                        }
+                    $ttlDebit = 0;
+                    $ttlKredit = 0;
+                    $ttlSaldo = 0;
+
+                    foreach ($detail as $d) {
+                    $ttlDebit += $d->debit;
+                    $ttlKredit += $d->kredit;
+                    $ttlSaldo += $d->debit - $d->kredit;
+                    }
                     @endphp
                     <tr>
                         <th width="5">#</th>
@@ -40,23 +40,23 @@
                 </thead>
                 <tbody>
                     @php
-                        $saldo = 0;
+                    $saldo = 0;
                     @endphp
                     @foreach ($detail as $n => $d)
-                        @php
-                            $saldo += $d->debit - $d->kredit;
-                        @endphp
-                        <tr>
-                            <td>{{ $n + 1 }}</td>
-                            <td>{{ $d->no_nota }}</td>
-                            <td>{{ $d->no_cfm }}</td>
-                            <td class="nowrap">{{ tanggal($d->tgl) }}</td>
-                            <td>{{ $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)) }}</td>
-                            <td>{{ $d->ket }}</td>
-                            <td style="text-align: right">{{ number_format($d->debit, 2) }}</td>
-                            <td style="text-align: right">{{ number_format($d->kredit, 2) }}</td>
-                            <td style="text-align: right">{{ number_format($saldo, 2) }}</td>
-                        </tr>
+                    @php
+                    $saldo += $d->debit - $d->kredit;
+                    @endphp
+                    <tr>
+                        <td>{{ $n + 1 }}</td>
+                        <td>{{ $d->no_nota }}</td>
+                        <td>{{ $d->no_cfm }}</td>
+                        <td class="nowrap">{{ tanggal($d->tgl) }}</td>
+                        <td>{{ $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)) }}</td>
+                        <td>{{ $d->ket }}</td>
+                        <td style="text-align: right">{{ number_format($d->debit, 2) }}</td>
+                        <td style="text-align: right">{{ number_format($d->kredit, 2) }}</td>
+                        <td style="text-align: right">{{ number_format($saldo, 2) }}</td>
+                    </tr>
                     @endforeach
                 </tbody>
 
