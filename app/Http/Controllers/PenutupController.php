@@ -16,7 +16,7 @@ class PenutupController extends Controller
         $tgl1 =  $r->tgl1 ?? '2023-01-01';
         $tgl2 =  $r->tgl2 ?? date('Y-m-t');
 
-        $tgl = DB::selectOne("SELECT min(a.tgl) as tgl, a.penutup FROM jurnal as a WHERE a.penutup = 'T'");
+        $tgl = DB::selectOne("SELECT min(a.tgl) as tgl, a.penutup FROM jurnal as a WHERE a.penutup = 'T' and a.id_buku != '5'");
         $tgl1Tutup = date('Y-m-01', strtotime($tgl->tgl));
         $tgl2Tutup = date('Y-m-t', strtotime($tgl->tgl));
 
@@ -44,7 +44,7 @@ class PenutupController extends Controller
 
     public function saldo()
     {
-        $tgl = DB::selectOne("SELECT min(a.tgl) as tgl FROM jurnal as a WHERE a.penutup = 'T'")->tgl;
+        $tgl = DB::selectOne("SELECT min(a.tgl) as tgl FROM jurnal as a WHERE a.penutup = 'T' and a.id_buku not in(1,5)")->tgl;
 
         $tgl1 = date('Y-m-01', strtotime($tgl));
         $tgl2 = date('Y-m-t', strtotime($tgl));
@@ -55,52 +55,17 @@ class PenutupController extends Controller
         $pendapatan = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
         FROM jurnal as a 
         left join akun as b on b.id_akun = a.id_akun
-        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T' and b.iktisar='Y' and b.id_klasifikasi = '3'
+        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2'  and b.iktisar='Y' and b.id_klasifikasi = '3'
         group by a.id_akun
         ORDER by b.kode_akun ASC;");
 
         $biaya = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
         FROM jurnal as a 
         left join akun as b on b.id_akun = a.id_akun
-        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T' and b.iktisar='Y' and b.id_klasifikasi = '2'
+        WHERE a.tgl BETWEEN '$tgl1' and '$tgl2'  and b.iktisar='Y' and b.id_klasifikasi = '2'
         group by a.id_akun
         ORDER by b.kode_akun ASC;");
 
-
-
-
-
-
-
-        $saldo = DB::select("SELECT a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
-            FROM jurnal as a 
-            left join akun as b on b.id_akun = a.id_akun
-            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T' and b.iktisar = 'T'
-            group by a.id_akun
-            ORDER by b.kode_akun ASC;");
-
-        foreach ($saldo as $d) {
-            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
-
-            $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
-            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
-
-            $data = [
-                'id_akun' => $d->id_akun,
-                'debit' => $d->debit,
-                'kredit' => $d->kredit,
-                'ket' => 'Saldo Penutup',
-                'id_buku' => '5',
-                'no_nota' => "PEN-$no_nota",
-                'tgl' => $nextMonth,
-                'tgl_dokumen' => $tgl2,
-                'admin' => auth()->user()->name,
-                'penutup' => 'T'
-            ];
-            Jurnal::create($data);
-
-            Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y', 'saldo' => 'Y']);
-        }
         foreach ($pendapatan as $p) {
             $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
 
@@ -158,6 +123,61 @@ class PenutupController extends Controller
             ];
             Jurnal::create($data);
         }
+
+
+
+
+
+
+
+        $saldo = DB::select("SELECT b.iktisar , a.no_nota,a.id_akun, b.kode_akun, b.nm_akun, sum(a.debit) as debit , sum(a.kredit) as kredit 
+            FROM jurnal as a 
+            left join akun as b on b.id_akun = a.id_akun
+            WHERE a.tgl BETWEEN '$tgl1' and '$tgl2' AND a.penutup = 'T' 
+            group by a.id_akun
+            ORDER by b.kode_akun ASC;");
+
+
+        foreach ($saldo as $d) {
+            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+
+            $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
+            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
+
+            if ($d->iktisar == 'T') {
+                $data = [
+                    'id_akun' => $d->id_akun,
+                    'debit' => $d->debit,
+                    'kredit' => $d->kredit,
+                    'ket' => 'Saldo Penutup',
+                    'id_buku' => '5',
+                    'no_nota' => "PEN-$no_nota",
+                    'tgl' => $nextMonth,
+                    'tgl_dokumen' => $tgl2,
+                    'admin' => auth()->user()->name,
+                    'penutup' => 'T',
+                    'saldo' => 'Y'
+                ];
+            } else {
+                $data = [
+                    'id_akun' => $d->id_akun,
+                    'debit' => $d->debit,
+                    'kredit' => $d->kredit,
+                    'ket' => 'Saldo Penutup',
+                    'id_buku' => '5',
+                    'no_nota' => "PEN-$no_nota",
+                    'tgl' => $nextMonth,
+                    'tgl_dokumen' => $tgl2,
+                    'admin' => auth()->user()->name,
+                    'penutup' => 'T',
+                    'saldo' => 'T'
+                ];
+            }
+            Jurnal::create($data);
+            Jurnal::whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y', 'saldo' => 'T']);
+        }
+
+
 
         return redirect()->route('penutup.index')->with('sukses', 'Berhasil Tutup Saldo');
     }
