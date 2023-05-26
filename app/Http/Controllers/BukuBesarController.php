@@ -188,8 +188,8 @@ class BukuBesarController extends Controller
                         ->setCellValue("B$kolom", $d->no_cfm)
                         ->setCellValue("C$kolom", $d->tgl)
                         ->setCellValue("D$kolom", $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)))
-                        ->setCellValue("E$kolom", $d->nm_post)
-                        ->setCellValue("F$kolom", $d->ket)
+                        ->setCellValue("E$kolom", ucwords($d->nm_post))
+                        ->setCellValue("F$kolom", ucwords($d->ket))
                         ->setCellValue("G$kolom", $d->debit)
                         ->setCellValue("H$kolom", $d->kredit)
                         ->setCellValue("I$kolom", $saldo);
