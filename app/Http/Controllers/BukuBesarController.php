@@ -147,7 +147,7 @@ class BukuBesarController extends Controller
             $spreadsheet->setActiveSheetIndex($i);
             $s = 'sheet' . $i;
             $s = $spreadsheet->getActiveSheet();
-            $s->setTitle(ucwords(substr($r->nm_akun, 0, 30)));
+            $s->setTitle(ucwords('aldi'));
 
             if (empty($detail)) {
                 $s
@@ -206,6 +206,7 @@ class BukuBesarController extends Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=' . $namafile);
         header('Cache-Control: max-age=0');
+        
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
