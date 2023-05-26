@@ -129,7 +129,6 @@ class BukuBesarController extends Controller
             ],
         ];
         $spreadsheet = new Spreadsheet();
-        dd($akun);
         foreach ($akun as $i => $r) {
 
             $detail = DB::select("SELECT d.nm_post, d.no_cfm, d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
@@ -148,7 +147,7 @@ class BukuBesarController extends Controller
             $spreadsheet->setActiveSheetIndex($i);
             $s = 'sheet' . $i;
             $s = $spreadsheet->getActiveSheet();
-            $s->setTitle(ucwords(substr($r->nm_akun, 0, 25)));
+            $s->setTitle(ucwords(substr($r->nm_akun, 0, 30)));
 
             if (empty($detail)) {
                 $s
