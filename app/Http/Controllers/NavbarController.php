@@ -170,12 +170,12 @@ class NavbarController extends Controller
                 'img' => 'invoice.png',
                 'deskripsi' => 'mencatat faktur penjualan untuk pelanggan',
             ],
-            [
-                'judul' => 'Daftar Piutang Usaha',
-                'route' => 'faktur_penjualan',
-                'img' => 'payment.png',
-                'deskripsi' => 'Menampilkan daftar perinci piutang dagang tiap pelanggan yang berasal dari penjualan bukan tunai dan/atau saldo awal piutang usaha.',
-            ],
+            // [
+            //     'judul' => 'Daftar Piutang Usaha',
+            //     'route' => 'faktur_penjualan',
+            //     'img' => 'payment.png',
+            //     'deskripsi' => 'Menampilkan daftar perinci piutang dagang tiap pelanggan yang berasal dari penjualan bukan tunai dan/atau saldo awal piutang usaha.',
+            // ],
 
         ];
         $title = 'Penjualan';
