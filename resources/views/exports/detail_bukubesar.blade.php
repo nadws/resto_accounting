@@ -23,10 +23,10 @@
         @endphp
         <tr>
             <td>{{ $n+1 }}</td>
-            <td class="nowrap">{{ date('d-m-Y',strtotime($d->tgl)) }}</td>
-            <td>{{ $d->no_nota }}</td>
             <td>{{ $d->no_cfm }}</td>
+            <td class="nowrap">{{ date('d-m-Y',strtotime($d->tgl)) }}</td>
             <td>{{ $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)) }}</td>
+            <td>{{ $d->nm_post }}</td>
             <td>{{ $d->ket }}</td>
             <td style="text-align: right">{{$d->debit }}</td>
             <td style="text-align: right">{{$d->kredit }}</td>
