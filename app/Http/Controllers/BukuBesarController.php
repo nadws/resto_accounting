@@ -171,7 +171,7 @@ class BukuBesarController extends Controller
                 $s
                     ->setCellValue('A2', '#')
                     ->setCellValue('B2', 'No Urut Akun')
-                    ->setCellValue('C2', 'Tanggal ' . $tgl1)
+                    ->setCellValue('C2', 'Tanggal')
                     ->setCellValue('D2', 'Nama Akun Lawan')
                     ->setCellValue('E2', 'Sub Akun')
                     ->setCellValue('F2', 'Keterangan')
