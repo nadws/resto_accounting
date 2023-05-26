@@ -1,5 +1,7 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
     <x-slot name="cardHeader">
+        <h6 class="float-start mt-1">{{ $title }}: {{tanggal($tgl1)}} ~
+            {{tanggal($tgl2)}}</h6>
         <div class="row justify-content-end">
             <div class="col-lg-6">
                 {{-- <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"

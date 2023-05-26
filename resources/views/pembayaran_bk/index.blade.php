@@ -52,8 +52,8 @@
                 <hr style="border:1px solid #435EBE">
             </div>
             <div class="col-lg-6">
-                <h5 class="float-start mt-1">{{ $title }} : {{ date('d-m-Y', strtotime($tgl1)) }}
-                    ~ {{ date('d-m-Y', strtotime($tgl2)) }}
+                <h5 class="float-start mt-1">{{ $title }} : {{ tanggal($tgl1) }}
+                    ~ {{ tanggal($tgl2) }}
                 </h5>
 
             </div>
@@ -119,7 +119,7 @@
                                         class="hide_bayar hide_bayar{{ $p->no_nota }}"
                                         no_nota="{{ $p->no_nota }}"><i class="fas fa-angle-up"></i></a>
                                 </td>
-                                <td>{{ date('d-m-Y', strtotime($p->tgl)) }}</td>
+                                <td>{{ tanggal($p->tgl) }}</td>
                                 <td>{{ $p->no_nota }}</td>
                                 <td>Bkin</td>
                                 <td>{{ ucwords(strtolower($p->nm_suplier)) }}</td>
@@ -196,11 +196,13 @@
                             $(".hide_bayar" + no_nota).show();
 
                             clickedElement.prop('disabled',
-                            false); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
+                                false
+                                ); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
                         },
                         error: function() {
                             clickedElement.prop('disabled',
-                            false); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
+                                false
+                                ); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
                         }
                     });
                 });

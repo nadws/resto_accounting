@@ -41,7 +41,7 @@
                         @foreach ($pembelian as $no => $p)
                         <tr>
                             <td>{{$no+1}}</td>
-                            <td>{{date('d-m-Y',strtotime($p->tgl))}}</td>
+                            <td>{{tanggal($p->tgl)}}</td>
                             <td>{{$p->no_nota}}</td>
                             <td>{{ucwords(strtolower($p->nm_suplier))}}</td>
                             <td>{{ucwords(strtolower($p->suplier_akhir))}}</td>
