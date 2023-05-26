@@ -171,7 +171,7 @@ class BukuBesarController extends Controller
                 $s
                     ->setCellValue('A2', '#')
                     ->setCellValue('B2', 'No Urut Akun')
-                    ->setCellValue('C2', 'Tanggal ' . $tgl1)
+                    ->setCellValue('C2', 'Tanggal')
                     ->setCellValue('D2', 'Nama Akun Lawan')
                     ->setCellValue('E2', 'Sub Akun')
                     ->setCellValue('F2', 'Keterangan')
@@ -188,11 +188,11 @@ class BukuBesarController extends Controller
                         ->setCellValue("B$kolom", $d->no_cfm)
                         ->setCellValue("C$kolom", $d->tgl)
                         ->setCellValue("D$kolom", $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)))
-                        ->setCellValue("E$kolom", $d->nm_post)
-                        ->setCellValue("F$kolom", $d->ket)
+                        ->setCellValue("E$kolom", ucwords($d->nm_post))
+                        ->setCellValue("F$kolom", ucwords($d->ket))
                         ->setCellValue("G$kolom", $d->debit)
                         ->setCellValue("H$kolom", $d->kredit)
-                        ->setCellValue("I$kolom", $d->saldo);
+                        ->setCellValue("I$kolom", $saldo);
                     $kolom++;
                 }
 
