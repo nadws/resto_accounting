@@ -161,9 +161,9 @@ class BukuBesarController extends Controller
                     ->setCellValue('F2', 'Keterangan')
                     ->setCellValue('G2', 'Debit')
                     ->setCellValue('H2', 'Kredit')
-                ->setCellValue('I2', 'Saldo');
+                    ->setCellValue('I2', 'Saldo');
                 $s->getStyle('A2:I2')->applyFromArray($style);
-                $s->getStyle("A1")->getFont()->setBold( true );
+                $s->getStyle("A1")->getFont()->setBold(true);
             } else {
                 $kolom = 3;
                 $s
@@ -177,14 +177,14 @@ class BukuBesarController extends Controller
                     ->setCellValue('F2', 'Keterangan')
                     ->setCellValue('G2', 'Debit')
                     ->setCellValue('H2', 'Kredit')
-                ->setCellValue('I2', 'Saldo');
+                    ->setCellValue('I2', 'Saldo');
 
                 $saldo = 0;
-                
+
                 foreach ($detail as $no => $d) {
                     $saldo += $d->debit - $d->kredit;
                     $s
-                        ->setCellValue("A$kolom", $no+1)
+                        ->setCellValue("A$kolom", $no + 1)
                         ->setCellValue("B$kolom", $d->no_cfm)
                         ->setCellValue("C$kolom", $d->tgl)
                         ->setCellValue("D$kolom", $d->saldo == 'Y' ? 'Saldo Awal' : ucwords(strtolower($d->nm_akun)))
@@ -195,10 +195,10 @@ class BukuBesarController extends Controller
                         ->setCellValue("I$kolom", $saldo);
                     $kolom++;
                 }
-                
+
                 $bataskun = $kolom - 1;
                 $s->getStyle('A2:I' . $bataskun)->applyFromArray($style);
-                $s->getStyle("A1")->getFont()->setBold( true );
+                $s->getStyle("A1")->getFont()->setBold(true);
             }
         }
 
@@ -208,7 +208,7 @@ class BukuBesarController extends Controller
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=' . $namafile);
         header('Cache-Control: max-age=0');
-        
+
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
