@@ -23,42 +23,42 @@
                 </thead>
                 <tbody>
                     @foreach ($akun as $no => $a)
-                        <tr>
-                            <td>{{ $no + 1 }}</td>
-                            <td>{{ $a->kode_akun }}</td>
-                            <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
-                            <td>
-                                {{ $a->klasifikasi->nm_subklasifikasi }}
-                            </td>
-                            <td>
-                                @php
-                                    $badge = $a->is_active != 'Y' ? 'danger' : 'success';
-                                    $aktif = $a->is_active != 'Y' ? 'Tidak Aktif' : 'Aktif';
-                                @endphp
-                                <a href="" class=" badge bg-{{ $badge }}">
-                                    {{ $aktif }}</a>
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                        <i class="fas fa-ellipsis-v text-primary"></i>
-                                    </span>
-                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <li>
-                                            <a class="dropdown-item text-info edit_akun" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#edit"
-                                                id_akun="{{ $a->id_akun }}"><i class="me-2 fas fa-pen"></i>Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-info sub-akun" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#sub-akun"
-                                                id_akun="{{ $a->id_akun }}"><i class="me-2 fas fa-layer-group"></i>Sub
-                                                Akun</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $no + 1 }}</td>
+                        <td>{{ $a->kode_akun }}</td>
+                        <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                        <td>
+                            {{ $a->klasifikasi->nm_subklasifikasi }}
+                        </td>
+                        <td>
+                            @php
+                            $badge = $a->is_active != 'Y' ? 'danger' : 'success';
+                            $aktif = $a->is_active != 'Y' ? 'Tidak Aktif' : 'Aktif';
+                            @endphp
+                            <a href="" class=" badge bg-{{ $badge }}">
+                                {{ $aktif }}</a>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                    <i class="fas fa-ellipsis-v text-primary"></i>
+                                </span>
+                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <li>
+                                        <a class="dropdown-item text-info edit_akun" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#edit" id_akun="{{ $a->id_akun }}"><i
+                                                class="me-2 fas fa-pen"></i>Edit</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-info sub-akun" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#sub-akun" id_akun="{{ $a->id_akun }}"><i
+                                                class="me-2 fas fa-layer-group"></i>Sub
+                                            Akun</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -74,8 +74,8 @@
                             <select name="id_klasifikasi" id="" class="select2 get_kode">
                                 <option value="">Pilih Subklasifikasi</option>
                                 @foreach ($subklasifikasi as $s)
-                                    <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi }}
-                                    </option>
+                                <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -117,8 +117,8 @@
         {{-- end sub akun --}}
     </x-slot>
     @section('scripts')
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 $(document).on("change", ".get_kode", function() {
                     var id_sub = $(this).val();
                     $.ajax({
@@ -209,6 +209,6 @@
                     }
                 })
             });
-        </script>
+    </script>
     @endsection
 </x-theme.app>

@@ -2,8 +2,7 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h6 class="float-start mt-1">{{ $title }}:
-                    {{date('d-m-Y',strtotime($tgl1))}}~{{date('d-m-Y',strtotime($tgl2))}}</h6>
+                <h6 class="float-start mt-1">{{ $title }}: {{tanggal($tgl1)}}~{{tanggal($tgl2)}}</h6>
             </div>
             <div class="col-lg-6">
                 <x-theme.btn_filter />

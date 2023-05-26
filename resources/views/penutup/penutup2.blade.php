@@ -1,8 +1,8 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h6 class="float-start mt-1">Saldo yang dibawa ke bulan depan</h6>
+                <h6 class="float-start mt-1">{{$title}}</h6>
             </div>
             <div class="col-lg-6">
                 <a data-bs-toggle="modal" data-bs-target="#delete" href="#" class="btn btn-primary btn-sm float-end"><i
@@ -12,49 +12,69 @@
             </div>
         </div>
     </x-slot>
+
     <x-slot name="cardBody">
 
-        <div class="alert alert-danger">
-            <i class="bi bi-file-excel"></i> Saldo <b><em>{{ tanggal($tgl1Tutup) }} ~ {{ tanggal($tgl2Tutup) }}</em></b>
-            Belum Di Tutup.
-        </div>
         <section class="row">
-            @php
-            $ttlDebit = 0;
-            $ttlKredit = 0;
-            $ttlSaldo = 0;
-
-            foreach ($buku as $d) {
-            $ttlDebit += $d->debit;
-            $ttlKredit += $d->kredit;
-            $ttlSaldo += $d->debit - $d->kredit;
-            }
-            @endphp
-
-            <table class="table table-hover table-striped" id="table1">
+            <div class="alert alert-danger">
+                <i class="bi bi-file-excel"></i> Saldo <b><em>{{ tanggal($tgl1Tutup) }} ~ {{ tanggal($tgl2Tutup)
+                        }}</em></b>
+                Belum Di Tutup.
+            </div>
+            <style>
+                .dhead {
+                    background-color: #435EBE !important;
+                    color: white;
+                }
+            </style>
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th width="5">#</th>
-                        <th>Kode Akun</th>
-                        <th>Akun</th>
-                        <th style="text-align: right">Debit ({{ number_format($ttlDebit, 2) }})</th>
-                        <th style="text-align: right">Kredit ({{ number_format($ttlKredit, 2) }})</th>
-                        <th style="text-align: right">Saldo ({{ number_format($ttlSaldo, 2) }})</th>
+                        {{-- <th class="dhead" width="5">#</th> --}}
+                        <th class="dhead">Kode Akun</th>
+                        <th class="dhead">Akun</th>
+                        <th class="dhead" style="text-align: right">Debit</th>
+                        <th class="dhead" style="text-align: right">Kredit</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($buku as $no => $a)
                     <tr>
-                        <td>{{ $no + 1 }}</td>
-                        <td>{{ $a->kode_akun }}</td>
-                        <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
-                        <td style="text-align: right">{{ number_format($a->debit, 2) }}</td>
-                        <td style="text-align: right">{{ number_format($a->kredit, 2) }}</td>
-                        <td style="text-align: right">{{ number_format($a->debit - $a->kredit, 2) }}</td>
+                        <td colspan="4" class="fw-bold">Pendapatan</td>
+                    </tr>
+                    @foreach ($pendapatan as $no => $b)
+                    <tr>
+                        <td>{{$b->kode_akun}}</td>
+                        <td>{{ ucwords(strtolower($b->nm_akun))}}</td>
+                        <td align="right">{{number_format($b->kredit,2)}}</td>
+                        <td align="right">0</td>
+                    </tr>
+                    <tr>
+                        <td>5004</td>
+                        <td>Ikhtisar Laba Rugi</td>
+                        <td align="right">0</td>
+                        <td align="right">{{number_format($b->kredit,2)}}</td>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td colspan="4" class="fw-bold">Biaya</td>
+                    </tr>
+                    @foreach ($biaya as $no => $b)
+                    <tr>
+                        <td>{{$b->kode_akun}}</td>
+                        <td>{{ ucwords(strtolower($b->nm_akun))}}</td>
+                        <td align="right">0</td>
+                        <td align="right">{{number_format($b->debit,2)}}</td>
+                    </tr>
+                    <tr>
+                        <td>5004</td>
+                        <td>Ikhtisar Laba Rugi</td>
+                        <td align="right">{{number_format($b->debit,2)}}</td>
+                        <td align="right">0</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+
         </section>
 
         <form action="" method="get">

@@ -2,9 +2,10 @@
 
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
-            <div class="col-lg-2">
-
+            <div class="col-lg-6">
+                <h6 class="float-start mt-1">{{ $title }}</h6>
             </div>
+            <div class="col-lg-6"></div>
         </div>
 
     </x-slot>
@@ -20,7 +21,7 @@
                     <input type="date" class="form-control" name="tgl" value="{{ $head_jurnal->tgl }}">
                 </div>
                 <div class="col-lg-3">
-                    <label for="">No Nota</label>
+                    <label for="">No Urut Jurnal</label>
                     <input type="text" class="form-control" name="no_nota" value="{{ $no_nota }}">
                 </div>
                 <div class="col-lg-3">
@@ -68,10 +69,10 @@
                             @endphp
                             <tr class="baris{{ $no + 1 }}">
                                 <td style="vertical-align: top;">
-                                    <button type="button" data-bs-toggle="collapse" href=".join{{ $no + 1 }}"
+                                    {{-- <button type="button" data-bs-toggle="collapse" href=".join{{ $no + 1 }}"
                                         class="btn rounded-pill " count="{{ $no + 1 }}"><i class="fas fa-angle-down">
                                         </i>
-                                    </button>
+                                    </button> --}}
                                 </td>
                                 <td style="vertical-align: top;">
                                     <select name="id_akun[]" id="" class="select pilih_akun pilih_akun{{ $no + 1 }}"
@@ -83,11 +84,15 @@
                                             {{ $a->nm_akun }}</option>
                                         @endforeach
                                     </select>
-                                    <div class="collapse join{{ $no + 1 }}">
+                                    {{-- <div class="collapse join{{ $no + 1 }}">
                                         <label for="" class="mt-2 ">No CFM</label>
                                         <input type="text" class="form-control " name="no_urut[]"
                                             value="{{ $j->no_urut }}">
-                                    </div>
+                                    </div> --}}
+                                    <input type="hidden" class="form-control " name="no_urut[]"
+                                        value="{{ $j->no_urut }}">
+                                    <input type="hidden" class="form-control " name="id_akun2[]"
+                                        value="{{ $j->id_akun }}">
                                 </td>
                                 <td style="vertical-align: top;">
                                     <select name="id_post[]" id="" class="select post{{ $no + 1 }}">
@@ -107,13 +112,13 @@
                                 </td>
                                 <td style="vertical-align: top;">
                                     <input type="text" class="form-control debit_rupiah text-end"
-                                        value="Rp {{ number_format($j->debit, 2, '.', '.') }}" count="{{ $no + 1 }}">
+                                        value="Rp {{ number_format($j->debit, 2, ',', '.') }}" count="{{ $no + 1 }}">
                                     <input type="hidden" class="form-control debit_biasa debit_biasa{{ $no + 1 }}"
                                         value="{{ $j->debit }}" name="debit[]">
                                 </td>
                                 <td style="vertical-align: top;">
                                     <input type="text" class="form-control kredit_rupiah text-end"
-                                        value="Rp {{ number_format($j->kredit, 2, '.', '.') }}" count="{{ $no + 1 }}">
+                                        value="Rp {{ number_format($j->kredit, 2, ',', '.') }}" count="{{ $no + 1 }}">
                                     <input type="hidden" class="form-control kredit_biasa kredit_biasa{{ $no + 1 }}"
                                         value="{{ $j->kredit }}" name="kredit[]">
                                 </td>
@@ -155,14 +160,14 @@
                         <tr>
                             <td width="20%">Total</td>
                             <td width="40%" class="total" style="text-align: right;">
-                                Rp.{{ number_format($head_jurnal->debit, 0, '.', '.') }}</td>
+                                Rp.{{ number_format($head_jurnal->debit, 2, ',', '.') }}</td>
                             <td width="40%" class="total_kredit" style="text-align: right;">
-                                Rp.{{ number_format($head_jurnal->kredit, 0, '.', '.') }}</td>
+                                Rp.{{ number_format($head_jurnal->kredit, 2, ',', '.') }}</td>
                         </tr>
                         <tr>
                             <td class="cselisih" colspan="2">Selisih</td>
                             <td style="text-align: right;" class="selisih cselisih">
-                                Rp.{{ number_format($head_jurnal->debit - $head_jurnal->kredit, 0, '.', '.') }}</td>
+                                Rp.{{ number_format($head_jurnal->debit - $head_jurnal->kredit, 2, ',', '.') }}</td>
                         </tr>
                     </table>
 
@@ -259,7 +264,7 @@
                     input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 
                     if (input === "") {
-                        $(this).val("Rp 0");
+                        $(this).val("");
                         $('.debit_biasa' + count).val(0)
                     } else {
                         $(this).val("Rp " + input);
@@ -313,7 +318,7 @@
                     input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
 
                     if (input === "") {
-                        $(this).val("Rp 0");
+                        $(this).val("");
                         $('.kredit_biasa' + count).val(0)
                     } else {
                         $(this).val("Rp " + input);

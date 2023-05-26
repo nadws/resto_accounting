@@ -1,8 +1,8 @@
 <tr class="baris{{$count}}">
     <td style="vertical-align: top;">
-        <button type="button" data-bs-toggle="collapse" href=".join{{$count}}" class="btn rounded-pill " count="1"><i
-                class="fas fa-angle-down"></i>
-        </button>
+        {{-- <button type="button" data-bs-toggle="collapse" href=".join{{$count}}" class="btn rounded-pill "
+            count="1"><i class="fas fa-angle-down"></i>
+        </button> --}}
     </td>
     <td style="vertical-align: top;">
         <select name="id_akun[]" id="" class="select pilih_akun pilih_akun{{$count}}" count="{{$count}}" required>
@@ -11,10 +11,11 @@
             <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
             @endforeach
         </select>
-        <div class="collapse join{{$count}}">
+        {{-- <div class="collapse join{{$count}}">
             <label for="" class="mt-2 ">No CFM</label>
             <input type="text" class="form-control " name="no_urut[]">
-        </div>
+        </div> --}}
+        <input type="hidden" class="form-control " name="id_akun2[]">
     </td>
     <td style="vertical-align: top;">
         <select name="id_post[]" id="" class="select post{{$count}}">
