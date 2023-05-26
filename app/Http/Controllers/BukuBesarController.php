@@ -147,7 +147,7 @@ class BukuBesarController extends Controller
             $spreadsheet->setActiveSheetIndex($i);
             $s = 'sheet' . $i;
             $s = $spreadsheet->getActiveSheet();
-            $s->setTitle(ucwords(substr($r->nm_akun, 0, 30)));
+            $s->setTitle(ucwords(substr($r->nm_akun, 0, 25)));
 
             if (empty($detail)) {
                 $s
