@@ -75,7 +75,7 @@ class Buku_besarExport implements FromView, WithEvents
                         'bold' => true
                     ]
                 ]);
-                $event->sheet->getStyle('A3:H' . $totalrow)->applyFromArray([
+                $event->sheet->getStyle('A3:I' . $totalrow)->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,

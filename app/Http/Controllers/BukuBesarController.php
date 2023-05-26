@@ -79,9 +79,9 @@ class BukuBesarController extends Controller
         $tgl2 =  $r->tgl2;
         $data = [
             'title' => 'Detail ',
-            'detail' => DB::select("SELECT d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
+            'detail' => DB::select("SELECT d.no_cfm, d.ket as ket2, a.ket, a.tgl,a.id_akun, d.nm_akun, a.no_nota, a.debit, a.kredit, a.saldo FROM `jurnal` as a
                         LEFT JOIN (
-                            SELECT j.no_nota, j.id_akun, GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
+                            SELECT j.no_nota, j.id_akun, GROUP_CONCAT(DISTINCT j.no_urut SEPARATOR ', ') as no_cfm, GROUP_CONCAT(DISTINCT j.ket SEPARATOR ', ') as ket, GROUP_CONCAT(DISTINCT b.nm_akun SEPARATOR ', ') as nm_akun 
                             FROM jurnal as j
                             LEFT JOIN akun as b ON b.id_akun = j.id_akun
                             WHERE j.id_akun != '$r->id_akun'
