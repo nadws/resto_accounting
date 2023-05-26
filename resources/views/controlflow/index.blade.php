@@ -133,11 +133,7 @@
                 }
             });
         });
-        $(document).on('click', '.tmbhakun', function() {
-            var id_kategori = $(this).attr('id_kategori');
-            $("#modalAkunPendapatan").modal('show');
-            loadInputsub(id_kategori);
-        });
+        
         $(document).on('submit', '#formTambahSubAkun', function(e) {
             e.preventDefault()
             var data = $("#formTambahSubAkun").serialize()
@@ -194,6 +190,38 @@
                     });
                 }
             });
+            // Batas pembaruan
+
+
+            function loadInputsub(id_kategori_akun,jenis,tgl1 = "{{$tgl1}}", tgl2 = "{{ $tgl2 }}") {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('loadInputsub') }}",
+                    data: {
+                        id_kategori_akun:id_kategori_akun,
+                        jenis:jenis,
+                        tgl1:tgl1,
+                        tgl2:tgl2
+                    },
+                    success: function(r) {
+                        $("#loadAkunPendapatan").html(r);
+                        // $('.jenisSub').val(jenis)
+
+                        $('.select').select2({
+                            dropdownParent: $('#modalAkunPendapatan .modal-content')
+                        });
+                    }
+                });
+            }
+            $(document).on('click', '.tmbhakun', function() {
+                alert('da');
+                var id_kategori_akun = $(this).attr('id_kategori_akun');
+                var jenis = $(this).attr('jenis');
+                $("#modalAkunPendapatan").modal('show');
+                loadInputsub(id_kategori_akun,jenis);
+            });
+
+            
         });
     </script>
 

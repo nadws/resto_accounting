@@ -12,7 +12,16 @@
         <form id="tambah_saldo">
             @csrf
             <section class="row">
-                <table class="table table-hover" id="tableScroll">
+                <div class="col-lg-8"></div>
+                <div class="col-lg-4 mb-2">
+                    <table class="float-end">
+                        <td>Search :</td>
+                        <td><input type="text" id="pencarian" class="form-control float-end"></td>
+                    </table>
+
+
+                </div>
+                <table class="table table-hover" id="tablealdi">
                     <thead>
                         <tr>
                             <th width="5">#</th>
@@ -62,10 +71,10 @@
                             <th></th>
                             <th></th>
                             <th class="text-end">
-                                <p class="totalDebit">Rp. {{ number_format($t_debit, 2, '.', '.') }}</p>
+                                <p class="totalDebit">Rp. {{ number_format($t_debit, 2, ',', '.') }}</p>
                             </th>
                             <th class="text-end">
-                                <p class="totalKredit">Rp. {{ number_format($t_kredit, 2, '.', '.') }}
+                                <p class="totalKredit">Rp. {{ number_format($t_kredit, 2, ',', '.') }}
                                 </p>
                             </th>
                             <input type="text" style="display: none" class="totalDebithide"
@@ -116,7 +125,7 @@
             // convertRp('rp-nohides', 'rp-hides','totalKredit','totalKredithide')
 
             $(document).ready(function() {
-
+                pencarian('pencarian', 'tablealdi')
                 $(document).on('submit', '#tambah_saldo', function(event) {
                     event.preventDefault();
 

@@ -2,11 +2,14 @@
 
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
-            <div class="col-lg-2">
-                <div class="col-lg-6">
-                    <h3 class="float-start mt-1">{{ $title }}</h3>
-                </div>
+
+            <div class="col-lg-6">
+                <h6 class="float-start mt-1">{{ $title }}</h6>
             </div>
+            <div class="col-lg-6">
+
+            </div>
+
         </div>
 
     </x-slot>
@@ -30,7 +33,7 @@
                     <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
                 </div>
                 <div class="col-lg-3">
-                    <label for="">No Nota</label>
+                    <label for="">No Urut Jurnal Umum</label>
                     <input type="text" class="form-control" name="no_nota" value="JU-{{$max}}" readonly>
                 </div>
                 <div class="col-lg-3">

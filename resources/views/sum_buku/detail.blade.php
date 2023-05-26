@@ -2,8 +2,8 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h5 class="float-start mt-1">{{ $title }} : {{ucwords(strtolower($nm_akun->nm_akun))}}
-                    ({{date('d-m-Y',strtotime($tgl1))}}~{{date('d-m-Y',strtotime($tgl2))}})</h5>
+                <h6 class="float-start mt-1">{{ $title }} : {{ucwords(strtolower($nm_akun->nm_akun))}}
+                    ({{date('d-m-Y',strtotime($tgl1))}}~{{date('d-m-Y',strtotime($tgl2))}})</h6>
             </div>
             <div class="col-lg-6">
                 <a href="{{ route('summary_buku_besar.export_detail',['id_akun' => $id_akun,'tgl1' => $tgl1,'tgl2' => $tgl2]) }}"
@@ -29,7 +29,7 @@
                     <tr>
                         <th width="5">#</th>
                         <th>Tanggal</th>
-                        <th style="white-space: nowrap;">No Nota</th>
+                        <th style="white-space: nowrap;">No Urut JU</th>
                         <th>Akun Vs {{ucwords(strtolower($nm_akun->nm_akun))}}</th>
                         <th>Keterangan</th>
                         <th style="text-align: right">Debit <br> ({{number_format($ttlDebit,2)}})</th>
