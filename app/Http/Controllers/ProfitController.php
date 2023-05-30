@@ -51,7 +51,15 @@ class ProfitController extends Controller
             'tgl2' => $tgl2,
             'profit' => $profit,
             'loss' => $loss,
-            'akun' => $akun
+            'akun' => $akun,
+            'subKategori1' => DB::table('sub_kategori_cashflow')
+                ->where('jenis', 1)
+                ->orderBy('urutan', 'ASC')
+                ->get(),
+            'subKategori2' => DB::table('sub_kategori_cashflow')
+                ->where('jenis', 2)
+                ->orderBy('urutan', 'ASC')
+                ->get()
         ];
         return view('profit.load', $data);
     }
@@ -109,5 +117,23 @@ class ProfitController extends Controller
 
         ];
         return view('profit.print', $data);
+    }
+
+    public function load_uraian(Request $r)
+    {
+        $data = [
+            'subKategori' => DB::table('sub_kategori_cashflow')->where('jenis', $r->jenis)->orderBy('urutan', 'ASC')->get()
+        ];
+        return view('profit.load_uraian',$data);
+    }
+
+    public function save_subkategori(Request $r)
+    {
+        DB::table('sub_kategori_cashflow')->insert($r->all());
+    }
+
+    public function delete_subkategori(Request $r)
+    {
+        DB::table('sub_kategori_cashflow')->where('id', $r->id)->delete();
     }
 }

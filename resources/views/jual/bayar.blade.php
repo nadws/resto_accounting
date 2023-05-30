@@ -114,7 +114,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <select name="id_akun[]" class="form-control select2" id="select2">
+                                    <select required name="id_akun[]" class="form-control select2" id="select2">
                                         <option value="">- Pilih Akun Setor -</option>
                                         @foreach ($akun as $d)
                                             <option value="{{ $d->id_akun }}">{{ ucwords($d->nm_akun) }}</option>

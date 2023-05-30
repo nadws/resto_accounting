@@ -8,18 +8,17 @@
 
     <table class="table table-bordered">
         <tr>
-            <th class="dhead">Uraian</th>
+            <th class="dhead"><a class="uraian text-white" href="#" data-bs-toggle="modal" jenis="1" data-bs-target="#tambah-uraian">Uraian</a> </th>
             <th colspan="2" class="dhead" style="text-align: right">Rupiah</th>
-
         </tr>
+        @foreach ($subKategori1 as $d)
         <tr>
-            <th colspan="2"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">Peredaran Usaha</a>
+            <th colspan="2"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">{{ $d->sub_kategori }}</a>
             </th>
         </tr>
+        @endforeach
 
-
-
-        @php
+        {{-- @php
             $total_pendapatan = 0;
         @endphp
         @foreach ($profit as $p)
@@ -30,20 +29,27 @@
                 <td colspan="2" style="padding-left: 20px">{{ ucwords(strtolower($p->nm_akun)) }}</td>
                 <td align="right">Rp. {{ number_format($p->kredit - $p->debit, 0) }}</td>
             </tr>
-        @endforeach
+        @endforeach --}}
         <tr>
             <td colspan="2" class="fw-bold" style="border-bottom: 1px solid black;">Total Pendapatan</td>
             <td class="fw-bold" align="right" style="border-bottom: 1px solid black;">
-                Rp. {{ number_format($total_pendapatan, 0) }}</td>
+                Rp. {{ number_format(1, 0) }}</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <th colspan="4">BIAYA - BIAYA</th>
+            <th class="dhead"><a class="uraian text-white" href="#" data-bs-toggle="modal" jenis="2" data-bs-target="#tambah-uraian">Biaya - Biaya</a> </th>
+            <th colspan="2" class="dhead" style="text-align: right">Rupiah</th>
         </tr>
-        @php
+        @foreach ($subKategori2 as $d)
+        <tr>
+            <th colspan="2"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">{{ $d->sub_kategori }}</a>
+            </th>
+        </tr>
+        @endforeach
+        {{-- @php
             $total_biaya = 0;
         @endphp
         @foreach ($loss as $l)
@@ -55,15 +61,15 @@
                 <td width="5%">Rp</td>
                 <td align="right">{{ number_format($l->debit - $l->kredit, 0) }}</td>
             </tr>
-        @endforeach
+        @endforeach --}}
         <tr>
             <td colspan="2" class="fw-bold" style="border-bottom: 1px solid black;">Total Biaya-biaya</td>
             <td class="fw-bold" align="right" style="border-bottom: 1px solid black;">
-                {{ number_format($total_biaya, 0) }}</td>
+                {{ number_format(1, 0) }}</td>
         </tr>
         <tr>
             <td colspan="2" class="fw-bold">TOTAL LABA BERSIH</td>
-            <td class="fw-bold" align="right">Rp.{{ number_format($total_pendapatan - $total_biaya, 0) }}</td>
+            <td class="fw-bold" align="right">Rp.{{ number_format(2, 0) }}</td>
         </tr>
 
         <tbody>

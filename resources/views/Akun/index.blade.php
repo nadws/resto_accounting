@@ -1,10 +1,15 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
 
         <h5 class="float-start mt-1">{{ $title }}</h5>
         <div class="row justify-content-end">
 
-            <div class="col-lg-2">
+            <div class="col-lg-12">
+                <x-theme.button modal="T" href="/export_akun" icon="fa-file-excel"
+                    addClass="float-end btn btn-success me-2" teks="Export" />
+                <x-theme.button modal="Y" idModal="import" icon="fa-file-excel"
+                    addClass="float-end btn btn-success me-2" teks="Export / Import" />
+
                 <x-theme.button modal="Y" idModal="tambah" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
             </div>
         </div>
@@ -27,43 +32,44 @@
                 </thead>
                 <tbody>
                     @foreach ($akun as $no => $a)
-                    <tr>
-                        <td>{{ $no + 1 }}</td>
-                        <td>{{ $a->kode_akun }}</td>
-                        <td>{{ ucwords($a->inisial) }}</td>
-                        <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
-                        <td>
-                            {{ $a->klasifikasi->nm_subklasifikasi }}
-                        </td>
-                        <td>
-                            @php
-                            $badge = $a->is_active != 'Y' ? 'danger' : 'success';
-                            $aktif = $a->is_active != 'Y' ? 'Tidak Aktif' : 'Aktif';
-                            @endphp
-                            <a href="" class=" badge bg-{{ $badge }}">
-                                {{ $aktif }}</a>
-                        </td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v text-primary"></i>
-                                </span>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li>
-                                        <a class="dropdown-item text-info edit_akun" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#edit" id_akun="{{ $a->id_akun }}"><i
-                                                class="me-2 fas fa-pen"></i>Edit</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-info sub-akun" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#sub-akun" id_akun="{{ $a->id_akun }}"><i
-                                                class="me-2 fas fa-layer-group"></i>Sub
-                                            Akun</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ $a->kode_akun }}</td>
+                            <td>{{ ucwords($a->inisial) }}</td>
+                            <td>{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                            <td>
+                                {{ $a->nm_subklasifikasi }}
+                            </td>
+                            <td>
+                                @php
+                                    $badge = $a->is_active != 'Y' ? 'danger' : 'success';
+                                    $aktif = $a->is_active != 'Y' ? 'Tidak Aktif' : 'Aktif';
+                                @endphp
+                                <a href="" class=" badge bg-{{ $badge }}">
+                                    {{ $aktif }}</a>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <li>
+                                            <a class="dropdown-item text-info edit_akun" href="#"
+                                                data-bs-toggle="modal" data-bs-target="#edit"
+                                                id_akun="{{ $a->id_akun }}"><i class="me-2 fas fa-pen"></i>Edit</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-info sub-akun" href="#"
+                                                data-bs-toggle="modal" data-bs-target="#sub-akun"
+                                                id_akun="{{ $a->id_akun }}"><i
+                                                    class="me-2 fas fa-layer-group"></i>Sub
+                                                Akun</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -79,15 +85,9 @@
                             <select name="id_klasifikasi" id="" class="select2 get_kode">
                                 <option value="">Pilih Subklasifikasi</option>
                                 @foreach ($subklasifikasi as $s)
-                                <<<<<<< HEAD <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi
-                                    }}
+                                    <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi }}
                                     </option>
-                                    =======
-                                    <option value="{{ $s->id_subklasifikasi_akun }}">{{ ucwords($s->nm_subklasifikasi)
-                                        }}
-                                    </option>
-                                    >>>>>>> d3a2a869a9bd14bdecf1dbb999a2881767202984
-                                    @endforeach
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -116,7 +116,8 @@
                     </div>
                     <div class="col-lg-2">
                         <div class="form-check">
-                            <input value="Y" required class="form-check-input" type="radio" name="iktisar" id="check1">
+                            <input value="Y" required class="form-check-input" type="radio" name="iktisar"
+                                id="check1">
                             <label class="form-check-label" for="check1">
                                 Ya
                             </label>
@@ -125,12 +126,62 @@
                     </div>
                     <div class="col-lg-2">
                         <div class="form-check">
-                            <input value="T" required class="form-check-input" type="radio" name="iktisar" id="check2">
+                            <input value="T" required class="form-check-input" type="radio" name="iktisar"
+                                id="check2">
                             <label class="form-check-label" for="check2">
                                 Tidak
                             </label>
                         </div>
                     </div>
+                </div>
+            </x-theme.modal>
+        </form>
+
+        <form action="{{ route('importAkun') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <x-theme.modal title="Import Akun" size="modal-lg" idModal="import">
+                <div class="row">
+                    <table>
+                        <tr>
+                            <td width="100" class="pl-2">
+                                <img width="80px" src="{{ asset('img/') }}/1.png"
+                                    alt="">
+                            </td>
+                            <td>
+                                <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
+                                File ini memiliki kolom header dan isi yang sesuai dengan data produk
+                            </td>
+                            {{-- <td>
+                            <a href="{{ route('exportPaket') }}" class="btn btn-primary btn-sm"><i
+                                    class="fa fa-download"></i> DOWNLOAD TEMPLATE</a>
+                        </td> --}}
+                            <td>
+                                <a href="{{ route('export_akun') }}" class="btn btn-primary btn-sm"><i
+                                        class="fa fa-download"></i> DOWNLOAD
+                                    TEMPLATE</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <hr>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="100" class="pl-2">
+                                <img width="80px" src="{{ asset('img/') }}/2.png"
+                                    alt="">
+                            </td>
+                            <td>
+                                <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>
+                                Setelah mengubah, silahkan upload file.
+                            </td>
+                            <td>
+                                <input type="file" name="file" class="form-control">
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
             </x-theme.modal>
         </form>
@@ -148,16 +199,14 @@
 
         {{-- sub akun --}}
         <x-theme.modal title="Edit Akun" idModal="sub-akun" size="modal-lg">
-
-
             <div id="load-sub-akun">
             </div>
         </x-theme.modal>
         {{-- end sub akun --}}
     </x-slot>
     @section('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
                 $(document).on("change", ".get_kode", function() {
                     var id_sub = $(this).val();
                     $.ajax({
@@ -248,6 +297,6 @@
                     }
                 })
             });
-    </script>
+        </script>
     @endsection
 </x-theme.app>

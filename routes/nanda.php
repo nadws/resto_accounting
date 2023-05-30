@@ -79,6 +79,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/akun-sub', 'add_sub')->name('akun.add_sub');
         Route::get('/remove_sub', 'remove_sub')->name('akun.remove_sub');
         Route::get('/get_kode', 'get_kode')->name('get_kode');
+        Route::get('/export_akun', 'export_akun')->name('export_akun');
+        Route::post('/importAkun', 'importAkun')->name('importAkun');
         Route::get('/get_edit_akun/{id_akun}', 'get_edit_akun')->name('get_edit_akun');
         Route::get('/load_sub_akun/{id_akun}', 'load_sub_akun')->name('load_sub_akun');
     });

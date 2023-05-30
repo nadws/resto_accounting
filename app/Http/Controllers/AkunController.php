@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AkunExport;
 use App\Models\Akun;
 use App\Models\PostCenter;
 use App\Models\SubklasifikasiAkun;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Nonaktif;
 
 class AkunController extends Controller
@@ -16,7 +18,7 @@ class AkunController extends Controller
     {
         $data =  [
             'title' => 'Daftar Akun',
-            'akun' => Akun::where('nonaktif', 'T')->orderBy('id_akun', 'DESC')->get(),
+            'akun' => DB::table('akun as a')->join('subklasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_subklasifikasi_akun')->where('a.nonaktif', 'T')->orderBy('a.id_akun', 'DESC')->get(),
             'subklasifikasi' => SubklasifikasiAkun::all()
         ];
         return view('Akun.index', $data);
@@ -57,7 +59,11 @@ class AkunController extends Controller
     public function get_edit_akun($id_akun)
     {
         $data = [
-            'akun' => DB::table("akun as a")->join('subklasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_subklasifikasi_akun')->orderBy('a.id_akun', 'DESC')->get(),
+            'akun' => DB::table("akun as a")
+                ->join('subklasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_subklasifikasi_akun')
+                ->where('id_akun', $id_akun)
+                ->orderBy('a.id_akun', 'DESC')
+                ->first(),
             'subklasifikasi' => SubklasifikasiAkun::all()
         ];
         return view('Akun.getEdit', $data);
@@ -96,5 +102,66 @@ class AkunController extends Controller
     public function remove_sub(Request $r)
     {
         PostCenter::where('id_post_center', $r->id)->update(['nonaktif', 'T']);
+    }
+
+    public function export_akun(Request $r)
+    {
+        $tbl = DB::table('akun as a')
+                ->join('subklasifikasi_akun as b', 'b.id_subklasifikasi_akun', 'a.id_klasifikasi')
+                ->where('a.nonaktif', 'T')->get();
+        $tblKlasifikasi = DB::table('subklasifikasi_akun')->get();
+
+        $totalrow = count($tbl) + 1;
+        $totalrow2 = count($tblKlasifikasi) + 1;
+
+        $data = [
+            'tbl1' => $tbl,
+            'row1' => $totalrow,
+            'tbl2' => $tblKlasifikasi,
+            'row2' => $totalrow2,
+        ];
+
+        return Excel::download(new AkunExport($data), 'Export Akun.xlsx');
+    }
+
+    public function importAkun(Request $r)
+    {
+        $file = $r->file('file');
+        $fileDiterima = ['xls', 'xlsx'];
+        $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
+        if ($cek) {
+            $reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+            $spreadsheet = $reader->load($file);
+            $sheet = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+            $numrow = 3;
+            foreach ($sheet as $row) {
+                if ($row['B'] == '' && $row['D'] == '') {
+                    continue;
+                }
+                if ($numrow > 2) {
+                    if ($row['A'] == '') {
+                        DB::table('akun')->insert([
+                            'kode_akun' => $row['B'],
+                            'inisial' => $row['C'],
+                            'nm_akun' => $row['D'],
+                            'id_klasifikasi' => $row['E'],
+                            'iktisar' => $row['G'],
+                        ]);
+                    } else {
+                        DB::table('akun')->where('id_akun', $row['A'])->update([
+                            'kode_akun' => $row['B'],
+                            'inisial' => $row['C'],
+                            'nm_akun' => $row['D'],
+                            'id_klasifikasi' => $row['E'],
+                            'iktisar' => $row['G'],
+                        ]);
+                    }
+                }
+            }
+            return redirect()->route('akun')->with('sukses', 'Berhasil Import Data');
+        } else {
+            return redirect()->route('akun')->with('error', 'File tidak didukung');
+        }
     }
 }

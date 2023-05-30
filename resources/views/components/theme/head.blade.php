@@ -38,11 +38,15 @@
     {{--
     <link rel="stylesheet" href="{{ asset('mycss.css') }}"> --}}
     <style>
+        
         body {
             font-family: 'Roboto', sans-serif;
             font-size: 13px;
         }
-
+        .dhead {
+                background-color: #435EBE !important;
+                color: white;
+            }
         #image-preview img {
             width: 200px;
             height: 200px;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurnal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -138,11 +139,60 @@ class JurnalPenyesuaianController extends Controller
         return redirect()->route('penyesuaian.aktiva')->with('sukses', 'Data berhasil ditambahkan');
     }
 
-    public function atk(Request $r) 
+    public function atk(Request $r)
     {
-        $data = [
-            'title' => 'Penyesuaian Atk'
-        ];  
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '4')->first();
+        $max_tgl = DB::selectOne("SELECT max(a.tgl) as tgl FROM tb_stok_produk as a WHERE a.ket = 'Penyesuaian Atk'")->tgl;
+
+        if (empty($max_tgl)) {
+            $tgl = date('Y-m-t', strtotime(date('Y-m-d')));
+        } else {
+            $tgl1 = date('Y-m-01', strtotime($max_tgl));
+            $tgl2 = date('Y-m-t', strtotime($max_tgl));
+            $tgl = Carbon::parse($tgl1)->addMonth()->toDateString();
+        }
+
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->nomor_nota + 1;
+        }
+
+        $data =  [
+            'title' => 'Jurnal Penyesuaian ATK',
+            'nota' => $nota_t,
+            'akunAtk' => DB::table('akun')->where('id_akun', 516)->first(),
+            'akunBiaya' => DB::table('akun')->where('id_akun', 37)->first(),
+            'atk' => DB::select("SELECT 
+                        a.id_produk, 
+                                a.kd_produk, 
+                                a.gudang_id, 
+                                a.nm_produk, 
+                                a.admin,
+                                f.debit,
+                                f.kredit,
+                                f.tgl as tgl1 
+                        FROM tb_produk as a
+                        
+                        LEFT join (
+                                SELECT 
+                                    max(b.tgl) as tgl, 
+                                    b.id_produk, 
+                                    b.urutan, 
+                                    SUM(b.debit) as debit, 
+                                    sum(b.kredit) as kredit 
+                                FROM 
+                                    tb_stok_produk as b 
+                                where 
+                                    b.jenis = 'selesai'
+                                group by 
+                                    b.id_produk
+                                ) as f on f.id_produk = a.id_produk 
+                        WHERE a.kategori_id = 1 AND f.debit != 0 AND f.tgl BETWEEN '2017-01-01' AND '$tgl';
+            "),
+            'tgl' => $tgl
+        ];
         return view('jurnal_penyesuaian.atk.index', $data);
     }
 }

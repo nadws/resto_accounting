@@ -1,7 +1,7 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
     <x-slot name="cardHeader">
-        <h6 class="float-start mt-1">{{ $title }}: {{tanggal($tgl1)}} ~
-            {{tanggal($tgl2)}}</h6>
+        <h6 class="float-start mt-1">{{ $title }}: {{ tanggal($tgl1) }} ~
+            {{ tanggal($tgl2) }}</h6>
         <div class="row justify-content-end">
             <div class="col-lg-6">
                 {{-- <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
@@ -19,6 +19,11 @@
                 <div id="modalLoad"></div>
             </x-theme.modal>
         </form>
+
+        <x-theme.modal title="Add Uraian" idModal="tambah-uraian" size="modal-lg">
+            <div class="uraian-modal"></div>
+        </x-theme.modal>
+
         <form action="" method="get">
             <x-theme.modal title="Filter Profit & Loss" idModal="view">
                 <div class="row">
@@ -64,6 +69,20 @@
                 });
             }
 
+            function loadUraianModal(jenis) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('profit.load_uraian') }}",
+                    data: {
+                        jenis: jenis
+                    },
+                    success: function(r) {
+                        $(".uraian-modal").html(r);
+                        $('.jenisSub').val(jenis)
+                    }
+                });
+            }
+
             function loadModal() {
                 $.ajax({
                     type: "GET",
@@ -96,6 +115,51 @@
                     avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
                 }).showToast();
             }
+
+            $(document).on('click', '.uraian', function() {
+                var jenis = $(this).attr('jenis')
+                loadUraianModal(jenis)
+            })
+
+            $(document).on('click', '#btnFormSubKategori', function() {
+                var jenisSub = $('.jenisSub').val();
+                var urutan = $('.urutanInput').val();
+                var sub_kategori = $('.sub_kategoriInput').val();
+
+                $.ajax({
+                    method: "GET",
+                    url: "{{ route('profit.save_subkategori') }}",
+                    data: {
+                        jenis: jenisSub,
+                        urutan: urutan,
+                        sub_kategori: sub_kategori
+                    },
+                    success: function(r) {
+                        toast('Berhasil save kategori')
+                        loadUraianModal(jenisSub)
+                        loadTabel()
+                    }
+                });
+            })
+
+            $(document).on('click', '.btnDeleteSubKategori', function() {
+                var id = $(this).attr('id')
+                var jenis = $(this).attr('id_jenis')
+                if (confirm('Yakin ingin dihapus ? ')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('profit.delete_subkategori') }}",
+                        data: {
+                            id: id
+                        },
+                        success: function(r) {
+                            toast('Berhasil hapus kategori')
+                            loadUraianModal(jenis)
+                            loadTabel()
+                        }
+                    });
+                }
+            })
 
             $(document).on('click', '#btnSave', function() {
                 var id_akun = $("#id_akun").val()
