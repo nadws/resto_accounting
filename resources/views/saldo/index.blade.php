@@ -75,8 +75,8 @@
                             <th class="text-end">
                                 <p class="totalKredit">Rp. {{ number_format($t_kredit, 2, ',', '.') }}
                                 </p>
-                                {{-- <p class="totalKredit">Rp. {{ number_format($t_debit - $t_kredit, 2, ',', '.') }}
-                                </p> --}}
+                                <p class="totalKredit">Rp. {{ number_format($t_debit - $t_kredit, 2, ',', '.') }}
+                                </p>
                             </th>
                             <input type="text" style="display: none" class="totalDebithide"
                                 value="{{ empty($t_debit) ? '0' : $t_debit }}">

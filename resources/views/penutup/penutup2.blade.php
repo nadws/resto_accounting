@@ -23,6 +23,7 @@
                         data-bs-target="#delete"><i class="fas fa-window-close"></i>
                         Penutup</button>
                     @else
+
                     <button type="submit" class="btn btn-primary btn-sm float-end "><i class="fas fa-window-close"></i>
                         Penutup</button>
                     @endif
@@ -67,7 +68,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pendapatan as $no => $b)
                             <tr>
                                 <td rowspan="100">
                                     <div class="vertical-text-container">
@@ -77,6 +77,10 @@
                                     </div>
 
                                 </td>
+                            </tr>
+                            @foreach ($pendapatan as $no => $b)
+                            <tr>
+
                                 <td>{{ ucwords(strtolower($b->nm_akun))}}</td>
                                 <td align="right">Rp xxx</td>
                                 <td align="right"></td>
@@ -171,13 +175,6 @@
                             {{-- <tr>
                                 <td colspan="5" class="fw-bold"></td>
                             </tr> --}}
-                            @php
-                            $total_pendapatan =0;
-                            @endphp
-                            @foreach ($pendapatan as $no => $b)
-                            @php
-                            $total_pendapatan +=$b->kredit - $b->debit;
-                            @endphp
                             <tr>
                                 <td rowspan="100">
                                     <div class="vertical-text-container">
@@ -187,6 +184,16 @@
                                     </div>
                                     <input type="hidden" name="tgl" value="{{$tgl2Tutup}}">
                                 </td>
+                            </tr>
+                            @php
+                            $total_pendapatan =0;
+                            @endphp
+                            @foreach ($pendapatan as $no => $b)
+                            @php
+                            $total_pendapatan +=$b->kredit - $b->debit;
+                            @endphp
+                            <tr>
+
                                 <td>
                                     {{ ucwords(strtolower($b->nm_akun))}}
                                     <input type="hidden" name="id_akun_pembelian[]" value="{{$b->id_akun}}">
