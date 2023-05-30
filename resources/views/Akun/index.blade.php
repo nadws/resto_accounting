@@ -79,15 +79,10 @@
                             <select name="id_klasifikasi" id="" class="select2 get_kode">
                                 <option value="">Pilih Subklasifikasi</option>
                                 @foreach ($subklasifikasi as $s)
-                                <<<<<<< HEAD <option value="{{ $s->id_subklasifikasi_akun }}">{{ $s->nm_subklasifikasi
+                                <option value="{{ $s->id_subklasifikasi_akun }}">{{ ucwords($s->nm_subklasifikasi)
                                     }}
-                                    </option>
-                                    =======
-                                    <option value="{{ $s->id_subklasifikasi_akun }}">{{ ucwords($s->nm_subklasifikasi)
-                                        }}
-                                    </option>
-                                    >>>>>>> d3a2a869a9bd14bdecf1dbb999a2881767202984
-                                    @endforeach
+                                </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

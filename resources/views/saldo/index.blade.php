@@ -1,6 +1,6 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
-        <h3 class="float-start mt-1">{{ $title }}</h3>
+        <h6 class="float-start mt-1">{{ $title }} : {{tanggal($tgl_saldo->tgl)}}</h6>
     </x-slot>
 
     <x-slot name="cardBody">
@@ -24,6 +24,7 @@
                             <th>Nama</th>
                             <th style="text-align: right">Debit</th>
                             <th style="text-align: right">Kredit</th>
+                            {{-- <th style="text-align: right">Saldo</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +58,9 @@
                                     class="form-control text-end rp-hides rp-hides{{ $no + 1 }}"
                                     value="{{ empty($a->kredit) ? '0' : $a->kredit }}">
                             </td>
+                            {{-- <td>
+                                {{number_format($a->debit - $a->kredit,0)}}
+                            </td> --}}
                         </tr>
                         @endforeach
                     </tbody>
@@ -71,6 +75,8 @@
                             <th class="text-end">
                                 <p class="totalKredit">Rp. {{ number_format($t_kredit, 2, ',', '.') }}
                                 </p>
+                                {{-- <p class="totalKredit">Rp. {{ number_format($t_debit - $t_kredit, 2, ',', '.') }}
+                                </p> --}}
                             </th>
                             <input type="text" style="display: none" class="totalDebithide"
                                 value="{{ empty($t_debit) ? '0' : $t_debit }}">

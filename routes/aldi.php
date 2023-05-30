@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
         ->name('penutup.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/saldo', 'saldo')->name('saldo');
+            Route::post('/saldo', 'saldo')->name('saldo');
             Route::get('/history', 'history')->name('history');
         });
 
@@ -169,8 +169,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete', 'delete')->name('delete');
             Route::get('/print', 'print')->name('print');
         });
-        
-    Route::get('/403', function(){
+
+    Route::get('/403', function () {
         view('error.403');
     })->name('403');
 });

@@ -1,83 +1,366 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
+<x-theme.app title="{{ $title }}" cont="container-fluid" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h6 class="float-start mt-1">{{$title}}</h6>
+                <h6 class="float-start mt-1">{{$title}}: {{ tanggal($tgl2Tutup)}}</h6>
             </div>
             <div class="col-lg-6">
-                <a data-bs-toggle="modal" data-bs-target="#delete" href="#" class="btn btn-primary btn-sm float-end"><i
-                        class="fas fa-window-close"></i> Penutup</a>
-                <a data-bs-toggle="modal" data-bs-target="#history" href="#"
-                    class="btn btn-primary btn-sm float-end me-2 history"><i class="fas fa-history"></i> History</a>
+
             </div>
         </div>
     </x-slot>
-
     <x-slot name="cardBody">
+        <form action="{{route('penutup.saldo')}}" method="post">
+            <section class="row">
+                @csrf
+                <div class="col-lg-6">
 
-        <section class="row">
-            <div class="alert alert-danger">
-                <i class="bi bi-file-excel"></i> Saldo <b><em>{{ tanggal($tgl1Tutup) }} ~ {{ tanggal($tgl2Tutup)
-                        }}</em></b>
-                Belum Di Tutup.
-            </div>
-            <style>
-                .dhead {
-                    background-color: #435EBE !important;
-                    color: white;
-                }
-            </style>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        {{-- <th class="dhead" width="5">#</th> --}}
-                        <th class="dhead">Kode Akun</th>
-                        <th class="dhead">Akun</th>
-                        <th class="dhead" style="text-align: right">Debit</th>
-                        <th class="dhead" style="text-align: right">Kredit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td colspan="4" class="fw-bold">Pendapatan</td>
-                    </tr>
-                    @foreach ($pendapatan as $no => $b)
-                    <tr>
-                        <td>{{$b->kode_akun}}</td>
-                        <td>{{ ucwords(strtolower($b->nm_akun))}}</td>
-                        <td align="right">{{number_format($b->kredit,2)}}</td>
-                        <td align="right">0</td>
-                    </tr>
-                    <tr>
-                        <td>5004</td>
-                        <td>Ikhtisar Laba Rugi</td>
-                        <td align="right">0</td>
-                        <td align="right">{{number_format($b->kredit,2)}}</td>
-                    </tr>
-                    @endforeach
-                    <tr>
-                        <td colspan="4" class="fw-bold">Biaya</td>
-                    </tr>
-                    @foreach ($biaya as $no => $b)
-                    <tr>
-                        <td>{{$b->kode_akun}}</td>
-                        <td>{{ ucwords(strtolower($b->nm_akun))}}</td>
-                        <td align="right">0</td>
-                        <td align="right">{{number_format($b->debit,2)}}</td>
-                    </tr>
-                    <tr>
-                        <td>5004</td>
-                        <td>Ikhtisar Laba Rugi</td>
-                        <td align="right">{{number_format($b->debit,2)}}</td>
-                        <td align="right">0</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                </div>
+                <div class="col-lg-6 mb-4">
 
-        </section>
+                    @if (empty($jpa->kode_penyesuaian))
+                    <button type="button" class="btn btn-primary btn-sm float-end  " data-bs-toggle="modal"
+                        data-bs-target="#delete"><i class="fas fa-window-close"></i>
+                        Penutup</button>
+                    @else
+                    <button type="submit" class="btn btn-primary btn-sm float-end "><i class="fas fa-window-close"></i>
+                        Penutup</button>
+                    @endif
 
-        <form action="" method="get">
+                    <a data-bs-toggle="modal" data-bs-target="#history" href="#"
+                        class="btn btn-primary btn-sm float-end me-2 history"><i class="fas fa-history"></i> History</a>
+                </div>
+                {{-- <div class="col-lg-12">
+                    <div class="alert alert-danger">
+                        <i class="bi bi-file-excel"></i> Saldo <b><em>{{ tanggal($tgl1Tutup) }} ~ {{ tanggal($tgl2Tutup)
+                                }}</em></b>
+                        Belum Di Tutup.
+                    </div>
+                </div> --}}
+                <style>
+                    .dhead {
+                        background-color: #435EBE !important;
+                        color: white;
+                    }
+
+                    .vertical-text-container {
+                        position: relative;
+                        height: 100%;
+                    }
+
+                    .vertical-text {
+                        position: absolute;
+                        bottom: 0;
+                        left: 50%;
+                        transform: translateX(-50%) rotate(-90deg);
+                        white-space: nowrap;
+                    }
+                </style>
+                <div class="col-lg-5">
+                    <table class="table table-bordered" style="font-size: 8px">
+                        <thead>
+                            <tr>
+                                <th width="5%" class="dhead">Tanggal</th>
+                                <th class="dhead">Nama Akun</th>
+                                <th class="dhead">Debit</th>
+                                <th class="dhead">Kredit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($pendapatan as $no => $b)
+                            <tr>
+                                <td rowspan="100">
+                                    <div class="vertical-text-container">
+                                        <div class="vertical-text">
+                                            AKHIR PERIODE
+                                        </div>
+                                    </div>
+
+                                </td>
+                                <td>{{ ucwords(strtolower($b->nm_akun))}}</td>
+                                <td align="right">Rp xxx</td>
+                                <td align="right"></td>
+                            </tr>
+                            @endforeach
+                            <tr>
+                                <td style="padding-left: 20px;">Ikhtisar Laba Rugi</td>
+                                <td align="right"></td>
+                                <td align="right">Rp xxx</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-bold"></td>
+                            </tr>
+                            <tr>
+                                <td>Ikhtisar Laba Rugi</td>
+                                <td align="right">Rp xxx</td>
+                                <td align="right"></td>
+                            </tr>
+                            @foreach ($biaya as $no => $b)
+                            <tr>
+                                <td style="padding-left: 20px">{{ ucwords(strtolower($b->nm_akun))}}</td>
+                                <td align="right"></td>
+                                <td align="right">Rp xxx</td>
+                            </tr>
+
+                            @endforeach
+                            <tr>
+                                <td colspan="4" class="fw-bold"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-bold"><u>Jika Terjadi Laba</u></td>
+                            </tr>
+                            <tr>
+                                <td>Ikhtisar Laba Rugi</td>
+                                <td align="right">Rp xxx</td>
+                                <td align="right"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">Modal</td>
+                                <td align="right"></td>
+                                <td align="right">Rp xxx</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-bold"><u>Jika Terjadi Rugi</u></td>
+                            </tr>
+                            <tr>
+                                <td>Modal</td>
+                                <td align="right">Rp xxx</td>
+                                <td align="right"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">Ikhtisar Laba Rugi</td>
+                                <td align="right"></td>
+                                <td align="right">Rp xxx</td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4" class="fw-bold"></td>
+                            </tr>
+                            <tr>
+                                <td>Modal</td>
+                                <td align="right">Rp xxx</td>
+                                <td align="right"></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">Prive</td>
+                                <td align="right"></td>
+                                <td align="right">Rp xxx</td>
+                            </tr>
+
+                            <tr>
+                                <td style="font-weight: bold">Jumlah Total</td>
+                                <td style="font-weight: bold" align="right">Rp xxx</td>
+                                <td style="font-weight: bold" align="right">Rp xxx</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-7">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                {{-- <th class="dhead" width="5">#</th> --}}
+                                {{-- <th class="dhead">Kode Akun</th> --}}
+                                <th class="dhead">Tangal</th>
+                                <th width="50%" class="dhead">Akun</th>
+                                <th width="25%" class="dhead" style="text-align: right">Debit</th>
+                                <th width="25%" class="dhead" style="text-align: right">Kredit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- <tr>
+                                <td colspan="5" class="fw-bold"></td>
+                            </tr> --}}
+                            @php
+                            $total_pendapatan =0;
+                            @endphp
+                            @foreach ($pendapatan as $no => $b)
+                            @php
+                            $total_pendapatan +=$b->kredit - $b->debit;
+                            @endphp
+                            <tr>
+                                <td rowspan="100">
+                                    <div class="vertical-text-container">
+                                        <div class="vertical-text">
+                                            Periode {{ tanggal($tgl2Tutup)}}
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="tgl" value="{{$tgl2Tutup}}">
+                                </td>
+                                <td>
+                                    {{ ucwords(strtolower($b->nm_akun))}}
+                                    <input type="hidden" name="id_akun_pembelian[]" value="{{$b->id_akun}}">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format($b->kredit - $b->debit,0)}}
+                                    <input type="hidden" name="debit_pembelian[]" value="{{$b->kredit - $b->debit}}">
+
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="kredit_pembelian[]" value="0">
+                                </td>
+                            </tr>
+                            @endforeach
+                            <tr>
+                                <td style="padding-left: 20px;">
+                                    Ikhtisar Laba Rugi
+                                    <input type="hidden" name="id_akun_pembelian[]" value="515">
+                                </td>
+                                <td align="right">Rp 0
+                                    <input type="hidden" name="debit_pembelian[]" value="0">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format($total_pendapatan,0)}}
+                                    <input type="hidden" name="kredit_pembelian[]" value="{{$total_pendapatan}}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-bold"></td>
+                            </tr>
+
+                            @php
+                            $total_biaya = 0;
+                            @endphp
+                            @foreach ($biaya as $c)
+                            @php
+                            $total_biaya += $c->debit - $c->kredit;
+                            @endphp
+                            @endforeach
+                            <tr>
+                                <td>
+                                    Ikhtisar Laba Rugi
+                                    <input type="hidden" name="id_akun_biaya[]" value="515">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format($total_biaya,0)}}
+                                    <input type="hidden" name="debit_biaya[]" value="{{$total_biaya}}">
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="kredit_biaya[]" value="0">
+                                </td>
+                            </tr>
+                            @foreach ($biaya as $no => $b)
+                            <tr>
+                                <td style="padding-left: 20px">
+                                    {{ ucwords(strtolower($b->nm_akun))}}
+                                    <input type="hidden" name="id_akun_biaya[]" value="{{$b->id_akun}}">
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="debit_biaya[]" value="0">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format($b->debit - $b->kredit,0)}}
+                                    <input type="hidden" name="kredit_biaya[]" value="{{$b->debit - $b->kredit}}">
+                                </td>
+                            </tr>
+
+                            @endforeach
+                            @php
+                            $pen = empty($total_pendapatan) ? '0' : $total_pendapatan;
+                            $biy = empty($total_biaya) ? '0' : $total_biaya;
+                            @endphp
+                            <tr>
+                                <td colspan="4" class="fw-bold"></td>
+                            </tr>
+                            @if ($pen - $biy > 0)
+                            <tr>
+                                <td>
+                                    Ikhtisar Laba Rugi
+                                    <input type="hidden" name="id_akun_modal[]" value="515">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format($pen - $biy,0)}}
+                                    <input type="hidden" name="debit_modal[]" value="{{$pen - $biy}}">
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="kredit_modal[]" value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">
+                                    Modal
+                                    <input type="hidden" name="id_akun_modal[]" value="504">
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="debit_modal[]" value="0">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format($pen - $biy,0)}}
+                                    <input type="hidden" name="kredit_modal[]" value="{{$pen - $biy}}">
+                                </td>
+                            </tr>
+                            @else
+                            <tr>
+                                <td>
+                                    Modal
+                                    <input type="hidden" name="id_akun_modal[]" value="504">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format(($pen - $biy) * -1,0)}}
+                                    <input type="hidden" name="debit_modal[]" value="{{($pen - $biy) *-1}}">
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="kredit_modal[]" value="0">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">
+                                    Ikhtisar Laba Rugi
+                                    <input type="hidden" name="id_akun_modal[]" value="515">
+                                </td>
+                                <td align="right">
+                                    Rp 0
+                                    <input type="hidden" name="debit_modal[]" value="0">
+                                </td>
+                                <td align="right">
+                                    Rp {{number_format(($pen - $biy) * -1,0)}}
+                                    <input type="hidden" name="kredit_modal[]" value="{{($pen - $biy) * -1}}">
+                                </td>
+                            </tr>
+                            @endif
+                            <tr>
+                                <td colspan="4" class="fw-bold"></td>
+                            </tr>
+                            <tr>
+                                <td>Modal</td>
+                                <td align="right"><input type="text" readonly class="form-control modal_1"></td>
+                                <td align="right">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 20px">Prive</td>
+                                <td align="right">Rp 0</td>
+                                <td align="right">
+                                    <input type="text" class="form-control prive">
+                                    <input type="hidden" name="prive_biasa" class="form-control prive_biasa" value="0">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td style="font-weight: bold">Jumlah Total
+                                    <input type="hidden" class="form-control total_penutup"
+                                        value="{{($pen - $biy) + ($pen - $biy)}}">
+                                </td>
+                                <td align="right" class="total_all fw-bold">Rp {{$pen - $biy < 0 ? number_format((($pen
+                                        - $biy) + ($pen - $biy)) * -1 ,2,',','.') : number_format(($pen - $biy) + ($pen
+                                        - $biy),2,',','.')}} </td>
+                                <td align="right" class="total_all fw-bold">Rp {{$pen - $biy < 0 ? number_format((($pen
+                                        - $biy) + ($pen - $biy)) * -1 ,2,',','.') : number_format(($pen - $biy) + ($pen
+                                        - $biy),2,',','.')}} </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </section>
+        </form>
+
+        {{-- <form action="" method="get">
             <x-theme.modal title="Filter Buku" idModal="view">
                 <div class="row">
                     <div class="col-lg-12">
@@ -97,28 +380,30 @@
                     </div>
                 </div>
             </x-theme.modal>
-        </form>
+        </form> --}}
 
 
-        <form action="{{ route('penutup.saldo') }}" method="get">
-            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="row">
-                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-window-close"></i> Saldo Penutup</h5>
-                                <p class=" ms-4 mt-4">Apa anda yakin ingin menutup saldo ?</p>
 
-                            </div>
+        <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                            <h5 class="text-danger ms-4 mt-4"><i class="fas fa-window-close"></i> Gagal
+                            </h5>
+                            <p class=" ms-4 mt-4">Silahkan lakukan penyesuaian bulan <b>{{date('F
+                                    Y',strtotime($tgl2Tutup))}}</b> terlebih dahulu !!</p>
+
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger">Save</button>
-                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+
                     </div>
                 </div>
             </div>
-        </form>
+        </div>
+
 
         {{-- history --}}
         <form action="" method="get">
@@ -145,7 +430,40 @@
                         $("#load-history").html(r);
                     }
                 });
-            })
+            });
+
+        $(document).ready(function () {
+            $(document).on("keyup", ".prive", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.modal_1').val("");
+                    $('.prive_biasa').val(0)
+                } else {
+                    $(this).val("Rp " + input);
+                    $('.modal_1').val("Rp " + input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.prive_biasa').val(input2)
+                    
+                }
+
+               var prive = $(".prive_biasa").val();
+               var total = $(".total_penutup").val();
+               var total_all = parseFloat(prive) + parseFloat(total);
+                var totalRupiah = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                var debit = $(".total_all").text(totalRupiah);      
+            });
+        });
     </script>
     @endsection
 

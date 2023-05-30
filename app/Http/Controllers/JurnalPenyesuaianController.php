@@ -104,18 +104,19 @@ class JurnalPenyesuaianController extends Controller
         DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '4']);
         $data_kredit = [
             'tgl' => $r->tgl,
-            'no_nota' => 'JP-' . $nota_t,
+            'no_nota' => 'JPA-' . $nota_t,
             'id_akun' => $r->id_akun_kredit,
             'id_buku' => '4',
             'ket' => 'Penyesuaian Aktiva',
             'kredit' => $r->debit_kredit,
             'debit' => '0',
             'admin' => Auth::user()->name,
+            'kode_penyesuaian' => 'JPA'
         ];
         Jurnal::create($data_kredit);
         $data_debit = [
             'tgl' => $r->tgl,
-            'no_nota' => 'JP-' . $nota_t,
+            'no_nota' => 'JPA-' . $nota_t,
             'id_akun' => $r->id_akun_debit,
             'id_buku' => '4',
             'ket' => 'Penyesuaian Aktiva',
@@ -138,11 +139,11 @@ class JurnalPenyesuaianController extends Controller
         return redirect()->route('penyesuaian.aktiva')->with('sukses', 'Data berhasil ditambahkan');
     }
 
-    public function atk(Request $r) 
+    public function atk(Request $r)
     {
         $data = [
             'title' => 'Penyesuaian Atk'
-        ];  
+        ];
         return view('jurnal_penyesuaian.atk.index', $data);
     }
 }

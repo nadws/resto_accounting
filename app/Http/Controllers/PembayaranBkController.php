@@ -190,6 +190,22 @@ class PembayaranBkController extends Controller
             } else {
                 $nota_t = $max->nomor_nota + 1;
             }
+
+            $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun[$x])->first();
+            $akun = DB::table('akun')->where('id_akun', $id_akun[$x])->first();
+            if ($max_akun->urutan == 0) {
+                $urutan = '1001';
+            } else {
+                $urutan = $max_akun->urutan + 1;
+            }
+
+            $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', 512)->first();
+            $akun2 = DB::table('akun')->where('id_akun', $id_akun[$x])->first();
+            if ($max_akun2->urutan == 0) {
+                $urutan2 = '1001';
+            } else {
+                $urutan2 = $max_akun->urutan + 1;
+            }
             DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
 
             $data = [
@@ -201,7 +217,8 @@ class PembayaranBkController extends Controller
                 'admin' => Auth::user()->name,
                 'ket' => $keterangan[$x],
                 'nota_jurnal' => 'JU-' . $nota_t,
-                'bayar' => 'Y'
+                'bayar' => 'Y',
+
             ];
             DB::table('bayar_bk')->insert($data);
 
@@ -215,6 +232,8 @@ class PembayaranBkController extends Controller
                     'kredit' => $kredit[$x],
                     'id_akun' => $id_akun[$x],
                     'admin' => Auth::user()->name,
+                    'no_urut' => $akun->inisial . '-' . $urutan,
+                    'urutan' => $urutan,
                 ];
                 DB::table('jurnal')->insert($data_kredit);
 
@@ -227,6 +246,8 @@ class PembayaranBkController extends Controller
                     'kredit' => '0',
                     'id_akun' => '512',
                     'admin' => Auth::user()->name,
+                    'no_urut' => $akun2->inisial . '-' . $urutan2,
+                    'urutan' => $urutan2,
                 ];
                 DB::table('jurnal')->insert($data_debit);
             } else {
@@ -239,6 +260,8 @@ class PembayaranBkController extends Controller
                     'kredit' => $debit[$x],
                     'id_akun' => '512',
                     'admin' => Auth::user()->name,
+                    'no_urut' => $akun2->inisial . '-' . $urutan2,
+                    'urutan' => $urutan2,
                 ];
                 DB::table('jurnal')->insert($data_kredit);
 
@@ -252,15 +275,12 @@ class PembayaranBkController extends Controller
                     'kredit' => '0',
                     'id_akun' => $id_akun[$x],
                     'admin' => Auth::user()->name,
+                    'no_urut' => $akun->inisial . '-' . $urutan,
+                    'urutan' => $urutan,
                 ];
                 DB::table('jurnal')->insert($data_debit);
             }
         }
-
-
-
-
-
 
         return redirect()->route('pembayaranbk')->with('sukses', 'Data berhasil ditambahkan');
     }
