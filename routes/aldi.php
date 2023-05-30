@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
         ->name('penutup.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/saldo', 'saldo')->name('saldo');
+            Route::post('/saldo', 'saldo')->name('saldo');
             Route::get('/history', 'history')->name('history');
         });
 
@@ -172,8 +172,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/save_subkategori', 'save_subkategori')->name('save_subkategori');
             Route::get('/delete_subkategori', 'delete_subkategori')->name('delete_subkategori');
         });
-        
-    Route::get('/403', function(){
+
+    Route::get('/403', function () {
         view('error.403');
     })->name('403');
 });

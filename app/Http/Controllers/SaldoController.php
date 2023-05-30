@@ -23,6 +23,7 @@ class SaldoController extends Controller
             ) as b on b.id_akun = a.id_akun
             order by a.kode_akun ASC
             "),
+            'tgl_saldo' => DB::SelectOne("SELECT a.tgl FROM jurnal as a where a.saldo = 'Y'")
 
         ];
         return view('saldo.index', $data);

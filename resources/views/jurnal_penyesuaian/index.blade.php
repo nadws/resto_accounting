@@ -2,13 +2,16 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h3 class="float-start mt-1">{{ $title }}</h3>
+                <h6 class="float-start mt-1">{{ $title }}</h6>
+            </div>
+            <div class="col-lg-6">
+
             </div>
 
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        <form action="{{route('penyesuaian.save_aktiva')}}" method="post" class="save_jurnal">
+        <form action="{{route('save_penyesuaian_aktiva')}}" method="post" class="save_jurnal">
             @csrf
             <div class="row mb-4">
                 <div class="col-lg-12">

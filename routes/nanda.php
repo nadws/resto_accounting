@@ -186,11 +186,11 @@ Route::controller(AktivaController::class)->group(function () {
     Route::get('/print_aktiva', 'print')->name('print_aktiva');
 });
 
-// Route::controller(JurnalPenyesuaianController::class)->group(function () {
-//     Route::get('/jurnal_penyesuaian', 'index')->name('jurnal_penyesuaian');
-//     Route::get('/jurnal_aktiva', 'jurnal')->name('jurnal_aktiva');
-//     Route::post('/save_penyesuaian_aktiva', 'save_penyesuaian_aktiva')->name('save_penyesuaian_aktiva');
-// });
+Route::controller(JurnalPenyesuaianController::class)->group(function () {
+    Route::get('/jurnal_penyesuaian', 'index')->name('jurnal_penyesuaian');
+    Route::get('/jurnal_aktiva', 'jurnal')->name('jurnal_aktiva');
+    Route::post('/save_penyesuaian_aktiva', 'save_penyesuaian_aktiva')->name('save_penyesuaian_aktiva');
+});
 Route::controller(PembelianBahanBakuController::class)->group(function () {
     Route::get('/pembelian_bk', 'index')->name('pembelian_bk');
     Route::get('/pembelian_bk.add', 'add')->name('pembelian_bk.add');
