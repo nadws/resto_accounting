@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
         <div class="col-lg-6">
             <h6 class="float-start mt-1">{{ $title }}: {{tanggal($tgl1)}} ~
@@ -134,21 +134,7 @@
             });
         });
         
-        $(document).on('submit', '#formTambahSubAkun', function(e) {
-            e.preventDefault()
-            var data = $("#formTambahSubAkun").serialize()
-            var id_kategori = $('.id_kategori').val();
-            $.ajax({
-                type: "GET",
-                url: "{{ route('SaveSubAkunCashflow') }}?" + data,
-                success: function(response) {
-                    toast('Berhasil tambah Akun')
-                    loadInputsub(id_kategori);
-                    loadTabel()
-                    // $("#modalSubKategori").modal('hide')
-                }
-            });
-        });
+        
         $(document).on('click', '.delete_akun', function() {
             var id_akuncontrol = $(this).attr('id_akuncontrol');
             var id_kategori = $(this).attr('id_kategori');
@@ -193,17 +179,23 @@
             // Batas pembaruan
 
 
-            function loadInputsub(id_kategori_akun,jenis,tgl1 = "{{$tgl1}}", tgl2 = "{{ $tgl2 }}") {
+           
+            
+
+            
+        });
+        $(document).ready(function() {
+            function loadInputsub(id_kategori_akun,tgl1 = "{{$tgl1}}", tgl2 = "{{ $tgl2 }}") {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('loadInputsub') }}",
                     data: {
                         id_kategori_akun:id_kategori_akun,
-                        jenis:jenis,
                         tgl1:tgl1,
                         tgl2:tgl2
                     },
                     success: function(r) {
+                        
                         $("#loadAkunPendapatan").html(r);
                         // $('.jenisSub').val(jenis)
 
@@ -214,14 +206,26 @@
                 });
             }
             $(document).on('click', '.tmbhakun', function() {
-                alert('da');
                 var id_kategori_akun = $(this).attr('id_kategori_akun');
-                var jenis = $(this).attr('jenis');
+                // var jenis = $(this).attr('jenis');
                 $("#modalAkunPendapatan").modal('show');
-                loadInputsub(id_kategori_akun,jenis);
+                loadInputsub(id_kategori_akun);
             });
-
-            
+            $(document).on('submit', '#formTambahSubAkun', function(e) {
+            e.preventDefault()
+            var data = $("#formTambahSubAkun").serialize()
+            var id_kategori_akun = $('.id_kategori_akun').val();
+            $.ajax({
+                type: "GET",
+                url: "{{ route('SaveSubAkunCashflow') }}?" + data,
+                success: function(response) {
+                    toast('Berhasil tambah Akun')
+                    loadInputsub(id_kategori_akun);
+                    loadTabel()
+                    // $("#modalSubKategori").modal('hide')
+                }
+            });
+            });
         });
     </script>
 

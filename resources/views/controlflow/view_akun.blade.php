@@ -20,8 +20,8 @@
                     <td>{{$no+1}}</td>
                     <td>{{$a->nm_akun}}</td>
                     <td>
-                        <span class="badge {{ $a->id_klasifikasi == '1' ? 'bg-danger' : 'bg-success' }}">
-                            {{ $a->id_klasifikasi == '1' ? 'Tidak Masuk' : 'Masuk' }}
+                        <span class="badge {{ empty($a->id_akun) ? 'bg-danger' : 'bg-success' }}">
+                            {{empty($a->id_akun) ? 'Tidak Masuk' : 'Masuk' }}
                         </span>
                     </td>
                 </tr>

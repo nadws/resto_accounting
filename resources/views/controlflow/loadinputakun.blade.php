@@ -6,8 +6,12 @@
             <input type="hidden" name="jenis" class="form-control jenis" value="{{$jenis}}">
         </div>
         <div class="col-lg-5">
-            <label for="">Kategori</label>
-            <input type="text" name="nama" class="form-control">
+            <label for="">Akun</label>
+            <Select name="id_akun" class="select">
+                @foreach ($akun1 as $a)
+                <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
+                @endforeach
+            </Select>
         </div>
         <div class="col-lg-2">
             <label for="">Aksi</label> <br>
@@ -41,7 +45,7 @@
                                 value="{{$c->id_kategori_cashcontrol}}">
                             <input type="text" name="urutan[]" class="form-control" value="{{$c->urutan}}">
                         </td>
-                        <td><input type="text" name="nama[]" class="form-control" value="{{$c->nama}}"></td>
+                        <td>{{$c->nm_akun}}</td>
                         <td align="center">
                             <a href="#" onclick="event.preventDefault();"
                                 class="btn btn-sm btn-danger delete_kategori_akun"

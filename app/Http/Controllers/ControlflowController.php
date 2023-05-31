@@ -60,7 +60,28 @@ class ControlflowController extends Controller
         $data = [
             'title' => 'load',
             'tgl1' => $tgl1,
-            'tgl2' => $tgl2
+            'tgl2' => $tgl2,
+            'pendapatan' => DB::select("SELECT c.nm_akun, b.kredit
+            FROM akuncontrol as a 
+            left join (
+            SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit
+                FROM jurnal as b
+                WHERE b.id_buku not in('1','5') and b.kredit != 0 and b.penutup = 'T' and b.tgl between '$tgl1' and '$tgl2'
+                group by b.id_akun
+            ) as b on b.id_akun = a.id_akun
+            left join akun as c on c.id_akun = a.id_akun
+            where a.id_kategori_cashcontrol = '1';"),
+
+            'biaya' => DB::select("SELECT c.nm_akun, b.kredit, b.debit
+            FROM akuncontrol as a 
+            left join (
+            SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit
+                FROM jurnal as b
+                WHERE b.id_buku not in('1','5') and b.debit != 0 and b.penutup = 'T' and b.tgl between '$tgl1' and '$tgl2'
+                group by b.id_akun
+            ) as b on b.id_akun = a.id_akun
+            left join akun as c on c.id_akun = a.id_akun
+            where a.id_kategori_cashcontrol = '2';"),
 
         ];
         return view('controlflow.load', $data);
@@ -70,8 +91,8 @@ class ControlflowController extends Controller
     {
         $data = [
             'title' => 'load',
-            'akun' => DB::Select("SELECT * FROM akun as a where a.id_akun not in (SELECT b.id_akun FROM akuncontrol as b ) "),
-            'cash' => DB::table('kategori_cashcontrol')->where('jenis', $r->jenis)->orderBy('urutan', 'ASC')->get(),
+            'akun1' => DB::Select("SELECT * FROM akun as a where a.id_akun not in (SELECT b.id_akun FROM kategori_cashcontrol as b where b.jenis = '$r->jenis') "),
+            'cash' => DB::select("SELECT a.*, b.nm_akun FROM kategori_cashcontrol as a left join akun as b on b.id_akun = a.id_akun where a.jenis = '$r->jenis'"),
             'jenis' => $r->jenis
 
         ];
@@ -81,7 +102,7 @@ class ControlflowController extends Controller
     public function save_kategoriCashcontrol(Request $r)
     {
         $data = [
-            'nama' => $r->nama,
+            'id_akun' => $r->id_akun,
             'jenis' => $r->jenis,
             'urutan' => $r->urutan
         ];
@@ -93,7 +114,6 @@ class ControlflowController extends Controller
         for ($x = 0; $x < count($r->urutan); $x++) {
             $data = [
                 'urutan' => $r->urutan[$x],
-                'nama' => $r->nama[$x]
             ];
             DB::table('kategori_cashcontrol')->where('id_kategori_cashcontrol', $r->id_kategori_cashcontrol[$x])->update($data);
         }
@@ -103,13 +123,12 @@ class ControlflowController extends Controller
     {
         $tgl1 =  $r->tgl1;
         $tgl2 =  $r->tgl2;
-        $id_kategori_akun =  $r->id_kategori_akun;
-        $jenis =  $r->jenis;
 
-        dd($id_kategori_akun);
+
+
 
         $data = [
-            'akun' => DB::Select("SELECT * FROM akun as a where a.id_akun not in (SELECT b.id_akun FROM akuncontrol as b ) "),
+            'akun' => DB::Select("SELECT * FROM akun as a  "),
             'akun2' => DB::select("SELECT a.*, b.nm_akun, c.debit, c.kredit, d.jenis
             FROM akuncontrol as a 
             left join akun as b on b.id_akun = a.id_akun
@@ -120,8 +139,8 @@ class ControlflowController extends Controller
                 group by c.id_akun
             ) as c on c.id_akun = a.id_akun
             left join kategori_cashcontrol as d on d.id_kategori_cashcontrol = a.id_kategori_cashcontrol
-            where a.id_kategori_cashcontrol = '$r->id_kategori'"),
-            'id_kategori' => $r->id_kategori
+            where a.id_kategori_cashcontrol = '$r->id_kategori_akun'"),
+            'id_kategori' => $r->id_kategori_akun
         ];
         return view('controlflow.loadtambahakun', $data);
     }

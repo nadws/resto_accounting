@@ -57,7 +57,7 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="">Akun Debit</label>
-                    <select name="id_akun_debit" id="" class="select2_add">
+                    <select name="id_akun_debit" id="" class="select2_readonly">
                         @foreach ($akun as $a)
                         <option value="{{$a->id_akun}}" {{$a->id_akun == '510' ? 'SELECTED' : ''}}>{{$a->nm_akun}}
                         </option>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="">Akun Kredit</label>
-                    <select name="id_akun_kredit" id="" class="select2_add">
+                    <select name="id_akun_kredit" id="" class="select2_readonly">
                         @foreach ($akun as $a)
                         <option value="{{$a->id_akun}}" {{$a->id_akun == '511' ? 'SELECTED' : ''}}>{{$a->nm_akun}}
                         </option>

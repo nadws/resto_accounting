@@ -23,11 +23,23 @@ class JurnalPenyesuaianController extends Controller
             $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
             $this->tgl2 = date('Y-m-d');
         } elseif ($r->period == 'mounthly') {
-            $this->tgl1 = date('Y-m-01');
-            $this->tgl2 = date('Y-m-t');
+            $bulan = $r->bulan;
+            $tahun = $r->tahun;
+            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
+            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tglawal));
+            $this->tgl2 = date('Y-m-t', strtotime($tglakhir));
         } elseif ($r->period == 'costume') {
             $this->tgl1 = $r->tgl1;
             $this->tgl2 = $r->tgl2;
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
         }
     }
     public function index(Request $r)
@@ -106,7 +118,7 @@ class JurnalPenyesuaianController extends Controller
         $data_kredit = [
             'tgl' => $r->tgl,
             'no_nota' => 'JPA-' . $nota_t,
-            'id_akun' => $r->id_akun_kredit,
+            'id_akun' => 511,
             'id_buku' => '4',
             'ket' => 'Penyesuaian Aktiva',
             'kredit' => $r->debit_kredit,
@@ -118,7 +130,7 @@ class JurnalPenyesuaianController extends Controller
         $data_debit = [
             'tgl' => $r->tgl,
             'no_nota' => 'JPA-' . $nota_t,
-            'id_akun' => $r->id_akun_debit,
+            'id_akun' => 510,
             'id_buku' => '4',
             'ket' => 'Penyesuaian Aktiva',
             'debit' => $r->debit_kredit,

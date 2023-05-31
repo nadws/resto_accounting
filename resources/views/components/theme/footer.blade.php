@@ -81,6 +81,7 @@
 
     $('#select2').select2({});
     $('.select2_add').select2({});
+    $('.select2_readonly').select2({disabled: true});
 
     function convertRpSelisih(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
