@@ -1,7 +1,7 @@
 <form id="formTambahSubAkun">
     <div class="row">
         <div class="col-lg-7">
-            <input type="hidden" class="id_kategori" name="id_kategori" value="{{$id_kategori}}">
+            <input type="hidden" class="id_kategori_akun" name="id_kategori" value="{{$id_kategori}}">
             <label for="">Akun</label>
             <select name="id_akun" id="" class="select">
                 <option value="">--Pilih Akun--</option>

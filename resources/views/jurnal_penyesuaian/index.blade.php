@@ -104,10 +104,6 @@
                         </tbody>
                     </table>
                 </div>
-
-
-
-
                 <div class="col-lg-12">
                     <hr style="border: 1px solid #435EBE">
                 </div>
@@ -119,7 +115,9 @@
                                 <th class="dhead" width="20%">Nama Aktiva</th>
                                 <th class="dhead" width="20%">Harga Perolehan</th>
                                 <th class="dhead" width="20%">Nilai Buku</th>
-                                <th class="dhead" width="20%">Beban Penyusutan <br> (<span style="font-size: 13.5px" class="text-warning text-sm">Barang rusak/hilang bebankan sesuia nilai buku</span>)</th>
+                                <th class="dhead" width="20%">Beban Penyusutan <br> (<span style="font-size: 13.5px"
+                                        class="text-warning text-sm">Barang rusak/hilang bebankan sesuia nilai
+                                        buku</span>)</th>
                             </tr>
                         </thead>
                         <tbody>
