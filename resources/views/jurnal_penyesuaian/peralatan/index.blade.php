@@ -11,7 +11,7 @@
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        <form action="{{ route('save_penyesuaian_aktiva') }}" method="post" class="save_jurnal">
+        <form action="{{ route('penyesuaian.save_peralatan') }}" method="post" class="save_jurnal">
             @csrf
             <div class="row mb-4">
                 <div class="col-lg-12">
@@ -23,7 +23,6 @@
                         <li class="nav-item">
                             <a class="nav-link {{ request()->route()->getName() == 'penyesuaian.peralatan'? 'active': '' }}"
                                 href="{{ route('penyesuaian.peralatan') }}">Peralatan</a>
-
                         </li>
                         <li class="nav-item">
                             <a class="nav-link {{ request()->route()->getName() == 'penyesuaian.atk'? 'active': '' }}"
@@ -36,7 +35,7 @@
                     <hr style="border: 2px solid #435EBE">
                 </div>
             </div>
-            <section class="row">
+            <div class="row">
                 <div class="col-lg-12">
                     <table class="table table-striped">
                         <thead>
@@ -52,12 +51,10 @@
                         <tbody>
                             @php
                                 $total = 0;
-                            @endphp
-                            @foreach ($aktiva as $a)
-                                @php
+                                foreach ($aktiva as $a) {
                                     $total += $a->biaya_depresiasi;
-                                @endphp
-                            @endforeach
+                                }
+                            @endphp
                             <tr>
                                 <td>
                                     <input type="text" class="form-control"
@@ -67,56 +64,46 @@
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" name="no_nota"
-                                        value="JP-{{ $nota }}">
-
+                                        value="JU-{{ $nota }}">
+                                    <input type="hidden" class="form-control" name="urutan"
+                                        value="{{ $nota }}">
                                 </td>
                                 <td>
-                                    <select name="id_akun_debit" id="" class="select2_add">
-                                        @foreach ($akun as $a)
-                                            <option value="{{ $a->id_akun }}"
-                                                {{ $a->id_akun == '510' ? 'SELECTED' : '' }}>
-                                                {{ $a->nm_akun }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    {{ ucwords(strtolower($akunBiaya->nm_akun)) }}
+                                    <input type="hidden" name="id_akun_debit" readonly
+                                        value="{{ $akunBiaya->id_akun }}" class="form-control">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control text-end total" readonly
+                                    <input type="text" class="form-control text-end totalFormat total" readonly
                                         value="Rp {{ number_format($total, 2, ',', '.') }}">
-                                    <input type="hidden" class="total_biasa" name="debit_kredit"
+                                    <input type="hidden" class="total" name="debit_kredit"
                                         value="{{ round($total, 2) }}">
                                 </td>
                                 <td>
-                                    <select name="id_akun_kredit" id="" class="select2_add">
-                                        @foreach ($akun as $a)
-                                            <option value="{{ $a->id_akun }}"
-                                                {{ $a->id_akun == '511' ? 'SELECTED' : '' }}>
-                                                {{ $a->nm_akun }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    {{ ucwords(strtolower($akunAtk->nm_akun)) }}
+
+                                    <input type="hidden" name="id_akun_kredit" readonly
+                                        value="{{ $akunAtk->id_akun }}" class="form-control">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control text-end total" readonly
+                                    <input type="text" class="form-control totalFormat text-end total" readonly
                                         value="Rp {{ number_format($total, 2, ',', '.') }}">
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-
-
-
-
                 <div class="col-lg-12">
                     <hr style="border: 1px solid #435EBE">
                 </div>
+
                 <div class="col-lg-12">
                     <table class="table table-striped">
                         <thead>
+                           
                             <tr>
-                                <th class="dhead" width="20%">Tanggal Perolehan</th>
-                                <th class="dhead" width="20%">Nama Aktiva</th>
+                                <th class="dhead" width="15%">Tanggal Perolehan</th>
+                                <th class="dhead" width="20%">Nama Peralatan</th>
                                 <th class="dhead" width="20%">Harga Perolehan</th>
                                 <th class="dhead" width="20%">Nilai Buku</th>
                                 <th class="dhead" width="20%">Beban Penyusutan <br> (<span style="font-size: 13.5px" class="text-warning text-sm">Barang rusak/hilang bebankan sesuia nilai buku</span>)</th>
@@ -124,9 +111,9 @@
                         </thead>
                         <tbody>
                             @foreach ($aktiva as $no => $a)
+                            
                                 @if (round($a->h_perolehan - $a->beban, 0) <= '0')
                                     @php continue; @endphp
-                                @else
                                 @endif
                                 <tr>
                                     <td>{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
@@ -148,7 +135,7 @@
                         </tbody>
                     </table>
                 </div>
-            </section>
+            </div>
     </x-slot>
     <x-slot name="cardFooter">
         <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
