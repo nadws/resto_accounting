@@ -114,7 +114,7 @@ class JualController extends Controller
                 'tgl' => $r->tgl[$i],
                 'no_nota' => 'PNJL-' . $no_nota,
                 'id_akun' => $this->akunPiutangDagang,
-                'id_buku' => '2',
+                'id_buku' => '6',
                 'ket' => 'Penjualan-' . $r->no_penjualan[$i],
                 'kredit' => 0,
                 'no_urut' => $akun->inisial . '-' . $urutan,
@@ -129,14 +129,14 @@ class JualController extends Controller
             $akun2 = DB::table('akun')->where('id_akun', $this->akunPenjualan)->first();
 
 
-        
+
             $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
             // masuk penjualan di kredit
             $dataK = [
                 'tgl' => $r->tgl[$i],
                 'no_nota' => 'PNJL-' . $no_nota,
                 'id_akun' => $this->akunPenjualan,
-                'id_buku' => '2',
+                'id_buku' => '6',
                 'ket' => 'Penjualan-' . $r->no_penjualan[$i],
                 'debit' => 0,
                 'no_urut' => $akun2->inisial . '-' . $urutan2,
@@ -202,7 +202,7 @@ class JualController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $r->id_akun[$i],
-                'id_buku' => '2',
+                'id_buku' => '6',
                 'ket' => '',
                 'no_urut' => $akun2->inisial . '-' . $urutan2,
                 'urutan' => $urutan2,
@@ -223,7 +223,7 @@ class JualController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $this->akunPiutangDagang,
-                'id_buku' => '2',
+                'id_buku' => '6',
                 'ket' => 'Pembayaran-' . $r->no_penjualan[$i],
                 'debit' => 0,
                 'no_urut' => $akun->inisial . '-' . $urutan,
@@ -323,7 +323,7 @@ class JualController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $r->id_akun[$i],
-                'id_buku' => '2',
+                'id_buku' => '6',
                 'ket' => '',
                 'kredit' => $r->kredit[$i] ?? 0,
                 'debit' => $r->debit[$i] ?? 0,
@@ -339,7 +339,7 @@ class JualController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $this->akunPiutangDagang,
-                'id_buku' => '2',
+                'id_buku' => '6',
                 'ket' => 'Pembayaran-' . $r->no_penjualan[$i],
                 'debit' => 0,
                 'kredit' => $r->bayar[$i],

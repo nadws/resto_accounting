@@ -3,6 +3,7 @@
 use App\Http\Controllers\AktivaController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\BukuBesarController;
+use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\ControlflowController;
 use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\FakturPenjualanController;
@@ -231,4 +232,13 @@ Route::controller(ControlflowController::class)->group(function () {
     Route::get('/deleteAkunCashflow', 'deleteAkunCashflow')->name('deleteAkunCashflow');
     Route::get('/view_akun', 'view_akun')->name('view_akun');
     Route::get('/print_cashflow', 'print')->name('print_cashflow');
+});
+
+Route::controller(CashflowController::class)->group(function () {
+    Route::get('/cashflow_ibu', 'index')->name('cashflow_ibu');
+    Route::get('/loadInputKontrol', 'loadInputKontrol')->name('loadInputKontrol');
+    Route::get('/save_akun_ibu', 'save_akun_ibu')->name('save_akun_ibu');
+    Route::get('/delete_akun_ibu', 'delete_akun_ibu')->name('delete_akun_ibu');
+    Route::get('/delete_akun_ibu', 'delete_akun_ibu')->name('delete_akun_ibu');
+    Route::get('/edit_akun_ibu', 'edit_akun_ibu')->name('edit_akun_ibu');
 });

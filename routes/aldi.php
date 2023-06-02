@@ -70,19 +70,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/opname/{gudang_id}', 'opname')->name('opname.detail');
         });
 
-    Route::controller(CashflowController::class)
-        ->prefix('cashflow')
-        ->name('cashflow.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/load', 'load')->name('load');
-            Route::get('/loadSubKategori', 'loadSubKategori')->name('loadSubKategori');
-            Route::get('/editSubKategori', 'editSubKategori')->name('editSubKategori');
-            Route::get('/saveSubKategori', 'saveSubKategori')->name('saveSubKategori');
-            Route::get('/tmbahAkunCashflow', 'tmbahAkunCashflow')->name('tmbahAkunCashflow');
-            Route::get('/savetbhAkun', 'savetbhAkun')->name('savetbhAkun');
-            Route::get('/hapus_akunCashflow', 'hapus_akunCashflow')->name('hapus_akunCashflow');
-        });
+    // Route::controller(CashflowController::class)
+    //     ->prefix('cashflow')
+    //     ->name('cashflow.')
+    //     ->group(function () {
+    //         Route::get('/', 'index')->name('index');
+    //         Route::get('/load', 'load')->name('load');
+    //         Route::get('/loadSubKategori', 'loadSubKategori')->name('loadSubKategori');
+    //         Route::get('/editSubKategori', 'editSubKategori')->name('editSubKategori');
+    //         Route::get('/saveSubKategori', 'saveSubKategori')->name('saveSubKategori');
+    //         Route::get('/tmbahAkunCashflow', 'tmbahAkunCashflow')->name('tmbahAkunCashflow');
+    //         Route::get('/savetbhAkun', 'savetbhAkun')->name('savetbhAkun');
+    //         Route::get('/hapus_akunCashflow', 'hapus_akunCashflow')->name('hapus_akunCashflow');
+    //     });
 
     Route::controller(PenutupController::class)
         ->prefix('penutup')
