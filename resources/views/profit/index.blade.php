@@ -4,47 +4,24 @@
             {{ tanggal($tgl2) }}</h6>
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                {{-- <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
-                    class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a> --}}
-                <a target="_blank" href="{{ route('profit.print', ['tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
-                    class="float-end btn   btn-primary me-2"><i class="fas fa-print"></i> Print</a>
-                <x-theme.button modal="Y" idModal="view" icon="fa-filter" addClass="float-end" teks="" />
+                <x-theme.button modal="T" href="/profit/print?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
+                    icon="fa-print" addClass="float-end" teks="Print" />
+
+                <x-theme.btn_filter />
             </div>
         </div>
     </x-slot>
     <x-slot name="cardBody">
         <div id="tableLoad"></div>
         <form id="formtabhAkun">
-            <x-theme.modal title="Add Akun" idModal="tambah-profit" size="modal-lg">
+            <x-theme.modal btnSave="T" title="Tambah Akun" idModal="tambah-profit" size="modal-lg">
                 <div id="modalLoad"></div>
             </x-theme.modal>
         </form>
 
-        <x-theme.modal title="Add Uraian" idModal="tambah-uraian" size="modal-lg">
-            <div class="uraian-modal"></div>
-        </x-theme.modal>
-
-        <form action="" method="get">
-            <x-theme.modal title="Filter Profit & Loss" idModal="view">
-                <div class="row">
-                    <div class="col-lg-12">
-
-                        <table width="100%" cellpadding="10px">
-                            <tr>
-                                <td>Tanggal</td>
-                                <td>
-                                    <label for="">Dari</label>
-                                    <input type="date" name="tgl1" class="form-control">
-                                </td>
-                                <td>
-                                    <label for="">Sampai</label>
-                                    <input type="date" name="tgl2" class="form-control">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
+        <form action="" id="formUraian">
+            <x-theme.modal btnSave="T" title="Tambah Uraian" idModal="tambah-uraian" size="modal-lg">
+                <div class="uraian-modal"></div>
             </x-theme.modal>
         </form>
 
@@ -53,9 +30,8 @@
     @section('scripts')
         <script>
             loadTabel()
-            loadModal()
 
-            function loadTabel(tgl1 = "{{ date('Y-m-1') }}", tgl2 = "{{ date('Y-m-d') }}") {
+            function loadTabel(tgl1 = "{{ $tgl1 }}", tgl2 = "{{ $tgl2 }}") {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('profit.load') }}",
@@ -83,12 +59,16 @@
                 });
             }
 
-            function loadModal() {
+            function loadModal(id_kategori) {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('profit.modal') }}",
+                    data: {
+                        'id_kategori': id_kategori
+                    },
                     success: function(r) {
                         $("#modalLoad").html(r);
+                        $('#kategori_idInput').val(id_kategori)
                         $('#table').DataTable({
                             "paging": true,
                             "pageLength": 10,
@@ -115,6 +95,14 @@
                     avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
                 }).showToast();
             }
+
+            $(document).on('click', '.klikModal', function(e) {
+                e.preventDefault();
+                var id_kategori = $(this).attr('id_kategori')
+
+                loadModal(id_kategori)
+                $("#tambah-profit").modal('show')
+            })
 
             $(document).on('click', '.uraian', function() {
                 var jenis = $(this).attr('jenis')
@@ -164,6 +152,7 @@
             $(document).on('click', '#btnSave', function() {
                 var id_akun = $("#id_akun").val()
                 var urutan = $("#urutan").val()
+                var kategori_idInput = $("#kategori_idInput").val()
 
                 $.ajax({
                     type: "GET",
@@ -171,11 +160,12 @@
                     data: {
                         id_akun: id_akun,
                         urutan: urutan,
+                        kategori_id: kategori_idInput,
                     },
                     success: function(r) {
                         $('#tambah-profit').off('hide.bs.modal');;
                         toast('Berhasil tambah akun')
-                        loadModal()
+                        loadModal(kategori_idInput)
                         loadTabel()
                     }
                 });
@@ -183,6 +173,7 @@
 
             $(document).on('click', '.btnHapus', function() {
                 var id_profit = $(this).attr("id_profit")
+                var id_kategori = $(this).attr("id_kategori")
 
                 $.ajax({
                     type: "GET",
@@ -192,7 +183,23 @@
                     },
                     success: function(r) {
                         toast('Berhasil hapus akun')
-                        loadModal()
+                        loadModal(id_kategori)
+                        loadTabel()
+                    }
+                });
+            })
+
+            $(document).on('submit', '#formUraian', function(e){
+                e.preventDefault()
+                var formVal = $("#formUraian").serialize()
+                var jenisSub = $(".jenisSub").val()
+                
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('profit.update') }}?"+formVal,
+                    success: function(r) {
+                        toast('Berhasil update kategori')
+                        loadUraianModal(jenisSub)
                         loadTabel()
                     }
                 });

@@ -5,76 +5,91 @@
     }
 </style>
 <section class="row">
+    @php
+        $totalPendapatan = 0;
+        $totalBiaya = 0;
+        $totalLaba = 0;
 
+        function getAkun($id_kategori,$tgl1, $tgl2, $jenis)
+        {
+            $jenis = $jenis == 1 ? 'b.kredit' : 'b.debit';
+
+            return DB::select("SELECT c.nm_akun, b.kredit, b.debit
+            FROM profit_akun as a 
+            left join (
+            SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit
+                FROM jurnal as b
+                WHERE b.id_buku not in('1','5') and $jenis != 0 and b.penutup = 'T' and b.tgl between '$tgl1' and '$tgl2'
+                group by b.id_akun
+            ) as b on b.id_akun = a.id_akun
+            left join akun as c on c.id_akun = a.id_akun
+            where a.kategori_id = '$id_kategori';");
+        }
+        
+    @endphp
     <table class="table table-bordered">
         <tr>
-            <th class="dhead"><a class="uraian text-white" href="#" data-bs-toggle="modal" jenis="1" data-bs-target="#tambah-uraian">Uraian</a> </th>
+            <th class="dhead"><a class="uraian text-white" href="#" data-bs-toggle="modal" jenis="1"
+                    data-bs-target="#tambah-uraian">Uraian</a> </th>
             <th colspan="2" class="dhead" style="text-align: right">Rupiah</th>
         </tr>
         @foreach ($subKategori1 as $d)
-        <tr>
-            <th colspan="2"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">{{ $d->sub_kategori }}</a>
-            </th>
-        </tr>
+            <tr>
+                <th colspan="2"><a href="#" class="klikModal"
+                        id_kategori="{{ $d->id }}">{{ ucwords($d->sub_kategori) }}</a>
+                </th>
+            </tr>
+            @foreach (getAkun($d->id, $tgl1, $tgl2, 1) as $a)
+            @php
+                $totalPendapatan += $a->kredit;
+            @endphp
+                <tr>
+                    <td colspan="2"  style="padding-left: 20px">{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                    <td style="text-align: right">Rp. {{ number_format($a->kredit,2) }}</td>
+                </tr>
+            @endforeach
         @endforeach
 
-        {{-- @php
-            $total_pendapatan = 0;
-        @endphp
-        @foreach ($profit as $p)
-            @php
-                $total_pendapatan += $p->kredit - $p->debit;
-            @endphp
-            <tr>
-                <td colspan="2" style="padding-left: 20px">{{ ucwords(strtolower($p->nm_akun)) }}</td>
-                <td align="right">Rp. {{ number_format($p->kredit - $p->debit, 0) }}</td>
-            </tr>
-        @endforeach --}}
         <tr>
             <td colspan="2" class="fw-bold" style="border-bottom: 1px solid black;">Total Pendapatan</td>
             <td class="fw-bold" align="right" style="border-bottom: 1px solid black;">
-                Rp. {{ number_format(1, 0) }}</td>
+                Rp. {{ number_format($totalPendapatan, 0) }}</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <th class="dhead"><a class="uraian text-white" href="#" data-bs-toggle="modal" jenis="2" data-bs-target="#tambah-uraian">Biaya - Biaya</a> </th>
+            <th class="dhead"><a class="uraian text-white" href="#" data-bs-toggle="modal" jenis="2"
+                    data-bs-target="#tambah-uraian">Biaya - Biaya</a> </th>
             <th colspan="2" class="dhead" style="text-align: right">Rupiah</th>
         </tr>
         @foreach ($subKategori2 as $d)
-        <tr>
-            <th colspan="2"><a href="#" data-bs-toggle="modal" data-bs-target="#tambah-profit">{{ $d->sub_kategori }}</a>
-            </th>
-        </tr>
-        @endforeach
-        {{-- @php
-            $total_biaya = 0;
-        @endphp
-        @foreach ($loss as $l)
-            @php
-                $total_biaya += $l->debit - $l->kredit;
-            @endphp
             <tr>
-                <td>{{ ucwords(strtolower($l->nm_akun)) }}</td>
-                <td width="5%">Rp</td>
-                <td align="right">{{ number_format($l->debit - $l->kredit, 0) }}</td>
+                <th colspan="2"><a href="#" class="klikModal"
+                        id_kategori="{{ $d->id }}">{{ ucwords($d->sub_kategori) }}</a>
+                </th>
             </tr>
-        @endforeach --}}
+            @foreach (getAkun($d->id, $tgl1, $tgl2, 2) as $a)
+            @php
+                $totalBiaya += $a->debit;
+            @endphp
+                <tr>
+                    <td colspan="2" style="padding-left: 20px">{{ ucwords(strtolower($a->nm_akun)) }}</td>
+                    <td style="text-align: right">Rp. {{ number_format($a->debit,2) }}</td>
+                </tr>
+            @endforeach
+        @endforeach
+
         <tr>
             <td colspan="2" class="fw-bold" style="border-bottom: 1px solid black;">Total Biaya-biaya</td>
             <td class="fw-bold" align="right" style="border-bottom: 1px solid black;">
-                {{ number_format(1, 0) }}</td>
+                {{ number_format($totalBiaya, 0) }}</td>
         </tr>
         <tr>
             <td colspan="2" class="fw-bold">TOTAL LABA BERSIH</td>
-            <td class="fw-bold" align="right">Rp.{{ number_format(2, 0) }}</td>
+            <td class="fw-bold" align="right">Rp.{{ number_format($totalPendapatan - $totalBiaya, 0) }}</td>
         </tr>
-
-        <tbody>
-
-        </tbody>
     </table>
 
 

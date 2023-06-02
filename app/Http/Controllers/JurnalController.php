@@ -164,15 +164,12 @@ class JurnalController extends Controller
             $nota_t = $max->nomor_nota + 1;
         }
         DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
-
+        
         for ($i = 0; $i < count($id_akun); $i++) {
             $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun[$i])->first();
             $akun = DB::table('akun')->where('id_akun', $id_akun[$i])->first();
-            if ($max_akun->urutan == 0) {
-                $urutan = '1001';
-            } else {
-                $urutan = $max_akun->urutan + 1;
-            }
+
+            $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
 
             $data = [
                 'tgl' => $tgl,
