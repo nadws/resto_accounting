@@ -7,8 +7,13 @@ rot3="opname.index"
 table="Y" 
 sizeCard="12">
     <x-slot name="cardHeader">
-     
         <div class="row justify-content-end">
+            <hr class="mt-3">
+            <div class="col-lg-6">
+                <h6 class="float-start mt-1">{{ $title }}
+                </h6>
+
+            </div>
             <div class="col-lg-4">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>

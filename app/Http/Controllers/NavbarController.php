@@ -49,10 +49,28 @@ class NavbarController extends Controller
         $data = [
 
             [
-                'judul' => 'Data Atk & Peralatan',
+                'judul' => 'Data Atk',
                 'route' => 'produk.index',
                 'img' => 'product.png',
-                'deskripsi' => 'mengelola data barang atk dan peralatan',
+                'deskripsi' => 'mengelola data barang atk',
+            ],
+            [
+                'judul' => 'Data Peralatan',
+                'route' => 'peralatan.index',
+                'img' => 'peralatan.png',
+                'deskripsi' => 'mengelola data barang peralatan',
+            ],
+            [
+                'judul' => 'Aktiva',
+                'route' => 'aktiva',
+                'img' => 'buildings.png',
+                'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
+            ],
+            [
+                'judul' => 'Jurnal Penyesuaian',
+                'route' => 'penyesuaian.index',
+                'img' => 'journalism.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
             [
                 'judul' => 'Data Bahan Baku',
@@ -110,12 +128,7 @@ class NavbarController extends Controller
                 'img' => 'money-flow.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            [
-                'judul' => 'Jurnal Penyesuaian',
-                'route' => 'penyesuaian.index',
-                'img' => 'journalism.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
+            
             [
                 'judul' => 'Jurnal Penutup',
                 'route' => 'penutup.index',
@@ -185,10 +198,7 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Aktiva',
-                'route' => 'aktiva',
-                'img' => 'buildings.png',
-                'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
+                
             ]
 
         ];

@@ -22,7 +22,7 @@
                         [
                             'nama' => 'Buku Besar',
                             'route' => 'buku_besar',
-                            'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index', 'saldo_awal', 'summary_buku_besar.detail', 'profit', 'cashflow.index', 'penutup.index', 'penyesuaian.aktiva', 'penyesuaian.index', 'penyesuaian.atk', 'controlflow'],
+                            'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index', 'saldo_awal', 'summary_buku_besar.detail', 'profit', 'cashflow.index', 'penutup.index',  'controlflow'],
                         ],
                         [
                             'nama' => 'Penjualan',
@@ -40,14 +40,9 @@
                             'isi' => ['pembayaran', 'pembayaranbk', 'pembayaranbk.add'],
                         ],
                         [
-                            'nama' => 'persediaan barang',
+                            'nama' => 'persediaan dan penyesuaian',
                             'route' => 'persediaan_barang',
-                            'isi' => ['persediaan_barang', 'produk', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname'],
-                        ],
-                        [
-                            'nama' => 'Asset',
-                            'route' => 'asset',
-                            'isi' => ['asset', 'aktiva'],
+                            'isi' => ['persediaan_barang', 'produk', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname', 'peralatan.add', 'penyesuaian.atk', 'penyesuaian.atk_gudang','penyesuaian.aktiva', 'penyesuaian.index', 'asset', 'aktiva'],
                         ],
                     ];
                 @endphp

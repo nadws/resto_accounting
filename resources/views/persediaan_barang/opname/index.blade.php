@@ -1,17 +1,16 @@
-<x-theme.app 
-title="{{ $title }}" 
-nav="Y" 
-rot1="produk.index"
-rot2="stok_masuk.index"
-rot3="opname.index"
-table="Y" 
-sizeCard="12">
+<x-theme.app title="{{ $title }}" nav="Y" rot1="produk.index" rot2="stok_masuk.index" rot3="opname.index"
+    table="Y" sizeCard="12">
     <x-slot name="cardHeader">
+        <hr class="mt-3">
+        <div class="col-lg-6">
+            <h6 class="float-start mt-1">Atk {{ $title }}
+            </h6>
 
+        </div>
         <div class="row justify-content-end">
             <div class="col-lg-4">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
-                    <option value="" selected>All Warehouse </option>
+                    <option value="" selected>All Warehouse</option>
                     @foreach ($gudang as $g)
                         <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
                             {{ ucwords($g->nm_gudang) }}</option>
@@ -19,7 +18,7 @@ sizeCard="12">
                 </select>
             </div>
             <div class="col-lg-2">
-                <a href="{{ route('opname.add') }}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i>
+                <a href="{{ route('penyesuaian.atk') }}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i>
                     Tambah</a>
             </div>
 

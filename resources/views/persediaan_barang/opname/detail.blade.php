@@ -1,19 +1,19 @@
 <table width="100%" cellpadding="10px">
     <tr>
-        <th width="10%">Tanggal</th>
-        <th width="2%">:</th>
-        <th>{{ tanggal($detail->tgl) }}</th>
-        <th width="10%">No Nota</th>
-        <th width="2%">:</th>
-        <th>{{ $detail->no_nota }}</th>
+        <td width="10%"><b>Tanggal</b> </td>
+        <td width="2%">:</td>
+        <td>{{ tanggal($detail->tgl) }}</td>
+        <td width="10%"><b>No Nota</b> </td>
+        <td width="2%">:</td>
+        <td>{{ $detail->no_nota }}</td>
     </tr>
     <tr>
-        <th width="10%">Gudang</th>
-        <th width="2%">:</th>
-        <th>{{ $detail->gudang->nm_gudang }}</th>
-        <th width="10%">Keterangan</th>
-        <th width="2%">:</th>
-        <th>{{ $detail->ket }}</th>
+        <td width="10%"><b>Gudang</b> </td>
+        <td width="2%">:</td>
+        <td>{{ $detail->gudang->nm_gudang }}</td>
+        <td width="10%"><b>Keterangan</b> </td>
+        <td width="2%">:</td>
+        <td>{{ $detail->ket }}</td>
     </tr>
 </table>
 <br>

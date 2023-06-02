@@ -20,7 +20,7 @@ class ProdukController extends Controller
         $kd_produk = Produk::latest('kd_produk')->first();
 
         $data = [
-            'title' => 'Data Atk dan Peralatan',
+            'title' => 'Data Atk',
             'produk' => Stok::getProduk(1,$gudang_id, 'Y'),
             'gudang' => Gudang::where('kategori_id',1)->get(),
             'satuan' => Satuan::all(),

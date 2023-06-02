@@ -7,6 +7,7 @@ use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenutupController;
+use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\SuplierController;
@@ -112,7 +113,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/aktiva', 'index')->name('aktiva');
             Route::post('/aktiva', 'save_aktiva')->name('save_aktiva');
 
+            Route::get('/peralatan', 'peralatan')->name('peralatan');
+            Route::post('/save_peralatan', 'save_peralatan')->name('save_peralatan');
+
             Route::get('/atk', 'atk')->name('atk');
+            Route::get('/atk/{gudang_id}', 'atk')->name('atk_gudang');
+            Route::post('/save_atk', 'save_atk')->name('save_atk');
         });
 
     Route::controller(UserController::class)
@@ -171,6 +177,22 @@ Route::middleware('auth')->group(function () {
             Route::get('/load_uraian', 'load_uraian')->name('load_uraian');
             Route::get('/save_subkategori', 'save_subkategori')->name('save_subkategori');
             Route::get('/delete_subkategori', 'delete_subkategori')->name('delete_subkategori');
+            Route::get('/update', 'update')->name('update');
+        });
+
+    Route::controller(PeralatanController::class)
+        ->prefix('peralatan')
+        ->name('peralatan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::post('/save_kelompok', 'save_kelompok')->name('save_kelompok');
+            Route::get('/delete_kelompok', 'delete_kelompok')->name('delete_kelompok');
+            Route::get('/edit_kelompok', 'edit_kelompok')->name('edit_kelompok');
+            Route::get('/load_edit', 'load_edit')->name('load_edit');
+            Route::get('/load_aktiva', 'load_aktiva')->name('load_aktiva');
+            Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
+            Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
         });
 
     Route::get('/403', function () {

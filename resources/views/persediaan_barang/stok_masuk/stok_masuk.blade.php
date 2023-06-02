@@ -4,22 +4,12 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         
         <div class="row justify-content-end">
-            {{-- <div class="col-lg-6">
-                <ul class="nav nav-pills">
-                    @php
-                        $rotName = request()->route()->getName();
-                    @endphp
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'produk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('produk.index') }}">Produk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'stok_masuk.index' ? 'active' : ''}}" aria-current="page" href="{{ route('stok_masuk.index') }}">Stok Masuk</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{$rotName == 'opname.index' ? 'active' : ''}}" href="{{ route('opname.index') }}">Opname</a>
-                    </li>
-                </ul>
-            </div> --}}
+            <hr class="mt-3">
+            <div class="col-lg-6">
+                <h6 class="float-start mt-1">Atk {{ $title }}
+                </h6>
+
+            </div>
             <div class="col-lg-4">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
