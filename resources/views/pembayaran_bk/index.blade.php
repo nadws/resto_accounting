@@ -59,8 +59,13 @@
             </div>
             <div class="col-lg-6">
                 <x-theme.btn_filter title="Filter Pembayaran Bk" />
-                <x-theme.button modal="T" href="/exportBayarbk?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
-                    icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                @if (!empty($export))
+                    <x-theme.button modal="T"
+                        href="/exportBayarbk?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}" icon="fa-file-excel"
+                        addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                @endif
+                <x-theme.akses :halaman="$halaman" route="pembayaranbk" />
+
             </div>
         </div>
     </x-slot>
@@ -141,27 +146,29 @@
                                             <i class="fas fa-ellipsis-v text-primary"></i>
                                         </span>
                                         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                            <li>
-                                                <a class="dropdown-item text-primary edit_akun"
-                                                    href="{{ route('pembayaranbk.edit', ['nota' => $p->no_nota]) }}"><i
-                                                        class="me-2 fas fa-pen"></i>Edit
-                                                </a>
-                                            </li>
-                                            <li>
-                                                @if ($p->lunas == 'D')
-                                                    {{-- <a class="dropdown-item text-primary  disabled" href="#"><i
-                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
-                                                @else
-                                                    @if ($p->total_harga + $p->debit - $p->kredit == 0)
-                                                        {{-- <a href="#" class="dropdown-item text-primary  disabled"><i
-                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a> --}}
-                                                    @else
-                                                        <a href="{{ route('pembayaranbk.add', ['nota' => $p->no_nota]) }}"
-                                                            class="dropdown-item text-success  "><i
-                                                                class="fas fa-money-bill-wave me-2"></i>Bayar</a>
+                                            @php
+                                                $emptyKondisi = [$edit, $bayar];
+                                            @endphp
+                                            <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
+                                            @if (!empty($edit))
+                                                <li>
+                                                    <a class="dropdown-item text-primary edit_akun"
+                                                        href="{{ route('pembayaranbk.edit', ['nota' => $p->no_nota]) }}"><i
+                                                            class="me-2 fas fa-pen"></i>Edit
+                                                    </a>
+                                                </li>
+                                            @endif
+                                            @if (!empty($bayar))
+                                                <li>
+                                                    @if ($p->lunas != 'D')
+                                                        @if ($p->total_harga + $p->debit - $p->kredit != 0)
+                                                            <a href="{{ route('pembayaranbk.add', ['nota' => $p->no_nota]) }}"
+                                                                class="dropdown-item text-success  "><i
+                                                                    class="fas fa-money-bill-wave me-2"></i>Bayar</a>
+                                                        @endif
                                                     @endif
-                                                @endif
-                                            </li>
+                                                </li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </td>
@@ -197,12 +204,12 @@
 
                             clickedElement.prop('disabled',
                                 false
-                                ); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
+                            ); // Mengaktifkan kembali elemen yang diklik setelah tampilan ditambahkan
                         },
                         error: function() {
                             clickedElement.prop('disabled',
                                 false
-                                ); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
+                            ); // Jika ada kesalahan dalam permintaan AJAX, pastikan elemen yang diklik diaktifkan kembali
                         }
                     });
                 });

@@ -284,6 +284,7 @@
             });
         })
     }
+    
 
     function aksiBtn(idForm) {
         $(document).on('submit', idForm, function() {

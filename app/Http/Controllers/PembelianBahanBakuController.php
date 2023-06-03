@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BkinExport;
+use App\Models\User;
+use SettingHal;
 
 class PembelianBahanBakuController extends Controller
 {
@@ -59,12 +61,23 @@ class PembelianBahanBakuController extends Controller
 
 
         $listBulan = DB::table('bulan')->get();
+        $id_user = auth()->user()->id;
         $data =  [
             'title' => 'Pembelian Bahan Baku',
             'pembelian' => $pembelian,
             'listbulan' => $listBulan,
             'tgl1' => $tgl1,
-            'tgl2' => $tgl2
+            'tgl2' => $tgl2,
+            
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 2,
+            'create' => SettingHal::btnHal(9, $id_user),
+            'export' => SettingHal::btnHal(8, $id_user),
+            'approve' => SettingHal::btnHal(10, $id_user),
+            'edit' => SettingHal::btnHal(11, $id_user),
+            'delete' => SettingHal::btnHal(12, $id_user),
+            'print' => SettingHal::btnHal(13, $id_user),
+            'grading' => SettingHal::btnHal(14, $id_user),
 
         ];
         return view('pembelian_bk.index', $data);

@@ -25,6 +25,9 @@ class ProdukController extends Controller
             'gudang' => Gudang::where('kategori_id',1)->get(),
             'satuan' => Satuan::all(),
             'gudang_id' => $gudang_id,
+            'tgl1' => date('y-m-d'),
+            'tgl2' => date('y-m-d'),
+            'id_proyek' => 1,
             'kd_produk' => empty($kd_produk) ? 1 : $kd_produk->kd_produk + 1,
         ];
         return view('persediaan_barang.produk.produk', $data);
@@ -35,32 +38,47 @@ class ProdukController extends Controller
         $route = $r->url;
         
         $file = $r->file('img');
-        $fileDiterima = ['jpg', 'png', 'jpeg'];
-        $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
-        if ($cek) {
-            $maxFileSize = 1024 * 1024; // 1MB
-            if ($file instanceof UploadedFile && $file->getSize() > $maxFileSize) {
-                return redirect()->route($route, $r->segment ?? '')->with('error', 'File lebih dari 1MB');
-            }
-            $fileName = "P-$r->kd_produk" . $file->getClientOriginalName();
-            $path = $file->move('upload', $fileName);
+        if(!empty($file)) {
 
-            Produk::create([
-                'kd_produk' => $r->kd_produk,
-                'nm_produk' => $r->nm_produk,
-                'gudang_id' => $r->gudang_id,
-                'kategori_id' => 1,
-                'satuan_id' => $r->satuan_id,
-                'departemen_id' => $this->id_departemen,
-                'kontrol_stok' => $r->kontrol_stok,
-                'img' => $fileName,
-                'tgl' => date('Y-m-d'),
-                'admin' => auth()->user()->name,
-            ]);
-            return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
-        } else {
-            return redirect()->route($route, $r->segment ?? '')->with('error', 'File tidak didukung');
+            $fileDiterima = ['jpg', 'png', 'jpeg'];
+            $cek = in_array($file->getClientOriginalExtension(), $fileDiterima);
+            if ($cek) {
+                $maxFileSize = 1024 * 1024; // 1MB
+                if ($file instanceof UploadedFile && $file->getSize() > $maxFileSize) {
+                    return redirect()->route($route, $r->segment ?? '')->with('error', 'File lebih dari 1MB');
+                }
+                $fileName = "P-$r->kd_produk" . $file->getClientOriginalName();
+                $path = $file->move('upload', $fileName);
+    
+                Produk::create([
+                    'kd_produk' => $r->kd_produk,
+                    'nm_produk' => $r->nm_produk,
+                    'gudang_id' => $r->gudang_id,
+                    'kategori_id' => 1,
+                    'satuan_id' => $r->satuan_id,
+                    'departemen_id' => $this->id_departemen,
+                    'kontrol_stok' => $r->kontrol_stok,
+                    'img' => $fileName,
+                    'tgl' => date('Y-m-d'),
+                    'admin' => auth()->user()->name,
+                ]);
+                return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
+            } else {
+                return redirect()->route($route, $r->segment ?? '')->with('error', 'File tidak didukung');
+            }
         }
+        Produk::create([
+            'kd_produk' => $r->kd_produk,
+            'nm_produk' => $r->nm_produk,
+            'gudang_id' => $r->gudang_id,
+            'kategori_id' => 1,
+            'satuan_id' => $r->satuan_id,
+            'departemen_id' => $this->id_departemen,
+            'kontrol_stok' => $r->kontrol_stok,
+            'tgl' => date('Y-m-d'),
+            'admin' => auth()->user()->name,
+        ]);
+        return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
     }
 
     public function edit_load($id_produk)
@@ -104,16 +122,18 @@ class ProdukController extends Controller
         return redirect()->route('produk.index')->with('sukses', 'Berhasil update data');
     }
 
-    public function delete($id_produk)
+    public function delete(Request $r)
     {
-        $produk = Produk::findOrFail($id_produk);
+        $produk = Produk::findOrFail($r->id_produk);
+        $produk->delete();
 
-        $path = public_path('upload/' . $produk->img);
-        if (file_exists($path)) {
-            unlink($path);
+        if(!empty($produk->img)) {
+            $path = public_path('upload/' . $produk->img);
+            if (file_exists($path)) {
+                unlink($path);
+            }
         }
 
-        $produk->delete();
 
         return redirect()->route('produk.index')->with('sukses', 'Berhasil hapus data');
     }

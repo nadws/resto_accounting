@@ -30,44 +30,44 @@
                 </thead>
                 <tbody>
                     @foreach ($peralatan as $no => $a)
-                    <tr>
-                        <td>{{$no+1}}</td>
-                        <td>{{date('d-m-Y',strtotime($a->tgl)) }}</td>
-                        <td>{{$a->nm_aktiva}}</td>
-                        <td>{{$a->nm_kelompok}}</td>
-                        <td align="right">Rp {{number_format($a->h_perolehan,0)}}</td>
-                        <td align="right">Rp {{number_format($a->biaya_depresiasi,0)}}</td>
-                        <td align="right">Rp {{number_format($a->beban,0)}}</td>
-                        <td align="right">Rp {{number_format($a->h_perolehan - $a->beban,0)}}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <span class="btn btn-sm" data-bs-toggle="dropdown">
-                                    <i class="fas fa-ellipsis-v text-primary"></i>
-                                </span>
-                                <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item text-primary edit_akun" href=""><i
-                                                class="me-2 fas fa-pen"></i>Edit</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item  text-danger delete_nota" no_nota="" href="#"
-                                            data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                    </li>
-                                    <li><a class="dropdown-item  text-info detail_nota" href="#" no_nota="" href="#"
-                                            data-bs-toggle="modal" data-bs-target="#detail"><i
-                                                class="me-2 fas fa-search"></i>Detail</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ date('d-m-Y', strtotime($a->tgl)) }}</td>
+                            <td>{{ $a->nm_aktiva }}</td>
+                            <td>{{ $a->nm_kelompok }}</td>
+                            <td align="right">Rp {{ number_format($a->h_perolehan, 0) }}</td>
+                            <td align="right">Rp {{ number_format($a->biaya_depresiasi, 0) }}</td>
+                            <td align="right">Rp {{ number_format($a->beban, 0) }}</td>
+                            <td align="right">Rp {{ number_format($a->h_perolehan - $a->beban, 0) }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <span class="btn btn-sm" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v text-primary"></i>
+                                    </span>
+                                    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <li><a class="dropdown-item text-primary edit_akun" href=""><i
+                                                    class="me-2 fas fa-pen"></i>Edit</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-danger delete_nota" no_nota="{{ $a->id_aktiva }}"
+                                                href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                    class="me-2 fas fa-trash"></i>Delete
+                                            </a>
+                                        </li>
+                                        <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                                no_nota="" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
 
             </table>
         </section>
-
+        <x-theme.btn_alert_delete route="peralatan.delete_peralatan" name="id_peralatan" :tgl1="$tgl1" :tgl2="$tgl2" :id_proyek="$id_proyek" />
     </x-slot>
     @section('scripts')
     @endsection

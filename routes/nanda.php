@@ -103,10 +103,10 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/', 'create')->name('create');
+            Route::get('/delete', 'delete')->name('delete');
             Route::get('/{gudang_id}', 'index')->name('detail');
             Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
             Route::post('/edit', 'edit')->name('edit');
-            Route::get('/delete/{id_produk}', 'delete')->name('delete');
         });
 
     Route::controller(StokMasukController::class)

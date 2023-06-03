@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ExportbayarBK;
+use App\Models\User;
+use SettingHal;
 
 class PembayaranBkController extends Controller
 {
@@ -126,6 +128,7 @@ class PembayaranBkController extends Controller
         where a.total_harga + if(c.debit is null , 0,c.debit) - if(c.kredit is null , 0 ,c.kredit) != '0'
         order by a.id_invoice_bk ASC;
         ");
+        $id_user = auth()->user()->id;
 
         $data =  [
             'title' => 'Pembayaran Bahan Baku',
@@ -138,6 +141,11 @@ class PembayaranBkController extends Controller
             'tgl1' =>  $tgl1,
             'tgl2' =>  $tgl2,
 
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 3,
+            'export' => SettingHal::btnHal(15, $id_user),
+            'edit' => SettingHal::btnHal(16, $id_user),
+            'bayar' => SettingHal::btnHal(17, $id_user),
         ];
         return view('pembayaran_bk.index', $data);
     }

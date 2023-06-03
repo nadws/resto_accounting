@@ -76,9 +76,8 @@
                                                             class="me-2 fas fa-pen"></i>Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item  text-danger delete_nota"
-                                                        onclick="return confirm('Yakin dihapus ?')"
-                                                        href="{{ route('peralatan.delete_kelompok', ['id_kelompok' => $d->id_kelompok]) }}"><i
+                                                    <a class="dropdown-item text-danger delete_nota" no_nota="{{ $d->id_kelompok }}"
+                                                        href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
                                                             class="me-2 fas fa-trash"></i>Delete
                                                     </a>
                                                 </li>
@@ -91,6 +90,7 @@
                 </div>
             </x-theme.modal>
         </form>
+        <x-theme.btn_alert_delete route="peralatan.delete_kelompok" name="id_kelompok" :tgl1="$tgl1" :tgl2="$tgl2" :id_proyek="$id_proyek" />
 
         <form action="{{ route('peralatan.edit_kelompok') }}" action="post">
             @csrf

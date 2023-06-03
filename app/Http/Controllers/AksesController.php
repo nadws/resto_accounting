@@ -40,12 +40,14 @@ class AksesController extends Controller
                 ]);
             }
         } else {
-            for ($i = 0; $i < count($r->nm_button_detail); $i++) {
-                DB::table('permission_button')->where('id_permission_button', $r->id_permission_button[$i])->update([
-                    'permission_id' => $r->id_permission_gudang,
-                    'nm_permission_button' => $r->nm_button_detail[$i],
-                    'jenis' => $r->jenis[$i],
-                ]);
+            if (!empty($r->nm_button_detail)) {
+                for ($i = 0; $i < count($r->nm_button_detail); $i++) {
+                    DB::table('permission_button')->where('id_permission_button', $r->id_permission_button[$i])->update([
+                        'permission_id' => $r->id_permission_gudang,
+                        'nm_permission_button' => $r->nm_button_detail[$i],
+                        'jenis' => $r->jenis[$i],
+                    ]);
+                }
             }
 
             if (!empty($r->tambah_row)) {
@@ -83,7 +85,7 @@ class AksesController extends Controller
             for ($i = 0; $i < count($id_user); $i++) {
                 $id_permission = "id_permission" . $id_user[$i];
                 $id_permission = $r->$id_permission;
-                if(empty($id_permission)) {
+                if (empty($id_permission)) {
                     return redirect()->route('dashboard')->with('error', 'Permission Tidak Ada');
                 }
 

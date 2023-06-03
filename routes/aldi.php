@@ -188,6 +188,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', 'add')->name('add');
             Route::post('/save_kelompok', 'save_kelompok')->name('save_kelompok');
             Route::get('/delete_kelompok', 'delete_kelompok')->name('delete_kelompok');
+            Route::get('/delete_peralatan', 'delete_peralatan')->name('delete_peralatan');
             Route::get('/edit_kelompok', 'edit_kelompok')->name('edit_kelompok');
             Route::get('/load_edit', 'load_edit')->name('load_edit');
             Route::get('/load_aktiva', 'load_aktiva')->name('load_aktiva');

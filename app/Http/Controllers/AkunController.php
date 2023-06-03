@@ -6,20 +6,30 @@ use App\Exports\AkunExport;
 use App\Models\Akun;
 use App\Models\PostCenter;
 use App\Models\SubklasifikasiAkun;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use Nonaktif;
+use SettingHal;
 
 class AkunController extends Controller
 {
     public function index()
     {
+        $id_user = auth()->user()->id;
         $data =  [
             'title' => 'Daftar Akun',
             'akun' => DB::table('akun as a')->join('subklasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_subklasifikasi_akun')->where('a.nonaktif', 'T')->orderBy('a.id_akun', 'DESC')->get(),
-            'subklasifikasi' => SubklasifikasiAkun::all()
+            'subklasifikasi' => SubklasifikasiAkun::all(),
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 4,
+            'create' => SettingHal::btnHal(18, $id_user),
+            'export' => SettingHal::btnHal(19, $id_user),
+            'edit' => SettingHal::btnHal(20, $id_user),
+            'subAkun' => SettingHal::btnHal(21, $id_user),
         ];
         return view('Akun.index', $data);
     }

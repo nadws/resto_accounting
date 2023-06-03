@@ -1,11 +1,5 @@
-<x-theme.app 
-title="{{ $title }}" 
-nav="Y" 
-rot1="produk.index"
-rot2="stok_masuk.index"
-rot3="opname.index"
-table="Y" 
-sizeCard="12">
+<x-theme.app title="{{ $title }}" nav="Y" rot1="produk.index" rot2="stok_masuk.index" rot3="opname.index"
+    table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <hr class="mt-3">
@@ -41,7 +35,7 @@ sizeCard="12">
             </div>
         </div>
         <div class="row">
-            
+
         </div>
     </x-slot>
     <x-slot name="cardBody">
@@ -79,13 +73,16 @@ sizeCard="12">
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <div class="dropdown-menu">
-                                        <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal" data-bs-target="#edit"
-                                            class="dropdown-item text-primary edit" href="#"><i
-                                                class="me-2 fas fa-pen"></i>
+                                        <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal"
+                                            data-bs-target="#edit" class="dropdown-item text-primary edit"
+                                            href="#"><i class="me-2 fas fa-pen"></i>
                                             Edit</a>
-                                        <a class="dropdown-item text-danger" onclick="return confirm('Yakin dihapus ?')"
-                                            href="{{ route('produk.delete', $d->id_produk) }}"><i
-                                                class="me-2 fas fa-trash"></i> Delete</a>
+                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{ $d->id_produk }}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                class="me-2 fas fa-trash"></i>Delete
+                                        </a>
+                                        
+
                                         <a class="dropdown-item text-info" href="#"><i
                                                 class="me-2 fas fa-search"></i>
                                             Detail</a>
@@ -105,8 +102,8 @@ sizeCard="12">
             @csrf
             <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah2">
                 <div class="row">
-                    <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
-                    <input type="hidden" name="segment" value="{{ request()->segment(2); }}">
+                    <input type="hidden" name="url" value="{{ request()->route()->getName() }}">
+                    <input type="hidden" name="segment" value="{{ request()->segment(2) }}">
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">Kode Gudang</label>
@@ -140,13 +137,14 @@ sizeCard="12">
         <form action="{{ route('produk.create') }}" method="post" enctype="multipart/form-data">
             @csrf
             <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah">
-                <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
+                <input type="hidden" name="url" value="{{ request()->route()->getName() }}">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah
-                                1MB</span></label>
-                            <input type="file" class="form-control" id="image" name="img" accept="image/*">
+                                    1MB</span></label>
+                            <input type="file" class="form-control" id="image" name="img"
+                                accept="image/*">
                         </div>
                     </div>
                     <div class="col-lg-12">
@@ -201,6 +199,10 @@ sizeCard="12">
                 <div id="load-edit"></div>
             </x-theme.modal>
         </form>
+
+        <x-theme.btn_alert_delete route="produk.delete" name="id_produk" :tgl1="$tgl1"
+            :tgl2="$tgl2" :id_proyek="$id_proyek" />
+
     </x-slot>
 
     @section('scripts')

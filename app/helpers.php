@@ -100,9 +100,9 @@ class SettingHal
         AS
         a
         LEFT JOIN (
-        SELECT b.id_permission_button, b.id_permission_page FROM permission_perpage AS b
+        SELECT b.id_user, b.id_permission_button, b.id_permission_page FROM permission_perpage AS b
         WHERE b.id_user ='$id_user' AND b.permission_id = '$halaman'
-        ) AS b ON b.id_permission_button = a.id_permission_button");
+        ) AS b ON b.id_permission_button = a.id_permission_button WHERE b.id_user = '$id_user'");
     }
 
     public static function btnHal($whereId, $id_user)

@@ -5,17 +5,20 @@
         <div class="row justify-content-end">
 
             <div class="col-lg-12">
-                <x-theme.button modal="T" href="/export_akun" icon="fa-file-excel"
-                    addClass="float-end btn btn-success me-2" teks="Export" />
-                <x-theme.button modal="Y" idModal="import" icon="fa-file-excel"
-                    addClass="float-end btn btn-success me-2" teks="Export / Import" />
+                @if (!empty($export))
+                    <x-theme.button modal="Y" idModal="import" icon="fa-file-excel"
+                        addClass="float-end btn btn-success me-2" teks="Export / Import" />
+                @endif
 
-                <x-theme.button modal="Y" idModal="tambah" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
+                @if (!empty($create))
+                    <x-theme.button modal="Y" idModal="tambah" icon="fa-plus" addClass="float-end"
+                        teks="Buat Baru" />
+                @endif
+
+                <x-theme.akses :halaman="$halaman" route="akun" />
             </div>
         </div>
-
     </x-slot>
-
     <x-slot name="cardBody">
         <section class="row">
             <table class="table table-hover" id="table">
@@ -54,18 +57,27 @@
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <li>
-                                            <a class="dropdown-item text-info edit_akun" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#edit"
-                                                id_akun="{{ $a->id_akun }}"><i class="me-2 fas fa-pen"></i>Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-info sub-akun" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#sub-akun"
-                                                id_akun="{{ $a->id_akun }}"><i
-                                                    class="me-2 fas fa-layer-group"></i>Sub
-                                                Akun</a>
-                                        </li>
+                                        @php
+                                            $emptyKondisi = [$edit, $subAkun];
+                                        @endphp
+                                        <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
+                                        @if (!empty($edit))
+                                            <li>
+                                                <a class="dropdown-item text-info edit_akun" href="#"
+                                                    data-bs-toggle="modal" data-bs-target="#edit"
+                                                    id_akun="{{ $a->id_akun }}"><i
+                                                        class="me-2 fas fa-pen"></i>Edit</a>
+                                            </li>
+                                        @endif
+                                        @if (!empty($subAkun))
+                                            <li>
+                                                <a class="dropdown-item text-info sub-akun" href="#"
+                                                    data-bs-toggle="modal" data-bs-target="#sub-akun"
+                                                    id_akun="{{ $a->id_akun }}"><i
+                                                        class="me-2 fas fa-layer-group"></i>Sub
+                                                    Akun</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </td>
@@ -144,8 +156,7 @@
                     <table>
                         <tr>
                             <td width="100" class="pl-2">
-                                <img width="80px" src="{{ asset('img/') }}/1.png"
-                                    alt="">
+                                <img width="80px" src="{{ asset('img/') }}/1.png" alt="">
                             </td>
                             <td>
                                 <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
@@ -169,8 +180,7 @@
 
                         <tr>
                             <td width="100" class="pl-2">
-                                <img width="80px" src="{{ asset('img/') }}/2.png"
-                                    alt="">
+                                <img width="80px" src="{{ asset('img/') }}/2.png" alt="">
                             </td>
                             <td>
                                 <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>

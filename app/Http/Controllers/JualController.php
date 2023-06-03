@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\JualExport;
 use App\Exports\KlasifikasiExport;
 use App\Models\Jurnal;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use SettingHal;
 
 class JualController extends Controller
 {
@@ -56,7 +58,7 @@ class JualController extends Controller
     {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
-
+        $id_user = auth()->user()->id;
         $jual = DB::select("SELECT a.admin,a.ket,a.no_nota, a.no_penjualan, a.status,a.total_rp,a.tgl, c.kredit, c.debit FROM `invoice_pi` as a
                     LEFT JOIN (
                         SELECT b.no_nota,b.nota_jurnal, SUM(debit) as debit, SUM(kredit) as kredit FROM bayar_pi as b
@@ -77,6 +79,13 @@ class JualController extends Controller
             'semuaPiutang' => $semuaPiutang,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 5,
+            'create' => SettingHal::btnHal(22, $id_user),
+            'export' => SettingHal::btnHal(23, $id_user),
+            'bayar' => SettingHal::btnHal(24, $id_user),
+            'edit' => SettingHal::btnHal(25, $id_user),
         ];
         return view('jual.jual', $data);
     }

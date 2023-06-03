@@ -7,9 +7,47 @@ use Illuminate\Support\Facades\DB;
 
 class PeralatanController extends Controller
 {
+    protected $tgl1, $tgl2, $id_proyek, $period, $id_buku;
+    public function __construct(Request $r)
+    {
+        if (empty($r->period)) {
+            $this->tgl1 = date('Y-m-01');
+            $this->tgl2 = date('Y-m-t');
+        } elseif ($r->period == 'daily') {
+            $this->tgl1 = date('Y-m-d');
+            $this->tgl2 = date('Y-m-d');
+        } elseif ($r->period == 'weekly') {
+            $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
+            $this->tgl2 = date('Y-m-d');
+        } elseif ($r->period == 'mounthly') {
+            $bulan = $r->bulan;
+            $tahun = $r->tahun;
+            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
+            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tglawal));
+            $this->tgl2 = date('Y-m-t', strtotime($tglakhir));
+        } elseif ($r->period == 'costume') {
+            $this->tgl1 = $r->tgl1;
+            $this->tgl2 = $r->tgl2;
+        } elseif ($r->period == 'years') {
+            $tahun = $r->tahunfilter;
+            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
+            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
+
+            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
+            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
+        }
+
+        $this->id_proyek = $r->id_proyek ?? 0;
+        $this->id_buku = $r->id_buku ?? 2;
+    }
 
     public function index()
     {
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
+        $id_proyek = $this->id_proyek;
         $data = [
             'title' => 'Data Peralatan',
             'peralatan' => DB::select("SELECT a.*, b.*, c.beban FROM peralatan as a 
@@ -19,7 +57,10 @@ class PeralatanController extends Controller
                 FROM depresiasi_peralatan as c
                 group by c.id_aktiva
             ) as c on c.id_aktiva = a.id_aktiva
-            order by a.id_aktiva DESC")
+            order by a.id_aktiva DESC"),
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+            'id_proyek' => $id_proyek,
         ];
         return view('persediaan_barang.peralatan.index', $data);
     }
@@ -92,6 +133,17 @@ class PeralatanController extends Controller
         }
 
         return redirect()->route('peralatan.index')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function delete_peralatan(Request $r)
+    {
+        $cek = DB::table('depresiasi_peralatan')->where('id_aktiva', $r->id_peralatan)->first();
+        if(!$cek) {
+            DB::table('peralatan')->where('id_aktiva', $r->id_aktiva)->delete();
+            $status = 'sukses';
+            $pesan = 'Data berhasil di hapus';
+        }
+        return redirect()->route('peralatan.index')->with($status ?? 'error', $pesan ?? 'Gagal dihapus ! peralatan tersedia di depresiasi');
     }
 
     public function load_edit(Request $r)

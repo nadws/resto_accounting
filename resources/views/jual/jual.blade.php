@@ -4,12 +4,22 @@
             <h6 class="float-start mt-1">{{ $title }} {{ tanggal($tgl1) }} ~
                 {{ tanggal($tgl2) }}</h6>
         </div>
-        <button class="btn btn-sm icon icon-left btn-primary me-2 float-end btn_bayar"><i class="fas fa-money-bill"></i>
-            Bayar</button>
-        <x-theme.button modal="T" href="{{ route('jual.add') }}" icon="fa-plus" addClass="float-end" teks="Buat Baru" />
-        <x-theme.button modal="T" href="/jual/export?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
-            icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
+        @if (!empty($bayar))
+            <button class="btn btn-sm icon icon-left btn-primary me-2 float-end btn_bayar"><i
+                    class="fas fa-money-bill"></i>
+                Bayar</button>
+        @endif
+        @if (!empty($create))
+            <x-theme.button modal="T" href="{{ route('jual.add') }}" icon="fa-plus" addClass="float-end"
+                teks="Buat Baru" />
+        @endif
+        @if (!empty($expoty))
+            <x-theme.button modal="T" href="/jual/export?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
+                icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
+        @endif
         <x-theme.btn_filter />
+        <x-theme.akses :halaman="$halaman" route="jual.index" />
+
     </x-slot>
 
     <x-slot name="cardBody">
@@ -30,10 +40,10 @@
                             <br>
                             Piutang Diceklis : Rp. <span class="piutangBayar">0</span>
                         </button>
-                       
+
                     </div>
                 </div>
-             
+
             </div>
         </div>
         <section class="row">
@@ -62,7 +72,9 @@
                         <th>Sisa Piutang <br> ({{ number_format($ttlPiutang, 0) }})</th>
                         <th>Status</th>
                         <th>Admin</th>
-                        <th>Aksi</th>
+                        @if (!empty($bayar))
+                            <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -94,20 +106,20 @@
                             <td align="right">Rp. {{ number_format($d->total_rp + $d->debit - $d->kredit, 0) }}</td>
                             <td>{{ $d->status }}</td>
                             <td>{{ $d->admin }}</td>
-                            <td>
-                                @if ($d->status == 'paid')
-                                    <i class="fas fa-check text-success"></i>
-                                @else
-                                    <input type="checkbox" no_nota="{{ $d->no_nota }}"
-                                        no_penjualan="{{ $d->no_penjualan }}"
-                                        piutang="{{ $d->total_rp + $d->debit - $d->kredit }}"
-                                        class="form-check-glow form-check-input form-check-primary cek_bayar" />
-                                @endif
-                            </td>
-
+                            @if (!empty($bayar))
+                                <td>
+                                    @if ($d->status == 'paid')
+                                        <i class="fas fa-check text-success"></i>
+                                    @else
+                                        <input type="checkbox" no_nota="{{ $d->no_nota }}"
+                                            no_penjualan="{{ $d->no_penjualan }}"
+                                            piutang="{{ $d->total_rp + $d->debit - $d->kredit }}"
+                                            class="form-check-glow form-check-input form-check-primary cek_bayar" />
+                                    @endif
+                                </td>
+                            @endif
                         </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </section>

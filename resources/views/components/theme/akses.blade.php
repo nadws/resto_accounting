@@ -34,7 +34,6 @@
                 @foreach ($user as $no => $u)
                     @php
                         $akses = SettingHal::akses($halaman, $u->id);
-                        
                         $create = SettingHal::btnSetHal($halaman, $u->id, 'create');
                         
                         $read = SettingHal::btnSetHal($halaman, $u->id, 'read');
@@ -52,10 +51,10 @@
                             <label><input type="checkbox"
                                     class="form-check-glow form-check-input form-check-primary akses_h akses_h{{ $u->id }}"
                                     id_user="{{ $u->id }}" id_user="{{ $u->id }}"
-                                    {{ empty($akses->id_permission_page) ? '' : 'Checked' }} />
-                                Akses</label>
+                                    {{ empty($akses) ? '' : 'Checked' }} />
+                                Akses </label>
                             <input type="hidden" class="open_check{{ $u->id }}" name="id_user[]"
-                                {{ empty($akses->id_permission_page) ? 'disabled' : '' }} value="{{ $u->id }}">
+                                {{ empty($akses) ? 'disabled' : '' }} value="{{ $u->id }}">
                         </td>
                         <td>
                             <input type="hidden" name="id_permission_gudang" value="{{ $halaman }}">
@@ -108,7 +107,7 @@
         </table>
     </x-theme.modal>
 </form>
-@section('scripts')
+@section('js')
     <script>
         $(document).on('click', '.akses_h', function() {
             var id_user = $(this).attr('id_user');

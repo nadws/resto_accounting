@@ -1,10 +1,8 @@
 @props([
-    'edit' => '',
-    'hapus' => '',
-    'detail' => '',
+    'emptyKondisi' => '',
 ])
 
-@if (empty($edit) && empty($hapus) && empty($detail))
+@if (empty(array_filter($emptyKondisi)))
     <li>
         <a class="dropdown-item text-black bg-warning">Akses tidak ada.</a>
     </li>
