@@ -155,6 +155,20 @@
                 }
             });
         });
+
+        $(document).on('click', '.delete_akun_neraca', function() {
+            var id_sub_kategori = $(this).attr('id_sub_kategori');
+            var id_akun_neraca = $(this).attr('id_akun_neraca');
+            $.ajax({
+                type: "GET",
+                url: "{{ route('delete_akun_neraca') }}?id_akun_neraca=" + id_akun_neraca,
+                success: function(response) {
+                    toast('Akun berhasil di hapus')
+                    loadInputAkunNeraca(id_sub_kategori);
+                    load_neraca()
+                }
+            });
+        });
     </script>
 
 

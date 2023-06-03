@@ -21,7 +21,7 @@
         color: white;
     }
 </style>
-<form id="Editinputanakun">
+<form id="EditiSubKategori">
     <div class="row">
         <div class="col-lg-12 mt-4">
             <table class="table table-bordered">
@@ -37,11 +37,12 @@
                     @foreach ($subkategori as $c)
                     <tr>
                         <td>
-                            <input type="hidden" name="id_kategori_cashcontrol[]" class="form-control"
+                            <input type="hidden" name="id_sub_ketagori_neraca[]" class="form-control"
                                 value="{{$c->id_sub_ketagori_neraca }}">
                             <input type="text" name="urutan[]" class="form-control" value="{{$c->urutan}}">
                         </td>
-                        <td>{{$c->nama_sub_kategori}}</td>
+                        <td><input type="text" name="nama_sub_kategori[]" class="form-control"
+                                value="{{$c->nama_sub_kategori}}"></td>
                         <td align="center">
                             <a href="#" onclick="event.preventDefault();"
                                 class="btn btn-sm btn-danger delete_kategori_akun"

@@ -173,4 +173,9 @@ class NeracaController extends Controller
         ];
         DB::table('akun_neraca')->insert($data);
     }
+
+    public function delete_akun_neraca(Request $r)
+    {
+        DB::table('akun_neraca')->where('id_akun_neraca', $r->id_akun_neraca)->delete();
+    }
 }

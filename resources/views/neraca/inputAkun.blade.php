@@ -42,20 +42,15 @@
 
                         <td align="center">
                             <a href="#" onclick="event.preventDefault();"
-                                class="btn btn-sm btn-danger delete_kategori_akun"
-                                id_akun_neraca="{{$c->id_akun_neraca }}"><i class="fas fa-trash-alt"></i>
+                                class="btn btn-sm btn-danger delete_akun_neraca"
+                                id_akun_neraca="{{$c->id_akun_neraca }}" id_sub_kategori="{{$id_sub_kategori}}"><i
+                                    class="fas fa-trash-alt"></i>
                             </a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-        </div>
-        <div class="col-lg-10">
-
-        </div>
-        <div class="col-lg-2">
-            <button type="submit" class="btn btn-primary btn-sm float-end">Simpan</button>
         </div>
     </div>
 </form>

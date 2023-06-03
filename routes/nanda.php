@@ -249,4 +249,5 @@ Route::controller(NeracaController::class)->group(function () {
     Route::get('/saveSub_neraca', 'saveSub_neraca')->name('saveSub_neraca');
     Route::get('/loadinputAkun_neraca', 'loadinputAkun_neraca')->name('loadinputAkun_neraca');
     Route::get('/saveAkunNeraca', 'saveAkunNeraca')->name('saveAkunNeraca');
+    Route::get('/delete_akun_neraca', 'delete_akun_neraca')->name('delete_akun_neraca');
 });
