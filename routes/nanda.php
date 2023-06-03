@@ -3,6 +3,7 @@
 use App\Http\Controllers\AktivaController;
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\BukuBesarController;
+use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\ControlflowController;
 use App\Http\Controllers\CrudPermissionController;
 use App\Http\Controllers\FakturPenjualanController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\ProdukController;
@@ -230,4 +232,22 @@ Route::controller(ControlflowController::class)->group(function () {
     Route::get('/deleteAkunCashflow', 'deleteAkunCashflow')->name('deleteAkunCashflow');
     Route::get('/view_akun', 'view_akun')->name('view_akun');
     Route::get('/print_cashflow', 'print')->name('print_cashflow');
+});
+
+Route::controller(CashflowController::class)->group(function () {
+    Route::get('/cashflow_ibu', 'index')->name('cashflow_ibu');
+    Route::get('/loadInputKontrol', 'loadInputKontrol')->name('loadInputKontrol');
+    Route::get('/save_akun_ibu', 'save_akun_ibu')->name('save_akun_ibu');
+    Route::get('/delete_akun_ibu', 'delete_akun_ibu')->name('delete_akun_ibu');
+    Route::get('/delete_akun_ibu', 'delete_akun_ibu')->name('delete_akun_ibu');
+    Route::get('/edit_akun_ibu', 'edit_akun_ibu')->name('edit_akun_ibu');
+});
+Route::controller(NeracaController::class)->group(function () {
+    Route::get('/neraca', 'index')->name('neraca');
+    Route::get('/loadNeraca', 'loadneraca')->name('loadNeraca');
+    Route::get('/loadinputSub_neraca', 'loadinputSub_neraca')->name('loadinputSub_neraca');
+    Route::get('/saveSub_neraca', 'saveSub_neraca')->name('saveSub_neraca');
+    Route::get('/loadinputAkun_neraca', 'loadinputAkun_neraca')->name('loadinputAkun_neraca');
+    Route::get('/saveAkunNeraca', 'saveAkunNeraca')->name('saveAkunNeraca');
+    Route::get('/delete_akun_neraca', 'delete_akun_neraca')->name('delete_akun_neraca');
 });

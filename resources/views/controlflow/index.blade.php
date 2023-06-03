@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="12" cont="container-fluid">
     <x-slot name="cardHeader">
         <div class="col-lg-6">
             <h6 class="float-start mt-1">{{ $title }}: {{tanggal($tgl1)}} ~
@@ -11,7 +11,18 @@
         <x-theme.btn_filter />
     </x-slot>
     <x-slot name="cardBody">
-        <div id="loadcontrolflow"></div>
+        <div class="row">
+            <div class="col-lg-4" style="border: 1px solid black; padding: 10px">
+                <h6 for="">Cash Flow</h6>
+                <div id="loadcontrolflow"></div>
+            </div>
+            <div class="col-lg-8" style="border: 1px solid black; padding: 10px">
+                <h6 for="">Control Uang Ditarik</h6>
+                <div id="loadcashflow_ibu"></div>
+            </div>
+        </div>
+
+
 
 
 
@@ -21,6 +32,7 @@
             <div id="loadPendapatan"></div>
         </x-theme.modal>
 
+
         <x-theme.modal title="Pilih Akun" size="modal-lg" btnSave='T' idModal="modalAkunPendapatan">
             <div id="loadAkunPendapatan"></div>
         </x-theme.modal>
@@ -29,6 +41,11 @@
             <div id="viewdaftarakun"></div>
         </x-theme.modal>
 
+
+
+        <x-theme.modal title="Tambah Akun" size="modal-lg" btnSave='T' idModal="modalAkunControl">
+            <div id="loadAkunControl"></div>
+        </x-theme.modal>
 
 
         {{-- end form sub kategori --}}
@@ -227,6 +244,110 @@
             });
             });
         });
+    </script>
+    <script>
+        load_cash_ibu()
+        function toast(pesan) {
+                Toastify({
+                    text: pesan,
+                    duration: 3000,
+                    style: {
+                        background: "#EAF7EE",
+                        color: "#7F8B8B"
+                    },
+                    close: true,
+                    avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                }).showToast();
+            }
+        function load_cash_ibu(tgl1 = "{{$tgl1}}", tgl2 = "{{ $tgl2 }}") {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('cashflow_ibu') }}",
+                data: {
+                    tgl1: tgl1,
+                    tgl2: tgl2,
+                },
+                success: function(r) {
+                    $("#loadcashflow_ibu").html(r);
+
+                }
+            });
+        }
+
+        function loadInputControl(kategori,tgl1 = "{{$tgl1}}", tgl2 = "{{ $tgl2 }}") {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('loadInputKontrol') }}",
+                data: {
+                    kategori:kategori,
+                    tgl1:tgl1,
+                    tgl2:tgl2
+                },
+                success: function(r) {
+                    $("#loadAkunControl").html(r);
+                    // $('.jenisSub').val(jenis)
+
+                    $('.select').select2({
+                        dropdownParent: $('#modalAkunControl .modal-content')
+                    });
+                }
+            });
+        }
+
+        $(document).on('click', '.tmbhakun_control', function() {
+            var kategori = $(this).attr('kategori');
+            // var jenis = $(this).attr('jenis');
+            $("#modalAkunControl").modal('show');
+            loadInputControl(kategori);
+        });
+
+        $(document).on('submit', '#Formtabahakuncontrol', function(e) {
+            e.preventDefault()
+            var data = $("#Formtabahakuncontrol").serialize()
+            var kategori = $('.kategori').val();
+            $.ajax({
+                type: "GET",
+                url: "{{ route('save_akun_ibu') }}?" + data,
+                success: function(response) {
+                    toast('Berhasil tambah Akun')
+                    loadInputControl(kategori);
+                    load_cash_ibu()
+                    // $("#modalSubKategori").modal('hide')
+                }
+            });
+        });
+        
+        $(document).on('click', '.delete_akun_ibu', function() {
+            var kategori = $(this).attr('kategori');
+            var id_akuncashibu = $(this).attr('id_akuncashibu');
+            $.ajax({
+                type: "GET",
+                url: "{{ route('delete_akun_ibu') }}?id_akuncashibu=" + id_akuncashibu,
+                success: function(response) {
+                    toast('Akun berhasil di hapus')
+                    loadInputControl(kategori);
+                    load_cash_ibu()
+                }
+            });
+        });
+
+        $(document).on('submit', '#Editinputakunibu', function(e) {
+            e.preventDefault()
+            var data = $("#Editinputakunibu").serialize()
+            var kategori = $('.kategori').val();
+            $.ajax({
+                type: "GET",
+                url: "{{ route('edit_akun_ibu') }}?" + data,
+                success: function(response) {
+                    toast('Berhasil tambah Akun')
+                    loadInputControl(kategori);
+                    load_cash_ibu()
+                    // $("#modalSubKategori").modal('hide')
+                }
+            });
+        });
+
+        
     </script>
 
     @endsection
