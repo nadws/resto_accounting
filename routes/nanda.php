@@ -11,6 +11,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\ProdukController;
@@ -240,4 +241,12 @@ Route::controller(CashflowController::class)->group(function () {
     Route::get('/delete_akun_ibu', 'delete_akun_ibu')->name('delete_akun_ibu');
     Route::get('/delete_akun_ibu', 'delete_akun_ibu')->name('delete_akun_ibu');
     Route::get('/edit_akun_ibu', 'edit_akun_ibu')->name('edit_akun_ibu');
+});
+Route::controller(NeracaController::class)->group(function () {
+    Route::get('/neraca', 'index')->name('neraca');
+    Route::get('/loadNeraca', 'loadneraca')->name('loadNeraca');
+    Route::get('/loadinputSub_neraca', 'loadinputSub_neraca')->name('loadinputSub_neraca');
+    Route::get('/saveSub_neraca', 'saveSub_neraca')->name('saveSub_neraca');
+    Route::get('/loadinputAkun_neraca', 'loadinputAkun_neraca')->name('loadinputAkun_neraca');
+    Route::get('/saveAkunNeraca', 'saveAkunNeraca')->name('saveAkunNeraca');
 });

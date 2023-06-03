@@ -128,7 +128,13 @@ class NavbarController extends Controller
                 'img' => 'money-flow.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            
+            [
+                'judul' => 'Laporan Neraca',
+                'route' => 'neraca',
+                'img' => 'law-book.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+
             [
                 'judul' => 'Jurnal Penutup',
                 'route' => 'penutup.index',
@@ -197,9 +203,7 @@ class NavbarController extends Controller
     public function asset()
     {
         $data = [
-            [
-                
-            ]
+            []
 
         ];
         $title = 'Asset';
