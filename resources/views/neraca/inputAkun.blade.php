@@ -12,7 +12,7 @@
             </select>
         </div>
         <div class="col-lg-2">
-            <label for="">Aksi sd</label> <br>
+            <label for="">Aksi</label> <br>
             <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
         </div>
     </div>
