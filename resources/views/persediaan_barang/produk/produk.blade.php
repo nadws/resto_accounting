@@ -18,20 +18,25 @@
                 </select>
             </div>
             <div class="col-lg-2">
-                <div class="btn-group dropstart float-end mb-1">
-                    <button type="button" class="btn btn-primary dropdown-toggle show" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                        Tambah
-                    </button>
-                    <div class="dropdown-menu"
-                        style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-104px, 0px, 0px);"
-                        data-popper-placement="left-start">
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#tambah">Produk
-                            Baru</a>
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                            data-bs-target="#tambah2">Gudang</a>
+                @if (!empty($create))
+                    <div class="btn-group dropstart float-end mb-1">
+                        <button type="button" class="btn btn-primary dropdown-toggle show" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true">
+                            Tambah
+                        </button>
+                        <div class="dropdown-menu"
+                            style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-104px, 0px, 0px);"
+                            data-popper-placement="left-start">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#tambah">Produk
+                                Baru</a>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#tambah2">Gudang</a>
+                        </div>
                     </div>
-                </div>
+                @endif
+                <x-theme.akses :halaman="$halaman" route="produk.index" />
+
             </div>
         </div>
         <div class="row">
@@ -73,19 +78,30 @@
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <div class="dropdown-menu">
-                                        <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal"
-                                            data-bs-target="#edit" class="dropdown-item text-primary edit"
-                                            href="#"><i class="me-2 fas fa-pen"></i>
-                                            Edit</a>
-                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{ $d->id_produk }}"
-                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
-                                                class="me-2 fas fa-trash"></i>Delete
-                                        </a>
-                                        
+                                        @php
+                                            $emptyKondisi = [$edit, $delete, $detail];
+                                        @endphp
+                                        <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
 
-                                        <a class="dropdown-item text-info" href="#"><i
-                                                class="me-2 fas fa-search"></i>
-                                            Detail</a>
+                                        @if (!empty($edit))
+                                            <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal"
+                                                data-bs-target="#edit" class="dropdown-item text-primary edit"
+                                                href="#"><i class="me-2 fas fa-pen"></i>
+                                                Edit</a>
+                                        @endif
+
+                                        @if (!empty($delete))
+                                            <a class="dropdown-item text-danger delete_nota"
+                                                no_nota="{{ $d->id_produk }}" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#delete"><i class="me-2 fas fa-trash"></i>Delete
+                                            </a>
+                                        @endif
+
+                                        @if (!empty($detail))
+                                            <a class="dropdown-item text-info" href="#"><i
+                                                    class="me-2 fas fa-search"></i>
+                                                Detail</a>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -200,12 +216,12 @@
             </x-theme.modal>
         </form>
 
-        <x-theme.btn_alert_delete route="produk.delete" name="id_produk" :tgl1="$tgl1"
-            :tgl2="$tgl2" :id_proyek="$id_proyek" />
+        <x-theme.btn_alert_delete route="produk.delete" name="id_produk" :tgl1="$tgl1" :tgl2="$tgl2"
+            :id_proyek="$id_proyek" />
 
     </x-slot>
 
-    @section('scripts')
+    @section('js')
         <script>
             $(document).ready(function() {
                 $(".select-gudang").change(function(e) {

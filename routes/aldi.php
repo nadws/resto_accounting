@@ -174,7 +174,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/modal', 'modal')->name('modal');
             Route::get('/delete', 'delete')->name('delete');
             Route::get('/print', 'print')->name('print');
+            Route::get('/view_akun', 'view_akun')->name('view_akun');
             Route::get('/load_uraian', 'load_uraian')->name('load_uraian');
+            Route::get('/count_sisa', 'count_sisa')->name('count_sisa');
             Route::get('/save_subkategori', 'save_subkategori')->name('save_subkategori');
             Route::get('/delete_subkategori', 'delete_subkategori')->name('delete_subkategori');
             Route::get('/update', 'update')->name('update');

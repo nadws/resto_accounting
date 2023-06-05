@@ -67,7 +67,8 @@ class ProfitController extends Controller
             'subKategori2' => DB::table('sub_kategori_cashflow')
                 ->where('jenis', 2)
                 ->orderBy('urutan', 'ASC')
-                ->get()
+                ->get(),
+
         ];
         return view('profit.load', $data);
     }
@@ -157,12 +158,33 @@ class ProfitController extends Controller
 
     public function update(Request $r)
     {
-        for ($i=0; $i < count($r->id_edit); $i++) { 
+        for ($i = 0; $i < count($r->id_edit); $i++) {
             DB::table('sub_kategori_cashflow')->where('id', $r->id_edit[$i])->update([
                 'sub_kategori' => $r->nm_kategori[$i],
                 'urutan' => $r->urutan[$i],
             ]);
         }
+    }
+    public function count_sisa(Request $r)
+    {
 
+        $sisa = DB::selectOne("SELECT COUNT(*) as sisa FROM akun as a
+        LEFT JOIN profit_akun as b ON a.id_akun= b.id_akun
+        WHERE b.id_akun IS null");
+
+        $sisa2 = DB::selectOne("SELECT COUNT(*) as sisa FROM akun as a
+        LEFT JOIN akun_neraca as b ON a.id_akun= b.id_akun
+        WHERE b.id_akun IS null");
+
+        echo $r->jenis == 'profit' ? $sisa->sisa : $sisa2->sisa;
+    }
+    public function view_akun()
+    {
+        $data = [
+            'akun' => DB::Select("SELECT a.id_akun,a.nm_akun, b.id_akun as ada FROM akun as a
+            LEFT JOIN profit_akun as b ON a.id_akun= b.id_akun"),
+        ];
+
+        return view('profit.view_akun', $data);
     }
 }

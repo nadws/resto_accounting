@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SettingHal;
 
 class PeralatanController extends Controller
 {
@@ -48,6 +50,7 @@ class PeralatanController extends Controller
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
         $id_proyek = $this->id_proyek;
+        $id_user = auth()->user()->id;
         $data = [
             'title' => 'Data Peralatan',
             'peralatan' => DB::select("SELECT a.*, b.*, c.beban FROM peralatan as a 
@@ -61,6 +64,13 @@ class PeralatanController extends Controller
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
             'id_proyek' => $id_proyek,
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 9,
+            'create' => SettingHal::btnHal(37, $id_user),
+            'edit' => SettingHal::btnHal(38, $id_user),
+            'delete' => SettingHal::btnHal(39, $id_user),
+            'detail' => SettingHal::btnHal(40, $id_user),
         ];
         return view('persediaan_barang.peralatan.index', $data);
     }

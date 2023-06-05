@@ -32,6 +32,17 @@
 
 
 <script>
+    $(document).on('click', '.akses_h', function() {
+        var id_user = $(this).attr('id_user');
+        if ($('.akses_h' + id_user).prop("checked") == true) {
+            $('.open_check' + id_user).removeAttr('disabled');
+        } else {
+            $('.open_check' + id_user).prop('disabled', true);
+
+        }
+
+    });
+
     // untuk file upload ada preview
     $(document).on('change', '#image', function() {
         var file = this.files[0];
@@ -81,7 +92,9 @@
 
     $('#select2').select2({});
     $('.select2_add').select2({});
-    $('.select2_readonly').select2({disabled: true});
+    $('.select2_readonly').select2({
+        disabled: true
+    });
 
     function convertRpSelisih(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -130,7 +143,7 @@
             });
             var debit = $("." + classTotal).text(totalRupiah);
             $(".total_kredit").text(totalRupiah);
-            
+
             var ttlHutang = $(".total_hutangTetap").val()
             var selisih = parseFloat(ttlHutang) - parseFloat(total_debit)
             teksSelisih = selisih.toLocaleString("id-ID", {
@@ -284,7 +297,7 @@
             });
         })
     }
-    
+
 
     function aksiBtn(idForm) {
         $(document).on('submit', idForm, function() {
@@ -329,8 +342,8 @@
     });
 </script>
 @if (session()->has('sukses'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('sukses') }}",
                 duration: 3000,
@@ -342,11 +355,11 @@
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
             }).showToast();
         });
-</script>
+    </script>
 @endif
 @if (session()->has('error'))
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
@@ -360,7 +373,7 @@
 
 
         });
-</script>
+    </script>
 @endif
 @yield('scripts')
 @yield('js')
