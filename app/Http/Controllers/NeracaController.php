@@ -162,7 +162,7 @@ class NeracaController extends Controller
             'id_sub_kategori' => $r->id_sub_kategori,
             'akun' => DB::table('akun')->get()
         ];
-        return view('neraca.inputAKun', $data);
+        return view('neraca.inputAkun', $data);
     }
 
     public function saveAkunNeraca(Request $r)
