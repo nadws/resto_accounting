@@ -160,9 +160,9 @@ class NeracaController extends Controller
             ) as c on c.id_akun = a.id_akun
             WHERE a.id_sub_kategori = '$r->id_sub_kategori';"),
             'id_sub_kategori' => $r->id_sub_kategori,
-            'akun' => DB::table('akun')->get()
+            'akun' => DB::select("SELECT * FROM akun as a where a.id_akun not in(SELECT b.id_akun FROM akun_neraca as b)")
         ];
-        return view('neraca.inputAKun', $data);
+        return view('neraca.inputAkun', $data);
     }
 
     public function saveAkunNeraca(Request $r)
