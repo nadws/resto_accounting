@@ -4,7 +4,8 @@
             <h6 class="float-start mt-1">{{ $title }} : {{tanggal($tgl1)}} ~
                 {{tanggal($tgl2)}}</h6>
         </div>
-        <x-theme.button modal="T" icon="fa-print" href="#" variant="success" addClass="float-end" teks="Print" />
+        <x-theme.button modal="T" icon="fa-print" href="/print_neraca" variant="success" addClass="float-end"
+            teks="Print" />
         <x-theme.button modal="Y" idModal="daftarakun" icon="fa-book" variant="primary" addClass="float-end view_akun"
             teks="Daftar Akun" />
         <x-theme.btn_filter />
@@ -31,7 +32,7 @@
             <div id="loadInputSub"></div>
         </x-theme.modal>
 
-        <x-theme.modal title="Daftar Akun yang belum terdaftar" size="modal-lg" btnSave='T' idModal="daftarakun">
+        <x-theme.modal title="Daftar Akun" size="modal-lg" btnSave='T' idModal="daftarakun">
             <div id="viewdaftarakun"></div>
         </x-theme.modal>
 
@@ -168,6 +169,20 @@
                     load_neraca()
                 }
             });
+        });
+        $(document).on('click', '.view_akun', function() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('akun_neraca') }}",
+                success: function(data) {
+                    $("#viewdaftarakun").html(data);
+                    $("#table2").DataTable({
+                        "lengthChange": false,
+                        "autoWidth": false,
+                        "stateSave": true,
+                    });
+                }
+            });  
         });
     </script>
 
