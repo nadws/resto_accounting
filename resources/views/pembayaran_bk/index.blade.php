@@ -1,26 +1,26 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12" cont="container-fluid">
     <x-slot name="cardHeader">
         @php
-        $total_paid = 0;
-        $total_unpaid = 0;
-        $total_draft = 0;
+            $total_paid = 0;
+            $total_unpaid = 0;
+            $total_draft = 0;
         @endphp
         @foreach ($paid as $p)
-        @php
-        $total_paid += $p->total_harga + $p->debit;
-        @endphp
+            @php
+                $total_paid += $p->total_harga + $p->debit;
+            @endphp
         @endforeach
 
         @foreach ($unpaid as $u)
-        @php
-        $total_unpaid += $u->total_harga + $u->debit - $u->kredit;
-        @endphp
+            @php
+                $total_unpaid += $u->total_harga + $u->debit - $u->kredit;
+            @endphp
         @endforeach
 
         @foreach ($draft as $d)
-        @php
-        $total_draft += $d->total_harga + $d->debit - $d->kredit;
-        @endphp
+            @php
+                $total_draft += $d->total_harga + $d->debit - $d->kredit;
+            @endphp
         @endforeach
 
         <div class="row justify-content-end">
@@ -59,8 +59,13 @@
             </div>
             <div class="col-lg-6">
                 <x-theme.btn_filter title="Filter Pembayaran Bk" />
+                @if (!empty($export))
                 <x-theme.button modal="T" href="/exportBayarbk?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
                     icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
+                @endif
+
+                <x-theme.akses :halaman="$halaman" route="pembayaranbk" />
+
             </div>
         </div>
     </x-slot>
@@ -105,15 +110,15 @@
                     </thead>
                     <tbody>
                         @php
-                        $i = 1;
+                            $i = 1;
                         @endphp
                         @foreach ($pembelian as $no => $p)
-                        <tr class="fw-bold induk_detail{{ $p->no_nota }}">
-                            <td>{{ $i++ }}</td>
-                            <td>
-                                <a href="#" onclick="event.preventDefault();"
-                                    class="detail_bayar detail_bayar{{ $p->no_nota }}" no_nota="{{ $p->no_nota }}"><i
-                                        class="fas fa-angle-down"></i></a>
+                            <tr class="fw-bold induk_detail{{ $p->no_nota }}">
+                                <td>{{ $i++ }}</td>
+                                <td>
+                                    <a href="#" onclick="event.preventDefault();"
+                                        class="detail_bayar detail_bayar{{ $p->no_nota }}"
+                                        no_nota="{{ $p->no_nota }}"><i class="fas fa-angle-down"></i></a>
 
                                     <a href="#" onclick="event.preventDefault();"
                                         class="hide_bayar hide_bayar{{ $p->no_nota }}"
@@ -141,12 +146,15 @@
                                             <i class="fas fa-ellipsis-v text-primary"></i>
                                         </span>
                                         <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                            @if (!empty($edit))
                                             <li>
                                                 <a class="dropdown-item text-primary edit_akun"
                                                     href="{{ route('pembayaranbk.edit', ['nota' => $p->no_nota]) }}"><i
                                                         class="me-2 fas fa-pen"></i>Edit
                                                 </a>
                                             </li>
+                                            @endif
+                                            @if (!empty($bayar))
                                             <li>
                                                 @if ($p->lunas == 'D')
                                                     {{-- <a class="dropdown-item text-primary  disabled" href="#"><i
@@ -162,11 +170,12 @@
                                                     @endif
                                                 @endif
                                             </li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </td>
 
-                        </tr>
+                            </tr>
                         @endforeach
 
                     </tbody>
@@ -176,8 +185,8 @@
 
     </x-slot>
     @section('scripts')
-    <script>
-        $(document).ready(function() {
+        <script>
+            $(document).ready(function() {
                 pencarian('pencarian', 'tablealdi')
                 $('.hide_bayar').hide();
                 $(document).on("click", ".detail_bayar", function() {
@@ -215,6 +224,6 @@
 
                 });
             });
-    </script>
+        </script>
     @endsection
 </x-theme.app>
