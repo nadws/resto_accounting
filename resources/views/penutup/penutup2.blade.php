@@ -289,8 +289,8 @@
                             </tr>
                             <tr>
                                 <td style="padding-left: 20px">
-                                    Modal
-                                    <input type="hidden" name="id_akun_modal[]" value="504">
+                                    Laba Tahun Berjalan
+                                    <input type="hidden" name="id_akun_modal[]" value="516">
                                 </td>
                                 <td align="right">
                                     Rp 0
@@ -304,8 +304,8 @@
                             @else
                             <tr>
                                 <td>
-                                    Modal
-                                    <input type="hidden" name="id_akun_modal[]" value="504">
+                                    Laba Tahun Berjalan
+                                    <input type="hidden" name="id_akun_modal[]" value="516">
                                 </td>
                                 <td align="right">
                                     Rp {{number_format(($pen - $biy) * -1,0)}}
@@ -335,7 +335,7 @@
                                 <td colspan="4" class="fw-bold"></td>
                             </tr>
                             <tr>
-                                <td>Modal</td>
+                                <td>Laba Tahun Berjalan</td>
                                 <td align="right"><input type="text" readonly class="form-control modal_1"></td>
                                 <td align="right">Rp 0</td>
                             </tr>
