@@ -2,7 +2,7 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <h3 class="float-start mt-1">{{ $title }}</h3>
+                <h6 class="float-start mt-1">{{ $title }}</h6>
             </div>
             <div class="col-lg-6">
                 <a href="{{ route('export_jurnal', ['tgl1' => $tgl1, 'tgl2' => $tgl2,'id_buku' => '4']) }}"
