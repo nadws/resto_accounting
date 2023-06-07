@@ -75,19 +75,20 @@ class ProdukController extends Controller
             } else {
                 return redirect()->route($route, $r->segment ?? '')->with('error', 'File tidak didukung');
             }
+        } else {
+            Produk::create([
+                'kd_produk' => $r->kd_produk,
+                'nm_produk' => $r->nm_produk,
+                'gudang_id' => $r->gudang_id,
+                'kategori_id' => 1,
+                'satuan_id' => $r->satuan_id,
+                'departemen_id' => $this->id_departemen,
+                'kontrol_stok' => $r->kontrol_stok,
+                'tgl' => date('Y-m-d'),
+                'admin' => auth()->user()->name,
+            ]);
+            return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
         }
-        Produk::create([
-            'kd_produk' => $r->kd_produk,
-            'nm_produk' => $r->nm_produk,
-            'gudang_id' => $r->gudang_id,
-            'kategori_id' => 1,
-            'satuan_id' => $r->satuan_id,
-            'departemen_id' => $this->id_departemen,
-            'kontrol_stok' => $r->kontrol_stok,
-            'tgl' => date('Y-m-d'),
-            'admin' => auth()->user()->name,
-        ]);
-        return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
     }
 
     public function edit_load($id_produk)

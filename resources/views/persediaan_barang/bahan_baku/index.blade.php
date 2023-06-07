@@ -1,14 +1,13 @@
-<x-theme.app 
-title="{{ $title }}" 
-table="Y" 
-sizeCard="12">
+<x-theme.app title="{{ $title }}" table="Y" nav="Y" rot1="bahan_baku.index" rot2="bahan_baku.stok_masuk"
+    rot3="bahan_baku.opname" sizeCard="12">
     <x-slot name="cardHeader">
-        <div class="col-lg-6">
-            <h6 class="float-start mt-1">{{ $title }}
-            </h6>
-
-        </div>
         <div class="row justify-content-end">
+            <hr class="mt-3">
+            <div class="col-lg-6">
+                <h6 class="float-start mt-1">{{ $title }}
+                </h6>
+
+            </div>
             <div class="col-lg-4">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
@@ -19,26 +18,30 @@ sizeCard="12">
                 </select>
             </div>
             <div class="col-lg-2">
-                <div class="btn-group dropstart float-end mb-1">
-                    <button type="button" class="btn btn-primary dropdown-toggle show" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="true">
-                        Tambah
-                    </button>
-                    <div class="dropdown-menu"
-                        style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-104px, 0px, 0px);"
-                        data-popper-placement="left-start">
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#tambah">Produk
-                            Baru</a>
-                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                            data-bs-target="#tambah2">Gudang</a>
+                @if (!empty($create))
+                    <div class="btn-group dropstart float-end mb-1">
+                        <button type="button" class="btn btn-primary dropdown-toggle show" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="true">
+                            Tambah
+                        </button>
+                        <div class="dropdown-menu"
+                            style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-104px, 0px, 0px);"
+                            data-popper-placement="left-start">
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#tambah">Produk
+                                Baru</a>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                data-bs-target="#tambah2">Gudang</a>
+                        </div>
                     </div>
-                </div>
+                @endif
+                <x-theme.akses :halaman="$halaman" route="bahan_baku.index" />
+
             </div>
+        </div>
+        <div class="row">
 
         </div>
-
-
-
     </x-slot>
     <x-slot name="cardBody">
 
@@ -70,22 +73,43 @@ sizeCard="12">
                             </td>
                             <td>{{ $stk }}</td>
                             <td align="center">
+
                                 <div class="btn-group dropstart mb-1">
                                     <span class="btn btn-lg" data-bs-toggle="dropdown">
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
-                                    <div class="dropdown-menu">
-                                        <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal" data-bs-target="#edit"
-                                            class="dropdown-item text-primary edit" href="#"><i
-                                                class="me-2 fas fa-pen"></i>
-                                            Edit</a>
-                                        <a class="dropdown-item text-danger" onclick="return confirm('Yakin dihapus ?')"
-                                            href="{{ route('produk.delete', $d->id_produk) }}"><i
-                                                class="me-2 fas fa-trash"></i> Delete</a>
-                                        <a class="dropdown-item text-info" href="#"><i
-                                                class="me-2 fas fa-search"></i>
-                                            Detail</a>
-                                    </div>
+                                    <ul class="dropdown-menu">
+                                    @php
+                                        $emptyKondisi = [$edit, $delete, $detail];
+                                    @endphp
+                                        <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
+                                        @if (!empty($edit))
+                                            <li>
+                                                <a id_produk="{{ $d->id_produk }}" data-bs-toggle="modal"
+                                                    data-bs-target="#edit" class="dropdown-item text-primary edit"
+                                                    href="#"><i class="me-2 fas fa-pen"></i>
+                                                    Edit</a>
+                                            </li>
+                                        @endif
+                                        @if (!empty($delete))
+                                            <li>
+                                                @if (!empty($delete))
+                                                    <a class="dropdown-item text-danger delete_nota"
+                                                        no_nota="{{ $d->id_produk }}" href="#"
+                                                        data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                            class="me-2 fas fa-trash"></i>Delete
+                                                    </a>
+                                                @endif
+                                            </li>
+                                        @endif
+                                        @if (!empty($detail))
+                                            <li>
+                                                <a class="dropdown-item text-info" href="#"><i
+                                                        class="me-2 fas fa-search"></i>
+                                                    Detail</a>
+                                            </li>
+                                        @endif
+                                    </ul>
                                 </div>
 
                             </td>
@@ -100,12 +124,12 @@ sizeCard="12">
         <form action="{{ route('bahan_baku.create') }}" method="post" enctype="multipart/form-data">
             @csrf
             <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah">
-                <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
+                <input type="hidden" name="url" value="{{ request()->route()->getName() }}">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group">
                             <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah
-                                1MB</span></label>
+                                    1MB</span></label>
                             <input type="file" class="form-control" id="image" name="img" accept="image/*">
                         </div>
                     </div>
@@ -159,8 +183,8 @@ sizeCard="12">
             @csrf
             <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah2">
                 <div class="row">
-                    <input type="hidden" name="url" value="{{ request()->route()->getName(); }}">
-                    <input type="hidden" name="segment" value="{{ request()->segment(2); }}">
+                    <input type="hidden" name="url" value="{{ request()->route()->getName() }}">
+                    <input type="hidden" name="segment" value="{{ request()->segment(2) }}">
                     <div class="col-lg-2">
                         <div class="form-group">
                             <label for="">Kode Gudang</label>
@@ -198,9 +222,11 @@ sizeCard="12">
             </x-theme.modal>
         </form>
 
+        <x-theme.btn_alert_delete route="bahan_baku.delete" name="id_produk" />
+
     </x-slot>
 
-    @section('scripts')
+    @section('js')
         <script>
             $(document).ready(function() {
                 $(".select-gudang").change(function(e) {

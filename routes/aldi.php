@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/stok_masuk', 'stokMasuk')->name('stok_masuk');
             Route::get('/add', 'add')->name('stok_masuk_add');
             Route::get('/opname', 'opname')->name('opname');
+            Route::get('/delete', 'delete')->name('delete');
             Route::post('/edit', 'edit')->name('edit');
             Route::post('/store', 'store')->name('store');
             Route::get('/load_menu', 'load_menu')->name('load_menu');
@@ -66,24 +67,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/opname/cetak/{no_nota}', 'opname_cetak')->name('opname.cetak');
             Route::get('/opname/detail/{gudang_id}', 'opname_detail')->name('opname.detail');
             Route::get('/stok_masuk/{gudang_id}', 'stokMasuk')->name('stok_masuk_segment');
+            // Route::get('/stok_masuk/edit/{id_produk}', 'edit_load')->name('edit_load');
             Route::get('/{gudang_id}', 'index')->name('detail');
             Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
             Route::get('/opname/{gudang_id}', 'opname')->name('opname.detail');
         });
 
-    // Route::controller(CashflowController::class)
-    //     ->prefix('cashflow')
-    //     ->name('cashflow.')
-    //     ->group(function () {
-    //         Route::get('/', 'index')->name('index');
-    //         Route::get('/load', 'load')->name('load');
-    //         Route::get('/loadSubKategori', 'loadSubKategori')->name('loadSubKategori');
-    //         Route::get('/editSubKategori', 'editSubKategori')->name('editSubKategori');
-    //         Route::get('/saveSubKategori', 'saveSubKategori')->name('saveSubKategori');
-    //         Route::get('/tmbahAkunCashflow', 'tmbahAkunCashflow')->name('tmbahAkunCashflow');
-    //         Route::get('/savetbhAkun', 'savetbhAkun')->name('savetbhAkun');
-    //         Route::get('/hapus_akunCashflow', 'hapus_akunCashflow')->name('hapus_akunCashflow');
-    //     });
 
     Route::controller(PenutupController::class)
         ->prefix('penutup')

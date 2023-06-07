@@ -115,11 +115,13 @@
                     }
                 });
             }
+            
             $(document).on('click', '.input_pendapatan', function() {
                 $("#modalPendapatan").modal('show')
                 var jenis = $(this).attr('jenis');
                 loadInputAkun(jenis)
             });
+
             $(document).on('submit', '#formTambahAkun', function(e) {
                 e.preventDefault()
                 var data = $("#formTambahAkun").serialize()

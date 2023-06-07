@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Gudang;
 use App\Models\Jurnal;
 use App\Models\Stok;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SettingHal;
 
 class JurnalPenyesuaianController extends Controller
 {
@@ -64,6 +66,7 @@ class JurnalPenyesuaianController extends Controller
         } else {
             $nota_t = $max->nomor_nota + 1;
         }
+        $id_user = auth()->user()->id;
         $data =  [
             'title' => 'Jurnal Penyesuaian',
             'nota' => $nota_t,
@@ -78,7 +81,12 @@ class JurnalPenyesuaianController extends Controller
             where a.tgl between '2017-01-01' and '$tgl' 
             order by a.tgl ASC
             "),
-            'tgl' => $tgl
+            'tgl' => $tgl,
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 11,
+            'create' => SettingHal::btnHal(46, $id_user),
+            'export' => SettingHal::btnHal(47, $id_user),
+            'detail' => SettingHal::btnHal(48, $id_user),
         ];
         return view('jurnal_penyesuaian.index', $data);
     }
@@ -95,12 +103,17 @@ class JurnalPenyesuaianController extends Controller
             left join tb_post_center as c on c.id_post_center = a.id_post_center
             left join proyek as d on d.id_proyek = a.id_proyek
             where a.id_buku = '4' and a.tgl between '$tgl1' and '$tgl2' order by a.id_jurnal DESC");
-
+        $id_user = auth()->user()->id;
         $data =  [
             'title' => 'Jurnal Penyesuaian',
             'jurnal' => $jurnal,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 11,
+            'create' => SettingHal::btnHal(46, $id_user),
+            'export' => SettingHal::btnHal(47, $id_user),
+            'detail' => SettingHal::btnHal(48, $id_user),
 
 
         ];
