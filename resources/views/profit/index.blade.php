@@ -325,7 +325,7 @@
                     url: "{{ route('view_akun_neraca') }}",
                     success: function(data) {
                         $("#viewdaftarakun").html(data);
-                        $("#table2").DataTable({
+                        $("#table3").DataTable({
                             "lengthChange": true,
                             "autoWidth": false,
                             "stateSave": true,

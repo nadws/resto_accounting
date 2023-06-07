@@ -22,11 +22,6 @@
                 <div id="loadcashflow_ibu"></div>
             </div>
         </div>
-
-
-
-
-
         {{-- form sub kategori --}}
 
         <x-theme.modal title="Kategori" size="modal-lg" btnSave='T' idModal="modalPendapatan">
