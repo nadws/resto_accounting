@@ -14,6 +14,7 @@ use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
@@ -21,6 +22,7 @@ use App\Http\Controllers\StokMasukController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\Saldo;
 use App\Http\Controllers\SaldoController;
+use App\Http\Controllers\Stock_telurController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
         Route::get('/asset', 'asset')->name('asset');
         Route::get('/testing', 'testing')->name('testing');
+        Route::get('/penjualan_agl', 'penjualan_agl')->name('penjualan_agl');
     });
 
 
@@ -252,4 +255,20 @@ Route::controller(NeracaController::class)->group(function () {
     Route::get('/delete_akun_neraca', 'delete_akun_neraca')->name('delete_akun_neraca');
     Route::get('/akun_neraca', 'akun_neraca')->name('akun_neraca');
     Route::get('/print_neraca', 'print_neraca')->name('print_neraca');
+});
+
+Route::controller(PenjualanController::class)->group(function () {
+    Route::get('/penjualan_agrilaras', 'index')->name('penjualan_agrilaras');
+});
+
+Route::controller(Stock_telurController::class)->group(function () {
+    Route::get('/stok_telur', 'index')->name('stok_telur');
+    Route::get('/tbh_stok_telur', 'tbh_stok_telur')->name('tbh_stok_telur');
+    Route::get('/load_menu_telur', 'load_menu_telur')->name('load_menu_telur');
+    Route::get('/tbh_baris_telur', 'tbh_baris_telur')->name('tbh_baris_telur');
+    Route::post('/save_stok_telur', 'save_stok_telur')->name('save_stok_telur');
+    Route::get('/transfer_stok_telur', 'transfer_stok_telur')->name('transfer_stok_telur');
+    Route::get('/load_transfer_telur', 'load_transfer_telur')->name('load_transfer_telur');
+    Route::get('/tbh_baris_transfer', 'tbh_baris_transfer')->name('tbh_baris_transfer');
+    Route::post('/save_transfer_stok_telur', 'save_transfer_stok_telur')->name('save_transfer_stok_telur');
 });

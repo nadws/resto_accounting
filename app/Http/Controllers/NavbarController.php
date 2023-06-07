@@ -141,12 +141,7 @@ class NavbarController extends Controller
                 'img' => 'penutup.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            // [
-            //     'judul' => 'Control Flow',
-            //     'route' => 'controlflow',
-            //     'img' => 'evaluation.png',
-            //     'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            // ],
+
         ];
         $title = 'Buku Besar';
         return view('navbar.data_master', compact(['data', 'title']));
@@ -195,6 +190,32 @@ class NavbarController extends Controller
             //     'img' => 'payment.png',
             //     'deskripsi' => 'Menampilkan daftar perinci piutang dagang tiap pelanggan yang berasal dari penjualan bukan tunai dan/atau saldo awal piutang usaha.',
             // ],
+
+        ];
+        $title = 'Penjualan';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
+    public function penjualan_agl()
+    {
+        $data = [
+            [
+                'judul' => 'Stok Telur',
+                'route' => 'stok_telur',
+                'img' => 'warehouse2.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+            [
+                'judul' => 'Penjualan Telur',
+                'route' => 'penjualan_agl',
+                'img' => 'online-shopping.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+            [
+                'judul' => 'Piutang Telur',
+                'route' => 'penjualan_agl',
+                'img' => 'online-payment.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
 
         ];
         $title = 'Penjualan';

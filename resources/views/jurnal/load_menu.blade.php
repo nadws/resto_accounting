@@ -57,6 +57,9 @@
             <td style="vertical-align: top;">
                 <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="1">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa1" value="0" name="kredit[]">
+                <input type="hidden" class="form-control id_klasifikasi1" value="0" name="id_klasifikasi[]">
+                <p class="peringatan1 mt-2 text-danger" hidden>Apakah anda yakin ingin memasukkan biaya disebelah kredit
+                </p>
             </td>
             {{-- <td style="vertical-align: top;">
                 <p class="saldo_akun1 text-end" style="font-size: 12px"></p>
@@ -67,6 +70,7 @@
                 </button>
             </td>
         </tr>
+
 
         <tr class="baris2">
             <td style="vertical-align: top;">
@@ -102,6 +106,7 @@
             <td style="vertical-align: top;">
                 <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="2">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa2" value="0" name="kredit[]">
+                <input type="hidden" class="form-control id_klasifikasi2" value="0" name="id_klasifikasi[]">
             </td>
             {{-- <td style="vertical-align: top;">
                 <p class="saldo_akun2 text-end" style="font-size: 12px"></p>

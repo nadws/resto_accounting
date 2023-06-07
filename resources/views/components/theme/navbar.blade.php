@@ -29,6 +29,11 @@
                 'isi' => ['penjualan', 'jual.index'],
                 ],
                 [
+                'nama' => 'Penjualan AGL',
+                'route' => 'penjualan_agl',
+                'isi' => ['penjualan_agl','stok_telur'],
+                ],
+                [
                 'nama' => 'Pembelian BK',
                 'route' => 'pembelian',
                 'isi' => ['pembelian', 'po.index', 'pembelian_bk', 'pembelian_bk.add'],
