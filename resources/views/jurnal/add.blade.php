@@ -25,7 +25,6 @@
 
     <x-slot name="cardBody">
         <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
-            @csrf
             <section class="row">
 
                 <div class="col-lg-3">
@@ -84,6 +83,7 @@
 
                 </div>
             </section>
+
     </x-slot>
     <x-slot name="cardFooter">
         <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
@@ -226,10 +226,20 @@
     });
    
     
-
+     
     $(document).on("keyup", ".kredit_rupiah", function () {
         var count = $(this).attr("count");
-        var input = $(this).val();		
+        var input = $(this).val();
+        var id_klasifikasi = $('.id_klasifikasi' + count).val();
+
+        
+        
+        if (id_klasifikasi === '3') {
+           $('.peringatan' + count).attr("hidden",false);
+        }else{
+            $('.peringatan' + count).attr("hidden",true);
+        }
+       
 		input = input.replace(/[^\d\,]/g, "");
 		input = input.replace(".", ",");
 		input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
@@ -292,6 +302,7 @@
             $(".pilihan_l").hide();
         }
     });
+    
 
     aksiBtn("form");
 });
@@ -301,14 +312,28 @@
             $(document).on("change", ".pilih_akun", function () {
                 var count = $(this).attr("count");
                 var id_akun = $(".pilih_akun" + count).val();
+                var kredit_biasa = $('.kredit_biasa' + count).val();
+
+                
                 $.ajax({
                     url: "/saldo_akun?id_akun=" + id_akun,
                     type: "Get",
                     dataType: "json",
                     success: function (data) {
-                        $(".saldo_akun" + count).text(data['saldo']);
-                    },
-                });
+                        var id_klasifikasi = $(".id_klasifikasi" + count).val(data['id_klasifikasi']);
+
+                        if (id_klasifikasi == 3) {
+                            if (kredit_biasa != '0') {
+                                $('.peringatan' + count).attr("hidden",false);
+                            } else {
+                                $('.peringatan' + count).attr("hidden",true);
+                            }
+                           
+                        }else{
+                            $('.peringatan' + count).attr("hidden",true);
+                        }
+                            },
+                        });
             });
             $(document).on("change", ".pilih_akun", function () {
                 var count = $(this).attr("count");

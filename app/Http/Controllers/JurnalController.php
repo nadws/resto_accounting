@@ -156,7 +156,7 @@ class JurnalController extends Controller
             $nota_t = $max->nomor_nota + 1;
         }
         DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
-        
+
         for ($i = 0; $i < count($id_akun); $i++) {
             $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun[$i])->first();
             $akun = DB::table('akun')->where('id_akun', $id_akun[$i])->first();
@@ -277,7 +277,7 @@ class JurnalController extends Controller
             ];
             Jurnal::insert($data);
         }
-        
+
         $tgl1 = date('Y-m-01', strtotime($r->tgl));
         $tgl2 = date('Y-m-t', strtotime($r->tgl));
         return redirect()->route('jurnal', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => 0])->with('sukses', 'Data berhasil ditambahkan');
@@ -308,17 +308,26 @@ class JurnalController extends Controller
     public function saldo_akun(Request $r)
     {
         $id_akun = $r->id_akun;
-        $jurnal =  DB::selectOne("SELECT sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.id_akun = '$id_akun'");
-        $saldo = $jurnal->debit - $jurnal->kredit;
+        // $jurnal =  DB::selectOne("SELECT sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.id_akun = '$id_akun'");
+        // $saldo = $jurnal->debit - $jurnal->kredit;
 
-        if (empty($saldo)) {
-            $saldo = 'Rp. 0';
+        // if (empty($saldo)) {
+        //     $saldo = 'Rp. 0';
+        // } else {
+        //     $saldo = 'Rp. ' . number_format($saldo, 0, '.', '.');
+        // }
+
+        $akun = DB::table('akun')->where('id_akun', $id_akun)->first();
+
+        if (empty($akun->id_klasifikasi)) {
+            $id_klasifikasi = 0;
         } else {
-            $saldo = 'Rp. ' . number_format($saldo, 0, '.', '.');
+            $id_klasifikasi = $akun->id_klasifikasi;
         }
 
+
         $data = [
-            'saldo' => $saldo,
+            'id_klasifikasi' => $id_klasifikasi,
         ];
         echo json_encode($data);
     }

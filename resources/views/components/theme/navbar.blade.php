@@ -25,6 +25,11 @@
                             'isi' => ['buku_besar', 'akun', 'jurnal', 'jurnal.add', 'summary_buku_besar.index', 'saldo_awal', 'summary_buku_besar.detail', 'profit', 'cashflow.index', 'penutup.index', 'controlflow', 'neraca'],
                         ],
                         [
+                            'nama' => 'Penjualan AGL',
+                            'route' => 'penjualan_agl',
+                            'isi' => ['penjualan_agl', 'stok_telur'],
+                        ],
+                        [
                             'nama' => 'Penjualan BK',
                             'route' => 'penjualan',
                             'isi' => ['penjualan', 'jual.index'],
