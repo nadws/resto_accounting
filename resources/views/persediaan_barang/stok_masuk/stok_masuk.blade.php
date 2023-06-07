@@ -1,8 +1,7 @@
-<x-theme.app title="{{ $title }}" rot1="produk.index"
-rot2="stok_masuk.index"
-rot3="opname.index" nav="Y" table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" rot1="produk.index" rot2="stok_masuk.index" rot3="opname.index" nav="Y"
+    table="Y" sizeCard="12">
     <x-slot name="cardHeader">
-        
+
         <div class="row justify-content-end">
             <hr class="mt-3">
             <div class="col-lg-6">
@@ -20,12 +19,16 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
                 </select>
             </div>
             <div class="col-lg-2">
-                <a href="{{route('stok_masuk.add')}}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i> Tambah</a>
+                @if (!empty($create))
+                    <a href="{{ route('stok_masuk.add') }}" class="btn btn-primary float-end"> <i
+                            class="fas fa-plus"></i> Tambah</a>
+                @endif
+                <x-theme.akses :halaman="$halaman" route="stok_masuk.index" />
             </div>
-           
+
         </div>
-        
-    
+
+
 
     </x-slot>
     <x-slot name="cardBody">
@@ -44,8 +47,7 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
                 </thead>
                 <tbody>
                     @foreach ($stok as $no => $d)
-                        <tr class="tbl"
-                            data-href="javascript:void(0)">
+                        <tr class="tbl" data-href="javascript:void(0)">
                             <td class="td-href">{{ $no + 1 }}</td>
                             <td class="td-href" align="center">{{ tanggal($d->tgl) }}</td>
                             <td class="td-href">{{ $d->no_nota }}</td>
@@ -60,30 +62,42 @@ rot3="opname.index" nav="Y" table="Y" sizeCard="12">
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        @if ($d->jenis == 'draft')
-                                        <li>
-                                            <a class="dropdown-item text-primary edit"
-                                                href="{{ route('stok_masuk.add', ['no_nota' => encrypt($d->no_nota)]) }}"><i class="me-2 fas fa-pen"></i>
-                                                Edit</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-danger"
-                                                onclick="return confirm('Yakin dihapus ?')"
-                                                href="{{ route('stok_masuk.delete', $d->no_nota) }}"><i
-                                                    class="me-2 fas fa-trash"></i> Delete</a>
-                                        </li>
+                                        @php
+                                            $emptyKondisi = [$edit, $print, $detail];
+                                        @endphp
+                                        <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
+                                        @if (!empty($edit))
+                                            @if ($d->jenis == 'draft')
+                                                <li>
+                                                    <a class="dropdown-item text-primary edit"
+                                                        href="{{ route('stok_masuk.add', ['no_nota' => encrypt($d->no_nota)]) }}"><i
+                                                            class="me-2 fas fa-pen"></i>
+                                                        Edit</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item text-danger"
+                                                        onclick="return confirm('Yakin dihapus ?')"
+                                                        href="{{ route('stok_masuk.delete', $d->no_nota) }}"><i
+                                                            class="me-2 fas fa-trash"></i> Delete</a>
+                                                </li>
+                                            @endif
                                         @endif
-                                        <li>
-                                            <a class="dropdown-item text-info detail_nota"
-                                                no_nota="{{ $d->no_nota }}" href="#" data-bs-toggle="modal"
-                                                data-bs-target="#detail"><i class="me-2 fas fa-search"></i>
-                                                Detail</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item text-info"
-                                                 href="{{ route('stok_masuk.cetak', ['no_nota' => encrypt($d->no_nota)]) }}"><i class="me-2 fas fa-print"></i>
-                                                Cetak</a>
-                                        </li>
+                                        @if (!empty($detail))
+                                            <li>
+                                                <a class="dropdown-item text-info detail_nota"
+                                                    no_nota="{{ $d->no_nota }}" href="#" data-bs-toggle="modal"
+                                                    data-bs-target="#detail"><i class="me-2 fas fa-search"></i>
+                                                    Detail</a>
+                                            </li>
+                                        @endif
+                                        @if (!empty($print))
+                                            <li>
+                                                <a class="dropdown-item text-info"
+                                                    href="{{ route('stok_masuk.cetak', ['no_nota' => encrypt($d->no_nota)]) }}"><i
+                                                        class="me-2 fas fa-print"></i>
+                                                    Cetak</a>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </td>

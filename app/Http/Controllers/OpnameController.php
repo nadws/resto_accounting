@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Gudang;
 use App\Models\Stok;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SettingHal;
 
 class OpnameController extends Controller
 {
@@ -23,11 +25,17 @@ class OpnameController extends Controller
                     ->orderBy('no_nota', 'desc')
                     ->groupBy('no_nota')
                     ->get();
-
+        $id_user = auth()->user()->id;
         $data = [
             'title' => 'Opname',
             'gudang' => $this->gudang,
             'stok' => $produk,
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 8,
+            'create' => SettingHal::btnHal(34, $id_user),
+            'print' => SettingHal::btnHal(35, $id_user),
+            'detail' => SettingHal::btnHal(36, $id_user),
         ];
         return view('persediaan_barang.opname.index',$data);
     }

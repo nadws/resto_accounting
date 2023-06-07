@@ -178,27 +178,13 @@ class NeracaController extends Controller
     {
         DB::table('akun_neraca')->where('id_akun_neraca', $r->id_akun_neraca)->delete();
     }
-
-    public function akun_neraca(Request $r)
+    public function view_akun_neraca()
     {
         $data = [
-            'akun' => DB::Select("SELECT a.nm_akun, b.id_akun FROM akun as a left join akun_neraca as b on b.id_akun = a.id_akun;"),
+            'akun' => DB::Select("SELECT a.id_akun,a.nm_akun, b.id_akun as ada FROM akun as a
+            LEFT JOIN akun_neraca as b ON a.id_akun= b.id_akun"),
         ];
 
         return view('neraca.view_akun', $data);
-    }
-
-    public function print_neraca(Request $r)
-    {
-        $tgl1 =  $r->tgl1;
-        $tgl2 = $r->tgl2;
-
-
-
-
-        $data = [
-            'title' => 'das'
-        ];
-        return view('neraca.print', $data);
     }
 }

@@ -109,9 +109,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/', 'create')->name('create');
             Route::get('/delete', 'delete')->name('delete');
+            Route::post('/edit', 'edit')->name('edit');
             Route::get('/{gudang_id}', 'index')->name('detail');
             Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
-            Route::post('/edit', 'edit')->name('edit');
         });
 
     Route::controller(StokMasukController::class)
@@ -249,6 +249,7 @@ Route::controller(NeracaController::class)->group(function () {
     Route::get('/neraca', 'index')->name('neraca');
     Route::get('/loadNeraca', 'loadneraca')->name('loadNeraca');
     Route::get('/loadinputSub_neraca', 'loadinputSub_neraca')->name('loadinputSub_neraca');
+    Route::get('/view_akun_neraca', 'view_akun_neraca')->name('view_akun_neraca');
     Route::get('/saveSub_neraca', 'saveSub_neraca')->name('saveSub_neraca');
     Route::get('/loadinputAkun_neraca', 'loadinputAkun_neraca')->name('loadinputAkun_neraca');
     Route::get('/saveAkunNeraca', 'saveAkunNeraca')->name('saveAkunNeraca');

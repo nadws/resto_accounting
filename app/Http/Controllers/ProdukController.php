@@ -6,9 +6,11 @@ use App\Models\Gudang;
 use App\Models\Produk;
 use App\Models\Satuan;
 use App\Models\Stok;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
+use SettingHal;
 
 class ProdukController extends Controller
 {
@@ -18,7 +20,7 @@ class ProdukController extends Controller
     public function index($gudang_id = null)
     {
         $kd_produk = Produk::latest('kd_produk')->first();
-
+        $id_user = auth()->user()->id;
         $data = [
             'title' => 'Data Atk',
             'produk' => Stok::getProduk(1,$gudang_id, 'Y'),
@@ -29,6 +31,13 @@ class ProdukController extends Controller
             'tgl2' => date('y-m-d'),
             'id_proyek' => 1,
             'kd_produk' => empty($kd_produk) ? 1 : $kd_produk->kd_produk + 1,
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 6,
+            'create' => SettingHal::btnHal(26, $id_user),
+            'edit' => SettingHal::btnHal(27, $id_user),
+            'delete' => SettingHal::btnHal(28, $id_user),
+            'detail' => SettingHal::btnHal(29, $id_user),
         ];
         return view('persediaan_barang.produk.produk', $data);
     }
@@ -66,19 +75,20 @@ class ProdukController extends Controller
             } else {
                 return redirect()->route($route, $r->segment ?? '')->with('error', 'File tidak didukung');
             }
+        } else {
+            Produk::create([
+                'kd_produk' => $r->kd_produk,
+                'nm_produk' => $r->nm_produk,
+                'gudang_id' => $r->gudang_id,
+                'kategori_id' => 1,
+                'satuan_id' => $r->satuan_id,
+                'departemen_id' => $this->id_departemen,
+                'kontrol_stok' => $r->kontrol_stok,
+                'tgl' => date('Y-m-d'),
+                'admin' => auth()->user()->name,
+            ]);
+            return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
         }
-        Produk::create([
-            'kd_produk' => $r->kd_produk,
-            'nm_produk' => $r->nm_produk,
-            'gudang_id' => $r->gudang_id,
-            'kategori_id' => 1,
-            'satuan_id' => $r->satuan_id,
-            'departemen_id' => $this->id_departemen,
-            'kontrol_stok' => $r->kontrol_stok,
-            'tgl' => date('Y-m-d'),
-            'admin' => auth()->user()->name,
-        ]);
-        return redirect()->route($route, $r->segment ?? '')->with('sukses', 'Berhasil tambah data');
     }
 
     public function edit_load($id_produk)

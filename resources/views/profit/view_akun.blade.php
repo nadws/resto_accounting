@@ -6,7 +6,7 @@
 </style>
 <div class="row">
     <div class="col-lg-12">
-        <table class="table table-bordered" id="table3">
+        <table class="table table-bordered" id="table2">
             <thead>
                 <tr>
                     <th class="dhead">No</th>

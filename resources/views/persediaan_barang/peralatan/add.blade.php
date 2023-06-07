@@ -90,7 +90,6 @@
                 </div>
             </x-theme.modal>
         </form>
-        <x-theme.btn_alert_delete route="peralatan.delete_kelompok" name="id_kelompok" :tgl1="$tgl1" :tgl2="$tgl2" :id_proyek="$id_proyek" />
 
         <form action="{{ route('peralatan.edit_kelompok') }}" action="post">
             @csrf

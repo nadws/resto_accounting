@@ -2,13 +2,13 @@
     table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <hr class="mt-3">
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <h6 class="float-start mt-1">Atk {{ $title }}
             </h6>
 
         </div>
         <div class="row justify-content-end">
-            <div class="col-lg-4">
+            <div class="col-lg-3">
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse</option>
                     @foreach ($gudang as $g)
@@ -17,9 +17,12 @@
                     @endforeach
                 </select>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-3">
+                @if (!empty($create))
                 <a href="{{ route('penyesuaian.atk') }}" class="btn btn-primary float-end"> <i class="fas fa-plus"></i>
                     Tambah</a>
+                @endif
+                <x-theme.akses :halaman="$halaman" route="opname.index" />
             </div>
 
         </div>
@@ -56,6 +59,10 @@
                                         <i class="fas fa-ellipsis-v text-primary"></i>
                                     </span>
                                     <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        @php
+                                            $emptyKondisi = [$print, $detail];
+                                        @endphp
+                                        <x-theme.dropdown_kosong :emptyKondisi="$emptyKondisi" />
                                         @if ($d->jenis == 'draft')
                                             <li>
                                                 <a class="dropdown-item text-primary edit"
@@ -70,18 +77,22 @@
                                                         class="me-2 fas fa-trash"></i> Delete</a>
                                             </li>
                                         @endif
+                                        @if (!empty($detail))
                                         <li>
                                             <a class="dropdown-item text-info detail_nota"
                                                 no_nota="{{ $d->no_nota }}" href="#" data-bs-toggle="modal"
                                                 data-bs-target="#detail"><i class="me-2 fas fa-search"></i>
                                                 Detail</a>
                                         </li>
+                                        @endif
+                                        @if (!empty($print))
                                         <li>
                                             <a class="dropdown-item text-info"
                                                 href="{{ route('opname.cetak', ['no_nota' => encrypt($d->no_nota)]) }}"><i
                                                     class="me-2 fas fa-print"></i>
                                                 Cetak</a>
                                         </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </td>

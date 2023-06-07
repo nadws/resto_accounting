@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Gudang;
 use App\Models\Produk;
 use App\Models\Stok;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use SettingHal;
 
 class StokMasukController extends Controller
 {
@@ -14,11 +16,12 @@ class StokMasukController extends Controller
 
     public function __construct()
     {
-        $this->produk = Produk::with('satuan')->where([['kontrol_stok', 'Y'],['kategori_id', 1]])->get();
+        $this->produk = Produk::with('satuan')->where([['kontrol_stok', 'Y'], ['kategori_id', 1]])->get();
     }
 
     public function index($gudang_id = null)
     {
+        $id_user = auth()->user()->id;
         $data = [
             'title' => 'Stok Masuk',
             'produk' => $this->produk,
@@ -27,10 +30,17 @@ class StokMasukController extends Controller
                 ->when($gudang_id, function ($q, $gudang_id) {
                     return $q->where('gudang_id', $gudang_id);
                 })
-                ->where([['status', '!=', 'opname'],['kategori_id', '1']])
+                ->where([['status', '!=', 'opname'], ['kategori_id', '1']])
                 ->groupBy('no_nota')
                 ->orderBy('id_stok_produk', 'DESC')
-                ->get()
+                ->get(),
+
+            'user' => User::where('posisi_id', 1)->get(),
+            'halaman' => 7,
+            'create' => SettingHal::btnHal(30, $id_user),
+            'print' => SettingHal::btnHal(31, $id_user),
+            'detail' => SettingHal::btnHal(32, $id_user),
+            'edit' => SettingHal::btnHal(33, $id_user),
         ];
         return view('persediaan_barang.stok_masuk.stok_masuk', $data);
     }
@@ -82,7 +92,7 @@ class StokMasukController extends Controller
 
     public function store(Request $r)
     {
-        if(empty($r->id_produk)) {
+        if (empty($r->id_produk)) {
             return redirect()->route('stok_masuk.index')->with('error', 'Data Tidak ada');
         }
         for ($i = 0; $i < count($r->id_produk); $i++) {
@@ -135,11 +145,11 @@ class StokMasukController extends Controller
 
     public function cetak(Request $r)
     {
-        if(strlen($r->no_nota) > 200 || strlen($r->no_nota) < 200){
+        if (strlen($r->no_nota) > 200 || strlen($r->no_nota) < 200) {
             return redirect()->back()->with('error', 'No nota tidak terdaftar !');
         }
         $no_nota = decrypt($r->no_nota);
-        
+
         $data = [
             'title' => 'Stok Masuk Cetak',
             'stok' => Stok::getCetak($no_nota),
