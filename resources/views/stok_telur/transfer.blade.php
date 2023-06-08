@@ -1,4 +1,4 @@
-<x-theme.app title="{{$title}}" table="Y" sizeCard="10">
+<x-theme.app title="{{$title}}" table="Y" sizeCard="11">
 
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
@@ -125,6 +125,21 @@
                 type: "Get",
                 success: function (data) {
                     $("#tb_baris").append(data);
+                    $(".select").select2();
+                },
+            });
+        });
+        $(document).on("change", ".pilih_telur", function () {
+            var count = $(this).attr('count');
+            var id_telur = $('.pilih_telur' + count).val();
+           
+            $.ajax({
+                url: "/get_stok_telur?id_telur="+ id_telur,
+                type: "Get",
+                dataType: "json",
+                success: function (data) {
+                    $(".pcs_telur" + count).text(data['pcs']);
+                    $(".kg_telur" + count).text(data['kg']);
                     $(".select").select2();
                 },
             });

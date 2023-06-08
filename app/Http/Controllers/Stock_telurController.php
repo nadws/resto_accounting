@@ -52,6 +52,7 @@ class Stock_telurController extends Controller
             FROM stok_telur as a 
             left join kandang as b on b.id_kandang = a.id_kandang
             left join telur_produk as c on c.id_produk_telur = a.id_telur
+            where a.id_kandang != '0'
             order by a.id_stok_telur DESC
             ")
 
@@ -131,8 +132,53 @@ class Stock_telurController extends Controller
         return view('stok_telur.tbh_transfer_telur', $data);
     }
 
+    public function get_stok(Request $r)
+    {
+        $stok = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg , sum(a.pcs_kredit) as pcs_kredit, sum(a.kg_kredit) as kg_kredit
+        FROM stok_telur as a
+        where a.id_telur = '$r->id_telur'
+        ");
+
+        $data = [
+            'pcs' => $stok->pcs - $stok->pcs_kredit,
+            'kg' => $stok->kg - $stok->kg_kredit
+        ];
+        echo json_encode($data);
+    }
+
     public function save_transfer_stok_telur(Request $r)
     {
-        # code...
+        $max = DB::table('stok_telur_alpa')->latest('urutan')->first();
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->urutan + 1;
+        }
+        for ($x = 0; $x < count($r->id_telur); $x++) {
+            $data = [
+                'tgl' => $r->tgl,
+                'id_telur' => $r->id_telur[$x],
+                'ket' => $r->ket[$x],
+                'pcs' => $r->pcs[$x],
+                'kg' => $r->kg[$x],
+                'dari_gudang' => '1',
+                'ke_gudang' => '2',
+                'no_nota' => 'TF-' . $nota_t,
+                'urutan' => $nota_t,
+                'admin' => Auth::user()->name,
+            ];
+            DB::table('stok_telur_alpa')->insert($data);
+        }
+        for ($x = 0; $x < count($r->id_telur); $x++) {
+            $data = [
+                'tgl' => $r->tgl,
+                'id_telur' => $r->id_telur[$x],
+                'pcs_kredit' => $r->pcs[$x],
+                'kg_kredit' => $r->kg[$x],
+                'admin' => Auth::user()->name,
+            ];
+            DB::table('stok_telur')->insert($data);
+        }
     }
 }
