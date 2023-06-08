@@ -14,7 +14,7 @@ use SettingHal;
 
 class BahanBakuController extends Controller
 {
-    protected
+    protected 
         $id_departemen = 1,
         $gudang,
         $produk;

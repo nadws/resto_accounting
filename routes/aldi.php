@@ -6,6 +6,7 @@ use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
+use App\Http\Controllers\PenjualanUmumController;
 use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PoController;
@@ -185,6 +186,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/load_aktiva', 'load_aktiva')->name('load_aktiva');
             Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
             Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+        });
+
+    Route::controller(PenjualanUmumController::class)
+        ->prefix('penjualan_umum')
+        ->name('penjualan_umum.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 
     Route::get('/403', function () {

@@ -22,6 +22,7 @@
                     <a href="{{ route('bahan_baku.stok_masuk_add') }}" class="btn btn-primary float-end"> <i
                             class="fas fa-plus"></i> Tambah</a>
                 @endif
+
                 <x-theme.akses :halaman="$halaman" route="bahan_baku.stok_masuk" />
             </div>
         </div>
@@ -95,6 +96,7 @@
                                                         class="me-2 fas fa-print"></i>
                                                     Cetak</a>
                                             </li>
+                                            
                                         @endif
                                     </ul>
                                 </div>

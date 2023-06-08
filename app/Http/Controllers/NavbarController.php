@@ -47,12 +47,23 @@ class NavbarController extends Controller
     public function persediaan_barang()
     {
         $data = [
-
             [
                 'judul' => 'Data Atk',
                 'route' => 'produk.index',
                 'img' => 'product.png',
                 'deskripsi' => 'mengelola data barang atk',
+            ],
+            [
+                'judul' => 'Data Bahan Baku',
+                'route' => 'bahan_baku.index',
+                'img' => 'bahan_baku.png',
+                'deskripsi' => 'mengelola data barang atk dan peralatan',
+            ],
+            [
+                'judul' => 'Data Barang Dagangan',
+                'route' => 'produk.index',
+                'img' => 'product.png',
+                'deskripsi' => 'mengelola data barang atk dan peralatan',
             ],
             [
                 'judul' => 'Data Peralatan',
@@ -71,18 +82,6 @@ class NavbarController extends Controller
                 'route' => 'penyesuaian.index',
                 'img' => 'journalism.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Data Bahan Baku',
-                'route' => 'bahan_baku.index',
-                'img' => 'bahan_baku.png',
-                'deskripsi' => 'mengelola data barang atk dan peralatan',
-            ],
-            [
-                'judul' => 'Data Barang Dagangan',
-                'route' => 'produk.index',
-                'img' => 'product.png',
-                'deskripsi' => 'mengelola data barang atk dan peralatan',
             ],
         ];
         $title = 'Persediaan Barang';
@@ -162,6 +161,20 @@ class NavbarController extends Controller
         return view('navbar.data_master', compact(['data', 'title']));
     }
     public function pembayaran()
+    {
+        $data = [
+            [
+                'judul' => 'Pembayaran',
+                'route' => 'pembayaranbk',
+                'img' => 'finance.png',
+                'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
+            ],
+
+        ];
+        $title = 'Pembayaran';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
+    public function penjualan_umum()
     {
         $data = [
             [
