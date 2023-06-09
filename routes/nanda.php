@@ -261,6 +261,11 @@ Route::controller(NeracaController::class)->group(function () {
 
 Route::controller(PenjualanController::class)->group(function () {
     Route::get('/penjualan_agrilaras', 'index')->name('penjualan_agrilaras');
+    Route::get('/tbh_invoice_telur', 'tbh_invoice_telur')->name('tbh_invoice_telur');
+    Route::get('/loadkginvoice', 'loadkginvoice')->name('loadkginvoice');
+    Route::get('/tambah_baris_kg', 'tambah_baris_kg')->name('tambah_baris_kg');
+    Route::get('/tbh_pembayaran', 'tbh_pembayaran')->name('tbh_pembayaran');
+    Route::post('/save_penjualan_telur', 'save_penjualan_telur')->name('save_penjualan_telur');
 });
 
 Route::controller(Stock_telurController::class)->group(function () {
