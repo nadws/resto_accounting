@@ -46,13 +46,13 @@
                         ],
                         [
                             'nama' => 'Penjualan',
-                            'route' => 'penjualan_umum.index',
-                            'isi' => ['pembayaran', 'pembayaranbk', 'pembayaranbk.add'],
+                            'route' => 'penjualan_umum',
+                            'isi' => ['penjualan_umum','penjualan2.index', 'penjualan2.add'],
                         ],
                         [
                             'nama' => 'persediaan dan penyesuaian',
                             'route' => 'persediaan_barang',
-                            'isi' => ['persediaan_barang', 'produk', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname', 'peralatan.add', 'penyesuaian.atk', 'penyesuaian.atk_gudang', 'penyesuaian.aktiva', 'penyesuaian.index', 'asset', 'aktiva'],
+                            'isi' => ['persediaan_barang', 'produk.index', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname', 'peralatan.add', 'penyesuaian.atk', 'penyesuaian.atk_gudang', 'penyesuaian.aktiva', 'penyesuaian.index', 'asset', 'aktiva', 'barang_dagangan.index','barang_dagangan.stok_masuk'],
                         ],
                     ];
                 @endphp

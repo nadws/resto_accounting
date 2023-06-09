@@ -159,6 +159,7 @@
         }
         $(".selisih").text(selisih_total);
     });
+    
     var count = 3;
     $(document).on("click", ".tbh_baris", function () {
         count = count + 1;

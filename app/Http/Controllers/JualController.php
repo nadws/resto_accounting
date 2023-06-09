@@ -109,10 +109,10 @@ class JualController extends Controller
     public function piutang(Request $r)
     {
         for ($i = 0; $i < count($r->no_penjualan); $i++) {
-            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
+            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '6')->first();
 
             $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
-            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '2']);
+            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '6']);
 
             $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $this->akunPiutangDagang)->first();
             $akun = DB::table('akun')->where('id_akun', $this->akunPiutangDagang)->first();

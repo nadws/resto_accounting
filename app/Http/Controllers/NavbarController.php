@@ -61,8 +61,8 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Data Barang Dagangan',
-                'route' => 'produk.index',
-                'img' => 'product.png',
+                'route' => 'barang_dagangan.index',
+                'img' => 'penjualan.png',
                 'deskripsi' => 'mengelola data barang atk dan peralatan',
             ],
             [
@@ -178,36 +178,37 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Pembayaran',
-                'route' => 'pembayaranbk',
-                'img' => 'finance.png',
-                'deskripsi' => 'membuat pengajuan pembelian ke pemasok',
+                'judul' => 'Penjualan',
+                'route' => 'penjualan2.index',
+                'img' => 'shop.png',
+                'deskripsi' => 'membuat nota penjualan dari produk dagangan',
+            ],
+            [
+                'judul' => 'Piutang',
+                'route' => 'piutang.index',
+                'img' => 'piutang.png',
+                'deskripsi' => 'membuat nota piutang dari produk dagangan',
             ],
 
         ];
-        $title = 'Pembayaran';
+        $title = 'Penjualan Umum';
         return view('navbar.data_master', compact(['data', 'title']));
     }
     public function penjualan()
     {
         $data = [
             [
-                'judul' => 'Penjualan / Pembayaran',
+                'judul' => 'Penjualan',
                 'route' => 'jual.index',
                 'img' => 'invoice.png',
-                'deskripsi' => 'mencatat faktur penjualan untuk pelanggan',
+                'deskripsi' => 'membuat nota penjualan dari produk dagangan',
             ],
-            // [
-            //     'judul' => 'Daftar Piutang Usaha',
-            //     'route' => 'faktur_penjualan',
-            //     'img' => 'payment.png',
-            //     'deskripsi' => 'Menampilkan daftar perinci piutang dagang tiap pelanggan yang berasal dari penjualan bukan tunai dan/atau saldo awal piutang usaha.',
-            // ],
 
         ];
-        $title = 'Penjualan';
+        $title = 'Penjualan Umum';
         return view('navbar.data_master', compact(['data', 'title']));
     }
+
     public function penjualan_agl()
     {
         $data = [

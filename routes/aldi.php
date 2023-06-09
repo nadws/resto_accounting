@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AksesController;
 use App\Http\Controllers\BahanBakuController;
+use App\Http\Controllers\BarangDaganganController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenjualanUmumController;
 use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PeralatanController;
+use App\Http\Controllers\PiutangController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\SuplierController;
@@ -67,13 +69,41 @@ Route::middleware('auth')->group(function () {
             Route::get('/opname/add/{gudang_id}', 'opname_add')->name('opname.add_detail');
             Route::get('/opname/cetak/{no_nota}', 'opname_cetak')->name('opname.cetak');
             Route::get('/opname/detail/{gudang_id}', 'opname_detail')->name('opname.detail');
+            Route::get('/opname/{gudang_id}', 'opname')->name('opname.detail');
             Route::get('/stok_masuk/{gudang_id}', 'stokMasuk')->name('stok_masuk_segment');
             // Route::get('/stok_masuk/edit/{id_produk}', 'edit_load')->name('edit_load');
             Route::get('/{gudang_id}', 'index')->name('detail');
             Route::get('/edit/{id_produk}', 'edit_load')->name('edit_load');
-            Route::get('/opname/{gudang_id}', 'opname')->name('opname.detail');
         });
 
+    Route::controller(BarangDaganganController::class)
+        ->prefix('barang_dagangan')
+        ->name('barang_dagangan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/create', 'create')->name('create');
+            Route::post('/edit', 'edit')->name('edit');
+            Route::get('/stok_masuk', 'stokMasuk')->name('stok_masuk');
+            Route::get('/add', 'add')->name('add');
+            Route::get('/load_menu', 'load_menu')->name('load_menu');
+            Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::get('/get_stok_sebelumnya', 'get_stok_sebelumnya')->name('get_stok_sebelumnya');
+            Route::post('/store', 'store')->name('store');
+            Route::get('/delete', 'delete')->name('delete');
+            Route::get('/opname', 'opname')->name('opname');
+            Route::get('/opname/add', 'opname_add')->name('opname.add');
+            Route::post('/opname/add', 'opname_store')->name('opname.save');
+            Route::post('/opname/update', 'opname_update')->name('opname.update');
+            Route::get('/opname/add/{gudang_id}', 'opname_add')->name('opname.add_detail');
+            Route::get('/opname/delete/{gudang_id}', 'opname_delete')->name('opname.delete');
+            Route::get('/opname/edit/{no_nota}', 'opname_edit')->name('opname.edit');
+            Route::get('/opname/cetak/{no_nota}', 'opname_cetak')->name('opname.cetak');
+            Route::get('/opname/detail/{gudang_id}', 'opname_detail')->name('opname.detail');
+            Route::get('/opname/{gudang_id}', 'opname')->name('opname.detail');
+            Route::get('/{gudang_id}', 'index')->name('detail');
+            Route::get('/stok_masuk/{gudang_id}', 'stokMasuk')->name('stok_masuk_segment');
+            Route::get('/stok_masuk/edit/{id_produk}', 'detail')->name('edit_load');
+        });
 
     Route::controller(PenutupController::class)
         ->prefix('penutup')
@@ -189,8 +219,28 @@ Route::middleware('auth')->group(function () {
         });
 
     Route::controller(PenjualanUmumController::class)
-        ->prefix('penjualan_umum')
-        ->name('penjualan_umum.')
+        ->prefix('penjualan2')
+        ->name('penjualan2.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::post('/add', 'store')->name('store');
+            Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
+            Route::get('/tbh_pembayaran', 'tbh_pembayaran')->name('tbh_pembayaran');
+        });
+    Route::controller(PenjualanUmumController::class)
+        ->prefix('penjualan2')
+        ->name('penjualan2.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::post('/add', 'store')->name('store');
+            Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
+            Route::get('/tbh_pembayaran', 'tbh_pembayaran')->name('tbh_pembayaran');
+        });
+    Route::controller(PiutangController::class)
+        ->prefix('piutang')
+        ->name('piutang.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
         });

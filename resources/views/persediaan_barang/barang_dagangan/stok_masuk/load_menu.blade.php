@@ -25,6 +25,7 @@
             <label for="">Pilih Gudang</label>
             <select required name="gudang_id" class="form-control select2" id="">
                 <option value="">- Pilih Gudang -</option>
+                
                 @foreach ($gudang as $d)
                     <option {{ $d->id_gudang == $detail->gudang_id ? 'selected' : '' }} value="{{ $d->id_gudang }}">
                         {{ $d->nm_gudang }}</option>
@@ -115,7 +116,6 @@
         </div>
     </section>
 @else
-
     <section class="row">
         <div class="col-lg-2">
             <label for="">Tanggal</label>
@@ -133,7 +133,7 @@
             <select required name="gudang_id" class="form-control select2" id="">
                 <option value="">- Pilih Gudang -</option>
                 @foreach ($gudang as $d)
-                    <option  value="{{ $d->id_gudang }}">
+                    <option value="{{ $d->id_gudang }}">
                         {{ $d->nm_gudang }}</option>
                 @endforeach
             </select>

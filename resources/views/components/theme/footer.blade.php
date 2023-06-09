@@ -264,6 +264,97 @@
         $(document).on('click', '.remove_baris', function() {
             var delete_row = $(this).attr("count");
             $(".baris" + delete_row).remove();
+
+            // menghapus mengurang
+            var total_rpAtas = 0;
+            $(".ttlrp-hide").each(function() {
+                total_rpAtas += parseFloat($(this).val());
+            });
+
+            var total_debit = 0;
+            $(".debit").each(function() {
+                total_debit += parseFloat($(this).val());
+            });
+            var total_kredit = 0;
+            $(".kredit").each(function() {
+                total_kredit += parseFloat($(this).val());
+            });
+
+            var selisih = total_rpAtas - total_debit - total_kredit;
+            var selisih_total = selisih.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            var total_rpAtas = total_rpAtas.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            $(".total_kredit").text(total_rpAtas);
+            $(".total").text(selisih_total);
+
+            if (selisih === 0) {
+                $(".cselisih").css("color", "green");
+                $(".button-save").removeAttr("hidden");
+            } else {
+                $(".cselisih").css("color", "red");
+                $(".button-save").attr("hidden", true);
+            }
+            $(".selisih").text(selisih_total);
+        })
+    }
+
+    function plusRow2(count, classPlus, url) {
+        $(document).on("click", "." + classPlus, function() {
+            count = count + 1;
+            $.ajax({
+                url: `${url}?count=` + count,
+                type: "GET",
+                success: function(data) {
+                    $("#" + classPlus).append(data);
+                    $(".select2").select2();
+                },
+            });
+        });
+
+        $(document).on('click', '.remove_baris2', function() {
+            var delete_row = $(this).attr("count");
+            $(".baris2" + delete_row).remove();
+
+            var total_rpAtas = 0;
+            $(".ttlrp-hide").each(function() {
+                total_rpAtas += parseFloat($(this).val());
+            });
+
+            var total_debit = 0;
+            $(".debit").each(function() {
+                total_debit += parseFloat($(this).val());
+            });
+            var total_kredit = 0;
+            $(".kredit").each(function() {
+                total_kredit += parseFloat($(this).val());
+            });
+
+            var selisih = total_debit - total_kredit;
+            var selisih_total = selisih.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            $(".total").text(selisih_total);
+
+            var selisih = total_debit - total_kredit;
+            var selisih_total = selisih.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+
+            if (selisih === 0) {
+                $(".cselisih").css("color", "green");
+                $(".button-save").removeAttr("hidden");
+            } else {
+                $(".cselisih").css("color", "red");
+                $(".button-save").attr("hidden", true);
+            }
+            $(".selisih").text(selisih_total);
         })
     }
 

@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/pembayaran', 'pembayaran')->name('pembayaran');
         Route::get('/persediaan_barang', 'persediaan_barang')->name('persediaan_barang');
         Route::get('/asset', 'asset')->name('asset');
+        Route::get('/penjualan_umum', 'penjualan_umum')->name('penjualan_umum');
         Route::get('/testing', 'testing')->name('testing');
         Route::get('/penjualan_agl', 'penjualan_agl')->name('penjualan_agl');
     });
