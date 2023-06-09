@@ -220,7 +220,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Penjualan Telur',
-                'route' => 'penjualan_agl',
+                'route' => 'penjualan_agrilaras',
                 'img' => 'online-shopping.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],

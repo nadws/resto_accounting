@@ -12,8 +12,10 @@
         <tr>
             <th width="20%">Produk</th>
             <th width="20%">Keterangan</th>
-            <th width="15%">Pcs</th>
-            <th width="15%">Kg</th>
+            <th width="15%" style="text-align: right">Pcs Stok</th>
+            <th width="15%" style="text-align: right">Pcs</th>
+            <th width="15%" style="text-align: right">Kg Stok</th>
+            <th width="15%" style="text-align: right">Kg</th>
             <th width="15%">Ikat</th>
             <th width="5%">Aksi</th>
         </tr>
@@ -21,7 +23,7 @@
     <tbody>
         <tr class="baris1">
             <td>
-                <select name="id_produk_telur[]" id="" class="select">
+                <select name="id_telur[]" id="" class="select pilih_telur pilih_telur1" count="1">
                     <option value="">Pilih Produk</option>
                     @foreach ($produk as $p)
                     <option value="{{$p->id_produk_telur}}">{{$p->nm_telur}}</option>
@@ -29,8 +31,10 @@
                 </select>
             </td>
             <td><input type="text" name="ket[]" class="form-control"></td>
-            <td><input type="text" name="pcs[]" class="form-control" value="0"></td>
-            <td><input type="text" name="kg[]" class="form-control" value="0"></td>
+            <td class="pcs_telur1" align="right"></td>
+            <td><input type="text" name="pcs[]" class="form-control" style="text-align: right" value="0"></td>
+            <td class="kg_telur1" align="right"></td>
+            <td><input type="text" name="kg[]" class="form-control" style="text-align: right" value="0"></td>
             <td></td>
             <td><button type="button" class="btn rounded-pill remove_baris" count="1"><i
                         class="fas fa-trash text-danger"></i>
