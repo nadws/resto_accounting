@@ -226,7 +226,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Piutang Telur',
-                'route' => 'penjualan_agl',
+                'route' => 'piutang_telur',
                 'img' => 'online-payment.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],

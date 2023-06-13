@@ -15,6 +15,7 @@ use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\PiutangtelurController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
@@ -267,6 +268,9 @@ Route::controller(PenjualanController::class)->group(function () {
     Route::get('/tambah_baris_kg', 'tambah_baris_kg')->name('tambah_baris_kg');
     Route::get('/tbh_pembayaran', 'tbh_pembayaran')->name('tbh_pembayaran');
     Route::post('/save_penjualan_telur', 'save_penjualan_telur')->name('save_penjualan_telur');
+    Route::get('/detail_invoice_telur', 'detail_invoice_telur')->name('detail_invoice_telur');
+    Route::get('/loadpcsinvoice', 'loadpcsinvoice')->name('loadpcsinvoice');
+    Route::get('/tambah_baris_pcs', 'tambah_baris_pcs')->name('tambah_baris_pcs');
 });
 
 Route::controller(Stock_telurController::class)->group(function () {
@@ -284,4 +288,11 @@ Route::controller(Stock_telurController::class)->group(function () {
 Route::controller(Stok_telur_alpaController::class)->group(function () {
     Route::get('/stok_telur_alpa', 'index')->name('stok_telur_alpa');
     Route::get('/detail_stok_telur_alpa', 'detail_stok_telur_alpa')->name('detail_stok_telur_alpa');
+});
+
+Route::controller(PiutangtelurController::class)->group(function () {
+    Route::get('/piutang_telur', 'index')->name('piutang_telur');
+    Route::get('/bayar_piutang_telur', 'bayar_piutang_telur')->name('bayar_piutang_telur');
+    Route::post('/save_bayar_piutang', 'save_bayar_piutang')->name('save_bayar_piutang');
+    Route::get('/get_pembayaranpiutang_telur', 'get_pembayaranpiutang_telur')->name('get_pembayaranpiutang_telur');
 });

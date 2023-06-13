@@ -46,6 +46,7 @@
                 </div>
                 <div class="col-lg-12">
                     <div id="loadkg"></div>
+                    <div id="loadpcs"></div>
                 </div>
                 <div class="col-lg-5">
 
@@ -149,11 +150,23 @@
                         }
                 });
             }
+            function loadpcs(){
+                $.ajax({
+                        type: "get",
+                        url: "/loadpcsinvoice",
+                        success: function (data) {
+                            $("#loadpcs").html(data);
+                            $(".select").select2();
+                        }
+                });
+            }
             $(document).on('change', ".pilih_tipe", function () {
                 var tipe = $(this).val();
                 if (tipe === 'kg') {
                     loadkg() 
+                    $("#loadpcs").html("");
                 } else {
+                    loadpcs() 
                     $("#loadkg").html("");
                 }
             });
@@ -410,7 +423,7 @@
                     
             });
 
-            var count = 3;
+            var count = 2;
             $(document).on("click", ".tbh_baris_kg", function () {
                 count = count + 1;
                 $.ajax({
@@ -491,6 +504,254 @@
     </script>
 
     <script>
+        $(document).ready(function () {
+            $(document).on("keyup", ".tipe_pcs", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.tipe_pcs_biasa' + count).val(0)
+                } else {
+                    $(this).val(input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.tipe_pcs_biasa' + count).val(input2) 
+                }
+
+                var rp_satuan = $('.tipe_rp_satuanbiasa' + count).val();
+               
+                total = parseFloat(rp_satuan) * parseFloat(input2);
+                
+                var totalRupiah = total.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $('.tipe_ttl_rp' + count).text(totalRupiah);
+                
+                $('.tipe_ttl_rpbiasa' + count).val(total);
+
+                var total_all = 0;
+                $(".ttl_rpbiasa").each(function () {
+                    total_all += parseFloat($(this).val());
+                });
+                var total_kredit = 0;
+                $(".kredit_biasa").each(function(){
+                    total_kredit += parseFloat($(this).val());
+                });
+                var total_all_kredit = total_all + total_kredit;
+
+
+                var totalkreditall = total_all_kredit.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+
+                var totalRupiahall = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total").text(totalRupiahall);
+                $(".total_kredit").text(totalkreditall)
+                $(".total_semua_biasa").val(total_all)
+
+                // selisih
+                var total_debit = 0;
+                $(".debit_biasa").each(function(){
+                    total_debit += parseFloat($(this).val());
+                });
+                var totaldebitall = total_debit.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total_debit").text(totaldebitall);
+
+                var selisih = total_all + total_kredit - total_debit;
+                var selisih_total = selisih.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                if (total_kredit + total_all === total_debit) {
+                    $(".cselisih").css("color", "green");
+                    $(".button-save").removeAttr("hidden");
+                } else {
+                    $(".cselisih").css("color", "red");
+                    $(".button-save").attr("hidden", true);
+                }
+                $(".selisih").text(selisih_total);
+                    
+            });
+            $(document).on("keyup", ".tipe_kg", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.tipe_kgbiasa' + count).val(0)
+                } else {
+                    $(this).val(input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.tipe_kgbiasa' + count).val(input2) 
+                }  
+            });
+
+            $(document).on("keyup", ".tipe_rp_satuan", function () {
+                var count = $(this).attr("count");
+                var input = $(this).val();		
+                input = input.replace(/[^\d\,]/g, "");
+                input = input.replace(".", ",");
+                input = input.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+                
+                if (input === "") {
+                    $(this).val("");
+                    $('.tipe_rp_satuanbiasa' + count).val(0)
+                } else {
+                    $(this).val(input);
+                    input = input.replaceAll(".", "");
+                    input2 = input.replace(",", ".");
+                    $('.tipe_rp_satuanbiasa' + count).val(input2) 
+                }
+
+                var pcs = $('.tipe_pcs_biasa' + count).val();
+               
+                total = parseFloat(pcs) * parseFloat(input2);
+                
+                var totalRupiah = total.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $('.tipe_ttl_rp' + count).text(totalRupiah);
+                
+                $('.tipe_ttl_rpbiasa' + count).val(total);
+
+                var total_all = 0;
+                $(".ttl_rpbiasa").each(function () {
+                    total_all += parseFloat($(this).val());
+                });
+                var total_kredit = 0;
+                $(".kredit_biasa").each(function(){
+                    total_kredit += parseFloat($(this).val());
+                });
+                var total_all_kredit = total_all + total_kredit;
+
+
+                var totalkreditall = total_all_kredit.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+
+                var totalRupiahall = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total").text(totalRupiahall);
+                $(".total_kredit").text(totalkreditall)
+                $(".total_semua_biasa").val(total_all)
+
+                // selisih
+                var total_debit = 0;
+                $(".debit_biasa").each(function(){
+                    total_debit += parseFloat($(this).val());
+                });
+                var totaldebitall = total_debit.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total_debit").text(totaldebitall);
+
+                var selisih = total_all + total_kredit - total_debit;
+                var selisih_total = selisih.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                if (total_kredit + total_all === total_debit) {
+                    $(".cselisih").css("color", "green");
+                    $(".button-save").removeAttr("hidden");
+                } else {
+                    $(".cselisih").css("color", "red");
+                    $(".button-save").attr("hidden", true);
+                }
+                $(".selisih").text(selisih_total);
+                    
+            });
+
+            var count = 2;
+            $(document).on("click", ".tbh_baris_pcs", function () {
+                count = count + 1;
+                $.ajax({
+                    url: "/tambah_baris_pcs?count=" + count,
+                    type: "Get",
+                    success: function (data) {
+                        $("#tb_baris_pcs").append(data);
+                        $(".select").select2();
+                    },
+                });
+            });
+
+            $(document).on("click", ".remove_baris_pcs", function () {
+                var delete_row = $(this).attr("count");
+                $(".baris" + delete_row).remove();
+                $('.ttl_rpbiasa' + count).val(total);
+                var total_all = 0;
+                $(".ttl_rpbiasa").each(function () {
+                    total_all += parseFloat($(this).val());
+                });
+                var totalRupiahall = total_all.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                var total_kredit = 0;
+                $(".kredit_biasa").each(function(){
+                    total_kredit += parseFloat($(this).val());
+                });
+                var total_all_kredit = total_all + total_kredit;
+
+
+                var totalkreditall = total_all_kredit.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total").text(totalRupiahall)
+                $(".total_kredit").text(totalkreditall)
+
+                // selisih
+                var total_debit = 0;
+                $(".debit_biasa").each(function(){
+                    total_debit += parseFloat($(this).val());
+                });
+                var totaldebitall = total_debit.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".total_debit").text(totaldebitall);
+
+                var selisih = total_all + total_kredit - total_debit;
+                var selisih_total = selisih.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                if (total_kredit + total_all === total_debit) {
+                    $(".cselisih").css("color", "green");
+                    $(".button-save").removeAttr("hidden");
+                } else {
+                    $(".cselisih").css("color", "red");
+                    $(".button-save").attr("hidden", true);
+                }
+                $(".selisih").text(selisih_total);
+                
+            });
+
+        });
+    </script>
+
+    <script>
         $(document).ready(function () { 
             $(document).on("keyup", ".debit", function () {
                 var count = $(this).attr("count");
@@ -518,10 +779,6 @@
                 $(".debit_biasa").each(function(){
                     total_debit += parseFloat($(this).val());
                 });
-
-
-                
-
 
                 var totalDebitall = total_debit.toLocaleString("id-ID", {
                     style: "currency",
