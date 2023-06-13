@@ -45,12 +45,12 @@
                             'isi' => ['pembayaran', 'pembayaranbk', 'pembayaranbk.add'],
                         ],
                         [
-                            'nama' => 'Penjualan',
+                            'nama' => 'Penjualan & Penyetoran',
                             'route' => 'penjualan_umum',
                             'isi' => ['penjualan_umum', 'penjualan2.index', 'penjualan2.add', 'piutang.index', 'piutang.bayar'],
                         ],
                         [
-                            'nama' => 'persediaan dan penyesuaian',
+                            'nama' => 'persediaan & penyesuaian',
                             'route' => 'persediaan_barang',
                             'isi' => ['persediaan_barang', 'produk.index', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname', 'peralatan.add', 'penyesuaian.atk', 'penyesuaian.atk_gudang', 'penyesuaian.aktiva', 'penyesuaian.index', 'asset', 'aktiva', 'barang_dagangan.index', 'barang_dagangan.stok_masuk'],
                         ],

@@ -189,6 +189,12 @@ class NavbarController extends Controller
                 'img' => 'piutang.png',
                 'deskripsi' => 'membuat nota piutang dari produk dagangan',
             ],
+            [
+                'judul' => 'Penyetoran',
+                'route' => 'piutang.index',
+                'img' => 'deposit.png',
+                'deskripsi' => 'membuat nota piutang dari produk dagangan',
+            ],
 
         ];
         $title = 'Penjualan Umum';
