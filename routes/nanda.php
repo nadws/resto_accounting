@@ -271,6 +271,10 @@ Route::controller(PenjualanController::class)->group(function () {
     Route::get('/detail_invoice_telur', 'detail_invoice_telur')->name('detail_invoice_telur');
     Route::get('/loadpcsinvoice', 'loadpcsinvoice')->name('loadpcsinvoice');
     Route::get('/tambah_baris_pcs', 'tambah_baris_pcs')->name('tambah_baris_pcs');
+    Route::get('/edit_invoice_telur', 'edit_invoice_telur')->name('edit_invoice_telur');
+    Route::get('/loadkginvoiceedit', 'loadkginvoiceedit')->name('loadkginvoiceedit');
+    Route::post('/edit_penjualan_telur', 'edit_penjualan_telur')->name('edit_penjualan_telur');
+    Route::get('/delete_invoice_telur', 'delete_invoice_telur')->name('delete_invoice_telur');
 });
 
 Route::controller(Stock_telurController::class)->group(function () {

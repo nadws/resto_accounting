@@ -11,38 +11,44 @@
 
 
     <x-slot name="cardBody">
-        <form action="{{route('save_penjualan_telur')}}" method="post" class="save_jurnal">
+        <form action="{{route('edit_penjualan_telur')}}" method="post" class="save_jurnal">
             @csrf
             <section class="row">
 
                 <div class="col-lg-2 col-6">
                     <label for="">Tanggal</label>
-                    <input type="date" class="form-control tgl_nota" name="tgl" value="{{date('Y-m-d')}}">
+                    <input type="date" class="form-control tgl_nota" name="tgl" value="{{$invoice2->tgl}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control nota_bk" name="no_nota" value="T{{$nota}}" readonly>
+                    <input type="text" class="form-control nota_bk" name="no_nota" value="{{$nota}}" readonly>
+                    <input type="hidden" class="form-control " name="urutan" value="{{$invoice2->urutan}}" readonly>
+                    <input type="hidden" class="form-control " name="urutan_customer"
+                        value="{{$invoice2->urutan_customer}}" readonly>
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Customer</label>
                     <select name="customer" id="select2" class="" required>
                         <option value="">Pilih Customer</option>
                         @foreach ($customer as $s)
-                        <option value="{{$s->id_customer}}">{{$s->nm_customer}}</option>
+                        <option value="{{$s->id_customer}}" {{$invoice2->id_customer == $s->id_customer ? 'selected' :
+                            ''}}>{{$s->nm_customer}}</option>
                         @endforeach
                     </select>
+                    <input type="hidden" name="id_customer" value="{{$invoice2->id_customer}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Tipe Penjualan</label>
-                    <select name="tipe" class="select2_add pilih_tipe" required>
+                    {{-- <select name="tipe" class="select2_add pilih_tipe" required>
                         <option value="">Pilih Tipe Penjualan</option>
                         <option value="kg">Kg</option>
                         <option value="pcs">Pcs</option>
-                    </select>
+                    </select> --}}
+                    <input type="text" readonly class="form-control" name="tipe" value="{{$invoice2->tipe}}" id="tipe">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Pengantar</label>
-                    <input type="text" class="form-control" name="driver">
+                    <input type="text" class="form-control" name="driver" value="{{$invoice2->driver}}">
                 </div>
 
                 <div class="col-lg-12">
@@ -63,30 +69,41 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <h6>Total</h6>
+                            <input type="hidden" name="no_urut_penjualan" value="{{$jurnal2->no_urut}}">
+                            <input type="hidden" name="urutan_penjualan" value="{{$jurnal2->urutan}}">
                         </div>
                         <div class="col-lg-6">
-                            <h6 class="total float-end">Rp 0</h6>
-                            <input type="hidden" class="total_semua_biasa" name="total_penjualan">
+                            <h6 class="total float-end">Rp {{number_format($invoice2->total_rp,2,',','.')}}</h6>
+                            <input type="hidden" class="total_semua_biasa" name="total_penjualan"
+                                value="{{$invoice2->total_rp}}">
                         </div>
+                        @foreach ($jurnal as $no => $j)
+                        <input type="hidden" name="urutan_jurnal[]" value="{{$j->urutan}}">
+                        <input type="hidden" name="no_urut[]" value="{{$j->no_urut}}">
                         <div class="col-lg-5 mt-2">
                             <label for="">Pilih Akun Pembayaran</label>
                             <select name="id_akun[]" id="" class="select2_add">
                                 <option value="">-Pilih Akun-</option>
                                 @foreach ($akun as $a)
-                                <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
+                                <option value="{{$a->id_akun}}" {{$j->id_akun == $a->id_akun ? 'selected' :
+                                    ''}}>{{$a->nm_akun}}</option>
                                 @endforeach
                             </select>
+                            <input type="hidden" name="id_akun2[]" value="{{$j->id_akun}}">
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Debit</label>
-                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right">
-                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1" value="0">
+                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right"
+                                value="Rp {{number_format($j->debit,0,',','.')}}">
+                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1"
+                                value="{{$j->debit}}">
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Kredit</label>
-                            <input type="text" class="form-control kredit kredit1" count="1" style="text-align: right">
+                            <input type="text" class="form-control kredit kredit1" count="1" style="text-align: right"
+                                value="Rp {{number_format($j->kredit,0,',','.')}}">
                             <input type="hidden" name="kredit[]" class="form-control kredit_biasa kredit_biasa1"
-                                value="0">
+                                value="{{$j->kredit}}">
                         </div>
                         <div class="col-lg-1 mt-2">
                             <label for="">aksi</label> <br>
@@ -94,6 +111,7 @@
                                 <i class="fas fa-plus text-success"></i>
                             </button>
                         </div>
+                        @endforeach
                     </div>
                     <div id="load_pembayaran"></div>
 
@@ -105,21 +123,22 @@
                             <h6>Total Pembayaran</h6>
                         </div>
                         <div class="col-lg-3">
-                            <h6 class="total_debit float-end">Rp 0</h6>
+                            <h6 class="total_debit float-end">Rp {{number_format($j->debit,2,'.',',')}}</h6>
                         </div>
-                        <div class="col-lg-3">
-                            <h6 class="total_kredit float-end">Rp 0</h6>
+                        <div class="col-lg-4">
+                            <h6 class="total_kredit float-end">Rp {{number_format($invoice2->total_rp +
+                                $j->kredit,2,'.',',')}}</h6>
                         </div>
-                        <div class="col-lg-1"></div>
                         <div class="col-lg-5">
                             <h6 class="cselisih">Selisih</h6>
                         </div>
                         <div class="col-lg-3">
                         </div>
-                        <div class="col-lg-3">
-                            <h6 class="selisih float-end cselisih">Rp 0</h6>
+                        <div class="col-lg-4">
+                            <h6 class="selisih float-end cselisih ">Rp {{number_format($j->debit -
+                                ($invoice2->total_rp +
+                                $j->kredit),2,'.',',')}}</h6>
                         </div>
-                        <div class="col-lg-1"></div>
                     </div>
 
 
@@ -127,7 +146,7 @@
             </section>
     </x-slot>
     <x-slot name="cardFooter">
-        <button type="submit" class="float-end btn btn-primary button-save " hidden>Simpan</button>
+        <button type="submit" class="float-end btn btn-primary button-save ">Simpan</button>
         <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...
@@ -143,11 +162,23 @@
 
     <script>
         $(document).ready(function () {
+            var tipe = $("#tipe").val();
+            var no_nota = $(".nota_bk").val();
+            if (tipe === 'kg') {
+                    loadkg() 
+                    $("#loadpcs").html("");
+                } else {
+                    loadpcs() 
+                    $("#loadkg").html("");
+            }
+         
+            
 
             function loadkg(){
+                var no_nota = $(".nota_bk").val();
                 $.ajax({
                         type: "get",
-                        url: "/loadkginvoice",
+                        url: "/loadkginvoiceedit?no_nota=" + no_nota,
                         success: function (data) {
                             $("#loadkg").html(data);
                             $(".select").select2();

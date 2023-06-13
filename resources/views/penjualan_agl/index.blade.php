@@ -21,9 +21,11 @@
                         <th>No Nota</th>
                         <th>Customer</th>
                         <th style="text-align: right">Total Rp</th>
-                        <th>Status</th>
                         <th>Tipe Jual</th>
                         <th>Admin</th>
+                        <th>Pengantar</th>
+                        <th>Metode</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -35,30 +37,56 @@
                         <td>{{$i->no_nota}}</td>
                         <td>{{$i->nm_customer}}{{$i->urutan_customer}}</td>
                         <td align="right">Rp {{number_format($i->ttl_rp,0)}}</td>
+                        <td>{{$i->tipe}}</td>
+                        <td>{{ucwords($i->admin)}}</td>
+                        <td>{{ucwords($i->driver)}}</td>
+                        <td>{{$i->status == 'paid' ? 'Tunai':'Piutang'}}</td>
                         <td>
                             <span
                                 class="badge {{ $i->debit_bayar - $i->kredit_bayar != '0' ? 'bg-warning' : 'bg-success' }}">
                                 {{ $i->debit_bayar - $i->kredit_bayar != '0' ? 'Unpaid' : 'Paid' }}
                             </span>
                         </td>
-                        <td>{{$i->tipe}}</td>
-                        <td>{{$i->admin}}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <span class="btn btn-sm" data-bs-toggle="dropdown">
                                     <i class="fas fa-ellipsis-v text-primary"></i>
                                 </span>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <li><a class="dropdown-item text-primary edit_akun" href=""><i
-                                                class="me-2 fas fa-pen"></i>Edit</a>
-                                    </li>
-
+                                    @if ($i->status == 'paid')
                                     <li>
-                                        <a class="dropdown-item text-danger delete_nota" no_nota="" href="#"
-                                            data-bs-toggle="modal" data-bs-target="#delete"><i
+                                        <a class="dropdown-item text-primary edit_akun"
+                                            href="{{route('edit_invoice_telur',['no_nota' => $i->no_nota])}}"><i
+                                                class="me-2 fas fa-pen"></i>Edit
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{$i->no_nota}}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
                                                 class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
+                                    @else
+                                    @if ($i->debit_bayar - $i->kredit_bayar != '0')
+                                    <li>
+                                        <a class="dropdown-item text-primary edit_akun"
+                                            href="{{route('edit_invoice_telur',['no_nota' => $i->no_nota])}}"><i
+                                                class="me-2 fas fa-pen"></i>Edit
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{$i->no_nota}}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
+                                                class="me-2 fas fa-trash"></i>Delete
+                                        </a>
+                                    </li>
+                                    @else
+
+                                    @endif
+
+                                    @endif
+
                                     <li><a class="dropdown-item  text-info detail_nota" href="#" href="#"
                                             data-bs-toggle="modal" no_nota="{{ $i->no_nota }}"
                                             data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
@@ -87,6 +115,26 @@
             </div>
 
         </x-theme.modal>
+
+        <form action="{{ route('delete_invoice_telur') }}" method="get">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <input type="hidden" class="no_nota" name="no_nota">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         {{-- end sub akun --}}
     </x-slot>
     @section('scripts')
@@ -102,6 +150,10 @@
                     }
                 });
 
+            });
+            $(document).on('click', '.delete_nota', function() {
+                    var no_nota = $(this).attr('no_nota');
+                    $('.no_nota').val(no_nota);
             });
         });
     </script>

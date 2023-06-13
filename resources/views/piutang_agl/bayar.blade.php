@@ -122,7 +122,7 @@
                         </div>
                         <div class="col-lg-5 mt-2">
                             <label for="">Pilih Akun Pembayaran</label>
-                            <select name="id_akun[]" id="" class="select2_add">
+                            <select name="id_akun[]" id="" class="select2_add" required>
                                 <option value="">-Pilih Akun-</option>
                                 @foreach ($akun as $a)
                                 <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
@@ -242,6 +242,23 @@
                     
                     
                 }
+                var total_debit = 0;
+                $(".debit_biasa").each(function(){
+                    total_debit += parseFloat($(this).val());
+                });
+                if (total_all_kredit === total_debit) {
+                    $(".cselisih").css("color", "green");
+                    $(".button-save").removeAttr("hidden");
+                } else {
+                    $(".cselisih").css("color", "red");
+                    $(".button-save").attr("hidden", true);
+                }
+                var selisih = total_all_kredit - total_debit;
+                var selisih_total = selisih.toLocaleString("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                });
+                $(".selisih").text(selisih_total);
                     
             });
             $("form").on("keypress", function (e) {
