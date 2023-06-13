@@ -1,5 +1,5 @@
 <header class="mb-5">
-    @include('components.theme.header')
+    @include('components.theme.header2')
     <nav class="main-navbar ">
         <div class="container font-bold">
             <ul>
