@@ -227,22 +227,27 @@ Route::middleware('auth')->group(function () {
             Route::post('/add', 'store')->name('store');
             Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
             Route::get('/tbh_pembayaran', 'tbh_pembayaran')->name('tbh_pembayaran');
+            Route::get('/delete', 'delete')->name('delete');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::post('/edit', 'update')->name('update');
+            Route::get('/print', 'print')->name('print');
+            Route::get('/detail/{no_nota}', 'detail')->name('detail');
         });
-    Route::controller(PenjualanUmumController::class)
-        ->prefix('penjualan2')
-        ->name('penjualan2.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/add', 'add')->name('add');
-            Route::post('/add', 'store')->name('store');
-            Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
-            Route::get('/tbh_pembayaran', 'tbh_pembayaran')->name('tbh_pembayaran');
-        });
+
     Route::controller(PiutangController::class)
         ->prefix('piutang')
         ->name('piutang.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::get('/bayar', 'bayar')->name('bayar');
+            Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::post('/create', 'create')->name('create');
+            Route::get('/export', 'export')->name('export');
+            Route::get('/get_kredit_pi', 'get_kredit_pi')->name('get_kredit_pi');
+            Route::get('/edit_pembayaran', 'edit_pembayaran')->name('edit_pembayaran');
+            Route::post('/edit_save_pembayaran', 'edit_save_pembayaran')->name('edit_save_pembayaran');
+            Route::get('/detail/{no_nota}', 'detail')->name('detail');
         });
 
     Route::get('/403', function () {

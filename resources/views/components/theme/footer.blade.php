@@ -243,8 +243,23 @@
                 style: "currency",
                 currency: "IDR",
             });
-            $("." + total).text(totalRupiah);
 
+            $("." + total).text(totalRupiah);
+            $(".total_kredit").text(totalRupiah);
+
+            var ttlHutang = $(".total_hutangTetap").val()
+            var selisih = parseFloat(ttlHutang) - parseFloat(total_debit)
+            teksSelisih = selisih.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+
+            if (selisih === 0) {
+                $(".cselisih").css("color", "green");
+            } else {
+                $(".cselisih").css("color", "red");
+            }
+            $(".selisih").text(teksSelisih);
         });
     }
 

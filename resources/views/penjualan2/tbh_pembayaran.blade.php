@@ -11,13 +11,13 @@
     <td>
         <input type="text" class="form-control dikanan pembayaranDebit-nohide text-end"
             value="Rp. 0" count="{{ $count }}">
-        <input type="text" class="form-control dikanan debit pembayaranDebit-hide{{ $count }}" value="0"
+        <input type="hidden" class="form-control dikanan debit pembayaranDebit-hide{{ $count }}" value="0"
             name="debit[]">
     </td>
     <td>
         <input type="text" class="form-control dikanan pembayaranKredit-nohide text-end" value="Rp. 0"
             count="{{$count}}">
-        <input type="text" class="form-control dikanan kredit pembayaranKredit-hide{{$count}}" value="0" name="kredit[]">
+        <input type="hidden" class="form-control dikanan kredit pembayaranKredit-hide{{$count}}" value="0" name="kredit[]">
     </td>
     <td align="center">
         <button type="button" class="btn rounded-pill remove_baris2" count="{{ $count }}"><i
