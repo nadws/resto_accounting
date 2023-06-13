@@ -9,6 +9,7 @@ use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
 use App\Http\Controllers\PenjualanUmumController;
 use App\Http\Controllers\PenutupController;
+use App\Http\Controllers\PenyetoranController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PiutangController;
 use App\Http\Controllers\PoController;
@@ -18,6 +19,10 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
+    Route::get('/403', function () {
+        view('error.403');
+    })->name('403');
+
     Route::controller(PoController::class)
         ->prefix('po')
         ->name('po.')
@@ -157,7 +162,7 @@ Route::middleware('auth')->group(function () {
         ->name('akses.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/detail', 'detail_edit')->name('navbar');
+            Route::get('/navbar', 'detail_edit')->name('navbar');
             Route::get('/{id}', 'detail')->name('detail');
             Route::get('/{id}', 'navbar_delete')->name('navbar_delete');
             Route::get('/detail/{id}', 'detail_get')->name('detail_get');
@@ -252,8 +257,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/edit_save_pembayaran', 'edit_save_pembayaran')->name('edit_save_pembayaran');
             Route::get('/detail/{no_nota}', 'detail')->name('detail');
         });
-
-    Route::get('/403', function () {
-        view('error.403');
-    })->name('403');
+    Route::controller(PenyetoranController::class)
+        ->prefix('penyetoran')
+        ->name('penyetoran.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
 });

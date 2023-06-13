@@ -191,7 +191,7 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Penyetoran',
-                'route' => 'piutang.index',
+                'route' => 'penyetoran.index',
                 'img' => 'deposit.png',
                 'deskripsi' => 'membuat nota piutang dari produk dagangan',
             ],

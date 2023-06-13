@@ -61,13 +61,24 @@ class AksesController extends Controller
     public function addMenu(Request $r)
     {
         if(!empty($r->navbar)) {
-            for ($i=0; $i < count($r->isi); $i++) { 
-                DB::table('navbar')->insert([
-                    'urutan' => $r->urutan[$i],
-                    'nama' => $r->nama[$i],
-                    'route' => $r->route[$i],
-                    'isi' => $r->isi[$i],
-                ]);
+            if(!empty($r->navbar_edit)) {
+                for ($i=0; $i < count($r->isi); $i++) { 
+                    DB::table('navbar')->where('id_navbar', $r->id_navbar[$i])->update([
+                        'urutan' => $r->urutan[$i],
+                        'nama' => $r->nama[$i],
+                        'route' => $r->route[$i],
+                        'isi' => $r->isi[$i],
+                    ]);
+                }
+            } else {
+                for ($i=0; $i < count($r->isi); $i++) { 
+                    DB::table('navbar')->insert([
+                        'urutan' => $r->urutan[$i],
+                        'nama' => $r->nama[$i],
+                        'route' => $r->route[$i],
+                        'isi' => $r->isi[$i],
+                    ]);
+                }
             }
             $rot = 'akses.navbar';
         } else {
