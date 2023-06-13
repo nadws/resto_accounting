@@ -1,11 +1,11 @@
 <header class="mb-5">
-    @include('components.theme.header')
+    @include('components.theme.header2')
     <nav class="main-navbar ">
         <div class="container font-bold">
             <ul>
                 <li class="menu-item">
                     <a href="dashboard"
-                        class='menu-link {{ request()->route()->getName() == ' dashboard'
+                        class='menu-link {{ request()->route()->getName() == 'dashboard'
                             ? 'active_navbar_new'
                             : '' }}'>
                         <span>Dashboard</span>
@@ -45,23 +45,31 @@
                             'isi' => ['pembayaran', 'pembayaranbk', 'pembayaranbk.add'],
                         ],
                         [
-                            'nama' => 'Penjualan',
+                            'nama' => 'Penjualan & Penyetoran',
                             'route' => 'penjualan_umum',
                             'isi' => ['penjualan_umum', 'penjualan2.index', 'penjualan2.add', 'piutang.index', 'piutang.bayar'],
                         ],
                         [
-                            'nama' => 'persediaan dan penyesuaian',
+                            'nama' => 'persediaan & penyesuaian',
                             'route' => 'persediaan_barang',
                             'isi' => ['persediaan_barang', 'produk.index', 'opname.index', 'opname.add', 'stok_masuk.index', 'stok_masuk.add', 'bahan_baku.index', 'bahan_baku.stok_masuk', 'bahan_baku.stok_masuk_segment', 'bahan_baku.opname', 'peralatan.add', 'penyesuaian.atk', 'penyesuaian.atk_gudang', 'penyesuaian.aktiva', 'penyesuaian.index', 'asset', 'aktiva', 'barang_dagangan.index', 'barang_dagangan.stok_masuk'],
                         ],
                     ];
+                    
+                    $navbar = DB::table('navbar')->orderBy('urutan', 'ASC')->get();
+                    
                 @endphp
-                @foreach ($nav as $d)
+                @foreach ($navbar as $d)
+                    @php
+                        $string = $d->isi;
+                        $string = str_replace(['[', ']', "'"], '', $string);
+                        $array = explode(', ', $string);
+                    @endphp
                     <li class="menu-item">
-                        <a href="{{ route($d['route']) }}"
+                        <a href="{{ route($d->route) }}"
                             class='menu-link 
-                    {{ in_array(request()->route()->getName(),$d['isi'])? ' active_navbar_new': '' }}'>
-                            <span>{{ ucwords($d['nama']) }}</span>
+                    {{ in_array(request()->route()->getName(), $array)? 'active_navbar_new': '' }}'>
+                            <span>{{ ucwords($d->nama) }}</span>
                         </a>
                     </li>
                 @endforeach

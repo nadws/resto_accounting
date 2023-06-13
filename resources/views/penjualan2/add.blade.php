@@ -31,8 +31,8 @@
                                 <th width="5%" class="dhead">Tanggal</th>
                                 <th width="10%" class="dhead">No Nota</th>
                                 <th width="10%" class="dhead">Nota Manual</th>
-                                <th width="15%" class="dhead">Customer</th>
-                                <th width="15%" class="dhead">Driver</th>
+                                <th width="15%" class="dhead">Pelanggan</th>
+                                <th width="15%" class="dhead">Supir</th>
                             </tr>
                         </thead>
                         <tbody>

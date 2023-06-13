@@ -1,5 +1,6 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="6">
     <x-slot name="cardHeader">
+        <h6 class="float-start">Akses</h6>
         <x-theme.button modal="Y" idModal="tambah" icon="fa-plus" addClass="float-end" teks="Tambah" />
     </x-slot>
 

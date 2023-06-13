@@ -9,10 +9,13 @@ class AksesController extends Controller
 {
     public function index()
     {
+     
         $boleh = [
             '1'
         ];
+
         if (in_array(auth()->user()->id, $boleh)) {
+
             $data = [
                 'title' => 'Permission Halaman',
                 'permissionHalaman' => DB::table('permission')->get(),
@@ -24,45 +27,100 @@ class AksesController extends Controller
         }
     }
 
+    public function detail_edit()
+    {
+        $boleh = [
+            '1'
+        ];
+
+        if (in_array(auth()->user()->id, $boleh)) {
+
+            $data = [
+                'title' => 'Permission Halaman',
+                'permissionHalaman' => DB::table('navbar')->orderBy('urutan', 'ASC')->get(),
+                'permissionButton' => DB::table('permission_button as a')->join('permission as b', 'b.id_permission', 'a.permission_id')->get(),
+            ];
+            return view('permission_halaman.navbar', $data);
+        } else {
+            abort(403, 'akses tidak ada');
+        }
+    }
+
+    public function detail_get($id)
+    {
+        $detail = DB::table('navbar')->where('id_navbar', $id)->orderBy('urutan', 'ASC')->first();
+        return response()->json($detail);
+    }
+
+    public function navbar_delete($id)
+    {
+        DB::table('navbar')->where('id_navbar', $id)->delete();
+        return redirect()->route('akses.navbar')->with('sukses', 'Data Berhasil');
+    }
+
     public function addMenu(Request $r)
     {
-        if (empty($r->detail)) {
-            $id = DB::table('permission')->insertGetId([
-                'nm_permission' => $r->nm_permission,
-                'url' => $r->url,
-            ]);
-
-            for ($i = 0; $i < count($r->nm_button); $i++) {
-                DB::table('permission_button')->insert([
-                    'permission_id' => $id,
-                    'nm_permission_button' => $r->nm_button[$i],
-                    'jenis' => $r->jenis[$i],
-                ]);
-            }
-        } else {
-            if (!empty($r->nm_button_detail)) {
-                for ($i = 0; $i < count($r->nm_button_detail); $i++) {
-                    DB::table('permission_button')->where('id_permission_button', $r->id_permission_button[$i])->update([
-                        'permission_id' => $r->id_permission_gudang,
-                        'nm_permission_button' => $r->nm_button_detail[$i],
-                        'jenis' => $r->jenis[$i],
+        if(!empty($r->navbar)) {
+            if(!empty($r->navbar_edit)) {
+                for ($i=0; $i < count($r->isi); $i++) { 
+                    DB::table('navbar')->where('id_navbar', $r->id_navbar[$i])->update([
+                        'urutan' => $r->urutan[$i],
+                        'nama' => $r->nama[$i],
+                        'route' => $r->route[$i],
+                        'isi' => $r->isi[$i],
+                    ]);
+                }
+            } else {
+                for ($i=0; $i < count($r->isi); $i++) { 
+                    DB::table('navbar')->insert([
+                        'urutan' => $r->urutan[$i],
+                        'nama' => $r->nama[$i],
+                        'route' => $r->route[$i],
+                        'isi' => $r->isi[$i],
                     ]);
                 }
             }
+            $rot = 'akses.navbar';
+        } else {
 
-            if (!empty($r->tambah_row)) {
-                for ($i = 0; $i < count($r->nm_button_row); $i++) {
+            if (empty($r->detail)) {
+                $id = DB::table('permission')->insertGetId([
+                    'nm_permission' => $r->nm_permission,
+                    'url' => $r->url,
+                ]);
+    
+                for ($i = 0; $i < count($r->nm_button); $i++) {
                     DB::table('permission_button')->insert([
-                        'permission_id' => $r->id_permission_gudang,
-                        'nm_permission_button' => $r->nm_button_row[$i],
-                        'jenis' => $r->jenis_row[$i],
+                        'permission_id' => $id,
+                        'nm_permission_button' => $r->nm_button[$i],
+                        'jenis' => $r->jenis[$i],
                     ]);
+                }
+            } else {
+                if (!empty($r->nm_button_detail)) {
+                    for ($i = 0; $i < count($r->nm_button_detail); $i++) {
+                        DB::table('permission_button')->where('id_permission_button', $r->id_permission_button[$i])->update([
+                            'permission_id' => $r->id_permission_gudang,
+                            'nm_permission_button' => $r->nm_button_detail[$i],
+                            'jenis' => $r->jenis[$i],
+                        ]);
+                    }
+                }
+    
+                if (!empty($r->tambah_row)) {
+                    for ($i = 0; $i < count($r->nm_button_row); $i++) {
+                        DB::table('permission_button')->insert([
+                            'permission_id' => $r->id_permission_gudang,
+                            'nm_permission_button' => $r->nm_button_row[$i],
+                            'jenis' => $r->jenis_row[$i],
+                        ]);
+                    }
                 }
             }
         }
 
 
-        return redirect()->route('akses.index')->with('sukses', 'Data Berhasil');
+        return redirect()->route($rot ?? 'akses.index')->with('sukses', 'Data Berhasil');
     }
 
     public function detail($id)
