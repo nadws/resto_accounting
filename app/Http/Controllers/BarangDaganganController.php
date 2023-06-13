@@ -150,7 +150,7 @@ class BarangDaganganController extends Controller
             ->when($gudang_id, function ($q, $gudang_id) {
                 return $q->where('gudang_id', $gudang_id);
             })
-            ->where([['status', '!=', 'opname'], ['kategori_id', '3']])
+            ->where([['status', 'masuk'], ['kategori_id', '3']])
             ->groupBy('no_nota')
             ->orderBy('id_stok_produk', 'DESC')
             ->get();

@@ -22,7 +22,7 @@
     <td>
         <input readonly type="text" class="form-control dikanan ttlrp-nohide{{$count}} text-end"
             value="Rp. 0" count="{{$count}}">
-        <input type="text" class="form-control dikanan ttlrp-hide ttlrp-hide{{$count}}"
+        <input type="hidden" class="form-control dikanan ttlrp-hide ttlrp-hide{{$count}}"
             value="" name="total_rp[]">
     </td>
     <td align="center">

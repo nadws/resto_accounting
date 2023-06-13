@@ -16,12 +16,13 @@
                 /* font-size: 12px; */
                 width: 170px;
             }
+
             .dhead {
                 background-color: #435EBE !important;
                 color: white;
             }
         </style>
-        <form action="{{ route('penjualan2.store') }}" method="post" class="save_jurnal">
+        <form action="{{ route('penjualan2.update') }}" method="post" class="save_jurnal">
             @csrf
             <section class="row">
                 <div class="col-lg-12">
@@ -38,27 +39,33 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <input type="date" value="{{ date('Y-m-d') }}" class="form-control"
-                                        name="tgl">
+                                    <input value="{{ $getPenjualan->tgl }}" type="date" value="{{ date('Y-m-d') }}"
+                                        class="form-control" name="tgl">
                                 </td>
                                 <td>
-                                    <input readonly value="PAGL-{{ $no_nota }}" type="text" required class="form-control">
-                                    <input value="{{ $no_nota }}" type="hidden" required class="form-control" name="no_nota">
+                                    <input readonly value="PAGL-{{ $getPenjualan->urutan }}" type="text" required
+                                        class="form-control">
+                                    <input value="{{ $getPenjualan->urutan }}" type="hidden" required
+                                        class="form-control" name="no_nota">
                                 </td>
                                 <td>
-                                    <input type="text" required class="form-control" name="nota_manual">
+                                    <input value="{{ $getPenjualan->nota_manual }}" type="text" required
+                                        class="form-control" name="nota_manual">
                                 </td>
                                 <td>
                                     <select required name="id_customer" class="form-control select2" id="">
                                         <option value="">- Pilih Customer -</option>
                                         @foreach ($customer as $d)
-                                            <option value="{{ $d->id_customer }}">
+                                            <option
+                                                {{ $getPenjualan->id_customer == $d->id_customer ? 'selected' : '' }}
+                                                value="{{ $d->id_customer }}">
                                                 {{ $d->nm_customer }}</option>
                                         @endforeach
                                     </select>
                                 </td>
                                 <td>
-                                    <input type="text" name="driver" class="form-control">
+                                    <input type="text" value="{{ $getPenjualan->driver }}" name="driver"
+                                        class="form-control">
                                 </td>
                             </tr>
                         </tbody>
@@ -76,35 +83,39 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    <select name="id_produk[]" required class="form-control select2 produk-change"
-                                        id="">
-                                        <option value="">- Pilih Produk -</option>
-                                        @foreach ($produk as $d)
-                                            <option value="{{ $d->id_produk }}">{{ $d->nm_produk }}
-                                                ({{ strtoupper($d->satuan->nm_satuan) }})
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td>
-                                    <input count="1" name="qty[]" value="0" type="text"
-                                        class="form-control qty qty1">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control dikanan setor-nohide text-end"
-                                        value="Rp. 0" count="1">
-                                    <input type="hidden" class="form-control dikanan setor-hide setor-hide1"
-                                        value="" name="rp_satuan[]">
-                                </td>
-                                <td>
-                                    <input readonly type="text" class="form-control dikanan ttlrp-nohide1 text-end"
-                                        value="Rp. 0" count="1">
-                                    <input type="hidden" class="form-control dikanan ttlrp-hide ttlrp-hide1"
-                                        value="" name="total_rp[]">
-                                </td>
-                            </tr>
+                            @foreach ($getProduk as $no => $p)
+                                <tr>
+                                    <td>
+                                        <select name="id_produk[]" required class="form-control select2 produk-change"
+                                            id="">
+                                            <option value="">- Pilih Produk -</option>
+                                            @foreach ($produk as $d)
+                                                <option {{ $d->id_produk == $p->id_produk ? 'selected' : '' }}
+                                                    value="{{ $d->id_produk }}">{{ $d->nm_produk }}
+                                                    ({{ strtoupper($d->satuan->nm_satuan) }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input count="{{$no+1}}" name="qty[]" value="{{ $p->qty }}" type="text"
+                                            class="form-control qty qty{{$no+1}}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control dikanan setor-nohide text-end"
+                                            value="Rp. {{ number_format($p->rp_satuan, 2) }}" count="{{$no+1}}">
+                                        <input type="hidden" class="form-control dikanan setor-hide setor-hide{{$no+1}}"
+                                            value="{{ $p->rp_satuan }}" name="rp_satuan[]">
+                                    </td>
+                                    <td>
+                                        <input readonly type="text"
+                                            class="form-control dikanan ttlrp-nohide{{$no+1}} text-end"
+                                            value="Rp. {{ number_format($p->total_rp, 2) }}" count="{{$no+1}}">
+                                        <input type="hidden" class="form-control dikanan ttlrp-hide ttlrp-hide{{$no+1}}"
+                                            value="{{ $p->total_rp }}" name="total_rp[]">
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                         <tbody id="tbh_baris">
                         </tbody>
@@ -128,37 +139,41 @@
                                     <th class="dhead text-end">Kredit</th>
                                     <th class="dhead">Aksi</th>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <select required name="akun_pembayaran[]" class="form-control select2"
-                                            id="">
-                                            <option value="">- Pilih Akun -</option>
-                                            @foreach ($akun as $d)
-                                                <option value="{{ $d->id_akun }}">{{ strtoupper($d->nm_akun) }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <input type="text"
-                                            class="form-control dikanan pembayaranDebit-nohide text-end" value="Rp. 0"
-                                            count="1">
-                                        <input type="hidden" class="form-control dikanan debit pembayaranDebit-hide1"
-                                            value="0" name="debit[]">
-                                    </td>
-                                    <td>
-                                        <input type="text"
-                                            class="form-control dikanan pembayaranKredit-nohide text-end" value="Rp. 0"
-                                            count="1">
-                                        <input type="hidden"
-                                            class="form-control dikanan kredit pembayaranKredit-hide1" value="0"
-                                            name="kredit[]">
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn rounded-pill tbh_pembayaran"><i
-                                                class="fas fa-plus text-success"></i></button>
-                                    </td>
-                                </tr>
+                                @foreach ($getPembayaran as $no => $p)
+                                    <tr>
+                                        <td>
+                                            <select required name="akun_pembayaran[]" class="form-control select2"
+                                                id="">
+                                                <option value="">- Pilih Akun -</option>
+                                                @foreach ($akun as $d)
+                                                    <option {{ $d->id_akun == $p->id_akun ? 'selected' : '' }}
+                                                        value="{{ $d->id_akun }}">{{ strtoupper($d->nm_akun) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                class="form-control dikanan pembayaranDebit-nohide text-end"
+                                                value="Rp. {{ number_format($p->debit, 2) }}" count="{{$no+1}}">
+                                            <input type="hidden"
+                                                class="form-control dikanan debit pembayaranDebit-hide{{$no+1}}"
+                                                value="{{ $p->debit }}" name="debit[]">
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                class="form-control dikanan pembayaranKredit-nohide text-end"
+                                                value="Rp. {{ number_format($p->kredit, 2) }}" count="{{$no+1}}">
+                                            <input type="hidden"
+                                                class="form-control dikanan kredit pembayaranKredit-hide{{$no+1}}"
+                                                value="{{ $p->kredit }}" name="kredit[]">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn rounded-pill tbh_pembayaran"><i
+                                                    class="fas fa-plus text-success"></i></button>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                             <tbody id="tbh_pembayaran">
                             </tbody>

@@ -13,7 +13,7 @@
             <x-theme.button modal="T" href="{{ route('jual.add') }}" icon="fa-plus" addClass="float-end"
                 teks="Buat Baru" />
         @endif
-        @if (!empty($expoty))
+        @if (!empty($export))
             <x-theme.button modal="T" href="/jual/export?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}"
                 icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
         @endif
