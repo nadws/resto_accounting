@@ -157,7 +157,10 @@ Route::middleware('auth')->group(function () {
         ->name('akses.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/detail', 'detail_edit')->name('navbar');
             Route::get('/{id}', 'detail')->name('detail');
+            Route::get('/{id}', 'navbar_delete')->name('navbar_delete');
+            Route::get('/detail/{id}', 'detail_get')->name('detail_get');
             Route::post('/', 'save')->name('save');
             Route::post('/add_menu', 'addMenu')->name('add_menu');
             Route::post('/edit_menu', 'editMenu')->name('edit_menu');

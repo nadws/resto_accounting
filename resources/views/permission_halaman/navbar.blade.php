@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="6">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
         <h6 class="float-start">Akses</h6>
         <x-theme.button modal="Y" idModal="tambah" icon="fa-plus" addClass="float-end" teks="Tambah" />
@@ -13,7 +13,7 @@
                 this.namaPermission = namaPermission
                 this.idPermission = id
         
-                axios.get(`/akses/${id}`)
+                axios.get(`/akses/detail/${id}`)
                     .then(response => {
                         this.permissionButton = response.data
                         console.log(response.data)
@@ -26,16 +26,22 @@
                     <thead>
                         <tr>
                             <th width="5">#</th>
-                            <th>Nama Permission</th>
+                            <th>Nama</th>
+                            <th>Route</th>
+                            <th>Isi</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($permissionHalaman as $no => $d)
                             <tr>
-                                <td>{{ $d->id_permission }}</td>
+                                <td>{{ $d->urutan }}</td>
                                 <td style="cursor:pointer"
-                                    @click="showDetail({{ $d->id_permission }}, '{{ $d->nm_permission }}')">
-                                    {{ $d->nm_permission }}</td>
+                                    @click="showDetail({{ $d->id_navbar }}, '{{ $d->nama }}')">
+                                    {{ $d->nama }}</td>
+                                <td>{{ $d->route }}</td>
+                                <td>{{ $d->isi }}</td>
+                                <td><a onclick="return confirm('dihapus ?')" href="{{ route('akses.navbar_delete', $d->id_navbar) }}">hapus</a></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -45,43 +51,62 @@
             {{-- tambah suplier --}}
             <form action="{{ route('akses.add_menu') }}" method="post">
                 @csrf
+                <input type="text" name="navbar" value="1">
                 <x-theme.modal title="Tambah Baru" idModal="tambah">
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-2">
                             <div class="form-group">
-                                <label for="">Nama Permission</label>
-                                <input required type="text" name="nm_permission" class="form-control">
+                                <label for="">Urutan</label>
+                                <input required type="text" name="urutan[]" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="">Nama</label>
+                                <input required type="text" name="nama[]" class="form-control">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="">Url</label>
-                                <input required type="text" name="url" class="form-control">
+                                <label for="">Route</label>
+                                <input required type="text" name="route[]" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="">Isi</label>
+                                <input required type="text" name="isi[]" class="form-control">
                             </div>
                         </div>
                     </div>
-
+                    <hr>
                     <x-theme.multiple-input>
-
-                        <div class="col-lg-6">
+                        <div class="col-lg-2">
                             <div class="form-group">
-                                <label for="">Nama Butoon & Icon</label>
-                                <input type="text" name="nm_button[]" class="form-control">
+                                <label for="">Urutan</label>
+                                <input required type="text" name="urutan[]" class="form-control">
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <div class="form-group">
-                                <label for="">Jenis</label>
-                                <select name="jenis[]" id="" class="form-control">
-                                    <option value="">- Pilih Jenis -</option>
-                                    <option value="create">Create</option>
-                                    <option value="read">Read</option>
-                                    <option value="update">Update</option>
-                                    <option value="delete">Delete</option>
-                                </select>
+                                <label for="">Nama</label>
+                                <input required type="text" name="nama[]" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="">Route</label>
+                                <input required type="text" name="route[]" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="">Isi</label>
+                                <input required type="text" name="isi[]" class="form-control">
                             </div>
                         </div>
                     </x-theme.multiple-input>
+
                 </x-theme.modal>
             </form>
             {{-- ------ --}}
@@ -90,7 +115,7 @@
             <form action="{{ route('akses.add_menu') }}" method="post">
                 @csrf
                 <x-theme.modal title="Tambah Baru" idModal="detail">
-                    <h5 x-text="namaPermission" class="text-center"></h5>
+                    {{-- <h5 x-text="namaPermission" class="text-center"></h5>
                     <input type="hidden" name="detail" value="Y">
                     <input type="hidden" name="id_permission_gudang" x-bind:value="idPermission">
                     <table class="table">
@@ -126,28 +151,8 @@
                                 </tr>
                             </template>
                         </tbody>
-                    </table>
-                    <x-theme.multiple-input>
-                        <input type="hidden" name="tambah_row" value="Y">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="">Nama Butoon & Icon</label>
-                                <input type="text" name="nm_button_row[]" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="">Jenis</label>
-                                <select name="jenis_row[]" id="" class="form-control">
-                                    <option value="">- Pilih Jenis -</option>
-                                    <option value="create">Create</option>
-                                    <option value="read">Read</option>
-                                    <option value="update">Update</option>
-                                    <option value="delete">Delete</option>
-                                </select>
-                            </div>
-                        </div>
-                    </x-theme.multiple-input>
+                    </table> --}}
+
                 </x-theme.modal>
             </form>
             {{-- end edit --}}
