@@ -10,6 +10,7 @@ class Produk_telurController extends Controller
     {
         $data = [
             'title' => 'Data Produk Telur',
+
         ];
         return view('produk_telur.index', $data);
     }
