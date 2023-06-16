@@ -52,9 +52,9 @@
                         <th style="text-align: right">Total Rp</th>
                         <th style="text-align: right">Terbayar</th>
                         <th style="text-align: right">Sisa Hutang</th>
-                        <th>Status</th>
                         <th>Tipe Jual</th>
                         <th>Admin</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -76,13 +76,13 @@
                         <td align="right">Rp {{number_format($i->ttl_rp,0)}}</td>
                         <td align="right">Rp {{number_format($i->bayar,0)}}</td>
                         <td align="right">Rp {{number_format($i->paid,0)}}</td>
+                        <td>{{$i->tipe}}</td>
+                        <td>{{ ucwords($i->admin) }}</td>
                         <td>
                             <span class="badge {{ $i->paid != '0' ? 'bg-warning' : 'bg-success' }}">
                                 {{ $i->paid != '0' ? 'Unpaid' : 'Paid' }}
                             </span>
                         </td>
-                        <td>{{$i->tipe}}</td>
-                        <td>{{ ucwords($i->admin) }}</td>
                         <td>
                             @if ($i->paid == 0)
                             <i class="fas fa-check text-success"></i>

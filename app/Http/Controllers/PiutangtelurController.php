@@ -112,7 +112,7 @@ class PiutangtelurController extends Controller
         $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
         $data = [
             'tgl' => $r->tgl,
-            'no_nota' => 'T' . $nota_t,
+            'no_nota' => 'PT' . $nota_t,
             'id_akun' => '518',
             'id_buku' => '6',
             'ket' => 'Pelunasan piutang ' . $r->ket,
