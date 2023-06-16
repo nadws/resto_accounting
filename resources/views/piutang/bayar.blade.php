@@ -87,6 +87,7 @@
                                     <td>
                                         <input type="hidden" class="form-control" name="no_nota[]"
                                             value="{{ $getRow->no_nota }}">
+                                       
                                         <input type="text" readonly class="form-control" name="no_penjualan[]"
                                             value="{{ $getRow->no_penjualan }}">
                                     </td>

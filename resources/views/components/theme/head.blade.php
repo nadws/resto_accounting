@@ -10,7 +10,7 @@
     <title>{{ $title }}</title>
 
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/main/app.css">
-    <link rel="shortcut icon" href="{{ asset('theme') }}/assets/images/logo/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/login/img/empat.svg" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('theme') }}/assets/images/logo/favicon.png" type="image/png">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/pages/fontawesome.css">
     <link rel="stylesheet"

@@ -30,10 +30,11 @@
                         <thead>
                             <tr>
                                 <th width="5%" class="dhead">Tanggal</th>
-                                <th width="10%" class="dhead">No Nota</th>
-                                <th width="10%" class="dhead">Nota Manual</th>
-                                <th width="15%" class="dhead">Customer</th>
-                                <th width="15%" class="dhead">Driver</th>
+                                <th width="9%" class="dhead">No Nota</th>
+                                <th width="9%" class="dhead">Nota Manual</th>
+                                <th width="10%" class="dhead">Pelanggan</th>
+                                <th width="15%" class="dhead">Supir</th>
+                                <th width="15%" class="dhead">Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -66,6 +67,9 @@
                                 <td>
                                     <input type="text" value="{{ $getPenjualan->driver }}" name="driver"
                                         class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ $getPenjualan->ket }}" name="ket" class="form-control">
                                 </td>
                             </tr>
                         </tbody>

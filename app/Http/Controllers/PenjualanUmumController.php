@@ -73,7 +73,7 @@ class PenjualanUmumController extends Controller
             'user' => User::where('posisi_id', 1)->get(),
             'halaman' => 17,
             'create' => SettingHal::btnHal(71, $id_user),
-            'edit' => SettingHal::btnHal(74   , $id_user),
+            'edit' => SettingHal::btnHal(74, $id_user),
             'detail' => SettingHal::btnHal(75, $id_user),
             'delete' => SettingHal::btnHal(76, $id_user),
         ];
@@ -113,11 +113,33 @@ class PenjualanUmumController extends Controller
 
     public function store(Request $r)
     {
+        $nm_customer = DB::table('customer')->where('id_customer', $r->id_customer)->first()->nm_customer;
         $ttlDebit = 0;
         $getProduk = DB::table('tb_stok_produk')->where('id_produk', 12)->orderBy('id_stok_produk', 'DESC')->first();
 
         for ($i = 0; $i < count($r->akun_pembayaran); $i++) {
             $ttlDebit += $r->debit[$i] ?? 0 - $r->kredit[$i] ?? 0;
+        }
+        $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $this->akunPenjualan)->first();
+        $akun2 = DB::table('akun')->where('id_akun', $this->akunPenjualan)->first();
+        $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
+
+        $dataK = [
+            'tgl' => $r->tgl,
+            'no_nota' => 'PAGL-' . $r->no_nota,
+            'id_akun' => $this->akunPenjualan,
+            'id_buku' => '10',
+            'ket' => 'PAGL-' . $r->nota_manual,
+            'no_urut' => $akun2->inisial . '-' . $urutan2,
+            'urutan' => $urutan2,
+            'kredit' => $ttlDebit,
+            'debit' => 0,
+            'admin' => auth()->user()->name,
+        ];
+        $penjualan = Jurnal::create($dataK);
+
+
+        for ($i = 0; $i < count($r->akun_pembayaran); $i++) {
             $id_akun = $r->akun_pembayaran[$i];
 
             $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun)->first();
@@ -127,33 +149,15 @@ class PenjualanUmumController extends Controller
             Jurnal::create([
                 'tgl' => $r->tgl,
                 'id_akun' => $id_akun,
-                'id_buku' => 6,
+                'id_buku' => 10,
                 'no_nota' => 'PAGL-' . $r->no_nota,
-                'ket' => 'PAGL-' . $r->nota_manual,
+                'ket' => "Penjualan $nm_customer",
                 'debit' => $r->debit[$i] ?? 0,
                 'kredit' => $r->kredit[$i] ?? 0,
                 'no_urut' => $akun->inisial . '-' . $urutan,
-                'urutan' => $urutan,
+                'urutan' => $r->urutan,
                 'admin' => auth()->user()->name,
             ]);
-
-            $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $this->akunPenjualan)->first();
-            $akun2 = DB::table('akun')->where('id_akun', $this->akunPenjualan)->first();
-            $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
-
-            $dataK = [
-                'tgl' => $r->tgl,
-                'no_nota' => 'PAGL-' . $r->no_nota,
-                'id_akun' => $this->akunPenjualan,
-                'id_buku' => '6',
-                'ket' => 'PAGL-' . $r->nota_manual,
-                'no_urut' => $akun2->inisial . '-' . $urutan2,
-                'urutan' => $urutan2,
-                'kredit' => $ttlDebit,
-                'debit' => 0,
-                'admin' => auth()->user()->name,
-            ];
-            $penjualan = Jurnal::create($dataK);
 
             if ($id_akun == $this->akunPiutangDagang) {
                 DB::table('invoice_agl')->insert([
@@ -167,7 +171,7 @@ class PenjualanUmumController extends Controller
                 ]);
             }
         }
-
+        
         for ($i = 0; $i < count($r->id_produk); $i++) {
             DB::table('penjualan_agl')->insert([
                 'urutan' => $r->no_nota,
@@ -180,6 +184,7 @@ class PenjualanUmumController extends Controller
                 'qty' => $r->qty[$i],
                 'rp_satuan' => $r->rp_satuan[$i],
                 'total_rp' => $r->total_rp[$i],
+                'ket' => $r->ket,
                 'id_jurnal' => $penjualan->id,
                 'admin' => auth()->user()->name
             ]);
@@ -207,7 +212,6 @@ class PenjualanUmumController extends Controller
             ]);
         }
 
-
         return redirect()->route('penjualan2.index')->with('sukses', 'Data Berhasil Ditambahkan');
     }
 
@@ -234,11 +238,33 @@ class PenjualanUmumController extends Controller
 
     public function update(Request $r)
     {
+        $cek = DB::table('invoice_agl')->where('no_nota', 'PAGL-'.$r->no_nota)->first();
+        if($cek) {
+            return redirect()->route('penjualan2.index')->with('error', 'Gagal Edit Karena nota Piutang Sudah PAID !');
+        }
         $ttlDebit = 0;
         $getProduk = DB::table('tb_stok_produk')->where('id_produk', 12)->orderBy('id_stok_produk', 'DESC')->first();
         DB::table('tb_stok_produk')->where('no_nota', 'PAGL-' . $r->no_nota)->delete();
         DB::table('jurnal')->where('no_nota', 'PAGL-' . $r->no_nota)->delete();
         DB::table('penjualan_agl')->where('urutan', $r->no_nota)->delete();
+
+
+        $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $this->akunPenjualan)->first();
+        $akun2 = DB::table('akun')->where('id_akun', $this->akunPenjualan)->first();
+        $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
+
+        $dataK = [
+            'tgl' => $r->tgl,
+            'no_nota' => 'PAGL-' . $r->no_nota,
+            'id_akun' => $this->akunPenjualan,
+            'ket' => 'PAGL-' . $r->nota_manual,
+            'no_urut' => $akun2->inisial . '-' . $urutan2,
+            'urutan' => $urutan2,
+            'kredit' => $ttlDebit,
+            'debit' => 0,
+            'admin' => auth()->user()->name,
+        ];
+        $penjualan = Jurnal::create($dataK);
 
         for ($i = 0; $i < count($r->akun_pembayaran); $i++) {
             $ttlDebit += $r->debit[$i] ?? 0 - $r->kredit[$i] ?? 0;
@@ -252,7 +278,6 @@ class PenjualanUmumController extends Controller
             Jurnal::create([
                 'tgl' => $r->tgl,
                 'id_akun' => $id_akun,
-                'id_buku' => 6,
                 'no_nota' => 'PAGL-' . $r->no_nota,
                 'ket' => 'PAGL-' . $r->no_nota,
                 'debit' => $r->debit[$i] ?? 0,
@@ -261,24 +286,17 @@ class PenjualanUmumController extends Controller
                 'urutan' => $urutan,
                 'admin' => auth()->user()->name,
             ]);
-
-            $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $this->akunPenjualan)->first();
-            $akun2 = DB::table('akun')->where('id_akun', $this->akunPenjualan)->first();
-            $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
-
-            $dataK = [
-                'tgl' => $r->tgl,
-                'no_nota' => 'PAGL-' . $r->no_nota,
-                'id_akun' => $this->akunPenjualan,
-                'id_buku' => '6',
-                'ket' => 'PAGL-' . $r->no_nota,
-                'no_urut' => $akun2->inisial . '-' . $urutan2,
-                'urutan' => $urutan2,
-                'kredit' => $ttlDebit,
-                'debit' => 0,
-                'admin' => auth()->user()->name,
-            ];
-            $penjualan = Jurnal::create($dataK);
+            if ($id_akun == $this->akunPiutangDagang) {
+                DB::table('invoice_agl')->insert([
+                    'no_penjualan' => $r->nota_manual,
+                    'no_nota' => 'PAGL-' . $r->no_nota,
+                    'tgl' => $r->tgl,
+                    'ket' => $r->ket,
+                    'total_rp' => $ttlDebit,
+                    'status' => 'unpaid',
+                    'admin' => auth()->user()->name
+                ]);
+            }
         }
 
         for ($i = 0; $i < count($r->id_produk); $i++) {
@@ -293,6 +311,7 @@ class PenjualanUmumController extends Controller
                 'qty' => $r->qty[$i],
                 'rp_satuan' => $r->rp_satuan[$i],
                 'total_rp' => $r->total_rp[$i],
+                'ket' => $r->ket,
                 'id_jurnal' => $penjualan->id,
                 'admin' => auth()->user()->name
             ]);

@@ -29,10 +29,11 @@
                         <thead>
                             <tr>
                                 <th width="5%" class="dhead">Tanggal</th>
-                                <th width="10%" class="dhead">No Nota</th>
-                                <th width="10%" class="dhead">Nota Manual</th>
-                                <th width="15%" class="dhead">Pelanggan</th>
+                                <th width="9%" class="dhead">No Nota</th>
+                                <th width="9%" class="dhead">Nota Manual</th>
+                                <th width="10%" class="dhead">Pelanggan</th>
                                 <th width="15%" class="dhead">Supir</th>
+                                <th width="15%" class="dhead">Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,6 +60,9 @@
                                 </td>
                                 <td>
                                     <input type="text" name="driver" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" name="ket" class="form-control">
                                 </td>
                             </tr>
                         </tbody>
@@ -164,7 +168,7 @@
                             </tbody>
                         </table>
                         <hr style="border: 1px solid blue">
-
+                    
                         <table class="" width="100%">
                             <tr>
                                 <td width="20%" class="fs-5">Total</td>

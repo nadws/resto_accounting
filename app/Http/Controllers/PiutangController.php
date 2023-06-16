@@ -111,20 +111,19 @@ class PiutangController extends Controller
     {
         $no_pembayaran = $r->no_pembayaran;
         $tgl_bayar = $r->tgl_bayar;
-
         for ($i = 0; $i < count($r->id_akun); $i++) {
+            $notaGabungan = implode(", ", $r->no_nota);
             $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $r->id_akun[$i])->first();
             $akun2 = DB::table('akun')->where('id_akun', $r->id_akun[$i])->first();
 
             $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
-
             // masuk penjualan di debit
             $dataD = [
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $r->id_akun[$i],
-                'id_buku' => '6',
-                'ket' => '',
+                'id_buku' => '10',
+                'ket' => "Pembayaran $notaGabungan",
                 'no_urut' => $akun2->inisial . '-' . $urutan2,
                 'urutan' => $urutan2,
                 'kredit' => $r->kredit[$i] ?? 0,
@@ -144,7 +143,7 @@ class PiutangController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $this->akunPiutangDagang,
-                'id_buku' => '6',
+                'id_buku' => '10',
                 'ket' => 'Pembayaran-' . $r->no_penjualan[$i],
                 'debit' => 0,
                 'no_urut' => $akun->inisial . '-' . $urutan,
@@ -213,7 +212,6 @@ class PiutangController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $r->id_akun[$i],
-                'id_buku' => '6',
                 'ket' => '',
                 'kredit' => $r->kredit[$i] ?? 0,
                 'debit' => $r->debit[$i] ?? 0,
@@ -228,7 +226,6 @@ class PiutangController extends Controller
                 'tgl' => $tgl_bayar,
                 'no_nota' => $no_pembayaran,
                 'id_akun' => $this->akunPiutangDagang,
-                'id_buku' => '6',
                 'ket' => 'Pembayaran-' . $r->no_penjualan[$i],
                 'debit' => 0,
                 'kredit' => $r->bayar[$i],
