@@ -262,5 +262,18 @@ Route::middleware('auth')->group(function () {
         ->name('penyetoran.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/perencanaan', 'perencanaan')->name('perencanaan');
+            Route::post('/perencanaan', 'save_perencanaan')->name('save_perencanaan');
+            Route::get('/bayar', 'bayar')->name('bayar');
+            Route::get('/load_perencanaan', 'load_perencanaan')->name('load_perencanaan');
+            Route::get('/load_history', 'load_history')->name('load_history');
+            Route::get('/print', 'print')->name('print');
+            Route::get('/print_setor', 'print_setor')->name('print_setor');
+            Route::get('/export', 'export')->name('export');
+            Route::post('/hapus_setor', 'hapus_setor')->name('hapus_setor');
+            Route::get('/edit/{nota}', 'edit')->name('edit');
+            Route::get('/kembali/{nota}', 'kembali')->name('kembali');
+            Route::post('/edit', 'save_setor')->name('save_setor');
+            Route::get('/delete', 'delete')->name('delete');
         });
 });
