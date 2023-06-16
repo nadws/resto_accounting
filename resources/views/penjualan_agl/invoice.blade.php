@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Pengantar</label>
-                    <input type="text" class="form-control" name="driver">
+                    <input type="text" class="form-control" name="driver" required>
                 </div>
 
                 <div class="col-lg-12">
@@ -232,7 +232,7 @@
                 });
                 $(".total").text(totalRupiahall);
                 $(".total_kredit").text(totalkreditall)
-                $(".total_semua_biasa").val(total_all)
+                $(".total_semua_biasa").val(Math.round(total_all))
 
                 // selisih
                 var total_debit = 0;
@@ -245,12 +245,12 @@
                 });
                 $(".total_debit").text(totaldebitall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
-                if (total_kredit + total_all === total_debit) {
+                if (Math.round(total_kredit + total_all) === total_debit) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {
@@ -316,7 +316,7 @@
 
                 $(".total").text(totalRupiahall)
                 $(".total_kredit").text(totalkreditall)
-                $(".total_semua_biasa").val(total_all)
+                $(".total_semua_biasa").val(Math.round(total_all))
 
 
                 // selisih
@@ -330,12 +330,12 @@
                 });
                 $(".total_debit").text(totaldebitall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
-                if (total_kredit + total_all === total_debit) {
+                if (Math.round(total_kredit + total_all) === total_debit) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {
@@ -396,7 +396,7 @@
                 });
                 $(".total").text(totalRupiahall)
                 $(".total_kredit").text(totalkreditall)
-                $(".total_semua_biasa").val(total_all)
+                $(".total_semua_biasa").val(Math.round(total_all))
 
 
                 // selisih
@@ -410,12 +410,12 @@
                 });
                 $(".total_debit").text(totaldebitall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
-                if (total_kredit + total_all === total_debit) {
+                if (Math.round(total_kredit + total_all) === total_debit) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {
@@ -477,12 +477,12 @@
                 });
                 $(".total_debit").text(totaldebitall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
-                if (total_kredit + total_all === total_debit) {
+                if (Math.round(total_kredit + total_all) === total_debit) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {
@@ -736,12 +736,12 @@
                 });
                 $(".total_debit").text(totaldebitall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
-                if (total_kredit + total_all === total_debit) {
+                if (Math.round(total_kredit + total_all) === total_debit) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {
@@ -802,13 +802,15 @@
                 });
                 $(".total_kredit").text(totalKreditall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
+                // console.log(Math.round(total_all + total_kredit));
+                // console.log(total_debit);
 
-                if (total_kredit + total_all === total_debit) {
+                if (Math.round(total_kredit + total_all) === total_debit) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {
@@ -856,12 +858,13 @@
                 });
                 $(".total_kredit").text(totalKreditall);
 
-                var selisih = total_all + total_kredit - total_debit;
+                var selisih = perseFloat(total_all + total_kredit) - parseFloat(total_debit);
                 var selisih_total = selisih.toLocaleString("id-ID", {
                     style: "currency",
                     currency: "IDR",
                 });
-                if (total_kredit + total_all === total_debit) {
+            
+                if (perseFloat(total_kredit + total_all) === perseFloat(total_debit)) {
                     $(".cselisih").css("color", "green");
                     $(".button-save").removeAttr("hidden");
                 } else {

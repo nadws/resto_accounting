@@ -188,7 +188,7 @@
             function loadpcs(){
                 $.ajax({
                         type: "get",
-                        url: "/loadpcsinvoice",
+                        url: "/loadpcsinvoiceedit?no_nota=" + no_nota,
                         success: function (data) {
                             $("#loadpcs").html(data);
                             $(".select").select2();

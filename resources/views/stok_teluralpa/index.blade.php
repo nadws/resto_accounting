@@ -62,8 +62,8 @@
                                     </li>
 
                                     <li>
-                                        <a class="dropdown-item text-danger delete_nota" no_nota="" href="#"
-                                            data-bs-toggle="modal" data-bs-target="#delete"><i
+                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{$s->no_nota}}"
+                                            href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
                                                 class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
@@ -96,6 +96,25 @@
             </div>
 
         </x-theme.modal>
+        <form action="{{ route('delete_transfer') }}" method="get">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <input type="hidden" class="no_nota" name="no_nota">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         {{-- end sub akun --}}
     </x-slot>
     @section('scripts')
@@ -111,6 +130,10 @@
                     }
                 });
             });
+            $(document).on('click', '.delete_nota', function() {
+                    var no_nota = $(this).attr('no_nota');
+                    $('.no_nota').val(no_nota);
+                });
         });
     </script>
     @endsection

@@ -9,10 +9,10 @@
     </td>
     <td><input type="text" name="ket[]" class="form-control"></td>
     <td class="pcs_telur{{$count}}" align="right"></td>
-    <td><input type="text" name="pcs[]" class="form-control" style="text-align: right" value="0"></td>
+    <td><input type="text" name="pcs[]" class="form-control pcs pcs{{$count}}" style="text-align: right" value="0"></td>
     <td class="kg_telur{{$count}}" align="right"></td>
     <td><input type="text" name="kg[]" class="form-control" style="text-align: right" value="0"></td>
-    <td></td>
+    <td class="ikat{{$count}}"></td>
     <td><button type="button" class="btn rounded-pill remove_baris" count="{{$count}}"><i
                 class="fas fa-trash text-danger"></i>
         </button></td>

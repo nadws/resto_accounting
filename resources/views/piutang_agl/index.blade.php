@@ -160,7 +160,7 @@
                 $('.piutangBayar').text(totalPiutang.toLocaleString('en-US'));
             });
 
-            $('.hide_bayar').hide();
+                $('.hide_bayar').hide();
                 $(document).on("click", ".detail_bayar", function() {
                     var no_nota = $(this).attr('no_nota');
                     var clickedElement = $(this); // Simpan elemen yang diklik dalam variabel

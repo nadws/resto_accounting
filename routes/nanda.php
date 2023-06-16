@@ -15,7 +15,9 @@ use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\Penyetoran_telurController;
 use App\Http\Controllers\PiutangtelurController;
+use App\Http\Controllers\Produk_telurController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
@@ -275,6 +277,7 @@ Route::controller(PenjualanController::class)->group(function () {
     Route::get('/loadkginvoiceedit', 'loadkginvoiceedit')->name('loadkginvoiceedit');
     Route::post('/edit_penjualan_telur', 'edit_penjualan_telur')->name('edit_penjualan_telur');
     Route::get('/delete_invoice_telur', 'delete_invoice_telur')->name('delete_invoice_telur');
+    Route::get('/loadpcsinvoiceedit', 'loadpcsinvoiceedit')->name('loadpcsinvoiceedit');
 });
 
 Route::controller(Stock_telurController::class)->group(function () {
@@ -288,10 +291,14 @@ Route::controller(Stock_telurController::class)->group(function () {
     Route::get('/tbh_baris_transfer', 'tbh_baris_transfer')->name('tbh_baris_transfer');
     Route::post('/save_transfer_stok_telur', 'save_transfer_stok_telur')->name('save_transfer_stok_telur');
     Route::get('/get_stok_telur', 'get_stok')->name('get_stok_telur');
+    Route::get('/edit_telur', 'edit_telur')->name('edit_telur');
+    Route::post('/save_edit_stok_telur', 'save_edit_stok_telur')->name('save_edit_stok_telur');
+    Route::get('/delete_telur', 'delete_telur')->name('delete_telur');
 });
 Route::controller(Stok_telur_alpaController::class)->group(function () {
     Route::get('/stok_telur_alpa', 'index')->name('stok_telur_alpa');
     Route::get('/detail_stok_telur_alpa', 'detail_stok_telur_alpa')->name('detail_stok_telur_alpa');
+    Route::get('/delete_transfer', 'delete_transfer')->name('delete_transfer');
 });
 
 Route::controller(PiutangtelurController::class)->group(function () {
@@ -299,4 +306,21 @@ Route::controller(PiutangtelurController::class)->group(function () {
     Route::get('/bayar_piutang_telur', 'bayar_piutang_telur')->name('bayar_piutang_telur');
     Route::post('/save_bayar_piutang', 'save_bayar_piutang')->name('save_bayar_piutang');
     Route::get('/get_pembayaranpiutang_telur', 'get_pembayaranpiutang_telur')->name('get_pembayaranpiutang_telur');
+    Route::get('/edit_pembayaran_piutang_telur', 'edit_piutang')->name('edit_pembayaran_piutang_telur');
+    Route::post('/edit_bayar_piutang', 'edit_bayar_piutang')->name('edit_bayar_piutang');
+});
+Route::controller(Penyetoran_telurController::class)->group(function () {
+    Route::get('/penyetoran_telur', 'index')->name('penyetoran_telur');
+    Route::get('/perencanaan_setor_telur', 'perencanaan_setor_telur')->name('perencanaan_setor_telur');
+    Route::post('/save_perencanaan_telur', 'save_perencanaan_telur')->name('save_perencanaan_telur');
+    Route::get('/get_list_perencanaan', 'get_list_perencanaan')->name('get_list_perencanaan');
+    Route::get('/get_perencanaan', 'get_perencanaan')->name('get_perencanaan');
+    Route::post('/save_setoran', 'save_setoran')->name('save_setoran');
+    Route::get('/print_setoran', 'print_setoran')->name('print_setoran');
+    Route::get('/delete_perencanaan', 'delete_perencanaan')->name('delete_perencanaan');
+    Route::get('/get_history_perencanaan', 'get_history_perencanaan')->name('get_history_perencanaan');
+});
+
+Route::controller(Produk_telurController::class)->group(function () {
+    Route::get('/produk_telur', 'index')->name('produk_telur');
 });

@@ -129,9 +129,9 @@ class PenjualanController extends Controller
         $max_customer = DB::table('invoice_telur')->latest('urutan_customer')->where('id_customer', $r->customer)->first();
 
         if (empty($max_customer)) {
-            $urutan = '1';
+            $urutan_cus = '1';
         } else {
-            $urutan = $max_customer->urutan_customer + 1;
+            $urutan_cus = $max_customer->urutan_customer + 1;
         }
 
 
@@ -151,7 +151,7 @@ class PenjualanController extends Controller
                     'total_rp' => $r->total_rp[$x],
                     'admin' => Auth::user()->name,
                     'urutan' => $nota_t,
-                    'urutan_customer' => $urutan,
+                    'urutan_customer' => $urutan_cus,
                     'driver' => $r->driver
                 ];
                 DB::table('invoice_telur')->insert($data);
@@ -168,7 +168,7 @@ class PenjualanController extends Controller
                     'total_rp' => $r->total_rp[$x],
                     'admin' => Auth::user()->name,
                     'urutan' => $nota_t,
-                    'urutan_customer' => $urutan,
+                    'urutan_customer' => $urutan_cus,
                     'driver' => $r->driver
                 ];
                 DB::table('invoice_telur')->insert($data);
@@ -177,13 +177,15 @@ class PenjualanController extends Controller
         $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', '517')->first();
         $akun = DB::table('akun')->where('id_akun', '517')->first();
 
+        $customer = DB::table('customer')->where('id_customer', $r->customer)->first();
+
         $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
         $data = [
             'tgl' => $r->tgl,
             'no_nota' => 'T' . $nota_t,
             'id_akun' => '517',
             'id_buku' => '6',
-            'ket' => 'Penjualan Telur',
+            'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
             'debit' => 0,
             'kredit' => $r->total_penjualan,
             'admin' => Auth::user()->name,
@@ -211,7 +213,7 @@ class PenjualanController extends Controller
                 'no_nota' => 'T' . $nota_t,
                 'id_akun' => $r->id_akun[$x],
                 'id_buku' => '6',
-                'ket' => 'Penjualan Telur',
+                'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
                 'debit' => $r->debit[$x],
                 'kredit' => $r->kredit[$x],
                 'admin' => Auth::user()->name,
@@ -230,6 +232,7 @@ class PenjualanController extends Controller
                     'no_nota' => 'T' . $nota_t,
                     'debit' => $r->debit[$x],
                     'kredit' => $r->kredit[$x],
+                    'no_nota_piutang' => 'T' . $nota_t
                 ];
                 DB::table('bayar_telur')->insert($data);
             }
@@ -300,6 +303,16 @@ class PenjualanController extends Controller
         ];
         return view('penjualan_agl.load_penjualankgedit', $data);
     }
+    public function loadpcsinvoiceedit(Request $r)
+    {
+        $data = [
+            'title' => 'Buat Invoice',
+            'produk' => DB::table('telur_produk')->get(),
+            'invoice' => DB::table('invoice_telur')->where('no_nota', $r->no_nota)->get(),
+
+        ];
+        return view('penjualan_agl.load_penjualanpcsedit', $data);
+    }
 
     public function edit_penjualan_telur(Request $r)
     {
@@ -368,12 +381,14 @@ class PenjualanController extends Controller
         $akun = DB::table('akun')->where('id_akun', '517')->first();
 
         $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
+
+        $customer = DB::table('customer')->where('id_customer', $r->customer)->first();
         $data = [
             'tgl' => $r->tgl,
             'no_nota' => $r->no_nota,
             'id_akun' => '517',
             'id_buku' => '6',
-            'ket' => 'Penjualan Telur',
+            'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
             'debit' => 0,
             'kredit' => $r->total_penjualan,
             'admin' => Auth::user()->name,
@@ -408,7 +423,7 @@ class PenjualanController extends Controller
                 'no_nota' => $r->no_nota,
                 'id_akun' => $r->id_akun[$x],
                 'id_buku' => '6',
-                'ket' => 'Penjualan Telur',
+                'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
                 'debit' => $r->debit[$x],
                 'kredit' => $r->kredit[$x],
                 'admin' => Auth::user()->name,
@@ -427,6 +442,7 @@ class PenjualanController extends Controller
                     'no_nota' => $r->no_nota,
                     'debit' => $r->debit[$x],
                     'kredit' => $r->kredit[$x],
+                    'no_nota_piutang' => $r->no_nota
                 ];
                 DB::table('bayar_telur')->insert($data);
             }

@@ -71,4 +71,12 @@ class Stok_telur_alpaController extends Controller
         ];
         return view('stok_teluralpa.detail', $data);
     }
+
+    public function delete_transfer(Request $r)
+    {
+        DB::table('stok_telur_alpa')->where('no_nota', $r->no_nota)->delete();
+        DB::table('stok_telur')->where('nota_transfer', $r->no_nota)->delete();
+
+        return redirect()->route('stok_telur_alpa')->with('sukses', 'Data berhasil di dihapus');
+    }
 }

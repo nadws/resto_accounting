@@ -36,9 +36,9 @@
                     @endforeach
                 </select>
             </td>
-            <td><input type="text" name="pcs[]" class="form-control" value="0"></td>
+            <td><input type="text" name="pcs[]" class="form-control pcs pcs1" count="1" value="0"></td>
             <td><input type="text" name="kg[]" class="form-control" value="0"></td>
-            <td></td>
+            <td class="ikat1"></td>
             <td><button type="button" class="btn rounded-pill remove_baris" count="1"><i
                         class="fas fa-trash text-danger"></i>
                 </button></td>

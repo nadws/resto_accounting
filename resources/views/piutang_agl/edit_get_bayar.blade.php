@@ -26,17 +26,19 @@
                 color: white;
             }
         </style>
-        <form action="{{ route('save_bayar_piutang') }}" method="post" class="save_jurnal">
+        <form action="{{ route('edit_bayar_piutang') }}" method="post" class="save_jurnal">
             @csrf
 
             <section class="row">
                 <div class="col-lg-2 col-6">
                     <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                    <input type="date" class="form-control" name="tgl" value="{{$head->tgl}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control nota_bk" name="no_nota" value="PT{{$nota}}" readonly>
+                    <input type="text" class="form-control nota_bk" name="no_nota_piutang" value="{{$nota}}" readonly>
+                    <input type="hidden" class="form-control nota_bk" name="urutan_piutang"
+                        value="{{$head->urutan_piutang}}" readonly>
                 </div>
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
@@ -57,38 +59,30 @@
                             @php
                             $total = 0;
                             @endphp
-                            @foreach ($no_nota as $no => $n)
+                            @foreach ($invoice as $no => $n)
                             @php
-                            $hutang = DB::selectOne("SELECT a.no_nota, a.tgl, a.tipe, a.admin, b.nm_customer,
-                            sum(a.total_rp) as ttl_rp, a.status, c.paid , a.urutan_customer
-                            FROM invoice_telur as a
-                            left join customer as b on b.id_customer = a.id_customer
-                            left join (
-                            SELECT c.no_nota, sum(c.kredit - c.debit) as paid
-                            FROM bayar_telur as c
-                            group by c.no_nota
-                            ) as c on c.no_nota = a.no_nota
-                            where a.no_nota = '$n'
-                            group by a.no_nota
-                            order by a.urutan DESC");
-                            $total += $hutang->paid
+                            $total += $n->total_rp - ($n->debit_total - $n->debit)
                             @endphp
+
                             <tr>
-                                <td>{{$n}}</td>
+                                <td>{{$n->no_nota}}</td>
                                 <td>
-                                    {{tanggal($hutang->tgl)}}
-                                    <input type="hidden" name="no_nota[]" value="{{$hutang->no_nota}}">
+                                    {{tanggal($n->tgl)}}
+                                    <input type="hidden" name="no_nota[]" value="{{$n->no_nota}}">
                                 </td>
-                                <td>{{$hutang->nm_customer}}</td>
-                                <td align="right">Rp {{number_format($hutang->ttl_rp,0)}}</td>
-                                <td align="right">Rp {{number_format($hutang->paid,0)}}</td>
+                                <td>{{$n->nm_customer}}</td>
+                                <td align="right">Rp {{number_format($n->total_rp,0)}}</td>
+                                <td align="right">Rp {{number_format($n->total_rp - ($n->debit_total - $n->debit),0)}}
+                                </td>
                                 <td>
                                     <input type="text" class="form-control bayar bayar{{$no+1}}" count="{{$no+1}}"
-                                        style="text-align: right" value="Rp {{number_format($hutang->paid,0,',','.')}}">
+                                        style="text-align: right"
+                                        value="Rp {{number_format($n->total_rp - ($n->debit_total - $n->debit),0,',','.')}}">
                                     <input type="hidden" name="pembayaran[]"
                                         class="form-control bayar_biasa bayar_biasa{{$no+1}}" style="text-align: right"
-                                        value="{{$hutang->paid}}">
-                                    <input type="hidden" class="batas{{$no+1}}" value="{{$hutang->paid}}">
+                                        value="{{$n->total_rp - ($n->debit_total - $n->debit)}}">
+                                    <input type="hidden" class="batas{{$no+1}}"
+                                        value="{{$n->total_rp - ($n->debit_total - $n->debit)}}">
 
                                     <p class="text-danger mt-2 peringatan{{$no+1}}" hidden>Pembayaran melebihi sisa
                                         hutang
@@ -111,10 +105,12 @@
 
                     <hr style="border: 1px solid blue">
 
-                    <input type="hidden" name="ket" value="{{ implode(',', $no_nota) }}">
+                    {{-- <input type="hidden" name="ket" value="{{ implode(',', $no_nota) }}"> --}}
                     <div class="row">
                         <div class="col-lg-6">
                             <h6>Total</h6>
+                            <input type="hidden" name="no_urut_penjualan" value="{{$jurnal2->no_urut}}">
+                            <input type="hidden" name="urutan_penjualan" value="{{$jurnal2->urutan}}">
                         </div>
                         <div class="col-lg-6">
                             <h6 class="total float-end">Rp {{number_format($total,2,',','.')}}</h6>
@@ -122,31 +118,71 @@
                         </div>
                         <div class="col-lg-5 mt-2">
                             <label for="">Pilih Akun Pembayaran</label>
-                            <select name="id_akun[]" id="" class="select2_add" required>
-                                <option value="">-Pilih Akun-</option>
-                                @foreach ($akun as $a)
-                                <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
-                                @endforeach
-                            </select>
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Debit</label>
-                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right">
-                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1" value="0">
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Kredit</label>
-                            <input type="text" class="form-control kredit kredit1" count="1" style="text-align: right">
-                            <input type="hidden" name="kredit[]" class="form-control kredit_biasa kredit_biasa1"
-                                value="0">
                         </div>
                         <div class="col-lg-1 mt-2">
-                            <label for="">aksi</label> <br>
-                            <button type="button" class="btn rounded-pill tbh_pembayaran" count="1">
+                            <label for="">aksi</label>
+                        </div>
+
+                    </div>
+                    @php
+                    $total_debit = 0;
+                    $total_kredit = 0;
+                    @endphp
+                    @foreach ($jurnal as $no => $j)
+                    @php
+                    $total_debit += $j->debit;
+                    $total_kredit += $j->kredit;
+                    @endphp
+                    <input type="hidden" name="urutan_jurnal[]" value="{{$j->urutan}}">
+                    <input type="hidden" name="no_urut[]" value="{{$j->no_urut}}">
+                    <div class="row baris_bayar{{$no+1}}">
+                        <div class="col-lg-5 mt-2">
+
+                            <select name="id_akun[]" id="" class="select2_add" required>
+                                <option value="">-Pilih Akun-</option>
+                                @foreach ($akun as $a)
+                                <option value="{{$a->id_akun}}" {{$j->id_akun == $a->id_akun ? 'Selected' :
+                                    ''}}>{{$a->nm_akun}}</option>
+                                @endforeach
+                            </select>
+                            <input type="hidden" name="id_akun2[]" value="{{$j->id_akun}}">
+                        </div>
+                        <div class="col-lg-3 mt-2">
+
+                            <input type="text" class="form-control debit debit{{$no+1}}" count="{{$no+1}}"
+                                style="text-align: right" value="{{number_format($j->debit,0,',','.')}}">
+                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa{{$no+1}}"
+                                value="{{$j->debit}}">
+                        </div>
+                        <div class="col-lg-3 mt-2">
+
+                            <input type="text" class="form-control kredit kredit{{$no+1}}" count="{{$no+1}}"
+                                style="text-align: right" value="{{number_format($j->kredit,0,',','.')}}">
+                            <input type="hidden" name="kredit[]" class="form-control kredit_biasa kredit_biasa{{$no+1}}"
+                                value="{{$j->kredit}}">
+                        </div>
+                        <div class="col-lg-1 mt-2">
+                            @if ($no+1 != '1')
+                            <button type="button" class="btn rounded-pill delete_pembayaran" count="{{$no+1}}">
+                                <i class="fas fa-trash text-danger"></i>
+                            </button>
+                            @else
+                            <button type="button" class="btn rounded-pill tbh_pembayaran" count="{{$no+1}}">
                                 <i class="fas fa-plus text-success"></i>
                             </button>
+                            @endif
+
+
+
                         </div>
                     </div>
+                    @endforeach
                     <div id="load_pembayaran"></div>
 
                     <div class="row">
@@ -157,10 +193,11 @@
                             <h6>Total Pembayaran</h6>
                         </div>
                         <div class="col-lg-3">
-                            <h6 class="total_debit float-end">Rp 0</h6>
+                            <h6 class="total_debit float-end">Rp {{number_format($total_debit,2,',','.')}}</h6>
                         </div>
                         <div class="col-lg-4">
-                            <h6 class="total_kredit float-end">Rp {{number_format($total,0)}} </h6>
+                            <h6 class="total_kredit float-end">Rp {{number_format($total + $total_kredit,2,',','.')}}
+                            </h6>
                         </div>
                         <div class="col-lg-5">
                             <h6 class="cselisih">Selisih</h6>
@@ -178,7 +215,7 @@
             </section>
     </x-slot>
     <x-slot name="cardFooter">
-        <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
         <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...

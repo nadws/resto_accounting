@@ -219,7 +219,13 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Stok Telur',
+                'judul' => 'Produk Telur',
+                'route' => 'produk_telur',
+                'img' => 'egg.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+            [
+                'judul' => 'Input Stok Telur',
                 'route' => 'stok_telur',
                 'img' => 'warehouse2.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
@@ -234,6 +240,12 @@ class NavbarController extends Controller
                 'judul' => 'Piutang Telur',
                 'route' => 'piutang_telur',
                 'img' => 'online-payment.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+            [
+                'judul' => 'Penyetoran Telur',
+                'route' => 'penyetoran_telur',
+                'img' => 'exchange.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
 

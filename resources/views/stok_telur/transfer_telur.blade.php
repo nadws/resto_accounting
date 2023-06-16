@@ -32,10 +32,11 @@
             </td>
             <td><input type="text" name="ket[]" class="form-control"></td>
             <td class="pcs_telur1" align="right"></td>
-            <td><input type="text" name="pcs[]" class="form-control" style="text-align: right" value="0"></td>
+            <td><input type="text" name="pcs[]" class="form-control pcs pcs1" count="1" style="text-align: right"
+                    value="0"></td>
             <td class="kg_telur1" align="right"></td>
             <td><input type="text" name="kg[]" class="form-control" style="text-align: right" value="0"></td>
-            <td></td>
+            <td class="ikat1"></td>
             <td><button type="button" class="btn rounded-pill remove_baris" count="1"><i
                         class="fas fa-trash text-danger"></i>
                 </button></td>

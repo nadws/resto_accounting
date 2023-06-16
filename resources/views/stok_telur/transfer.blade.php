@@ -34,13 +34,17 @@
                 </div>
                 <div class="col-lg-3">
                     <label for="">Dari Gudang</label>
-                    <input type="text" class="form-control" value="Gudang Martadah" readonly>
+                    <input type="text" class="form-control" value="Gudang {{$gudang->nm_gudang}}" readonly>
+                    <input type="hidden" class="id_gudang_dari" name="id_gudang_dari"
+                        value="{{$gudang->id_gudang_telur}}" readonly>
                 </div>
                 <div class="col-lg-3">
                     <label for="">Ke Gudang</label>
                     <select name="id_gudang" id="" class="select">
                         <option value="">--Pilih Gudang--</option>
-                        <option value="2">Gudang Alpa</option>
+                        @foreach ($gudang_telur as $g)
+                        <option value="{{$g->id_gudang_telur}}">Gudang {{$g->nm_gudang}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-lg-12">
@@ -129,12 +133,15 @@
                 },
             });
         });
+        var id_gudang = $('.id_gudang_dari').val();
+        
         $(document).on("change", ".pilih_telur", function () {
             var count = $(this).attr('count');
             var id_telur = $('.pilih_telur' + count).val();
+            
            
             $.ajax({
-                url: "/get_stok_telur?id_telur="+ id_telur,
+                url: "/get_stok_telur?id_telur="+ id_telur+'&id_gudang_telur=' + id_gudang,
                 type: "Get",
                 dataType: "json",
                 success: function (data) {
@@ -143,6 +150,17 @@
                     $(".select").select2();
                 },
             });
+        });
+        $(document).on("click", ".remove_baris", function () {
+        var delete_row = $(this).attr("count");
+        $(".baris" + delete_row).remove();
+        });
+        aksiBtn("form");
+        $(document).on("keyup", ".pcs", function () {
+            var count = $(this).attr('count');
+            var pcs = $('.pcs'+ count).val()
+            var ikat = parseFloat(pcs) / 180;
+            $('.ikat'+ count).text(ikat.toFixed(1));
         });
     </script>
 

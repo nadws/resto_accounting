@@ -32,6 +32,11 @@
                     <label for="">Tanggal</label>
                     <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
                 </div>
+                <div class="col-lg-3">
+                    <label for="">Keterangan</label>
+                    <input type="text" class="form-control" name="ket">
+                    <input type="hidden" class="form-control" name="id_gudang" value="{{$id_gudang}}">
+                </div>
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
                 </div>
@@ -40,36 +45,8 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="row">
-                        {{-- <x-theme.toggle name="Pilihan Lainnya">
-
-                        </x-theme.toggle>
-                        <div class="col-lg-12"></div>
-                        <div class="col-lg-6 pilihan_l">
-                            <label for="">No Dokumen</label>
-                            <input type="text" class="form-control inp-lain" name="no_dokumen">
-                        </div>
-                        <div class="col-lg-6 pilihan_l">
-                            <label for="">Tanggal Dokumen</label>
-                            <input type="date" class="form-control inp-lain" name="tgl_dokumen">
-                        </div> --}}
-
                     </div>
                 </div>
-                {{-- <div class="col-lg-6">
-                    <hr style="border: 1px solid blue">
-                    <table class="" width="100%">
-                        <tr>
-                            <td width="20%">Total</td>
-                            <td width="40%" class="total" style="text-align: right;">Rp.0</td>
-                            <td width="40%" class="total_kredit" style="text-align: right;">Rp.0</td>
-                        </tr>
-                        <tr>
-                            <td class="cselisih" colspan="2">Selisih</td>
-                            <td style="text-align: right;" class="selisih cselisih">Rp.0</td>
-                        </tr>
-                    </table>
-
-                </div> --}}
             </section>
 
     </x-slot>
@@ -123,6 +100,12 @@
         $(".baris" + delete_row).remove();
         });
         aksiBtn("form");
+        $(document).on("keyup", ".pcs", function () {
+            var count = $(this).attr('count');
+            var pcs = $('.pcs'+ count).val()
+            var ikat = parseFloat(pcs) / 180;
+            $('.ikat'+ count).text(ikat.toFixed(1));
+        });
     </script>
 
     @endsection

@@ -156,4 +156,90 @@ class PiutangtelurController extends Controller
         ];
         return view('piutang_agl.get_bayar', $data);
     }
+
+    public function edit_piutang(Request $r)
+    {
+        $data = [
+            'nota' => $r->no_nota,
+            'title' => 'Edit Pembayaran Piutang',
+            'head' => DB::table('bayar_telur')->where('no_nota_piutang', $r->no_nota)->first(),
+            'invoice' => DB::select("SELECT a.no_nota_piutang, c.nm_customer, b.tgl, d.debit_total,  a.debit, b.total_rp,b.no_nota
+            FROM bayar_telur as a 
+            left join invoice_telur as b on b.no_nota = a.no_nota
+            left join customer as c on c.id_customer = b.id_customer
+            left join (
+               SELECT d.no_nota, sum(d.debit) as debit_total
+               FROM bayar_telur as d 
+                group by d.no_nota
+            ) as d on d.no_nota = a.no_nota
+            where a.no_nota_piutang = '$r->no_nota';"),
+            'akun' => DB::table('akun')->whereIn('id_klasifikasi', ['1'])->get(),
+            'jurnal' => DB::select("SELECT * FROM jurnal as a where a.no_nota = '$r->no_nota' and a.id_akun != '518'"),
+            'jurnal2' => DB::selectOne("SELECT * FROM jurnal as a where a.no_nota = '$r->no_nota' and a.id_akun = '518'"),
+        ];
+        return view('piutang_agl.edit_get_bayar', $data);
+    }
+
+    public function edit_bayar_piutang(Request $r)
+    {
+        DB::table('jurnal')->where('no_nota', $r->no_nota_piutang)->delete();
+        DB::table('bayar_telur')->where('no_nota_piutang', $r->no_nota_piutang)->delete();
+
+        for ($x = 0; $x < count($r->no_nota); $x++) {
+            $data = [
+                'urutan_piutang' => $r->urutan_piutang,
+                'no_nota_piutang' => $r->no_nota_piutang,
+                'tgl' => $r->tgl,
+                'no_nota' => $r->no_nota[$x],
+                'debit' => $r->pembayaran[$x],
+                'kredit' => '0',
+                'admin' => Auth::user()->name,
+                'piutang' => 'Y'
+            ];
+            DB::table('bayar_telur')->insert($data);
+        }
+        $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', '518')->first();
+        $akun = DB::table('akun')->where('id_akun', '518')->first();
+
+        $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
+        $data = [
+            'tgl' => $r->tgl,
+            'no_nota' => $r->no_nota_piutang,
+            'id_akun' => '518',
+            'id_buku' => '6',
+            'ket' => 'Pelunasan piutang ' . $r->ket,
+            'debit' => 0,
+            'kredit' => $r->total_penjualan,
+            'admin' => Auth::user()->name,
+            'no_urut' => $r->no_urut_penjualan,
+            'urutan' => $r->urutan_penjualan,
+        ];
+        DB::table('jurnal')->insert($data);
+
+        for ($x = 0; $x < count($r->id_akun); $x++) {
+            $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $r->id_akun[$x])->first();
+            $akun2 = DB::table('akun')->where('id_akun', $r->id_akun[$x])->first();
+            $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
+
+            if ($r->id_akun2[$x] == $r->id_akun[$x]) {
+                $uruan_jurnal = $r->urutan_jurnal[$x];
+            } else {
+                $uruan_jurnal = $urutan2;
+            }
+            $data = [
+                'tgl' => $r->tgl,
+                'no_nota' => $r->no_nota_piutang,
+                'id_akun' => $r->id_akun[$x],
+                'id_buku' => '6',
+                'ket' => 'Pelunasan piutang ' . $r->ket,
+                'debit' => $r->debit[$x],
+                'kredit' => $r->kredit[$x],
+                'admin' => Auth::user()->name,
+                'no_urut' => $akun2->inisial . '-' . $uruan_jurnal,
+                'urutan' => $uruan_jurnal,
+            ];
+            DB::table('jurnal')->insert($data);
+        }
+        return redirect()->route('piutang_telur')->with('sukses', 'Data berhasil ditambahkan');
+    }
 }
