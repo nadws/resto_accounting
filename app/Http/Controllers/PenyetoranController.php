@@ -76,7 +76,7 @@ class PenyetoranController extends Controller
             'bayar' => SettingHal::btnHal(69, $id_user),
             'edit' => SettingHal::btnHal(70, $id_user),
         ];
-        return view('penyetoran.penyetoran', $data);
+        return view('penyetoran2.penyetoran', $data);
     }
 
     public function perencanaan(Request $r)
@@ -94,7 +94,7 @@ class PenyetoranController extends Controller
             'setor' => $setor,
             'akun' => DB::table('akun')->select('id_akun', 'nm_akun')->get()
         ];
-        return view('penyetoran.perencanaan', $data);
+        return view('penyetoran2.perencanaan', $data);
     }
 
     public function bayar(Request $r)
@@ -112,7 +112,7 @@ class PenyetoranController extends Controller
             'setor' => $setor,
             'akun' => DB::table('akun')->select('id_akun', 'nm_akun')->get()
         ];
-        return view('penyetoran.bayar', $data);
+        return view('penyetoran2.bayar', $data);
     }
 
     public function save_perencanaan(Request $r)
@@ -134,7 +134,7 @@ class PenyetoranController extends Controller
                 'setor' => 'Y'
             ]);
         }
-        return redirect()->route('penyetoran.index')->with('sukses', 'Data Berhasil Direncanakan');
+        return redirect()->route('penyetoran2.index')->with('sukses', 'Data Berhasil Direncanakan');
     }
 
     public function load_perencanaan()
@@ -146,7 +146,7 @@ class PenyetoranController extends Controller
         $data = [
             'perencanaan' => $perencanaan
         ];
-        return view('penyetoran.load_perencanaan', $data);
+        return view('penyetoran2.load_perencanaan', $data);
     }
 
     public function delete(Request $r)
@@ -155,7 +155,7 @@ class PenyetoranController extends Controller
         DB::table('jurnal')->where('no_nota', $getNoNota)->update(['setor' => 'T']);
         DB::table('setor_penjualan_umum')->where('nota_setor', $r->nota_setor)->delete();
 
-        return redirect()->route('penyetoran.index')->with('sukses', 'Data Berhasil dihapus');
+        return redirect()->route('penyetoran2.index')->with('sukses', 'Data Berhasil dihapus');
     }
 
     public function edit($nota)
@@ -168,7 +168,7 @@ class PenyetoranController extends Controller
             'nota' => $nota,
             'akun' => DB::table('akun')->select('id_akun', 'nm_akun')->get()
         ];
-        return view('penyetoran.save_setor', $data);
+        return view('penyetoran2.save_setor', $data);
     }
 
     public function save_setor(Request $r)
@@ -214,7 +214,7 @@ class PenyetoranController extends Controller
             'admin' => auth()->user()->name,
         ]);
 
-        return redirect()->route('penyetoran.index')->with('sukses', 'Data Berhasil Di setor');
+        return redirect()->route('penyetoran2.index')->with('sukses', 'Data Berhasil Di setor');
     }
 
     public function load_history()
@@ -226,7 +226,7 @@ class PenyetoranController extends Controller
         $data = [
             'setor' => $perencanaan
         ];
-        return view('penyetoran.history', $data);
+        return view('penyetoran2.history', $data);
     }
 
     public function kembali($nota)
@@ -241,7 +241,7 @@ class PenyetoranController extends Controller
             'akun' => DB::table('akun')->select('id_akun', 'nm_akun')->get()
         ];
 
-        return view('penyetoran.kembali', $data);
+        return view('penyetoran2.kembali', $data);
     }
 
     public function hapus_setor(Request $r)
@@ -249,7 +249,7 @@ class PenyetoranController extends Controller
         DB::table('setor_penjualan_umum')->where('nota_setor', $r->nota_setor)->update(['selesai' => 'T']);
         DB::table('jurnal')->where('no_nota', $r->nota_setor)->delete();
 
-        return redirect()->route('penyetoran.index')->with('sukses', 'Data Berhasil Di setor');
+        return redirect()->route('penyetoran2.index')->with('sukses', 'Data Berhasil Di setor');
     }
 
     public function print(Request $r)
@@ -265,7 +265,7 @@ class PenyetoranController extends Controller
             'nota' => $r->nota_setor,
         ];
 
-        return view('penyetoran.print', $data);
+        return view('penyetoran2.print', $data);
     }
 
     public function print_setor(Request $r)
@@ -284,7 +284,7 @@ class PenyetoranController extends Controller
             'nota' => $r->nota_setor,
         ];
 
-        return view('penyetoran.print_setor', $data);
+        return view('penyetoran2.print_setor', $data);
     }
 
     public function export(Request $r)
@@ -299,6 +299,6 @@ class PenyetoranController extends Controller
 
         $totalrow = count($tbl) + 1;
 
-        return Excel::download(new PenyetoranExport($tbl, $totalrow), 'Export Penyetoran.xlsx');
+        return Excel::download(new PenyetoranExport($tbl, $totalrow), 'Export Penyetoran2.xlsx');
     }
 }
