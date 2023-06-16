@@ -4,6 +4,7 @@ use App\Http\Controllers\AksesController;
 use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\BarangDaganganController;
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\DataKandangController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\OpnameController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PiutangController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\ProfitController;
+use App\Http\Controllers\StokTelurMtdController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -275,5 +277,22 @@ Route::middleware('auth')->group(function () {
             Route::get('/kembali/{nota}', 'kembali')->name('kembali');
             Route::post('/edit', 'save_setor')->name('save_setor');
             Route::get('/delete', 'delete')->name('delete');
+        });
+    Route::controller(DataKandangController::class)
+        ->prefix('data_kandang')
+        ->name('data_kandang.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'store')->name('store');
+            Route::post('/update', 'update')->name('update');
+            Route::get('/delete', 'delete')->name('delete');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+        });
+
+    Route::controller(StokTelurMtdController::class)
+        ->prefix('stok_telur_mtd')
+        ->name('stok_telur_mtd.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 });

@@ -25,6 +25,7 @@
 
     <x-slot name="cardBody">
         <form action="{{route('save_jurnal')}}" method="post" class="save_jurnal">
+            @csrf
             <section class="row">
 
                 <div class="col-lg-3">
