@@ -11,7 +11,6 @@
                     </li>
                     @endforeach
 
-
                 </ul>
                 <hr style="border:1px solid #435EBE">
             </div>

@@ -220,17 +220,12 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Data Kandang',
-                'route' => 'data_kandang.index',
+                'judul' => 'Dashboard Kandang',
+                'route' => 'dashboard_kandang.index',
                 'img' => 'kandang.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            [
-                'judul' => 'Stok Telur',
-                'route' => 'stok_telur_mtd.index',
-                'img' => 'eggs.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
+          
 
         ];
         $title = 'Kandang AGL';

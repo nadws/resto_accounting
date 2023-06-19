@@ -3,7 +3,7 @@
     <div class="col-lg-6">
         <div class="form-group">
             <label for="">Tanggal</label>
-            <input required value="{{ $d->tgl }}" type="date" name="tgl"
+            <input required value="{{ $d->chick_in }}" type="date" name="tgl"
                 class="form-control">
         </div>
     </div>
@@ -28,7 +28,7 @@
     <div class="col-lg-6">
         <div class="form-group">
             <label for="">Ayam Awal</label>
-            <input required type="text" value="{{ $d->ayam_awal }}" name="ayam_awal" class="form-control">
+            <input required type="text" value="{{ $d->stok_awal }}" name="ayam_awal" class="form-control">
         </div>
     </div>
 </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AksesController;
 use App\Http\Controllers\BahanBakuController;
 use App\Http\Controllers\BarangDaganganController;
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\DashboardKandangController;
 use App\Http\Controllers\DataKandangController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
@@ -294,5 +295,14 @@ Route::middleware('auth')->group(function () {
         ->name('stok_telur_mtd.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+        });
+
+    Route::controller(DashboardKandangController::class)
+        ->prefix('dashboard_kandang')
+        ->name('dashboard_kandang.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/tambah_telur', 'tambah_telur')->name('tambah_telur');
         });
 });

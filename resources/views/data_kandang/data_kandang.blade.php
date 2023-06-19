@@ -16,7 +16,7 @@
                 <thead>
                     <tr>
                         <th width="5">#</th>
-                        <th>Tanggal</th>
+                        <th>Check In</th>
                         <th>Nama Kandang</th>
                         <th>Strain</th>
                         <th>Ayam Awal</th>
@@ -29,11 +29,11 @@
                     @foreach ($kandang as $no => $a)
                         <tr>
                             <td>{{ $no + 1 }}</td>
-                            <td>{{ tanggal($a->tgl) }}</td>
+                            <td>{{ tanggal($a->chick_in) }}</td>
                             <td>{{ ucwords($a->nm_kandang) }}</td>
                             <td>{{ ucwords($a->strain) }}</td>
                             <td>
-                                {{ $a->ayam_awal }}
+                                {{ $a->stok_awal }}
                             </td>
                             <td>
                                 1
@@ -71,7 +71,7 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label for="">Tanggal</label>
+                            <label for="">chick In</label>
                             <input required value="{{ date('Y-m-d') }}" type="date" name="tgl"
                                 class="form-control">
                         </div>
