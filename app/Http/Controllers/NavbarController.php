@@ -235,15 +235,9 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Produk Telur',
+                'judul' => 'Dashboard Telur',
                 'route' => 'produk_telur',
                 'img' => 'egg.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Input Stok Telur',
-                'route' => 'stok_telur',
-                'img' => 'warehouse2.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
             [
