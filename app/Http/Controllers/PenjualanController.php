@@ -52,7 +52,7 @@ class PenjualanController extends Controller
             'title' => 'Penjualan Agrilaras',
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
-            'invoice' => DB::select("SELECT a.no_nota, a.tgl, a.tipe, a.admin, b.nm_customer, sum(a.total_rp) as ttl_rp, a.status, c.debit_bayar , c.kredit_bayar, a.urutan_customer, a.driver
+            'invoice' => DB::select("SELECT a.no_nota, a.tgl, a.tipe, a.admin, b.nm_customer, sum(a.total_rp) as ttl_rp, a.status, c.debit_bayar , c.kredit_bayar, a.urutan_customer, a.driver, a.lokasi
             FROM invoice_telur as a 
             left join customer as b on b.id_customer = a.id_customer
             left join (
@@ -152,7 +152,8 @@ class PenjualanController extends Controller
                     'admin' => Auth::user()->name,
                     'urutan' => $nota_t,
                     'urutan_customer' => $urutan_cus,
-                    'driver' => $r->driver
+                    'driver' => $r->driver,
+                    'lokasi' => 'alpa'
                 ];
                 DB::table('invoice_telur')->insert($data);
             } else {
@@ -169,7 +170,8 @@ class PenjualanController extends Controller
                     'admin' => Auth::user()->name,
                     'urutan' => $nota_t,
                     'urutan_customer' => $urutan_cus,
-                    'driver' => $r->driver
+                    'driver' => $r->driver,
+                    'lokasi' => 'alpa'
                 ];
                 DB::table('invoice_telur')->insert($data);
             }

@@ -203,21 +203,21 @@ class Stock_telurController extends Controller
         } else {
             $nota_t = $max->urutan + 1;
         }
-        // for ($x = 0; $x < count($r->id_telur); $x++) {
-        //     $data = [
-        //         'tgl' => $r->tgl,
-        //         'id_telur' => $r->id_telur[$x],
-        //         'ket' => $r->ket[$x],
-        //         'pcs' => $r->pcs[$x],
-        //         'kg' => $r->kg[$x],
-        //         'dari_gudang' => '1',
-        //         'ke_gudang' => '2',
-        //         'no_nota' => 'TF-' . $nota_t,
-        //         'urutan' => $nota_t,
-        //         'admin' => Auth::user()->name,
-        //     ];
-        //     DB::table('stok_telur_alpa')->insert($data);
-        // }
+        for ($x = 0; $x < count($r->id_telur); $x++) {
+            $data = [
+                'tgl' => $r->tgl,
+                'id_telur' => $r->id_telur[$x],
+                'ket' => $r->ket[$x],
+                'pcs' => $r->pcs[$x],
+                'kg' => $r->kg[$x],
+                'dari_gudang' => '1',
+                'ke_gudang' => '2',
+                'no_nota' => 'TF-' . $nota_t,
+                'urutan' => $nota_t,
+                'admin' => Auth::user()->name,
+            ];
+            DB::table('stok_telur_alpa')->insert($data);
+        }
         for ($x = 0; $x < count($r->id_telur); $x++) {
             $data = [
                 'tgl' => $r->tgl,

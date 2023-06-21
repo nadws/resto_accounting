@@ -14,6 +14,7 @@ use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
+use App\Http\Controllers\Penjualan_martadah_alpaController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\Penyetoran_telurController;
 use App\Http\Controllers\PiutangtelurController;
@@ -323,4 +324,14 @@ Route::controller(Penyetoran_telurController::class)->group(function () {
 
 Route::controller(Produk_telurController::class)->group(function () {
     Route::get('/produk_telur', 'index')->name('produk_telur');
+    Route::get('/CheckMartadah', 'CheckMartadah')->name('CheckMartadah');
+    Route::get('/CheckAlpa', 'CheckAlpa')->name('CheckAlpa');
+    Route::get('/HistoryMtd', 'HistoryMtd')->name('HistoryMtd');
+    Route::get('/edit_telur_dashboard', 'edit_telur_dashboard')->name('edit_telur_dashboard');
+    Route::get('/export_telur', 'export')->name('export_telur');
+    Route::get('/terima_invoice_mtd', 'terima_invoice_mtd')->name('terima_invoice_mtd');
+    Route::post('/save_terima_invoice', 'save_terima_invoice')->name('save_terima_invoice');
+});
+Route::controller(Penjualan_martadah_alpaController::class)->group(function () {
+    Route::get('/penjualan_martadah_cek', 'index')->name('penjualan_martadah_cek');
 });

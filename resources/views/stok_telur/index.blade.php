@@ -3,15 +3,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    @foreach ($gudang as $g)
                     <li class="nav-item" role="presentation">
-                        <a class="nav-link  {{$id_gudang == $g->id_gudang_telur ? 'active' : ''}} "
-                            href="{{route('stok_telur',['id_gudang' => $g->id_gudang_telur])}}" type="button" role="tab"
-                            aria-controls="pills-home" aria-selected="true">Gudang {{$g->nm_gudang}}</a>
+                        <a class="nav-link  active " href="{{route('stok_telur')}}" type="button" role="tab"
+                            aria-controls="pills-home" aria-selected="true">Gudang Martadah</a>
                     </li>
-                    @endforeach
-
-
                 </ul>
                 <hr style="border:1px solid #435EBE">
             </div>
