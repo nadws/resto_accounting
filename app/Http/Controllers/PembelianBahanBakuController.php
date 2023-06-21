@@ -45,8 +45,8 @@ class PembelianBahanBakuController extends Controller
     }
     public function index(Request $r)
     {
-        $tgl1 =  $this->tgl1;
-        $tgl2 =  $this->tgl2;
+        $tgl1 =  '2023-05-01';
+        $tgl2 =  date('Y-m-d');
         $pembelian = DB::select("SELECT a.id_invoice_bk, a.tgl, a.no_nota,b.nm_suplier, a.suplier_akhir, a.total_harga, a.lunas, c.kredit, c.debit, a.approve, d.no_nota as nota_grading
             FROM invoice_bk as a 
             left join tb_suplier as b on b.id_suplier = a.id_suplier

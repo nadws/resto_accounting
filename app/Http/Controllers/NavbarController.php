@@ -215,6 +215,22 @@ class NavbarController extends Controller
         return view('navbar.data_master', compact(['data', 'title']));
     }
 
+
+    public function kandang()
+    {
+        $data = [
+            [
+                'judul' => 'Dashboard Kandang',
+                'route' => 'dashboard_kandang.index',
+                'img' => 'kandang.png',
+                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            ],
+          
+
+        ];
+        $title = 'Kandang AGL';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
     public function penjualan_agl()
     {
         $data = [
