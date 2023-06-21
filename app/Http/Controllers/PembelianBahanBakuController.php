@@ -59,7 +59,6 @@ class PembelianBahanBakuController extends Controller
             order by a.no_nota DESC");
 
 
-
         $listBulan = DB::table('bulan')->get();
         $id_user = auth()->user()->id;
         $data =  [
