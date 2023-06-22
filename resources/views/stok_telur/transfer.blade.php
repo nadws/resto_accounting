@@ -24,29 +24,37 @@
     </style>
 
     <x-slot name="cardBody">
-        <form action="{{route('save_transfer_stok_telur')}}" method="post" class="save_jurnal">
+        <form action="{{route('dashboard_kandang.save_transfer')}}" method="post" class="save_jurnal">
             @csrf
             <section class="row">
-
-                <div class="col-lg-3">
-                    <label for="">Tanggal</label>
-                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                <div class="col-lg-12">
+                    <table class="table">
+                        <tr>
+                            <th class="dhead">Tanggal</th>
+                            <th class="dhead">Dari Gudang</th>
+                            <th class="dhead">Ke Gudang</th>
+                        </tr>
+                        <tr>
+                            <td>
+                        <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" value="Gudang {{$gudang->nm_gudang}}" readonly>
+                        <input type="hidden" class="id_gudang_dari" name="id_gudang_dari"
+                            value="{{$gudang->id_gudang_telur}}" readonly>
+                            </td>
+                            <td>
+                                <select required name="id_gudang" id="" class="select">
+                                    <option value="">--Pilih Gudang--</option>
+                                    @foreach ($gudang_telur as $g)
+                                    <option {{$g->id_gudang_telur == 2 ? 'selected' : ''}} value="{{$g->id_gudang_telur}}">Gudang {{$g->nm_gudang}}</option>
+                                    @endforeach
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="col-lg-3">
-                    <label for="">Dari Gudang</label>
-                    <input type="text" class="form-control" value="Gudang {{$gudang->nm_gudang}}" readonly>
-                    <input type="hidden" class="id_gudang_dari" name="id_gudang_dari"
-                        value="{{$gudang->id_gudang_telur}}" readonly>
-                </div>
-                <div class="col-lg-3">
-                    <label for="">Ke Gudang</label>
-                    <select name="id_gudang" id="" class="select">
-                        <option value="">--Pilih Gudang--</option>
-                        @foreach ($gudang_telur as $g)
-                        <option value="{{$g->id_gudang_telur}}">Gudang {{$g->nm_gudang}}</option>
-                        @endforeach
-                    </select>
-                </div>
+                
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
                 </div>

@@ -138,17 +138,14 @@ class Stock_telurController extends Controller
             'admin' => Auth::user()->name,
         ];
         DB::table('stok_telur')->where('id_stok_telur', $r->id_stok_telur)->update($data);
-        return redirect()->route('stok_telur')->with('sukses', 'Data berhasil ditambahkan');
+        return redirect()->route('dashboard_kandang.transfer_stok')->with('sukses', 'Data berhasil ditambahkan');
     }
 
     public function delete_telur(Request $r)
     {
         DB::table('stok_telur')->where('id_stok_telur', $r->no_nota)->delete();
-        return redirect()->route('stok_telur')->with('sukses', 'Data berhasil dihapus');
+        return redirect()->route('dashboard_kandang.transfer_stok')->with('sukses', 'Data berhasil dihapus');
     }
-
-
-
     // Transfer
 
     public function transfer_stok_telur(Request $r)

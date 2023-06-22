@@ -42,14 +42,21 @@
         </style>
         {{-- stok mtd --}}
         <div class="row">
-            <div class="col-lg-6">
-                <h5>Stok Martadah</h5>
-                <table class="table table-bordered text-center">
+            <div class="col-lg-12">
+                <h5>
+                    Stok Telur
 
+                </h5>
+                <table class="table table-bordered text-center">
+                    @php
+                        $ttlPcs = 0;
+                        $ttlKg = 0;
+                        $ttlIkat = 0;
+                    @endphp
                     <tr>
-                        <th class="dhead" rowspan="2" style="vertical-align: middle">Stok</th>
+                        <th class="dhead" rowspan="2" style="vertical-align: middle">Gudang</th>
                         @foreach ($telur as $d)
-                            <th class="dhead" colspan="2">
+                            <th class="dhead" colspan="3">
                                 {{ ucwords(str_replace('telur', '', strtolower($d->nm_telur))) }}</th>
                         @endforeach
                     </tr>
@@ -61,20 +68,64 @@
                         @foreach ($telur as $d)
                             <th class="dhead">Pcs</th>
                             <th class="dhead">Kg</th>
+                            <th class="dhead">Ikat</th>
                         @endforeach
                     </tr>
                     <tr>
-                        <td>Gudang Martadah</td>
-                        
+                        <td align="left">Martadah</td>
+                        @foreach ($telur as $d)
+                            @php
+                                $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM `stok_telur`
+                                            WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 1;");
+                                
+                            @endphp
+                            <td>{{ $stok->pcs }}</td>
+                            <td>{{ $stok->kg }}</td>
+                            <td>{{ number_format($stok->pcs / 180, 1) }}</td>
+                        @endforeach
                     </tr>
                     <tr>
-                        <td>Penjualan Martadah</td>
+                        <td align="left">Penjualan Martadah</td>
 
                     </tr>
                     <tr>
-                        <td>Transfer Alpa</td>
-
+                        <td align="left">
+                            Transfer Alpa
+                            <a href="{{ route('dashboard_kandang.add_transfer_stok', ['id_gudang' => 1]) }}"
+                                class="badge bg-primary text-sm"><i class="fas fa-plus"></i></a>
+                            <a href="{{ route('dashboard_kandang.transfer_stok', ['id_gudang' => 1]) }}"
+                                class="badge bg-primary text-sm"><i class="fas fa-history"></i>
+                            </a>
+                        </td>
+                        @foreach ($telur as $d)
+                            @php
+                                $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM `stok_telur`
+                                        WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 2;");
+                                
+                            @endphp
+                            <td>{{ $stok->pcs ?? 0 }}</td>
+                            <td>{{ $stok->kg ?? 0 }}</td>
+                            <td>{{ number_format($stok->pcs / 180, 1) }}</td>
+                        @endforeach
                     </tr>
+                    {{-- <tr>
+                        <th align="center">Total</th>
+                        @foreach ($telur as $i => $d)
+                            @php
+                                $stokMtd = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM `stok_telur`
+                                            WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 1;");
+                                $stokTf = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM `stok_telur`
+                                        WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 2;");
+
+                                $ttlPcs += $stokMtd->pcs + $stokTf->pcs;
+                                $ttlKg += $stokMtd->kg + $stokTf->kg;
+                                $ttlIkat += number_format($stokMtd->pcs / 180, 1) + number_format($stokTf->pcs / 180, 1);
+                            @endphp
+                            <th>{{ $ttlPcs }}</th>
+                            <th>{{ $ttlKg }}</th>
+                            <th>{{ $ttlIkat }}</th>
+                        @endforeach
+                    </tr> --}}
                 </table>
             </div>
 
@@ -83,8 +134,10 @@
 
         {{-- table input --}}
         <section class="row">
+            @if (session()->has('error'))
+            <x-theme.alert pesan="kontak dr anto kalo ada yg merah" />
+            @endif
             <div class="col-lg-12">
-
                 <table class="table table-bordered table-hover " id="table">
                     <thead>
                         <tr>
@@ -128,7 +181,7 @@
 
                                 @php
                                     $populasi = DB::table('populasi')
-                                        ->where('id_kandang', $d->id_kandang)
+                                        ->where([['id_kandang', $d->id_kandang], ['tgl', date('Y-m-d')]])
                                         ->first();
                                     $mati = $populasi->mati ?? 0;
                                     $jual = $populasi->jual ?? 0;

@@ -10,14 +10,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th width="20%">Produk</th>
-            <th width="20%">Keterangan</th>
-            <th width="15%" style="text-align: right">Pcs Stok</th>
-            <th width="15%" style="text-align: right">Pcs</th>
-            <th width="15%" style="text-align: right">Kg Stok</th>
-            <th width="15%" style="text-align: right">Kg</th>
-            <th width="15%">Ikat</th>
-            <th width="5%">Aksi</th>
+            <th class="dhead" width="20%">Produk</th>
+            <th class="dhead" width="20%">Keterangan</th>
+            <th class="dhead" width="15%" style="text-align: right">Pcs Stok</th>
+            <th class="dhead" width="15%" style="text-align: right">Pcs</th>
+            <th class="dhead" width="15%" style="text-align: right">Kg Stok</th>
+            <th class="dhead" width="15%" style="text-align: right">Kg</th>
+            <th class="dhead" width="15%">Ikat</th>
+            <th class="dhead" width="5%">Aksi</th>
         </tr>
     </thead>
     <tbody>
