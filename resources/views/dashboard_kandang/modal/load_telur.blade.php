@@ -71,11 +71,13 @@
                             class="form-control kgPcs kgPcs{{ $i + 1 }}" count="{{ $i + 1 }}">
                     </td>
                     <td>
-                        <input type="text" value="{{ !empty($cek) ? ($cek->pcs == 0 ? 0 : $cek->potongan_pcs ?? 0) : 0 }}" readonly
+                        <input type="text"
+                            value="{{ !empty($cek) ? ($cek->pcs == 0 ? 0 : $cek->potongan_pcs ?? 0) : 0 }}" readonly
                             class="form-control potongan{{ $i + 1 }}" name="potongan_pcs[]">
                     </td>
                     <td>
-                        <input type="text" value="{{ !empty($cek) ? ($cek->pcs == 0 ? 0 : $cek->ttl_kg_pcs ?? 0) : 0 }}" readonly
+                        <input type="text"
+                            value="{{ !empty($cek) ? ($cek->pcs == 0 ? 0 : $cek->ttl_kg_pcs ?? 0) : 0 }}" readonly
                             class="form-control ttlKgPcs{{ $i + 1 }}" name="ttl_kg_pcs[]">
                     </td>
                 </tr>

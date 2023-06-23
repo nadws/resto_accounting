@@ -72,7 +72,11 @@
                         @endforeach
                     </tr>
                     <tr>
-                        <td align="left">Martadah</td>
+                        <td align="left">
+                            Martadah
+                            <a href="{{ route('opnamemtd') }}"
+                                class="badge bg-primary text-sm"><i class="fas fa-clipboard-list"></i></a>
+                        </td>
                         @foreach ($telur as $d)
                             @php
                                 $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM `stok_telur`
@@ -89,11 +93,20 @@
                             Penjualan Martadah
                             <a href="{{ route('dashboard_kandang.add_penjualan_telur') }}"
                                 class="badge bg-primary text-sm"><i class="fas fa-plus"></i></a>
-                            <a href="{{ route('dashboard_kandang.transfer_stok', ['id_gudang' => 1]) }}"
+                            <a href="{{ route('dashboard_kandang.penjualan_telur', ['id_gudang' => 1]) }}"
                                 class="badge bg-primary text-sm"><i class="fas fa-history"></i>
                             </a>
                         </td>
-                        
+                        @foreach ($telur as $d)
+                            @php
+                                $stok = DB::selectOne("SELECT SUM(pcs_kredit) as pcs, SUM(kg_kredit) as kg FROM `stok_telur`
+                                        WHERE id_telur = '$d->id_produk_telur' AND jenis = 'penjualan';");
+                                
+                            @endphp
+                            <td>{{ $stok->pcs ?? 0 }}</td>
+                            <td>{{ $stok->kg ?? 0 }}</td>
+                            <td>{{ number_format($stok->pcs / 180, 1) }}</td>
+                        @endforeach
                     </tr>
                     <tr>
                         <td align="left">

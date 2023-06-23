@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardKandangController extends Controller
 {
-    protected $tgl1, $tgl2, $period;
+    protected $tgl1, $tgl2, $period, $produk;
     public function __construct(Request $r)
     {
+        $this->produk = Produk::with('satuan')->where([['kontrol_stok', 'Y'], ['kategori_id', 3]])->get();
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -175,7 +177,8 @@ class DashboardKandangController extends Controller
                 'kg_kredit' => $r->kg[$x],
                 'admin' => auth()->user()->name,
                 'nota_transfer' => 'TF-' . $nota_t,
-                'id_gudang' => $r->id_gudang_dari
+                'id_gudang' => $r->id_gudang_dari,
+                'jenis' => 'tf'
             ];
             DB::table('stok_telur')->insert($data);
             $data = [
@@ -186,11 +189,30 @@ class DashboardKandangController extends Controller
                 'ket' => $r->ket[$x],
                 'admin' => auth()->user()->name,
                 'nota_transfer' => 'TF-' . $nota_t,
-                'id_gudang' => $r->id_gudang
+                'id_gudang' => $r->id_gudang,
+                'jenis' => 'tf'
             ];
             DB::table('stok_telur')->insert($data);
         }
         return redirect()->route('dashboard_kandang.index')->with('sukses', 'Data berhasil di transfer');
+    }
+
+    public function penjualan_telur()
+    {
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
+        $transfer = DB::table('stok_telur as a')
+            ->join('telur_produk as c', 'a.id_telur', 'c.id_produk_telur')
+            ->where('a.jenis', 'penjualan')
+            ->get();
+
+        $data = [
+            'title' => 'Penjualan Telur',
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+            'penjualan' => $transfer
+        ];
+        return view('dashboard_kandang.penjualan_telur.penjualan_telur', $data);
     }
 
     public function add_penjualan_telur()
@@ -209,8 +231,19 @@ class DashboardKandangController extends Controller
             'nota' => $nota_t,
             'akun' => DB::table('akun')->whereIn('id_klasifikasi', ['1', '7'])->get()
         ];
-        
-        return view('dashboard_kandang.penjualan_telur.add_penjualan_telur',$data);
+
+        return view('dashboard_kandang.penjualan_telur.add_penjualan_telur', $data);
+    }
+
+    public function edit_telur(Request $r)
+    {
+        $data =  [
+            'title' => 'Edit Stok Telur',
+            'telur' => DB::table('stok_telur')->where('id_stok_telur', $r->id_stok_telur)->first(),
+            'kandang' => DB::table('kandang')->get(),
+            'produk' => DB::table('telur_produk')->get(),
+        ];
+        return view('dashboard_kandang.penjualan_telur.edit', $data);
     }
 
     public function save_penjualan_telur(Request $r)
@@ -230,8 +263,6 @@ class DashboardKandangController extends Controller
         } else {
             $urutan_cus = $max_customer->urutan_customer + 1;
         }
-
-
         for ($x = 0; $x < count($r->id_produk); $x++) {
 
             if ($r->tipe == 'kg') {
@@ -246,11 +277,11 @@ class DashboardKandangController extends Controller
                     'kg_jual' => $r->kg_jual[$x],
                     'rp_satuan' => $r->rp_satuan[$x],
                     'total_rp' => $r->total_rp[$x],
-                    'admin' => Auth::user()->name,
+                    'admin' => auth()->user()->name,
                     'urutan' => $nota_t,
                     'urutan_customer' => $urutan_cus,
                     'driver' => $r->driver,
-                    'lokasi' => 'alpa'
+                    'lokasi' => 'mtd'
                 ];
                 DB::table('invoice_telur')->insert($data);
             } else {
@@ -264,79 +295,134 @@ class DashboardKandangController extends Controller
                     'kg' => $r->kg[$x],
                     'rp_satuan' => $r->rp_satuan[$x],
                     'total_rp' => $r->total_rp[$x],
-                    'admin' => Auth::user()->name,
+                    'admin' => auth()->user()->name,
                     'urutan' => $nota_t,
                     'urutan_customer' => $urutan_cus,
                     'driver' => $r->driver,
-                    'lokasi' => 'alpa'
+                    'lokasi' => 'mtd'
                 ];
                 DB::table('invoice_telur')->insert($data);
             }
-        }
-        $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', '517')->first();
-        $akun = DB::table('akun')->where('id_akun', '517')->first();
 
-        $customer = DB::table('customer')->where('id_customer', $r->customer)->first();
-
-        $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
-        $data = [
-            'tgl' => $r->tgl,
-            'no_nota' => 'T' . $nota_t,
-            'id_akun' => '517',
-            'id_buku' => '6',
-            'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
-            'debit' => 0,
-            'kredit' => $r->total_penjualan,
-            'admin' => Auth::user()->name,
-            'no_urut' => $akun->inisial . '-' . $urutan,
-            'urutan' => $urutan,
-        ];
-        DB::table('jurnal')->insert($data);
-
-        $data = [
-            'tgl' => $r->tgl,
-            'no_nota' => 'T' . $nota_t,
-            'debit' => 0,
-            'kredit' => $r->total_penjualan,
-        ];
-        DB::table('bayar_telur')->insert($data);
-
-
-
-        for ($x = 0; $x < count($r->id_akun); $x++) {
-            $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $r->id_akun[$x])->first();
-            $akun2 = DB::table('akun')->where('id_akun', $r->id_akun[$x])->first();
-            $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
-            $data = [
+            DB::table('stok_telur')->insert([
+                'id_kandang' => 0,
+                'id_telur' => $r->id_produk[$x],
                 'tgl' => $r->tgl,
-                'no_nota' => 'T' . $nota_t,
-                'id_akun' => $r->id_akun[$x],
-                'id_buku' => '6',
-                'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
-                'debit' => $r->debit[$x],
-                'kredit' => $r->kredit[$x],
-                'admin' => Auth::user()->name,
-                'no_urut' => $akun2->inisial . '-' . $urutan2,
-                'urutan' => $urutan2,
-            ];
-            DB::table('jurnal')->insert($data);
-
-
-            if ($akun2->id_klasifikasi == '7') {
-                $nota = 'T' . $nota_t;
-                DB::table('invoice_telur')->where('no_nota', $nota)->update(['status' => 'unpaid']);
-            } else {
-                $data = [
-                    'tgl' => $r->tgl,
-                    'no_nota' => 'T' . $nota_t,
-                    'debit' => $r->debit[$x],
-                    'kredit' => $r->kredit[$x],
-                    'no_nota_piutang' => 'T' . $nota_t
-                ];
-                DB::table('bayar_telur')->insert($data);
-            }
+                'pcs_kredit' => $r->pcs[$x],
+                'kg_kredit' => $r->kg[$x],
+                'pcs' => 0,
+                'kg' => 0,
+                'admin' => auth()->user()->name,
+                'id_gudang' => 1,
+                'nota_transfer' => 'T' . $nota_t,
+                'ket' => '',
+                'jenis' => 'penjualan'
+            ]);
         }
 
-        return redirect()->route('penjualan_agrilaras')->with('sukses', 'Data berhasil ditambahkan');
+        return redirect()->route('dashboard_kandang.penjualan_telur')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function save_edit_telur(Request $r)
+    {
+        $data = [
+            'id_kandang' => $r->id_kandang,
+            'id_telur' => $r->id_produk_telur,
+            'tgl' => $r->tgl,
+            'pcs_kredit' => $r->pcs,
+            'kg_kredit' => $r->kg,
+            'admin' => auth()->user()->name,
+        ];
+        DB::table('stok_telur')->where('id_stok_telur', $r->id_stok_telur)->update($data);
+        return redirect()->route('dashboard_kandang.penjualan_telur')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function penjualan_umum()
+    {
+        $tgl1 = $this->tgl1;
+        $tgl2 = $this->tgl2;
+        $id_user = auth()->user()->id;
+        $penjualan = DB::select("SELECT *, sum(a.total_rp) as total, count(*) as ttl_produk  FROM `penjualan_agl` as a
+        LEFT JOIN customer as b ON a.id_customer = b.id_customer
+        WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2'
+        GROUP BY a.urutan");
+        $data = [
+            'title' => 'Penjualan Umum',
+            'penjualan' => $penjualan,
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+        ];
+        return view('dashboard_kandang.penjualan_umum.penjualan_umum',$data);
+    }
+
+    public function add_penjualan_umum()
+    {
+        $nota = buatNota('penjualan_agl', 'urutan');
+        $data = [
+            'title' => 'Tambah Penjualan Umum',
+            'customer' => DB::table('customer')->get(),
+            'produk' => $this->produk,
+            'no_nota' => $nota
+        ];
+        return view('dashboard_kandang.penjualan_umum.add', $data);
+    }
+
+    public function tbh_add(Request $r)
+    {
+        $data = [
+            'count' => $r->count,
+            'produk' => $this->produk,
+        ];
+        return view('penjualan2.tbh_add', $data);
+    }
+
+    public function save_penjualan_umum(Request $r)
+    {
+
+        for ($i = 0; $i < count($r->id_produk); $i++) {
+            DB::table('penjualan_agl')->insert([
+                'urutan' => $r->no_nota,
+                'nota_manual' => $r->nota_manual,
+                'tgl' => $r->tgl,
+                'kode' => 'PAGL',
+                'id_customer' => $r->id_customer,
+                'driver' => $r->driver,
+                'id_produk' => $r->id_produk[$i],
+                'qty' => $r->qty[$i],
+                'rp_satuan' => $r->rp_satuan[$i],
+                'total_rp' => $r->total_rp[$i],
+                'ket' => $r->ket,
+                'id_jurnal' => 0,
+                'admin' => auth()->user()->name,
+                'lokasi' => 'mtd'
+            ]);
+
+            $getProduk = DB::table('tb_stok_produk')->where('id_produk', $r->id_produk[$i])->orderBy('id_stok_produk', 'DESC')->first();
+            $notaProduk = buatNota('tb_stok_produk', 'urutan');
+            $jml_sebelumnya = $getProduk->jml_sebelumnya ?? 0;
+            $jml_sesudahnya = $jml_sebelumnya - $r->qty[$i];
+
+            DB::table("tb_stok_produk")->insert([
+                'id_produk' => $r->id_produk[$i],
+                'urutan' => $notaProduk,
+                'no_nota' => 'SK-' . $notaProduk,
+                'tgl' => $r->tgl,
+                'jenis' => 'selesai',
+                'status' => 'keluar',
+                'jml_sebelumnya' => $jml_sebelumnya,
+                'jml_sesudahnya' => $jml_sesudahnya,
+                'debit' => 0,
+                'kredit' => $r->qty[$i],
+                'rp_satuan' => 0,
+                'ket' => 'PAGL-' . $r->no_nota,
+                'gudang_id' => $getProduk->gudang_id,
+                'kategori_id' => 3,
+                'departemen_id' => 1,
+                'admin' => auth()->user()->name,
+                'lokasi' => 'mtd'
+            ]);
+        }
+
+        return redirect()->route('dashboard_kandang.penjualan_umum')->with('sukses', 'Data Berhasil Ditambahkan');
     }
 }

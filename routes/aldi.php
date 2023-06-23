@@ -308,16 +308,23 @@ Route::middleware('auth')->group(function () {
             Route::get('/load_populasi/{id_kandang}', 'load_populasi')->name('load_populasi');
             Route::post('/tambah_populasi', 'tambah_populasi')->name('tambah_populasi');
             Route::post('/tambah_karung', 'tambah_karung')->name('tambah_karung');
-            
+
             // penjualan martadah
             Route::get('/penjualan_telur', 'penjualan_telur')->name('penjualan_telur');
             Route::get('/add_penjualan_telur', 'add_penjualan_telur')->name('add_penjualan_telur');
+            Route::get('/edit_telur', 'edit_telur')->name('edit_telur');
             Route::post('/save_penjualan_telur', 'save_penjualan_telur')->name('save_penjualan_telur');
-            
+            Route::post('/save_edit_telur', 'save_edit_telur')->name('save_edit_telur');
+
             // transfer stok
             Route::get('/transfer_stok', 'transfer_stok')->name('transfer_stok');
             Route::get('/add_transfer_stok', 'add_transfer_stok')->name('add_transfer_stok');
             Route::post('/save_transfer', 'save_transfer')->name('save_transfer');
 
+            // penjualan umum
+            Route::get('/penjualan_umum', 'penjualan_umum')->name('penjualan_umum');
+            Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
+            Route::get('/add_penjualan_umum', 'add_penjualan_umum')->name('add_penjualan_umum');
+            Route::post('/save_penjualan_umum', 'save_penjualan_umum')->name('save_penjualan_umum');
         });
 });
