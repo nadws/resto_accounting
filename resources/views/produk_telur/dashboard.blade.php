@@ -87,7 +87,8 @@
                 <a href="{{route('CheckMartadah',['cek' => $cek->check , 'tgl' => $tanggal])}}"
                     class="float-end btn btn-sm  btn-primary">Save</a>
                 @else
-                <i class="fas fa-check text-success fa-2x float-end"></i>
+                <a href="{{route('CheckMartadah',['cek' => $cek->check , 'tgl' => $tanggal])}}"
+                    class="float-end btn btn-sm  btn-primary">Unsave</a>
                 @endif
                 @endif
 
@@ -117,9 +118,10 @@
                     <tbody style="border-color: #435EBE; font-size: 10px">
                         @foreach ($produk as $p)
                         @php
-                        $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg FROM stok_telur_alpa
-                        as a
-                        where a.id_telur = '$p->id_produk_telur' and a.tgl = '$tanggal'");
+                        $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg
+                        FROM stok_telur as a
+                        where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '2'
+                        ");
                         @endphp
                         <td>{{empty($stok_transfer->pcs) ? '0' : number_format($stok_transfer->pcs,0)}}</td>
                         <td>{{empty($stok_transfer->kg) ? '0' : number_format($stok_transfer->kg,2)}}</td>
@@ -139,7 +141,8 @@
                 <a href="{{route('CheckAlpa',['cek' => $cek2->check , 'tgl' => $tanggal])}}"
                     class="float-end btn btn-sm  btn-primary">Save</a>
                 @else
-                <i class="fas fa-check text-success fa-2x float-end"></i>
+                <a href="{{route('CheckAlpa',['cek' => $cek2->check , 'tgl' => $tanggal])}}"
+                    class="float-end btn btn-sm  btn-primary">Unsave</a>
                 @endif
                 @endif
 
