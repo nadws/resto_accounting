@@ -26,7 +26,7 @@
                 color: white;
             }
         </style>
-        <form action="{{ route('save_terima_invoice') }}" method="post" class="save_jurnal">
+        <form action="{{ route('save_cek_umum_invoice') }}" method="post" class="save_jurnal">
             @csrf
 
             <section class="row">
@@ -57,28 +57,27 @@
                             @endphp
                             @foreach ($nota as $no => $n)
                             @php
-                            $hutang = DB::selectOne("SELECT a.tgl, a.no_nota, b.nm_customer, sum(a.total_rp) as ttl_rp,
-                            a.tipe, a.admin,a.urutan_customer
-                            FROM invoice_telur as a
-                            left join customer as b on b.id_customer = a.id_customer
-                            where a.no_nota = '$n'
-                            group by a.no_nota");
-
-                            $total += $hutang->ttl_rp
+                            $hutang = DB::selectOne("SELECT *, sum(a.total_rp) as total, count(*) as ttl_produk FROM
+                            `penjualan_agl` as a
+                            LEFT JOIN customer as b ON a.id_customer = b.id_customer
+                            WHERE a.urutan = '$n'
+                            GROUP BY a.urutan;");
+                            $total += $hutang->total
                             @endphp
                             <tr>
-                                <td>{{$n}}</td>
+                                <td>{{$hutang->kode}}-{{$n}}</td>
                                 <td>
                                     {{tanggal($hutang->tgl)}}
                                     <input type="hidden" name="tgl[]" value="{{$hutang->tgl}}">
-                                    <input type="hidden" name="no_nota[]" value="{{$hutang->no_nota}}">
+                                    <input type="hidden" name="urutan[]" value="{{$hutang->urutan}}">
+                                    <input type="hidden" name="no_nota[]" value="{{$hutang->kode}}-{{$hutang->urutan}}">
                                     <input type="hidden" name="pembayaran[]"
                                         class="form-control bayar_biasa bayar_biasa{{$no+1}}" style="text-align: right"
-                                        value="{{$hutang->ttl_rp}}">
+                                        value="{{$hutang->total}}">
                                 </td>
-                                <td>{{$hutang->nm_customer}}{{$hutang->urutan_customer}}</td>
+                                <td>{{$hutang->nm_customer}}</td>
                                 <td align="right">
-                                    Rp {{number_format($hutang->ttl_rp,0)}}
+                                    Rp {{number_format($hutang->total,0)}}
 
                                 </td>
                             </tr>
@@ -108,7 +107,7 @@
                             <input type="hidden" class="total_semua_biasa" name="total_penjualan" value="{{$total}}">
                         </div>
                         <div class="col-lg-5 mt-2">
-                            <label for="">Pilih Akun Setor</label>
+                            <label for="">Pilih Akun Pembayaran</label>
                             <select name="id_akun[]" id="" class="select2_add" required>
                                 <option value="">-Pilih Akun-</option>
                                 @foreach ($akun as $a)
@@ -141,7 +140,7 @@
                             <hr style="border: 1px solid blue">
                         </div>
                         <div class="col-lg-5">
-                            <h6>Total Setor</h6>
+                            <h6>Total Pembayaran</h6>
                         </div>
                         <div class="col-lg-3">
                             <h6 class="total_debit float-end">Rp 0</h6>

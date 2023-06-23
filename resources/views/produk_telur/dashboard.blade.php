@@ -4,6 +4,10 @@
             <div class="col-lg-6">
                 <h6 class="float-start mt-1">{{ $title }} </h6>
             </div>
+            <div class="col-lg-6">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#view" class="btn btn-sm btn-primary float-end"><i
+                        class="fas fa-calendar-week"></i></a>
+            </div>
         </div>
     </x-slot>
     <style>
@@ -53,6 +57,22 @@
                         </tr>
                         @endforeach
                     </tbody>
+                    <tfoot style="border-color: #435EBE; font-size: 10px">
+                        <tr>
+                            <th>Total</th>
+                            @foreach ($produk as $p)
+                            @php
+                            $total_mtd = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg
+                            FROM stok_telur as a
+                            where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '1'
+                            ");
+                            @endphp
+                            <th>{{number_format($total_mtd->pcs,0)}}</th>
+                            <th>{{number_format($total_mtd->kg,2)}}</th>
+                            @endforeach
+                        </tr>
+
+                    </tfoot>
 
                 </table>
                 @php
@@ -67,9 +87,10 @@
                 @else
                 @if ($cek->check == 'T' )
                 <a href="{{route('CheckMartadah',['cek' => $cek->check , 'tgl' => $tanggal])}}"
-                    class="float-end btn btn-sm  btn-primary">Save</a>
+                    class="float-end btn btn-sm  btn-primary"><i class="fas fa-save"></i> Save</a>
                 @else
-                <i class="fas fa-check text-success fa-2x float-end"></i>
+                <a href="{{route('CheckMartadah',['cek' => $cek->check , 'tgl' => $tanggal])}}"
+                    class="float-end btn btn-sm  btn-primary">Unsave</a>
                 @endif
                 @endif
 
@@ -77,9 +98,6 @@
                 {{-- dasda--}}
                 <button class="float-end btn btn-sm btn-primary me-2 history-mtd"><i class="fas fa-history"></i>
                     History
-                </button>
-                <button class="float-end btn btn-sm btn-primary me-2 "><i class="fas fa-clipboard-list"></i>
-                    Opname
                 </button>
 
             </div>
@@ -102,9 +120,9 @@
                     <tbody style="border-color: #435EBE; font-size: 10px">
                         @foreach ($produk as $p)
                         @php
-                        $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg FROM stok_telur_alpa
-                        as a
-                        where a.id_telur = '$p->id_produk_telur' and a.tgl = '$tanggal'");
+                        $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg
+                        FROM stok_telur as a
+                        where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '2'");
                         @endphp
                         <td>{{empty($stok_transfer->pcs) ? '0' : number_format($stok_transfer->pcs,0)}}</td>
                         <td>{{empty($stok_transfer->kg) ? '0' : number_format($stok_transfer->kg,2)}}</td>
@@ -123,13 +141,15 @@
                 @else
                 @if ($cek2->check == 'T')
                 <a href="{{route('CheckAlpa',['cek' => $cek2->check , 'tgl' => $tanggal])}}"
-                    class="float-end btn btn-sm  btn-primary">Save</a>
+                    class="float-end btn btn-sm  btn-primary"><i class="fas fa-save"></i> Save</a>
                 @else
-                <i class="fas fa-check text-success fa-2x float-end"></i>
+                <a href="{{route('CheckAlpa',['cek' => $cek2->check , 'tgl' => $tanggal])}}"
+                    class="float-end btn btn-sm  btn-primary">Unsave</a>
                 @endif
                 @endif
 
-                <button class="float-end btn btn-sm btn-primary me-2"><i class="fas fa-history"></i> History</button>
+                <button class="float-end btn btn-sm btn-primary me-2 history-tf-alpa"><i class="fas fa-history"></i>
+                    History</button>
             </div>
 
 
@@ -208,12 +228,24 @@
                                 $penjualan_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center"><a href="#" class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
-                                    History</a></td>
+                            <td align="center">
+                                <a href="{{route('penjualan_martadah_cek')}}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-history"></i> History
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td>Penjualan Umum</td>
+                            <td align="right">Rp {{number_format($penjualan_umum_mtd->ttl_rp +
+                                $penjualan_umum_blmcek_mtd->ttl_rp ,0)}}</td>
+                            <td align="right">Rp {{number_format($penjualan_umum_mtd->ttl_rp,0)}}</td>
+                            <td align="right">Rp {{number_format($penjualan_umum_blmcek_mtd->ttl_rp,0)}}</td>
+                            <td align="center">
+                                <a href="{{route('penjualan_umum_cek')}}" class="btn btn-primary btn-sm">
+                                    <i class="fas fa-history"></i> History
+                                </a>
+                            </td>
                         </tr>
 
                     </tbody>
@@ -233,12 +265,21 @@
             </div>
 
         </x-theme.modal>
+        <x-theme.modal btnSave='T' title="History Transfer Alpa" size="modal-lg-max" idModal="history_alpa">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="h_alpa"></div>
+                </div>
+            </div>
 
-        <form action="">
-            <x-theme.modal title="Edit Telur Martdah" size="modal-lg" idModal="edit_mtd">
+        </x-theme.modal>
+
+        <form action="" method="get">
+            <x-theme.modal title="View Tanggal" idModal="view">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div id="edit_martadah"></div>
+                        <label for="">Tanggal</label>
+                        <input type="date" name="tgl" class="form-control" value="{{$tanggal}}">
                     </div>
                 </div>
             </x-theme.modal>
@@ -258,6 +299,17 @@
                         }
                     }); 
                 });
+                $(document).on('click', '.history-tf-alpa', function() {
+                    $.ajax({
+                        type: "get",
+                        url: "/HistoryAlpa",
+                        success: function (data) {
+                            $('#h_alpa').html(data);
+                            $('#history_alpa').modal('show');
+                        }
+                    }); 
+                });
+            
                 $(document).on('submit', '#search_history_mtd', function(e) {
                     e.preventDefault();
                     var tgl1 = $('#tgl1').val();
@@ -270,38 +322,19 @@
                         }
                     }); 
                 });
-                $(document).on('click', '.edit_telur', function() {
-                    var id_kandang = $(this).attr('id_kandang');
-                    var tgl = $(this).attr('tgl');
+                $(document).on('submit', '#search_history_alpa', function(e) {
+                    e.preventDefault();
+                    var tgl1 = $('#tgl1').val();
+                    var tgl2 = $('#tgl2').val();
                     $.ajax({
                         type: "get",
-                        url: "/edit_telur_dashboard?id_kandang=" + id_kandang + "&tgl=" + tgl ,
+                        url: "/HistoryAlpa?tgl1="+tgl1+"&tgl2="+tgl2,
                         success: function (data) {
-                            $('#edit_martadah').html(data);
-                            $('#edit_mtd').modal('show');
+                            $('#h_alpa').html(data);
                         }
-                    });
+                    }); 
                 });
-                $(document).on('keyup', '.pcs_mtd', function() {
-                    var id_produk_telur = $(this).attr('id_produk_telur');
-                    var pcs = $(".pcs_mtd" + id_produk_telur).val();
-                    var ikat = parseFloat(pcs) / 180;
-
-                    $(".ikat_mtd"+id_produk_telur).val(ikat.toFixed(1));
-                });
-                pencarian('pencarian', 'nanda')
-
-                $(document).on('change', '.cek_bayar', function() {
-                var totalPiutang = 0
-                $('.cek_bayar:checked').each(function() {
-                    var piutang = $(this).attr('piutang');
-                    totalPiutang += parseInt(piutang);
-                });
-                var anyChecked = $('.cek_bayar:checked').length > 0;
-                $('.btn_bayar').toggle(anyChecked);
-                $(".piutang_cek").toggle(anyChecked);
-                $('.piutangBayar').text(totalPiutang.toLocaleString('en-US'));
-            });
+               
             });
     </script>
     @endsection

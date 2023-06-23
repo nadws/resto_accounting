@@ -6,12 +6,14 @@
                 <p>Piutang Diceklis : Rp. <span class="piutangBayar">0</span></p>
             </div>
             <div class="col-lg-6">
-                <x-theme.button modal="T" icon="fa-plus" addClass="float-end btn_bayar" teks="Setor" />
+                <x-theme.button modal="T" icon="fa-plus" addClass="float-end btn_bayar" teks="Bayar" />
                 <x-theme.button modal="T" href="/produk_telur" icon="fa-long-arrow-alt-left" addClass="float-end"
                     teks="Kembali ke dashboard" />
             </div>
         </div>
+
     </x-slot>
+
     <x-slot name="cardBody">
         <section class="row">
             <div class="col-lg-8"></div>
@@ -21,61 +23,61 @@
                     <td><input type="text" id="pencarian" class="form-control float-end"></td>
                 </table>
             </div>
-            <table class="table table-hover" id="nanda">
+            <table class="table" id="tablealdi">
                 <thead>
                     <tr>
                         <th width="5">#</th>
+                        <th>Nota</th>
                         <th>Tanggal</th>
-                        <th>No Nota</th>
-                        <th>Customer</th>
-                        <th style="text-align: right">Total Rp</th>
-                        <th style="text-align: center">Cek</th>
-                        <th>Admin</th>
+                        <th>Pelanggan</th>
+                        <th width="20%" class="text-center">Total Produk</th>
+                        <th class="text-end">Total Rp</th>
+                        <th width="20%" class="text-center">Cek</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($invoice as $no => $i)
+                    @foreach ($penjualan as $no => $d)
                     <tr>
-                        <td>{{$no+1}}</td>
-                        <td>{{tanggal($i->tgl)}}</td>
-                        <td>{{$i->no_nota}}</td>
-                        <td>{{$i->nm_customer}}{{$i->urutan_customer}}</td>
-                        <td align="right">Rp {{number_format($i->ttl_rp,0)}}</td>
+                        <td>{{ $no + 1 }}</td>
+                        <td>{{ $d->kode }}-{{$d->urutan}}</td>
+                        <td>{{ tanggal($d->tgl) }}</td>
+                        <td>{{ $d->nm_customer }}</td>
+                        <td align="center">{{ $d->ttl_produk }}</td>
+                        <td align="right">Rp. {{ number_format($d->total, 2) }}</td>
                         <td align="center">
-                            @if ($i->cek == 'Y')
+                            @if ($d->cek == 'Y')
                             <i class="fas fa-check text-success"></i>
                             @else
-                            <input type="checkbox" name="" no_nota="{{$i->no_nota}}" piutang="{{ $i->ttl_rp }}" id=""
+                            <input type="checkbox" name="" no_nota="{{$d->urutan}}" piutang="{{ $d->total }}" id=""
                                 class="cek_bayar">
                             @endif
                         </td>
-                        <td>{{$i->admin}}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <span class="btn btn-sm" data-bs-toggle="dropdown">
                                     <i class="fas fa-ellipsis-v text-primary"></i>
                                 </span>
                                 <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    @if ($i->cek == 'Y')
+                                    @if ($d->cek == 'Y')
 
                                     @else
                                     <li>
                                         <a class="dropdown-item text-primary edit_akun"
-                                            href="{{route('edit_invoice_telur',['no_nota' => $i->no_nota])}}"><i
+                                            href="{{route('edit_invoice_telur',['no_nota' => $d->urutan])}}"><i
                                                 class="me-2 fas fa-pen"></i>Edit
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{$i->no_nota}}"
+                                        <a class="dropdown-item text-danger delete_nota" no_nota="{{$d->urutan}}"
                                             href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
                                                 class="me-2 fas fa-trash"></i>Delete
                                         </a>
                                     </li>
                                     @endif
 
-                                    <li><a class="dropdown-item  text-info detail_nota" href="#" href="#"
-                                            data-bs-toggle="modal" no_nota="{{ $i->no_nota }}"
+                                    <li><a class="dropdown-item  text-info detail_nota" href="#"
+                                            no_nota="{{ $d->urutan }}" href="#" data-bs-toggle="modal"
                                             data-bs-target="#detail"><i class="me-2 fas fa-search"></i>Detail</a>
                                     </li>
 
@@ -84,66 +86,22 @@
                         </td>
                     </tr>
                     @endforeach
+
                 </tbody>
             </table>
-        </section>
 
-        {{-- sub akun --}}
-        <x-theme.modal title="Edit Akun" idModal="sub-akun" size="modal-lg">
-            <div id="load-sub-akun">
-            </div>
-        </x-theme.modal>
-
-        <x-theme.modal title="Detail Invoice" btnSave='T' size="modal-lg-max" idModal="detail">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div id="detail_invoice"></div>
-                </div>
-            </div>
-
-        </x-theme.modal>
-
-        <form action="{{ route('delete_invoice_telur') }}" method="get">
-            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="row">
-                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
-                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
-                                <input type="hidden" class="no_nota" name="no_nota">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-danger">Hapus</button>
-                        </div>
+            <x-theme.modal btnSave="" title="Detail Jurnal" size="modal-lg" idModal="detail">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="detail_jurnal"></div>
                     </div>
                 </div>
-            </div>
-        </form>
-        {{-- end sub akun --}}
-    </x-slot>
-    @section('scripts')
-    <script>
-        $(document).ready(function() {
-            pencarian('pencarian', 'nanda')
-            $(document).on("click", ".detail_nota", function() {
-                var no_nota = $(this).attr('no_nota');
-                $.ajax({
-                    type: "get",
-                    url: "/detail_invoice_telur?no_nota=" + no_nota,
-                    success: function(data) {
-                        $("#detail_invoice").html(data);
-                    }
-                });
-
-            });
-            $(document).on('click', '.delete_nota', function() {
-                    var no_nota = $(this).attr('no_nota');
-                    $('.no_nota').val(no_nota);
-            });
-
+            </x-theme.modal>
+        </section>
+        @section('js')
+        <script>
+            edit('detail_nota', 'no_nota', 'penjualan2/detail', 'detail_jurnal')
+            
             $(".btn_bayar").hide();
             $(".piutang_cek").hide();
             $(document).on('change', '.cek_bayar', function() {
@@ -205,10 +163,10 @@
                     params.append('no_nota', orderNumber);
                 });
                 var queryString = 'no_nota[]=' + dipilih.join('&no_nota[]=');
-                window.location.href = "/terima_invoice_mtd?" + queryString;
+                window.location.href = "/terima_invoice_umum_cek?" + queryString;
 
             });
-        });
-    </script>
-    @endsection
+        </script>
+        @endsection
+    </x-slot>
 </x-theme.app>

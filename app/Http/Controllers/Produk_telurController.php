@@ -18,8 +18,14 @@ class Produk_telurController extends Controller
             $id_gudang = $r->id_gudang;
         }
 
+
         $tgl = date('Y-m-d');
-        $tanggal = date("Y-m-d", strtotime("-1 day", strtotime($tgl)));
+        if (empty($r->tgl)) {
+            $tanggal = date("Y-m-d", strtotime("-1 day", strtotime($tgl)));
+        } else {
+            $tanggal = $r->tgl;
+        }
+
         $data = [
             'title' => 'Dashboard Telur',
             'produk' => DB::table('telur_produk')->get(),
@@ -28,7 +34,9 @@ class Produk_telurController extends Controller
             'kandang' => DB::table('kandang')->get(),
             'gudang' => DB::table('gudang_telur')->get(),
             'penjualan_cek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='Y' and a.lokasi ='mtd';"),
-            'penjualan_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='T' and a.lokasi ='mtd';")
+            'penjualan_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='T' and a.lokasi ='mtd';"),
+            'penjualan_umum_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM penjualan_agl as a where a.cek ='Y' and a.lokasi ='mtd';"),
+            'penjualan_umum_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM penjualan_agl as a where a.cek ='T' and a.lokasi ='mtd';"),
         ];
         return view('produk_telur.dashboard', $data);
     }
@@ -40,7 +48,7 @@ class Produk_telurController extends Controller
         } else {
             DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '1'])->where('pcs', '!=', '0')->update(['check' => 'T']);
         }
-        return redirect()->route('produk_telur')->with('sukses', 'Data berhasil di check');
+        return redirect()->route('produk_telur', ['tgl' => $r->tgl])->with('sukses', 'Data berhasil di save');
     }
     public function CheckAlpa(Request $r)
     {
@@ -49,7 +57,7 @@ class Produk_telurController extends Controller
         } else {
             DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '2'])->where('pcs', '!=', '0')->update(['check' => 'T']);
         }
-        return redirect()->route('produk_telur')->with('sukses', 'Data berhasil di check');
+        return redirect()->route('produk_telur', ['tgl' => $r->tgl])->with('sukses', 'Data berhasil di save');
     }
 
     public function HistoryMtd(Request $r)
@@ -123,7 +131,7 @@ class Produk_telurController extends Controller
 
     public function save_terima_invoice(Request $r)
     {
-        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '6')->first();
 
         if (empty($max)) {
             $nota_t = '1000';
@@ -133,12 +141,9 @@ class Produk_telurController extends Controller
         DB::table('notas')->insert(['nomor_nota' => $nota_t, 'id_buku' => '2']);
 
         for ($x = 0; $x < count($r->no_nota); $x++) {
-
             $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', '517')->first();
             $akun = DB::table('akun')->where('id_akun', '517')->first();
-
             $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
-
 
             $data = [
                 'tgl' => $r->tgl[$x],
@@ -177,6 +182,32 @@ class Produk_telurController extends Controller
             DB::table('jurnal')->insert($data);
         }
 
-        return redirect()->route('produk_telur')->with('sukses', 'Data berhasil ditambahkan');
+        return redirect()->route('penjualan_martadah_cek')->with('sukses', 'Data berhasil ditambahkan');
+    }
+
+    public function HistoryAlpa(Request $r)
+    {
+        $today = date("Y-m-d");
+        $enamhari = date("Y-m-d", strtotime("-6 days", strtotime($today)));
+        if (empty($r->tgl1)) {
+            $tgl1 = $enamhari;
+            $tgl2 = date('Y-m-d');
+        } else {
+            $tgl1 = $r->tgl1;
+            $tgl2 = $r->tgl2;
+        }
+
+        $data = [
+            'produk' => DB::table('telur_produk')->get(),
+            'gudang' => DB::table('gudang_telur')->get(),
+            'invoice' => DB::select("SELECT a.id_kandang, a.tgl, b.nm_kandang
+            FROM stok_telur as a 
+            left join kandang as b on b.id_kandang = a.id_kandang
+            where a.tgl BETWEEN '$tgl1' and '$tgl2' and a.id_gudang='2'
+            group by a.tgl"),
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2
+        ];
+        return view('produk_telur.history_alpa', $data);
     }
 }
