@@ -304,5 +304,15 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/tambah_telur', 'tambah_telur')->name('tambah_telur');
+            Route::get('/load_telur/{id_kandang}', 'load_telur')->name('load_telur');
+            Route::get('/load_populasi/{id_kandang}', 'load_populasi')->name('load_populasi');
+            Route::post('/tambah_populasi', 'tambah_populasi')->name('tambah_populasi');
+            Route::post('/tambah_karung', 'tambah_karung')->name('tambah_karung');
+            
+            // transfer stok
+            Route::get('/transfer_stok', 'transfer_stok')->name('transfer_stok');
+            Route::get('/add_transfer_stok', 'add_transfer_stok')->name('add_transfer_stok');
+            Route::post('/save_transfer', 'save_transfer')->name('save_transfer');
+
         });
 });

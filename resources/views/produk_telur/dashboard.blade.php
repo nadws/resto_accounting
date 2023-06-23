@@ -20,13 +20,13 @@
     <x-slot name="cardBody">
         <section class="row">
             <div class="col-lg-6">
-                <h6>Stok masuk martadah {{tanggal($tanggal)}}</h6>
+                <h6>Stok masuk martadah {{ tanggal($tanggal) }}</h6>
                 <table class="table table-bordered">
                     <thead style="font-size: 10px; border-top-left-radius: 50px">
                         <tr>
                             <th class="dhead" rowspan="2" style="text-align: center">Kandang</th>
                             @foreach ($produk as $p)
-                            <th colspan="2" style="text-align: center" class="dhead">{{$p->nm_telur}}</th>
+                            <th colspan="2" style="text-align: center" class="dhead">{{ $p->nm_telur }}</th>
                             @endforeach
                         </tr>
                         <tr>
@@ -40,7 +40,7 @@
 
                         @foreach ($kandang as $k)
                         <tr>
-                            <td>{{$k->nm_kandang}}</td>
+                            <td>{{ $k->nm_kandang }}</td>
                             @foreach ($produk as $p)
                             @php
                             $stok = DB::selectOne("SELECT a.pcs , a.kg
@@ -50,9 +50,8 @@
                             a.id_kandang = '$k->id_kandang'
                             ");
                             @endphp
-                            <td>{{empty($stok->pcs) ? '0' : number_format($stok->pcs,0)}}</td>
-                            <td>{{empty($stok->kg) ? '0' : number_format($stok->kg,2)}}</td>
-
+                            <td>{{ empty($stok->pcs) ? '0' : number_format($stok->pcs, 0) }}</td>
+                            <td>{{ empty($stok->kg) ? '0' : number_format($stok->kg, 2) }}</td>
                             @endforeach
                         </tr>
                         @endforeach
@@ -78,36 +77,34 @@
                 @php
                 $cek = DB::selectOne("SELECT a.check FROM stok_telur as a
                 WHERE a.tgl = '$tanggal' and a.id_gudang = '1'
-                group by a.tgl;")
+                group by a.tgl;");
                 @endphp
 
 
                 @if (empty($cek->check))
-
                 @else
                 @if ($cek->check == 'T' )
                 <a href="{{route('CheckMartadah',['cek' => $cek->check , 'tgl' => $tanggal])}}"
-                    class="float-end btn btn-sm  btn-primary"><i class="fas fa-save"></i> Save</a>
+                    class="float-end btn btn-sm  btn-primary">Save</a>
                 @else
-                <a href="{{route('CheckMartadah',['cek' => $cek->check , 'tgl' => $tanggal])}}"
-                    class="float-end btn btn-sm  btn-primary">Unsave</a>
+                <i class="fas fa-check text-success fa-2x float-end"></i>
                 @endif
                 @endif
 
 
-                {{-- dasda--}}
+                {{-- dasda --}}
                 <button class="float-end btn btn-sm btn-primary me-2 history-mtd"><i class="fas fa-history"></i>
                     History
                 </button>
 
             </div>
             <div class="col-lg-6">
-                <h6>Stok Transfer Alpa {{tanggal($tanggal)}}</h6>
+                <h6>Stok Transfer Alpa {{ tanggal($tanggal) }}</h6>
                 <table class="table table-bordered table-dashboard ">
                     <thead style="font-size: 10px">
                         <tr>
                             @foreach ($produk as $p)
-                            <th colspan="2" style="text-align: center" class="dhead">{{$p->nm_telur}}</th>
+                            <th colspan="2" style="text-align: center" class="dhead">{{ $p->nm_telur }}</th>
                             @endforeach
                         </tr>
                         <tr>
@@ -120,9 +117,9 @@
                     <tbody style="border-color: #435EBE; font-size: 10px">
                         @foreach ($produk as $p)
                         @php
-                        $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg
-                        FROM stok_telur as a
-                        where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '2'");
+                        $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg FROM stok_telur_alpa
+                        as a
+                        where a.id_telur = '$p->id_produk_telur' and a.tgl = '$tanggal'");
                         @endphp
                         <td>{{empty($stok_transfer->pcs) ? '0' : number_format($stok_transfer->pcs,0)}}</td>
                         <td>{{empty($stok_transfer->kg) ? '0' : number_format($stok_transfer->kg,2)}}</td>
@@ -133,18 +130,16 @@
                 @php
                 $cek2 = DB::selectOne("SELECT a.check FROM stok_telur as a
                 WHERE a.tgl = '$tanggal' and a.id_gudang = '2'
-                group by a.tgl;")
+                group by a.tgl;");
                 @endphp
 
                 @if (empty($cek2))
-
                 @else
                 @if ($cek2->check == 'T')
                 <a href="{{route('CheckAlpa',['cek' => $cek2->check , 'tgl' => $tanggal])}}"
-                    class="float-end btn btn-sm  btn-primary"><i class="fas fa-save"></i> Save</a>
+                    class="float-end btn btn-sm  btn-primary">Save</a>
                 @else
-                <a href="{{route('CheckAlpa',['cek' => $cek2->check , 'tgl' => $tanggal])}}"
-                    class="float-end btn btn-sm  btn-primary">Unsave</a>
+                <i class="fas fa-check text-success fa-2x float-end"></i>
                 @endif
                 @endif
 
@@ -160,7 +155,7 @@
                         <tr>
                             <th rowspan="2" class="dhead" style="vertical-align: middle">Gudang</th>
                             @foreach ($produk as $p)
-                            <th colspan="3" style="text-align: center" class="dhead">{{$p->nm_telur}}</th>
+                            <th colspan="3" style="text-align: center" class="dhead">{{ $p->nm_telur }}</th>
                             @endforeach
                         </tr>
                         <tr>
@@ -174,7 +169,7 @@
                     <tbody>
                         @foreach ($gudang as $g)
                         <tr>
-                            <td>{{$g->nm_gudang}}</td>
+                            <td>{{ $g->nm_gudang }}</td>
                             @foreach ($produk as $p)
                             @php
                             $stok = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg, sum(a.pcs_kredit) as
@@ -182,15 +177,14 @@
                             FROM stok_telur as a
                             where a.id_gudang ='$g->id_gudang_telur' and a.id_telur = '$p->id_produk_telur' and a.check
                             ='Y'
-                            group by a.id_telur"
-                            );
+                            group by a.id_telur");
                             @endphp
-                            <td>{{ empty(($stok->pcs )) ? '0' : number_format($stok->pcs -
-                                $stok->pcs_kredit,0)}}</td>
-                            <td>{{empty(($stok->kg)) ? '0' : number_format($stok->kg -
-                                $stok->kg_kredit,2)}}</td>
-                            <td>{{empty(($stok->pcs )) ? '0' : number_format(($stok->pcs -
-                                $stok->pcs_kredit) / 180,1)}}</td>
+                            <td>{{ empty($stok->pcs) ? '0' : number_format($stok->pcs - $stok->pcs_kredit, 0) }}
+                            </td>
+                            <td>{{ empty($stok->kg) ? '0' : number_format($stok->kg - $stok->kg_kredit, 2) }}
+                            </td>
+                            <td>{{ empty($stok->pcs) ? '0' : number_format(($stok->pcs - $stok->pcs_kredit) / 180, 1) }}
+                            </td>
                             @endforeach
                         </tr>
                         @endforeach
@@ -228,11 +222,8 @@
                                 $penjualan_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center">
-                                <a href="{{route('penjualan_martadah_cek')}}" class="btn btn-primary btn-sm">
-                                    <i class="fas fa-history"></i> History
-                                </a>
-                            </td>
+                            <td align="center"><a href="#" class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
+                                    History</a></td>
                         </tr>
                         <tr>
                             <td>2</td>
@@ -293,11 +284,11 @@
                     $.ajax({
                         type: "get",
                         url: "/HistoryMtd",
-                        success: function (data) {
+                        success: function(data) {
                             $('#h_martadah').html(data);
                             $('#history_mtd').modal('show');
                         }
-                    }); 
+                    });
                 });
                 $(document).on('click', '.history-tf-alpa', function() {
                     $.ajax({
@@ -316,11 +307,11 @@
                     var tgl2 = $('#tgl2').val();
                     $.ajax({
                         type: "get",
-                        url: "/HistoryMtd?tgl1="+tgl1+"&tgl2="+tgl2,
-                        success: function (data) {
+                        url: "/HistoryMtd?tgl1=" + tgl1 + "&tgl2=" + tgl2,
+                        success: function(data) {
                             $('#h_martadah').html(data);
                         }
-                    }); 
+                    });
                 });
                 $(document).on('submit', '#search_history_alpa', function(e) {
                     e.preventDefault();
@@ -328,13 +319,33 @@
                     var tgl2 = $('#tgl2').val();
                     $.ajax({
                         type: "get",
-                        url: "/HistoryAlpa?tgl1="+tgl1+"&tgl2="+tgl2,
+                        url: "/edit_telur_dashboard?id_kandang=" + id_kandang + "&tgl=" + tgl ,
                         success: function (data) {
-                            $('#h_alpa').html(data);
+                            $('#edit_martadah').html(data);
+                            $('#edit_mtd').modal('show');
                         }
                     }); 
                 });
-               
+                $(document).on('keyup', '.pcs_mtd', function() {
+                    var id_produk_telur = $(this).attr('id_produk_telur');
+                    var pcs = $(".pcs_mtd" + id_produk_telur).val();
+                    var ikat = parseFloat(pcs) / 180;
+
+                    $(".ikat_mtd"+id_produk_telur).val(ikat.toFixed(1));
+                });
+                pencarian('pencarian', 'nanda')
+
+                $(document).on('change', '.cek_bayar', function() {
+                var totalPiutang = 0
+                $('.cek_bayar:checked').each(function() {
+                    var piutang = $(this).attr('piutang');
+                    totalPiutang += parseInt(piutang);
+                });
+                var anyChecked = $('.cek_bayar:checked').length > 0;
+                $('.btn_bayar').toggle(anyChecked);
+                $(".piutang_cek").toggle(anyChecked);
+                $('.piutangBayar').text(totalPiutang.toLocaleString('en-US'));
+            });
             });
     </script>
     @endsection
