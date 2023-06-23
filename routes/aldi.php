@@ -309,6 +309,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/tambah_populasi', 'tambah_populasi')->name('tambah_populasi');
             Route::post('/tambah_karung', 'tambah_karung')->name('tambah_karung');
             
+            // penjualan martadah
+            Route::get('/penjualan_telur', 'penjualan_telur')->name('penjualan_telur');
+            Route::get('/add_penjualan_telur', 'add_penjualan_telur')->name('add_penjualan_telur');
+            Route::post('/save_penjualan_telur', 'save_penjualan_telur')->name('save_penjualan_telur');
+            
             // transfer stok
             Route::get('/transfer_stok', 'transfer_stok')->name('transfer_stok');
             Route::get('/add_transfer_stok', 'add_transfer_stok')->name('add_transfer_stok');

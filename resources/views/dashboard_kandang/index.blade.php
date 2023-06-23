@@ -85,8 +85,15 @@
                         @endforeach
                     </tr>
                     <tr>
-                        <td align="left">Penjualan Martadah</td>
-
+                        <td align="left">
+                            Penjualan Martadah
+                            <a href="{{ route('dashboard_kandang.add_penjualan_telur') }}"
+                                class="badge bg-primary text-sm"><i class="fas fa-plus"></i></a>
+                            <a href="{{ route('dashboard_kandang.transfer_stok', ['id_gudang' => 1]) }}"
+                                class="badge bg-primary text-sm"><i class="fas fa-history"></i>
+                            </a>
+                        </td>
+                        
                     </tr>
                     <tr>
                         <td align="left">

@@ -1,13 +1,13 @@
 <table class="table table-striped ">
     <thead>
         <tr>
-            <th width="2%">#</th>
-            <th width="10%">Produk</th>
-            <th width="10%" style="text-align: right">Pcs</th>
-            <th width="10%" style="text-align: right">Kg</th>
-            <th width="10%" style="text-align: right">Rp Satuan</th>
-            <th width="10%" style="text-align: right">Total Rp</th>
-            <th width="5%">Aksi</th>
+            <th class="dhead" width="2%">#</th>
+            <th class="dhead" width="10%">Produk</th>
+            <th class="dhead" width="10%" style="text-align: right">Pcs</th>
+            <th class="dhead" width="10%" style="text-align: right">Kg</th>
+            <th class="dhead" width="10%" style="text-align: right">Rp Satuan</th>
+            <th class="dhead" width="10%" style="text-align: right">Total Rp</th>
+            <th class="dhead" width="5%">Aksi</th>
         </tr>
     </thead>
     <tbody>

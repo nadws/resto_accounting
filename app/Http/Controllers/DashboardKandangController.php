@@ -192,4 +192,151 @@ class DashboardKandangController extends Controller
         }
         return redirect()->route('dashboard_kandang.index')->with('sukses', 'Data berhasil di transfer');
     }
+
+    public function add_penjualan_telur()
+    {
+        $max = DB::table('invoice_telur')->latest('urutan')->first();
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->urutan + 1;
+        }
+        $data = [
+            'title' => 'Buat Invoice',
+            'produk' => DB::table('telur_produk')->get(),
+            'customer' => DB::table('customer')->get(),
+            'nota' => $nota_t,
+            'akun' => DB::table('akun')->whereIn('id_klasifikasi', ['1', '7'])->get()
+        ];
+        
+        return view('dashboard_kandang.penjualan_telur.add_penjualan_telur',$data);
+    }
+
+    public function save_penjualan_telur(Request $r)
+    {
+        $max = DB::table('invoice_telur')->latest('urutan')->first();
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->urutan + 1;
+        }
+
+        $max_customer = DB::table('invoice_telur')->latest('urutan_customer')->where('id_customer', $r->customer)->first();
+
+        if (empty($max_customer)) {
+            $urutan_cus = '1';
+        } else {
+            $urutan_cus = $max_customer->urutan_customer + 1;
+        }
+
+
+        for ($x = 0; $x < count($r->id_produk); $x++) {
+
+            if ($r->tipe == 'kg') {
+                $data = [
+                    'tgl' => $r->tgl,
+                    'id_customer' => $r->customer,
+                    'tipe' => $r->tipe,
+                    'no_nota' => 'T' . $nota_t,
+                    'id_produk' => $r->id_produk[$x],
+                    'pcs' => $r->pcs[$x],
+                    'kg' => $r->kg[$x],
+                    'kg_jual' => $r->kg_jual[$x],
+                    'rp_satuan' => $r->rp_satuan[$x],
+                    'total_rp' => $r->total_rp[$x],
+                    'admin' => Auth::user()->name,
+                    'urutan' => $nota_t,
+                    'urutan_customer' => $urutan_cus,
+                    'driver' => $r->driver,
+                    'lokasi' => 'alpa'
+                ];
+                DB::table('invoice_telur')->insert($data);
+            } else {
+                $data = [
+                    'tgl' => $r->tgl,
+                    'id_customer' => $r->customer,
+                    'tipe' => $r->tipe,
+                    'no_nota' => 'T' . $nota_t,
+                    'id_produk' => $r->id_produk[$x],
+                    'pcs' => $r->pcs[$x],
+                    'kg' => $r->kg[$x],
+                    'rp_satuan' => $r->rp_satuan[$x],
+                    'total_rp' => $r->total_rp[$x],
+                    'admin' => Auth::user()->name,
+                    'urutan' => $nota_t,
+                    'urutan_customer' => $urutan_cus,
+                    'driver' => $r->driver,
+                    'lokasi' => 'alpa'
+                ];
+                DB::table('invoice_telur')->insert($data);
+            }
+        }
+        $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', '517')->first();
+        $akun = DB::table('akun')->where('id_akun', '517')->first();
+
+        $customer = DB::table('customer')->where('id_customer', $r->customer)->first();
+
+        $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
+        $data = [
+            'tgl' => $r->tgl,
+            'no_nota' => 'T' . $nota_t,
+            'id_akun' => '517',
+            'id_buku' => '6',
+            'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
+            'debit' => 0,
+            'kredit' => $r->total_penjualan,
+            'admin' => Auth::user()->name,
+            'no_urut' => $akun->inisial . '-' . $urutan,
+            'urutan' => $urutan,
+        ];
+        DB::table('jurnal')->insert($data);
+
+        $data = [
+            'tgl' => $r->tgl,
+            'no_nota' => 'T' . $nota_t,
+            'debit' => 0,
+            'kredit' => $r->total_penjualan,
+        ];
+        DB::table('bayar_telur')->insert($data);
+
+
+
+        for ($x = 0; $x < count($r->id_akun); $x++) {
+            $max_akun2 = DB::table('jurnal')->latest('urutan')->where('id_akun', $r->id_akun[$x])->first();
+            $akun2 = DB::table('akun')->where('id_akun', $r->id_akun[$x])->first();
+            $urutan2 = empty($max_akun2) ? '1001' : ($max_akun2->urutan == 0 ? '1001' : $max_akun2->urutan + 1);
+            $data = [
+                'tgl' => $r->tgl,
+                'no_nota' => 'T' . $nota_t,
+                'id_akun' => $r->id_akun[$x],
+                'id_buku' => '6',
+                'ket' => 'Penjualan Telur ' . $customer->nm_customer . $urutan_cus,
+                'debit' => $r->debit[$x],
+                'kredit' => $r->kredit[$x],
+                'admin' => Auth::user()->name,
+                'no_urut' => $akun2->inisial . '-' . $urutan2,
+                'urutan' => $urutan2,
+            ];
+            DB::table('jurnal')->insert($data);
+
+
+            if ($akun2->id_klasifikasi == '7') {
+                $nota = 'T' . $nota_t;
+                DB::table('invoice_telur')->where('no_nota', $nota)->update(['status' => 'unpaid']);
+            } else {
+                $data = [
+                    'tgl' => $r->tgl,
+                    'no_nota' => 'T' . $nota_t,
+                    'debit' => $r->debit[$x],
+                    'kredit' => $r->kredit[$x],
+                    'no_nota_piutang' => 'T' . $nota_t
+                ];
+                DB::table('bayar_telur')->insert($data);
+            }
+        }
+
+        return redirect()->route('penjualan_agrilaras')->with('sukses', 'Data berhasil ditambahkan');
+    }
 }
