@@ -326,26 +326,7 @@
                         }
                     }); 
                 });
-                $(document).on('keyup', '.pcs_mtd', function() {
-                    var id_produk_telur = $(this).attr('id_produk_telur');
-                    var pcs = $(".pcs_mtd" + id_produk_telur).val();
-                    var ikat = parseFloat(pcs) / 180;
-
-                    $(".ikat_mtd"+id_produk_telur).val(ikat.toFixed(1));
-                });
-                pencarian('pencarian', 'nanda')
-
-                $(document).on('change', '.cek_bayar', function() {
-                var totalPiutang = 0
-                $('.cek_bayar:checked').each(function() {
-                    var piutang = $(this).attr('piutang');
-                    totalPiutang += parseInt(piutang);
-                });
-                var anyChecked = $('.cek_bayar:checked').length > 0;
-                $('.btn_bayar').toggle(anyChecked);
-                $(".piutang_cek").toggle(anyChecked);
-                $('.piutangBayar').text(totalPiutang.toLocaleString('en-US'));
-            });
+                
             });
     </script>
     @endsection
