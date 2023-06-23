@@ -12,6 +12,7 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\NeracaController;
+use App\Http\Controllers\OpnamemtdController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\Penjualan_martadah_alpaController;
@@ -343,4 +344,11 @@ Route::controller(Penjualan_umum_cekController::class)->group(function () {
     Route::get('/penjualan_umum_cek', 'index')->name('penjualan_umum_cek');
     Route::get('/terima_invoice_umum_cek', 'terima_invoice_umum_cek')->name('terima_invoice_umum_cek');
     Route::post('/save_cek_umum_invoice', 'save_cek_umum_invoice')->name('save_cek_umum_invoice');
+});
+
+Route::controller(OpnamemtdController::class)->group(function () {
+    Route::get('/opnamemtd', 'index')->name('opnamemtd');
+    Route::get('/bayar_opname', 'bayar_opname')->name('bayar_opname');
+    Route::post('/save_opname_telur_mtd', 'save_opname_telur_mtd')->name('save_opname_telur_mtd');
+    Route::post('/save_bayar_opname', 'save_bayar_opname')->name('save_bayar_opname');
 });

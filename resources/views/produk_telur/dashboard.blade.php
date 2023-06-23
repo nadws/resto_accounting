@@ -225,7 +225,7 @@
                                 $penjualan_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center"><a href="{{route('penjualan_martadah_cek')}}"
+                            <td align="center"><a href="{{route('penjualan_martadah_cek',['lokasi' => 'mtd'])}}"
                                     class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
                                     History</a></td>
                         </tr>
@@ -241,6 +241,17 @@
                                     <i class="fas fa-history"></i> History
                                 </a>
                             </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Opname Telur Martadah</td>
+                            <td align="right">Rp {{number_format($opname_cek_mtd->ttl_rp +
+                                $opname_blmcek_mtd->ttl_rp,0)}}</td>
+                            <td align="right">Rp {{number_format($opname_cek_mtd->ttl_rp,0)}}</td>
+                            <td align="right">Rp {{number_format($opname_blmcek_mtd->ttl_rp,0)}}</td>
+                            <td align="center"><a href="{{route('penjualan_martadah_cek',['lokasi' => 'opname'])}}"
+                                    class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
+                                    History</a></td>
                         </tr>
 
                     </tbody>

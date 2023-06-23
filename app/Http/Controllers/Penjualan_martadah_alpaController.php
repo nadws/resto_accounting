@@ -16,7 +16,7 @@ class Penjualan_martadah_alpaController extends Controller
             'invoice' => DB::select("SELECT a.no_nota, a.tgl, a.tipe, a.admin, b.nm_customer, sum(a.total_rp) as ttl_rp, a.status, a.cek, a.urutan_customer, a.admin
             FROM invoice_telur as a 
             left join customer as b on b.id_customer = a.id_customer
-              where a.lokasi = 'mtd'
+              where a.lokasi = '$r->lokasi'
             group by a.no_nota
             order by a.urutan DESC
             ")
