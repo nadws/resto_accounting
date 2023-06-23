@@ -225,7 +225,8 @@
                                 $penjualan_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center"><a href="#" class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
+                            <td align="center"><a href="{{route('penjualan_martadah_cek')}}"
+                                    class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
                                     History</a></td>
                         </tr>
                         <tr>
