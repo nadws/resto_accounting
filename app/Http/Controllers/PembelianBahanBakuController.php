@@ -58,7 +58,6 @@ class PembelianBahanBakuController extends Controller
             where a.tgl between '$tgl1' and '$tgl2'
             order by a.no_nota DESC");
 
-
         $listBulan = DB::table('bulan')->get();
         $id_user = auth()->user()->id;
         $data =  [
