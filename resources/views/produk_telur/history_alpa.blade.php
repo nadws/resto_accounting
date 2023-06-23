@@ -5,15 +5,15 @@
         vertical-align: middle;
     }
 </style>
-<form id="search_history_mtd">
+<form id="search_history_alpa">
     <div class="row">
         <div class="col-lg-2">
             <label for="">Dari</label>
-            <input type="date" id="tgl1" class="form-control" id="">
+            <input type="date" id="tgl1" class="form-control" id="" value="{{$tgl1}}">
         </div>
         <div class="col-lg-2">
             <label for="">Sampai</label>
-            <input type="date" id="tgl2" class="form-control" id="">
+            <input type="date" id="tgl2" class="form-control" id="" value="{{$tgl2}}">
         </div>
         <div class="col-lg-1">
             <label for="">Aksi</label> <br>
@@ -32,7 +32,6 @@
             <tr>
                 <th rowspan="2" class="dhead">#</th>
                 <th rowspan="2" class="dhead">Tanggal</th>
-                <th rowspan="2" class="dhead">Kandang</th>
                 @foreach ($produk as $p)
                 <th colspan="2" class="dhead" style="text-align: center">{{$p->nm_telur}}</th>
                 @endforeach
@@ -49,16 +48,14 @@
             <tr>
                 <td>{{$no+1}}</td>
                 <td>{{tanggal($i->tgl)}}</td>
-                <td>{{$i->nm_kandang}}</td>
                 @foreach ($produk as $p)
                 @php
-                $telur = DB::selectOne("SELECT a.pcs, a.kg
+                $telur_alpa = DB::selectOne("SELECT sum(a.pcs) as pcs, sum(a.kg) as kg
                 FROM stok_telur as a
-                where a.tgl = '$i->tgl' and a.id_kandang = '$i->id_kandang' and a.id_telur = '$p->id_produk_telur'
-                and a.nota_transfer = '' ")
+                where a.tgl = '$i->tgl' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '2' and a.pcs != '0'")
                 @endphp
-                <td align="right">{{empty($telur->pcs) ? '0' : number_format($telur->pcs,0)}}</td>
-                <td align="right">{{empty($telur->kg) ? '0' : number_format($telur->kg,2)}}</td>
+                <td align="right">{{empty($telur_alpa->pcs) ? '0' : number_format($telur_alpa->pcs,0)}}</td>
+                <td align="right">{{empty($telur_alpa->kg) ? '0' : number_format($telur_alpa->kg,2)}}</td>
                 @endforeach
             </tr>
             @endforeach

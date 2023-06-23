@@ -16,7 +16,8 @@
         <th style="background-color: white;">{{ $head_jurnal->driver }}</th>
     </tr>
 </table>
-<a href="{{ route('penjualan2.print', ['urutan' => $head_jurnal->urutan]) }}" class="btn btn-sm btn-primary float-end" target="_blank"><i class="fas fa-print"></i> Print</a>
+<a href="{{ route('penjualan2.print', ['urutan' => $head_jurnal->urutan]) }}" class="btn btn-sm btn-primary float-end"
+    target="_blank"><i class="fas fa-print"></i> Print</a>
 <br>
 <br>
 <style>
@@ -42,14 +43,14 @@
     </thead>
     <tbody>
         @foreach ($produk as $no => $a)
-            <tr>
-                <td>{{ $no + 1 }}</td>
-                <td>{{ $a->nm_produk }}</td>
-                <td>{{ $a->qty }}</td>
-                <td align="right">{{ number_format($a->rp_satuan, 0) }}</td>
-                <td align="right">{{ number_format($a->total_rp, 0) }}</td>
-                <td>{{ $a->admin }}</td>
-            </tr>
+        <tr>
+            <td>{{ $no + 1 }}</td>
+            <td>{{ $a->nm_produk }}</td>
+            <td>{{ $a->qty }}</td>
+            <td align="right">{{ number_format($a->rp_satuan, 0) }}</td>
+            <td align="right">{{ number_format($a->total_rp, 0) }}</td>
+            <td>{{ $a->admin }}</td>
+        </tr>
         @endforeach
     </tbody>
 </table>

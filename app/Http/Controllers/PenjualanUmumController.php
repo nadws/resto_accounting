@@ -171,7 +171,7 @@ class PenjualanUmumController extends Controller
                 ]);
             }
         }
-        
+
         for ($i = 0; $i < count($r->id_produk); $i++) {
             DB::table('penjualan_agl')->insert([
                 'urutan' => $r->no_nota,
@@ -238,8 +238,8 @@ class PenjualanUmumController extends Controller
 
     public function update(Request $r)
     {
-        $cek = DB::table('invoice_agl')->where('no_nota', 'PAGL-'.$r->no_nota)->first();
-        if($cek) {
+        $cek = DB::table('invoice_agl')->where('no_nota', 'PAGL-' . $r->no_nota)->first();
+        if ($cek) {
             return redirect()->route('penjualan2.index')->with('error', 'Gagal Edit Karena nota Piutang Sudah PAID !');
         }
         $ttlDebit = 0;

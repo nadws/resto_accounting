@@ -15,6 +15,7 @@ use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PembayaranBkController;
 use App\Http\Controllers\PembelianBahanBakuController;
 use App\Http\Controllers\Penjualan_martadah_alpaController;
+use App\Http\Controllers\Penjualan_umum_cekController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\Penyetoran_telurController;
 use App\Http\Controllers\PiutangtelurController;
@@ -332,7 +333,14 @@ Route::controller(Produk_telurController::class)->group(function () {
     Route::get('/export_telur', 'export')->name('export_telur');
     Route::get('/terima_invoice_mtd', 'terima_invoice_mtd')->name('terima_invoice_mtd');
     Route::post('/save_terima_invoice', 'save_terima_invoice')->name('save_terima_invoice');
+    // History Alpa
+    Route::get('/HistoryAlpa', 'HistoryAlpa')->name('HistoryAlpa');
 });
 Route::controller(Penjualan_martadah_alpaController::class)->group(function () {
     Route::get('/penjualan_martadah_cek', 'index')->name('penjualan_martadah_cek');
+});
+Route::controller(Penjualan_umum_cekController::class)->group(function () {
+    Route::get('/penjualan_umum_cek', 'index')->name('penjualan_umum_cek');
+    Route::get('/terima_invoice_umum_cek', 'terima_invoice_umum_cek')->name('terima_invoice_umum_cek');
+    Route::post('/save_cek_umum_invoice', 'save_cek_umum_invoice')->name('save_cek_umum_invoice');
 });
