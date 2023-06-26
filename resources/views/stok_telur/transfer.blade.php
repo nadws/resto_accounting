@@ -7,11 +7,10 @@
                 <h6 class="float-start mt-1">{{ $title }}</h6>
             </div>
             <div class="col-lg-6">
-
+                <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
+                addClass="float-end" teks="kembali Ke Dashboard" />
             </div>
-
         </div>
-
     </x-slot>
     <style>
         .select2-container--default .select2-selection--single .select2-selection__rendered {

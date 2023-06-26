@@ -1,27 +1,14 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
 
     <x-slot name="cardHeader">
-        <div class="col-lg-6">
-            <h6 class="float-start mt-1">{{ $title }} Penjualan</h6>
-        </div>
 
+        <h6 class="float-start mt-1">{{ $title }}</h6>
+        <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
+            addClass="float-end" teks="kembali Ke Dashboard" />
     </x-slot>
 
-
     <x-slot name="cardBody">
-        <style>
-            .select2-container--default .select2-selection--single .select2-selection__rendered {
-                color: #000000;
-                line-height: 36px;
-                /* font-size: 12px; */
-                width: 170px;
-            }
 
-            .dhead {
-                background-color: #435EBE !important;
-                color: white;
-            }
-        </style>
         <form action="{{ route('dashboard_kandang.save_penjualan_umum') }}" method="post" class="save_jurnal">
             @csrf
             <section class="row">
@@ -33,8 +20,6 @@
                                 <th width="9%" class="dhead">No Nota</th>
                                 <th width="9%" class="dhead">Nota Manual</th>
                                 <th width="10%" class="dhead">Pelanggan</th>
-                                <th width="15%" class="dhead">Supir</th>
-                                <th width="15%" class="dhead">Keterangan</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -53,20 +38,10 @@
                                     <input type="text" required class="form-control" name="nota_manual">
                                 </td>
                                 <td>
-                                    <select required name="id_customer" class="form-control select2" id="">
-                                        <option value="">- Pilih Customer -</option>
-                                        @foreach ($customer as $d)
-                                            <option value="{{ $d->id_customer }}">
-                                                {{ $d->nm_customer }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" class="form-control" name="id_customer">
                                 </td>
-                                <td>
-                                    <input type="text" name="driver" class="form-control">
-                                </td>
-                                <td>
-                                    <input type="text" name="ket" class="form-control">
-                                </td>
+
+
                             </tr>
                         </tbody>
 
@@ -76,6 +51,7 @@
                         <thead>
                             <tr>
                                 <th width="20%" class="dhead">Produk</th>
+                                <th width="5%" class="dhead">Stok</th>
                                 <th width="5%" class="dhead">Qty</th>
                                 <th width="10%" class="dhead text-end">Harga Satuan</th>
                                 <th width="10%" class="dhead text-end">Total Rp</th>
@@ -85,7 +61,7 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <select name="id_produk[]" required class="form-control select2 produk-change"
+                                    <select name="id_produk[]" count="1" required class="form-control pilih_telur pilih_telur1 select2 produk-change"
                                         id="">
                                         <option value="">- Pilih Produk -</option>
                                         @foreach ($produk as $d)
@@ -94,6 +70,9 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="0" readonly class="form-control stok1">
                                 </td>
                                 <td>
                                     <input count="1" name="qty[]" value="0" type="text"
@@ -210,6 +189,24 @@
                     $(".button-save").attr("hidden", true);
                 }
                 $(".selisih").text(selisih_total);
+            });
+
+            $(document).on("change", ".pilih_telur", function() {
+                var count = $(this).attr('count');
+                var id_telur = $('.pilih_telur' + count).val();
+                
+                $.ajax({
+                    type: "GET",
+                    url: "{{route('dashboard_kandang.get_stok')}}",
+                    data: {
+                        id_telur:id_telur
+                    },
+                    dataType: "json",
+                    success: function (r) {
+                        $(".stok"+count).val(r.debit - r.kredit);
+                    }
+                });
+                
             });
         </script>
     @endsection

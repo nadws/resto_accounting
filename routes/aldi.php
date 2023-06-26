@@ -324,7 +324,12 @@ Route::middleware('auth')->group(function () {
             // penjualan umum
             Route::get('/penjualan_umum', 'penjualan_umum')->name('penjualan_umum');
             Route::get('/tbh_add', 'tbh_add')->name('tbh_add');
+            Route::get('/get_stok', 'get_stok')->name('get_stok');
+            Route::get('/edit_penjualan', 'edit_penjualan')->name('edit_penjualan');
             Route::get('/add_penjualan_umum', 'add_penjualan_umum')->name('add_penjualan_umum');
+            Route::get('/detail/{urutan}', 'detail')->name('detail');
+            Route::get('/load_detail_nota/{urutan}', 'load_detail_nota')->name('load_detail_nota');
+            Route::post('/update_penjualan', 'update_penjualan')->name('update_penjualan');
             Route::post('/save_penjualan_umum', 'save_penjualan_umum')->name('save_penjualan_umum');
         });
 });
