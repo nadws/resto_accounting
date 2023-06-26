@@ -249,7 +249,7 @@
                                 $opname_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($opname_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($opname_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center"><a href="{{route('penjualan_martadah_cek',['lokasi' => 'opname'])}}"
+                            <td align="center"><a href="{{route('bukukan_opname_martadah')}}"
                                     class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
                                     History</a></td>
                         </tr>
