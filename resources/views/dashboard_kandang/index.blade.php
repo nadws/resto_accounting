@@ -205,7 +205,6 @@
                             <th width="2%" class="text-center dhead" rowspan="2">Aksi</th>
                         </tr>
                         <tr>
-
                             <th width="2%" class="dhead text-center">Minggu</th>
                             <th width="1%" class="dhead text-center">Pop</th>
                             <th width="6%" class="dhead text-center">Mati / Jual</th>
@@ -228,7 +227,6 @@
                                 <td>{{ tanggal(date('Y-m-d')) }}</td>
                                 <td align="center" data-bs-toggle="modal" data-bs-target="#tambah_kandang">
                                     {{ $d->nm_kandang }}</td>
-
                                 @php
                                     $populasi = DB::table('populasi')
                                         ->where([['id_kandang', $d->id_kandang], ['tgl', date('Y-m-d')]])
@@ -267,14 +265,24 @@
                                 @foreach ($telur as $t)
                                     @php
                                         $tgl = date('Y-m-d');
+                                        $tglKemarin = Carbon\Carbon::yesterday()->format('Y-m-d');
+                                        
                                         $stok = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang = '$d->id_kandang'
-                            AND a.tgl = '$tgl' AND a.id_telur = '$t->id_produk_telur'");
+                                                AND a.tgl = '$tgl' AND a.id_telur = '$t->id_produk_telur'");
+                                        $stokKemarin = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang = '$d->id_kandang'
+                                                AND a.tgl = '$tglKemarin' AND a.id_telur = '$t->id_produk_telur'");
+
+                                        $pcs = $stok->pcs ?? 0;
+                                        $pcsKemarin = $stokKemarin->pcs ?? 0;
+
                                         $ttlKg += $stok->kg ?? 0;
                                         $ttlPcs += $stok->pcs ?? 0;
+                                        // dd($pcsKemarin - $pcs);
+                                        $kelasTelur =  $pcsKemarin - $pcs > 60 ? 'merah' : 'abu';
                                     @endphp
 
                                     <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                        nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu"
+                                        nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur {{$kelasTelur}}"
                                         data-bs-target="#tambah_telur">
                                         {{ $stok->pcs ?? 0 }}
                                     </td>
