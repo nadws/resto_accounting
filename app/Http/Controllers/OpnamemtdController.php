@@ -169,5 +169,25 @@ class OpnamemtdController extends Controller
 
     public function history_opname_mtd(Request $r)
     {
+        $today = date("Y-m-d");
+        $enamhari = date("Y-m-d", strtotime("-6 days", strtotime($today)));
+        if (empty($r->tgl1)) {
+            $tgl1 = $enamhari;
+            $tgl2 = date('Y-m-d');
+        } else {
+            $tgl1 = $r->tgl1;
+            $tgl2 = $r->tgl2;
+        }
+        $data = [
+            'produk' => DB::table('telur_produk')->get(),
+            'gudang' => DB::table('gudang_telur')->get(),
+            'invoice' => DB::select("SELECT a.tgl, a.nota_transfer, b.nm_telur, a.pcs, a.kg, a.admin
+            FROM stok_telur as a 
+            left join telur_produk as b on b.id_produk_telur = a.id_telur
+            where a.tgl BETWEEN '$tgl1' and '$tgl2' and a.id_gudang='1' and a.jenis ='opname';"),
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2
+        ];
+        return view('opname_telur_mtd.history', $data);
     }
 }
