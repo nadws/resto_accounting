@@ -8,6 +8,8 @@
                 <x-theme.button modal="T" href="{{ route('tbh_invoice_telur') }}" icon="fa-plus" addClass="float-end"
                     teks="Buat Invoice" />
                 <x-theme.btn_filter />
+                <x-theme.button modal="T" href="/produk_telur" icon="fa-long-arrow-alt-left" addClass="float-end"
+                    teks="Kembali ke dashboard" />
             </div>
         </div>
     </x-slot>
