@@ -46,7 +46,8 @@ class DashboardKandangController extends Controller
         $data = [
             'title' => 'Dashboard Kandang',
             'kandang' => DB::table('kandang')->get(),
-            'telur' => DB::table('telur_produk')->get()
+            'telur' => DB::table('telur_produk')->get(),
+            'produk' => $this->produk
         ];
         return view('dashboard_kandang.index', $data);
     }
@@ -275,12 +276,13 @@ class DashboardKandangController extends Controller
                     'pcs' => $r->pcs[$x],
                     'kg' => $r->kg[$x],
                     'kg_jual' => $r->kg_jual[$x],
+                    'ikat' => $r->ikat[$x],
                     'rp_satuan' => $r->rp_satuan[$x],
                     'total_rp' => $r->total_rp[$x],
                     'admin' => auth()->user()->name,
                     'urutan' => $nota_t,
                     'urutan_customer' => $urutan_cus,
-                    'driver' => $r->driver,
+                    'driver' => '',
                     'lokasi' => 'mtd'
                 ];
                 DB::table('invoice_telur')->insert($data);
@@ -298,7 +300,7 @@ class DashboardKandangController extends Controller
                     'admin' => auth()->user()->name,
                     'urutan' => $nota_t,
                     'urutan_customer' => $urutan_cus,
-                    'driver' => $r->driver,
+                    'driver' => '',
                     'lokasi' => 'mtd'
                 ];
                 DB::table('invoice_telur')->insert($data);
@@ -343,7 +345,6 @@ class DashboardKandangController extends Controller
         $tgl2 = $this->tgl2;
         $id_user = auth()->user()->id;
         $penjualan = DB::select("SELECT *, sum(a.total_rp) as total, count(*) as ttl_produk  FROM `penjualan_agl` as a
-        LEFT JOIN customer as b ON a.id_customer = b.id_customer
         WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2'
         GROUP BY a.urutan");
         $data = [
@@ -352,7 +353,7 @@ class DashboardKandangController extends Controller
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
         ];
-        return view('dashboard_kandang.penjualan_umum.penjualan_umum',$data);
+        return view('dashboard_kandang.penjualan_umum.penjualan_umum', $data);
     }
 
     public function add_penjualan_umum()
@@ -376,9 +377,29 @@ class DashboardKandangController extends Controller
         return view('penjualan2.tbh_add', $data);
     }
 
+    public function get_stok(Request $r)
+    {
+        $cek = DB::selectOne("SELECT f.debit,f.kredit FROM tb_produk as a
+        LEFT join (
+                  SELECT 
+                    max(b.tgl) as tgl, 
+                    b.id_produk, 
+                    b.urutan, 
+                    SUM(b.debit) as debit, 
+                    sum(b.kredit) as kredit 
+                  FROM 
+                    tb_stok_produk as b 
+                  where 
+                    b.jenis = 'selesai'
+                  group by 
+                    b.id_produk
+                ) as f on f.id_produk = a.id_produk 
+        WHERE a.id_produk = '$r->id_telur'");
+        echo json_encode($cek);
+    }
+
     public function save_penjualan_umum(Request $r)
     {
-
         for ($i = 0; $i < count($r->id_produk); $i++) {
             DB::table('penjualan_agl')->insert([
                 'urutan' => $r->no_nota,
@@ -386,12 +407,12 @@ class DashboardKandangController extends Controller
                 'tgl' => $r->tgl,
                 'kode' => 'PAGL',
                 'id_customer' => $r->id_customer,
-                'driver' => $r->driver,
+                'driver' => '',
                 'id_produk' => $r->id_produk[$i],
                 'qty' => $r->qty[$i],
                 'rp_satuan' => $r->rp_satuan[$i],
                 'total_rp' => $r->total_rp[$i],
-                'ket' => $r->ket,
+                'ket' => '',
                 'id_jurnal' => 0,
                 'admin' => auth()->user()->name,
                 'lokasi' => 'mtd'
@@ -424,5 +445,107 @@ class DashboardKandangController extends Controller
         }
 
         return redirect()->route('dashboard_kandang.penjualan_umum')->with('sukses', 'Data Berhasil Ditambahkan');
+    }
+
+    public function edit_penjualan(Request $r)
+    {
+        $penjualan = DB::selectOne("SELECT *, sum(a.total_rp) as total, count(*) as ttl_produk  FROM `penjualan_agl` as a
+        WHERE a.urutan = '$r->urutan' ");
+        $data = [
+            'title' => 'Edit Penjualan Umum',
+            'customer' => DB::table('customer')->get(),
+            'produk' => $this->produk,
+            'getProduk' => DB::table('penjualan_agl as a')
+                ->join('tb_produk as b', 'a.id_produk', 'b.id_produk')
+                ->where('urutan', $r->urutan)
+                ->get(),
+            'getPenjualan' => $penjualan,
+            'no_nota' => $penjualan->urutan
+        ];
+        return view('dashboard_kandang.penjualan_umum.edit', $data);
+    }
+
+    public function update_penjualan(Request $r)
+    {
+        DB::table('tb_stok_produk')->where('no_nota', 'PAGL-' . $r->no_nota)->delete();
+        DB::table('penjualan_agl')->where('urutan', $r->no_nota)->delete();
+
+        for ($i = 0; $i < count($r->id_produk); $i++) {
+            DB::table('penjualan_agl')->insert([
+                'urutan' => $r->no_nota,
+                'nota_manual' => $r->nota_manual,
+                'tgl' => $r->tgl,
+                'kode' => 'PAGL',
+                'id_customer' => $r->id_customer,
+                'driver' => '',
+                'id_produk' => $r->id_produk[$i],
+                'qty' => $r->qty[$i],
+                'rp_satuan' => $r->rp_satuan[$i],
+                'total_rp' => $r->total_rp[$i],
+                'ket' => '',
+                'id_jurnal' => 0,
+                'admin' => auth()->user()->name,
+                'lokasi' => 'mtd'
+            ]);
+            $getProduk = DB::table('tb_stok_produk')->where('id_produk', $r->id_produk[$i])->orderBy('id_stok_produk', 'DESC')->first();
+            $notaProduk = buatNota('tb_stok_produk', 'urutan');
+            $jml_sebelumnya = $getProduk->jml_sebelumnya ?? 0;
+            $jml_sesudahnya = $jml_sebelumnya - $r->qty[$i];
+
+            DB::table("tb_stok_produk")->insert([
+                'id_produk' => $r->id_produk[$i],
+                'urutan' => $notaProduk,
+                'no_nota' => 'SK-' . $notaProduk,
+                'tgl' => $r->tgl,
+                'jenis' => 'selesai',
+                'status' => 'keluar',
+                'jml_sebelumnya' => $jml_sebelumnya,
+                'jml_sesudahnya' => $jml_sesudahnya,
+                'debit' => 0,
+                'kredit' => $r->qty[$i],
+                'rp_satuan' => 0,
+                'ket' => 'PAGL-' . $r->no_nota,
+                'gudang_id' => $getProduk->gudang_id,
+                'kategori_id' => 3,
+                'departemen_id' => 1,
+                'admin' => auth()->user()->name,
+                'lokasi' => 'mtd'
+            ]);
+        }
+
+        return redirect()->route('dashboard_kandang.penjualan_umum')->with('sukses', 'Data Berhasil Ditambahkan');
+    }
+
+    public function detail($no_nota)
+    {
+        $penjualan = DB::selectOne("SELECT *, sum(a.total_rp) as total, count(*) as ttl_produk  FROM `penjualan_agl` as a
+        LEFT JOIN customer as b ON a.id_customer = b.id_customer
+        WHERE a.urutan = '$no_nota' ");
+        $data = [
+            'title' => 'Detail Penjaulan Umum',
+            'head_jurnal' => $penjualan,
+            'produk' => DB::table('penjualan_agl as a')
+                ->join('tb_produk as b', 'a.id_produk', 'b.id_produk')
+                ->where('urutan', $no_nota)
+                ->get()
+        ];
+        return view('penjualan2.detail', $data);
+    }
+
+    public function load_detail_nota($urutan)
+    {
+        $urutan = explode(", ", $urutan);
+        $id_produk = $urutan[count($urutan) - 1];
+
+        $produk = DB::table('penjualan_agl as a')
+        ->join('tb_produk as b', 'a.id_produk', 'b.id_produk')
+        ->where('a.id_produk', $id_produk)
+        ->whereIn('a.urutan', $urutan)
+        ->get();
+        $data = [
+            'title' => 'Detail Penjaulan Umum',
+            'produk' => $produk
+        ];
+        return view('dashboard_kandang.penjualan_umum.detail', $data);
     }
 }

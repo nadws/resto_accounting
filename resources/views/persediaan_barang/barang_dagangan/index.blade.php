@@ -1,8 +1,9 @@
-<x-theme.app title="{{ $title }}" nav="Y" rot1="barang_dagangan.index" rot2="barang_dagangan.stok_masuk" rot3="barang_dagangan.opname"
-    table="Y" sizeCard="12">
+<x-theme.app title="{{ $title }}" nav="Y" rot1="barang_dagangan.index" rot2="barang_dagangan.stok_masuk"
+    rot3="barang_dagangan.opname" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <hr class="mt-3">
+            
             <div class="col-lg-6">
                 <h6 class="float-start mt-1">{{ $title }}
                 </h6>
@@ -12,11 +13,13 @@
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
                     @foreach ($gudang as $g)
-                        <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
+                        <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }}
+                            value="{{ $g->id_gudang }}">
                             {{ ucwords($g->nm_gudang) }}</option>
                     @endforeach
                 </select>
             </div>
+
             <div class="col-lg-2">
                 @if (!empty($create))
                     <div class="btn-group dropstart float-end mb-1">
@@ -36,11 +39,7 @@
                     </div>
                 @endif
                 <x-theme.akses :halaman="$halaman" route="barang_dagangan.index" />
-
             </div>
-        </div>
-        <div class="row">
-
         </div>
     </x-slot>
     <x-slot name="cardBody">

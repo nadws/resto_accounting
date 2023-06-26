@@ -1,12 +1,9 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
 
     <x-slot name="cardHeader">
-        <div class="row justify-content-end">
-            <div class="col-lg-2">
-
-            </div>
-        </div>
-
+        <h6 class="float-start">Tambah Penjualan Telur Martadah</h6>
+        <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
+        addClass="float-end" teks="kembali Ke Dashboard" />
     </x-slot>
 
 
@@ -17,11 +14,10 @@
                 <div class="col-lg-12">
                     <table class="table">
                     <tr>
-                        <th class="dhead">Tanggal</th>
+                        <th width="20%" class="dhead">Tanggal</th>
                         <th width="10%" class="dhead">No Nota</th>
                         <th class="dhead">Customer</th>
                         <th class="dhead">Tipe Penjualan</th>
-                        <th class="dhead">Pengantar</th>
                     </tr>
                     <tr>
                         <td>
@@ -34,29 +30,16 @@
                                 value="T{{ $nota }}" readonly>
                         </td>
                         <td>
-                            <select name="customer" id="select2" class="" required>
-                                <option value="">Pilih Customer</option>
-                                @foreach ($customer as $s)
-                                    <option value="{{ $s->id_customer }}">{{ $s->nm_customer }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" class="form-control" name="customer">
                         </td>
                         <td>
-                            <select name="tipe" class="select2_add pilih_tipe" required>
-                                <option value="">Pilih Tipe Penjualan</option>
-                                <option value="kg">Kg</option>
-                                <option value="pcs">Pcs</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" name="driver" required>
-
+                            <input type="hidden" name="tipe" value="kg">
+                            <input type="text" readonly value="Kg" class="form-control">
                         </td>
                     </tr>
                 </table>
                 </div>
                
-
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
                 </div>
@@ -102,15 +85,15 @@
                         }
                     });
                 }
+                var tipe = 'kg';
+                if (tipe === 'kg') {
+                    loadkg()
+                    $("#loadpcs").html("");
+                } else {
+                    loadpcs()
+                    $("#loadkg").html("");
+                }
                 $(document).on('change', ".pilih_tipe", function() {
-                    var tipe = $(this).val();
-                    if (tipe === 'kg') {
-                        loadkg()
-                        $("#loadpcs").html("");
-                    } else {
-                        loadpcs()
-                        $("#loadkg").html("");
-                    }
                 });
 
                 $(document).on("keyup", ".pcs", function() {
@@ -132,8 +115,8 @@
                     var kg = $('.kgbiasa' + count).val();
                     var ikat = parseFloat(input2) / 180;
                     var kg_jual = parseFloat(kg) - ikat;
-                    $('.ikat' + count).text(ikat.toFixed(1));
-                    $('.kgminrak' + count).text(kg_jual.toFixed(1));
+                    $('.ikat' + count).val(ikat.toFixed(1));
+                    $('.kgminrak' + count).val(kg_jual.toFixed(1));
                     $('.kgminrakbiasa' + count).val(kg_jual.toFixed(1));
 
                     var rp_satuan = $('.rp_satuanbiasa' + count).val();

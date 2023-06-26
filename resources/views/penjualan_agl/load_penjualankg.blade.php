@@ -2,11 +2,11 @@
     <thead>
         <tr>
             <th class="dhead" width="2%">#</th>
-            <th class="dhead" width="10%">Produk</th>
+            <th class="dhead" width="15%">Produk</th>
             <th class="dhead" width="10%" style="text-align: right">Pcs</th>
             <th class="dhead" width="10%" style="text-align: right">Kg</th>
             <th class="dhead" width="10%" style="text-align: right">Ikat</th>
-            <th class="dhead" width="10%" style="text-align: right">Kg(-rak)</th>
+            <th class="dhead" width="10%" style="text-align: right">Potongan Rak</th>
             <th class="dhead" width="10%" style="text-align: right">Rp Satuan</th>
             <th class="dhead" width="10%" style="text-align: right">Total Rp</th>
             <th class="dhead" width="5%">Aksi</th>
@@ -31,14 +31,17 @@
                 <input type="text" class="form-control kg kg1" count="1" style="text-align: right" required>
                 <input type="hidden" class="form-control kgbiasa kgbiasa1" name="kg[]" count="1" value="0">
             </td>
-            <td align="right" class="ikat1"></td>
-            <td align="right" class="kgminrak1">
-
+            <td align="right">
+                <input type="text" class="ikat1 form-control" name="ikat[]" value="0">
+            </td>
+            <td align="right">
+                <input type="text" class="kgminrak1 form-control" value="0">
             </td>
             <td align="right">
                 <input type="text" class="form-control rp_satuan rp_satuan1" count="1" style="text-align: right"
                     required>
-                <input type="hidden" class="form-control kgminrakbiasa1" name="kg_jual[]" value="0">
+                <input type="hidden" class="kgminrakbiasa1 form-control" name="kg_jual[]" value="0">
+
                 <input type="hidden" class="form-control rp_satuanbiasa1" name="rp_satuan[]" value="0">
                 <input type="hidden" class="form-control ttl_rpbiasa ttl_rpbiasa1" name="total_rp[]" value="0">
             </td>

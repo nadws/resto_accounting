@@ -181,9 +181,9 @@ class Stock_telurController extends Controller
     {
         $stok = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg , sum(a.pcs_kredit) as pcs_kredit, sum(a.kg_kredit) as kg_kredit
         FROM stok_telur as a
-        where a.id_telur = '$r->id_telur' and a.id_gudang = '$r->id_gudang_telur'
+        where a.id_telur = '$r->id_telur' and a.id_gudang = '$r->id_gudang_telur' AND a.opname = 'T'
         ");
-
+    
         $data = [
             'pcs' => $stok->pcs - $stok->pcs_kredit,
             'kg' => $stok->kg - $stok->kg_kredit
