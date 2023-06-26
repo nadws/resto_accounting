@@ -24,14 +24,15 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">Customer</label>
-                    <input type="text" class="form-control" value="Opname{{$invoice2->urutan_customer}}" readonly>
+                    <input type="text" class="form-control" name="customer" value="Opname{{$invoice2->urutan_customer}}"
+                        readonly>
                 </div>
 
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
                 </div>
                 <div class="col-lg-12">
-                    <table class="table table-striped ">
+                    <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th class="dhead" width="2%">#</th>
@@ -47,9 +48,9 @@
                         <tbody>
                             @foreach ($invoice as $no => $a)
                             <tr class="baris{{$no+1}}">
-                                <td></td>
+                                <td>{{$no+1}}</td>
                                 <td>
-                                    <select name="id_produk[]" class="select2_add" required disabled>
+                                    <select name="id_produk[]" class="form-control" required disabled>
                                         <option value="">-Pilih Produk-</option>
                                         @foreach ($produk as $p)
                                         <option value="{{$p->id_produk_telur}}" {{$a->id_produk == $p->id_produk_telur ?

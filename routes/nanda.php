@@ -351,4 +351,6 @@ Route::controller(OpnamemtdController::class)->group(function () {
     Route::get('/bayar_opname', 'bayar_opname')->name('bayar_opname');
     Route::post('/save_opname_telur_mtd', 'save_opname_telur_mtd')->name('save_opname_telur_mtd');
     Route::post('/save_bayar_opname', 'save_bayar_opname')->name('save_bayar_opname');
+    Route::get('/bukukan_opname_martadah', 'bukukan_opname_martadah')->name('bukukan_opname_martadah');
+    Route::get('/terima_opname', 'terima_opname')->name('terima_opname');
 });

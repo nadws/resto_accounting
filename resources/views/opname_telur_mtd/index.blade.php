@@ -61,30 +61,30 @@
                                         value="{{empty($telur->pcs) ? '0' : $telur->pcs}}">
 
                                     <input type="hidden" name="pcs[]" class="pcs_opname_biasa{{$p->id_produk_telur}}"
-                                        value="0">
+                                        value="{{empty($telur->pcs) ? '0' : $telur->pcs}}">
                                     <input type="hidden" name="id_telur[]" value="{{$p->id_produk_telur}}">
                                 </td>
                                 <td>
                                     <input style="text-align: right" type="text"
                                         class="form-control kg_opname kg_opname{{$p->id_produk_telur}}"
                                         id_produk="{{$p->id_produk_telur}}"
-                                        value="{{ empty($telur->pcs) ? '0' : number_format($telur->kg,2,',','.')}}">
+                                        value="{{ empty($telur->kg) ? '0' : number_format($telur->kg,2,',','.')}}">
 
                                     <input type="hidden" class="kg_program{{$p->id_produk_telur}}"
                                         value="{{empty($telur->kg) ? '0' : $telur->kg}}">
                                     <input type="hidden" name="kg[]" class="kg_opname_biasa{{$p->id_produk_telur}}"
-                                        value="0">
+                                        value="{{empty($telur->kg) ? '0' : $telur->kg}}">
                                 </td>
                                 <td>
                                     <input style="text-align: right" type="text"
-                                        class="form-control pcs_selisih{{$p->id_produk_telur}}" readonly>
+                                        class="form-control pcs_selisih{{$p->id_produk_telur}}" value="0" readonly>
 
                                     <input type="hidden" name="pcs_selisih[]"
                                         class="pcs_selisih_biasa{{$p->id_produk_telur}}" readonly value="0">
                                 </td>
                                 <td>
                                     <input style="text-align: right" type="text"
-                                        class="form-control kg_selisih{{$p->id_produk_telur}}" readonly>
+                                        class="form-control kg_selisih{{$p->id_produk_telur}}" value="0" readonly>
 
                                     <input type="hidden" name="kg_selisih[]"
                                         class="kg_selisih_biasa{{$p->id_produk_telur}}" readonly value="0">
@@ -165,6 +165,7 @@
                 $('.kg_selisih_biasa' + count).val(selisih);
                    
             });
+            aksiBtn("form");
         });
     </script>
     @endsection
