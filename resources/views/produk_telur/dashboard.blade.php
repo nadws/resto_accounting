@@ -172,7 +172,19 @@
                     <tbody>
                         @foreach ($gudang as $g)
                         <tr>
-                            <td>{{ $g->nm_gudang }}</td>
+                            <td>
+                                {{ $g->nm_gudang }}
+
+
+                                <a href="#" onclick="event.preventDefault();"
+                                    class="badge bg-primary float-end ms-2  text-sm {{$g->id_gudang_telur == '2' ? 'history-tf-alpa' : 'history-mtd' }} "><i
+                                        class="fas fa-history"></i></i>
+                                </a>
+                                <a href="{{ route('penjualan_agrilaras') }}" {{$g->id_gudang_telur == '2' ? '' :
+                                    'hidden' }}
+                                    class="badge bg-primary text-sm float-end"><i class="fas fa-plus"></i>
+                                </a>
+                            </td>
                             @foreach ($produk as $p)
                             @php
                             $stok = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg, sum(a.pcs_kredit) as

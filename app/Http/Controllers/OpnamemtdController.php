@@ -166,4 +166,8 @@ class OpnamemtdController extends Controller
         ];
         return view('opname_telur_mtd.bukukan_opname', $data);
     }
+
+    public function history_opname_mtd(Request $r)
+    {
+    }
 }
