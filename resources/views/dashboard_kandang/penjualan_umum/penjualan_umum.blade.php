@@ -1,10 +1,9 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <h6 class="float-start">{{ $title }}</h6>
-        <x-theme.button modal="T" href="{{ route('dashboard_kandang.add_penjualan_umum') }}" icon="fa-plus"
-            addClass="float-end" teks="Buat Baru" />
-        <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
-            addClass="float-end" teks="kembali Ke Dashboard" />
+
+        <x-theme.btn_dashboard route="dashboard_kandang.index" />
+
         <x-theme.btn_filter />
     </x-slot>
 
@@ -18,6 +17,7 @@
                         <th>Tanggal</th>
                         <th>Pelanggan</th>
                         <th width="20%" class="text-center">Total Produk</th>
+                        <th>Di Terima</th>
                         <th class="text-end">Total Rp</th>
                         <th width="20%" class="text-center">Aksi</th>
                     </tr>
@@ -26,10 +26,12 @@
                     @foreach ($penjualan as $no => $d)
                         <tr>
                             <td>{{ $no + 1 }}</td>
-                            <td>PAGL-{{ $d->urutan }}</td>
+                            <td class="detail_nota text-primary" no_nota="{{ $d->urutan }}" href="#"
+                                data-bs-toggle="modal" data-bs-target="#detail">PAGL-{{ $d->urutan }}</td>
                             <td>{{ tanggal($d->tgl) }}</td>
                             <td>{{ $d->id_customer }}</td>
                             <td align="center">{{ $d->ttl_produk }}</td>
+                            <td><span class="btn btn-sm btn-success">{{ ucwords($d->admin_cek) ?? '' }}</span></td>
                             <td align="right">Rp. {{ number_format($d->total, 2) }}</td>
                             <td align="center">
                                 <div class="btn-group" role="group">

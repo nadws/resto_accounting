@@ -1,17 +1,19 @@
 <tr class="baris{{$count}}">
     <td>
-        <select required name="id_produk[]" count="{{ $count }}" class="form-control pilih_telur pilih_telur{{$count}} select2 produk-change" id="">
+        <select required name="id_produk[]" count="{{ $count }}" class="form-control pilih_telur pilih_telur{{$count}} select2-add produk-change" id="">
             <option value="">- Pilih Produk -</option>
             @foreach ($produk as $d)
                 <option value="{{ $d->id_produk }}">{{ $d->nm_produk }}
                     ({{ strtoupper($d->satuan->nm_satuan) }})
                 </option>
             @endforeach
+            <option value="tambah">+ Produk</option>
         </select>
     </td>
     <td>
         <input type="text" value="0" readonly class="form-control stok{{$count}}">
     </td>
+    <td></td>
     <td>
         <input name="qty[]" type="text" class="form-control qty qty{{$count}}">
     </td>

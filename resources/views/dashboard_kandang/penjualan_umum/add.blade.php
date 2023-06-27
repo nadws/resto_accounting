@@ -3,8 +3,8 @@
     <x-slot name="cardHeader">
 
         <h6 class="float-start mt-1">{{ $title }}</h6>
-        <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
-            addClass="float-end" teks="kembali Ke Dashboard" />
+
+        <x-theme.btn_dashboard route="dashboard_kandang.index" />
     </x-slot>
 
     <x-slot name="cardBody">
@@ -29,7 +29,7 @@
                                         name="tgl">
                                 </td>
                                 <td>
-                                    <input readonly value="PAGL-{{ $no_nota }}" type="text" required
+                                    <input readonly value="PUM-{{ $no_nota }}" type="text" required
                                         class="form-control">
                                     <input value="{{ $no_nota }}" type="hidden" required class="form-control"
                                         name="no_nota">
@@ -40,18 +40,15 @@
                                 <td>
                                     <input type="text" class="form-control" name="id_customer">
                                 </td>
-
-
                             </tr>
                         </tbody>
-
-
                     </table>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th width="20%" class="dhead">Produk</th>
-                                <th width="5%" class="dhead">Stok</th>
+                                <th width="20%" class="dhead">Produk </th>
+                                <th width="5%" class="dhead">Stok </th>
+                                <th width="5%" class="dhead"></th>
                                 <th width="5%" class="dhead">Qty</th>
                                 <th width="10%" class="dhead text-end">Harga Satuan</th>
                                 <th width="10%" class="dhead text-end">Total Rp</th>
@@ -61,7 +58,8 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <select name="id_produk[]" count="1" required class="form-control pilih_telur pilih_telur1 select2 produk-change"
+                                    <select name="id_produk[]" count="1" required
+                                        class="form-control pilih_telur pilih_telur1 select2-add produk-change"
                                         id="">
                                         <option value="">- Pilih Produk -</option>
                                         @foreach ($produk as $d)
@@ -69,10 +67,16 @@
                                                 ({{ strtoupper($d->satuan->nm_satuan) }})
                                             </option>
                                         @endforeach
+                                        <option value="tambah">+ Produk</option>
                                     </select>
                                 </td>
                                 <td>
                                     <input type="text" value="0" readonly class="form-control stok1">
+                                </td>
+                                <td>
+                                    <a target="_blank" href="{{ route('barang_dagangan.add') }}"
+                                        data-bs-toggle="tooltip" title="Tambah Stok" class="badge bg-info"><i
+                                            class="fas fa-plus"></i></a>
                                 </td>
                                 <td>
                                     <input count="1" name="qty[]" value="0" type="text"
@@ -109,6 +113,8 @@
 
                 </div>
             </section>
+
+
     </x-slot>
     <x-slot name="cardFooter">
         <button type="submit" class="float-end btn btn-primary">Simpan</button>
@@ -119,15 +125,14 @@
         <a href="{{ route('dashboard_kandang.penjualan_umum') }}"
             class="float-end btn btn-outline-primary me-2">Batal</a>
         </form>
+        @include('persediaan_barang.barang_dagangan.tambah_produk')
     </x-slot>
-
-
 
     @section('scripts')
         <script>
-            $('.select2').select2()
+            $('.select2-add').select2()
             var count = 3;
-            plusRow(count, 'tbh_baris', 'tbh_add')
+            plusRowProduk(count, 'tbh_baris', 'tbh_add')
 
             $(document).on("keyup", ".setor-nohide", function() {
                 var count = $(this).attr("count");
@@ -194,19 +199,23 @@
             $(document).on("change", ".pilih_telur", function() {
                 var count = $(this).attr('count');
                 var id_telur = $('.pilih_telur' + count).val();
-                
-                $.ajax({
-                    type: "GET",
-                    url: "{{route('dashboard_kandang.get_stok')}}",
-                    data: {
-                        id_telur:id_telur
-                    },
-                    dataType: "json",
-                    success: function (r) {
-                        $(".stok"+count).val(r.debit - r.kredit);
-                    }
-                });
-                
+                if (id_telur == 'tambah') {
+                    $("#tambah").modal('show')
+                    $('.select2-add').select2()
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.get_stok') }}",
+                        data: {
+                            id_telur: id_telur
+                        },
+                        dataType: "json",
+                        success: function(r) {
+                            $(".stok" + count).val(r.debit - r.kredit);
+                        }
+                    });
+                }
+
             });
         </script>
     @endsection

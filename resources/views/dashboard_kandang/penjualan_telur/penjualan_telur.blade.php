@@ -7,8 +7,8 @@
             <div class="col-lg-6">
                 <x-theme.button modal="T" href="{{ route('dashboard_kandang.add_penjualan_telur') }}" icon="fa-plus"
                     addClass="float-end" teks="Buat Nota" />
-                <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
-                    addClass="float-end" teks="kembali Ke Dashboard" />
+                    <x-theme.btn_dashboard route="dashboard_kandang.index" />
+
                 <x-theme.btn_filter />
             </div>
         </div>
@@ -26,6 +26,7 @@
                         <th>Pcs</th>
                         <th>Kg</th>
                         <th>Ikat</th>
+                        <th>Diterima</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -40,6 +41,7 @@
                             <td>{{ $s->pcs_kredit }}</td>
                             <td>{{ $s->kg_kredit }}</td>
                             <td>{{ number_format($s->pcs_kredit / 180, 2) }} </td>
+                            <td><span class="btn btn-sm btn-success">{{ ucwords($s->cek_admin) ?? '' }}</span></td>
                             <td>
                                 <div class="btn-group" role="group">
                                     <span class="btn btn-sm" data-bs-toggle="dropdown">

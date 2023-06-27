@@ -3,8 +3,8 @@
     <x-slot name="cardHeader">
         
         <h6 class="float-start mt-1">{{ $title }}</h6>
-        <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}" icon="fa-arrow-left"
-        addClass="float-end" teks="kembali Ke Dashboard" />
+        <x-theme.btn_dashboard route="dashboard_kandang.index" />
+
     </x-slot>
 
     <x-slot name="cardBody">

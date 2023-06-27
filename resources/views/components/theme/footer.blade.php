@@ -276,6 +276,25 @@
         });
     }
 
+    function plusRowProduk(count, classPlus, url) {
+        $(document).on("click", "." + classPlus, function() {
+            count = count + 1;
+            $.ajax({
+                url: `${url}?count=` + count,
+                type: "GET",
+                success: function(data) {
+                    $("#" + classPlus).append(data);
+                    $(".select2-add").select2();
+                },
+            });
+        });
+
+        $(document).on('click', '.remove_baris', function() {
+            var delete_row = $(this).attr("count");
+            $(".baris" + delete_row).remove();
+
+        })
+    }
     function plusRow(count, classPlus, url) {
         $(document).on("click", "." + classPlus, function() {
             count = count + 1;
@@ -285,6 +304,7 @@
                 success: function(data) {
                     $("#" + classPlus).append(data);
                     $(".select2").select2();
+                    
                 },
             });
         });
