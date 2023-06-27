@@ -6,8 +6,7 @@
             <div class="col-lg-6">
                 <div class="form-group">
                     <label for="">chick In</label>
-                    <input required value="{{ date('Y-m-d') }}" type="date" name="tgl"
-                        class="form-control">
+                    <input required value="{{ date('Y-m-d') }}" type="date" name="tgl" class="form-control">
                 </div>
             </div>
             <div class="col-lg-6">
@@ -21,10 +20,10 @@
                 <select name="strain" class="form-control select2-kandang" id="">
                     <option value="">- Pilih Strain -</option>
                     @php
-                        $strain = ['isa', 'lohman', 'hisex', 'hyline', 'hovogen'];
+                    $strain = ['isa', 'lohman', 'hisex', 'hyline', 'hovogen'];
                     @endphp
                     @foreach ($strain as $d)
-                        <option value="{{ ucwords($d) }}">{{ ucwords($d) }} Brown</option>
+                    <option value="{{ ucwords($d) }}">{{ ucwords($d) }} Brown</option>
                     @endforeach
                 </select>
             </div>

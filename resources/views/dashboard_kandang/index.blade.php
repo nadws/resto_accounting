@@ -43,7 +43,7 @@
         {{-- stok mtd --}}
         <div class="row">
             @if (session()->has('errorMin'))
-                <x-theme.alert pesan="ada input yang salah !" />
+            <x-theme.alert pesan="ada input yang salah !" />
             @endif
             <div class="col-lg-12">
                 <h6>
@@ -52,51 +52,50 @@
                 </h6>
                 <table class="table table-bordered text-center">
                     @php
-                        $ttlPcs = 0;
-                        $ttlKg = 0;
-                        $ttlIkat = 0;
+                    $ttlPcs = 0;
+                    $ttlKg = 0;
+                    $ttlIkat = 0;
                     @endphp
                     <tr>
                         <th class="dhead" rowspan="2" style="vertical-align: middle">Gudang</th>
                         @foreach ($telur as $d)
-                            <th class="dhead" colspan="3">
-                                {{ ucwords(str_replace('telur', '', strtolower($d->nm_telur))) }}</th>
+                        <th class="dhead" colspan="3">
+                            {{ ucwords(str_replace('telur', '', strtolower($d->nm_telur))) }}</th>
                         @endforeach
                     </tr>
 
                     <tr>
                         @php
-                            $telur = DB::table('telur_produk')->get();
+                        $telur = DB::table('telur_produk')->get();
                         @endphp
                         @foreach ($telur as $d)
-                            <th class="dhead">Pcs</th>
-                            <th class="dhead">Kg</th>
-                            <th class="dhead">Ikat</th>
+                        <th class="dhead">Pcs</th>
+                        <th class="dhead">Kg</th>
+                        <th class="dhead">Ikat</th>
                         @endforeach
                     </tr>
                     <tr>
                         <td align="left">
                             Martadah
                             <a href="{{ route('opnamemtd') }}" class="badge bg-primary text-sm">Opname</a>
+                            <a href="#" class="badge bg-primary text-sm history_opname">History Opname</a>
                         </td>
                         @foreach ($telur as $d)
-                            @php
-                                $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM
+                        @php
+                        $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM
                         `stok_telur`
                         WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 1 AND opname = 'T';");
-                                request()
-                                    ->session()
-                                    ->forget('errorMin', '1');
-                                if ($stok->pcs < 0) {
-                                    request()
-                                        ->session()
-                                        ->put('errorMin', '1');
-                                }
+                        request()
+                        ->session()
+                        ->forget('errorMin', '1');
+                        if ($stok->pcs < 0) { request() ->session()
+                            ->put('errorMin', '1');
+                            }
                             @endphp
                             <td>{{ $stok->pcs }}</td>
                             <td>{{ $stok->kg }}</td>
                             <td>{{ number_format($stok->pcs / 180, 1) }}</td>
-                        @endforeach
+                            @endforeach
                     </tr>
                     <tr>
                         <td align="left">
@@ -108,14 +107,14 @@
                             </a>
                         </td>
                         @foreach ($telur as $d)
-                            @php
-                                $stok = DB::selectOne("SELECT SUM(pcs_kredit) as pcs, SUM(kg_kredit) as kg FROM `stok_telur`
+                        @php
+                        $stok = DB::selectOne("SELECT SUM(pcs_kredit) as pcs, SUM(kg_kredit) as kg FROM `stok_telur`
                         WHERE id_telur = '$d->id_produk_telur' AND jenis = 'penjualan' AND opname = 'T';");
-                                
-                            @endphp
-                            <td>{{ $stok->pcs ?? 0 }}</td>
-                            <td>{{ $stok->kg ?? 0 }}</td>
-                            <td>{{ number_format($stok->pcs / 180, 1) }}</td>
+
+                        @endphp
+                        <td>{{ $stok->pcs ?? 0 }}</td>
+                        <td>{{ $stok->kg ?? 0 }}</td>
+                        <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                         @endforeach
                     </tr>
                     <tr>
@@ -128,15 +127,15 @@
                             </a>
                         </td>
                         @foreach ($telur as $d)
-                            @php
-                                $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM
+                        @php
+                        $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM
                         `stok_telur`
                         WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 2 AND opname = 'T';");
-                                
-                            @endphp
-                            <td>{{ $stok->pcs ?? 0 }}</td>
-                            <td>{{ $stok->kg ?? 0 }}</td>
-                            <td>{{ number_format($stok->pcs / 180, 1) }}</td>
+
+                        @endphp
+                        <td>{{ $stok->pcs ?? 0 }}</td>
+                        <td>{{ $stok->kg ?? 0 }}</td>
+                        <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                         @endforeach
                     </tr>
                 </table>
@@ -148,9 +147,9 @@
         {{-- table input --}}
         <section class="row">
             @if (session()->has('error'))
-                <div class="col-lg-12">
-                    <x-theme.alert pesan="kontak dr anto kalo ada yg merah" />
-                </div>
+            <div class="col-lg-12">
+                <x-theme.alert pesan="kontak dr anto kalo ada yg merah" />
+            </div>
             @endif
             <div class="col-lg-4">
                 <h6>
@@ -173,20 +172,21 @@
                     </thead>
                     <tbody class="text-center">
                         @foreach ($produk as $d)
-                            @php
-                                $datas = DB::selectOne("SELECT GROUP_CONCAT(CONCAT(urutan)) as urutan,count(*) as ttl, sum(total_rp) as ttl_rp FROM penjualan_agl 
-                                    WHERE id_produk = '$d->id_produk' AND cek = 'T' AND lokasi = 'mtd' GROUP BY id_produk");
-                                
-                                $urutan = implode(', ', explode(',', $datas->urutan));
-                            @endphp
-                            <tr>
-                                <td>{{ $d->nm_produk }}</td>
-                                <td>Rp. {{ !empty($datas) ? number_format($datas->ttl_rp, 0) ?? 0 : 0 }}</td>
-                                <td data-bs-toggle="modal" data-bs-target="#detail_nota"
-                                    class="detail_nota text-primary cursor-pointer"
-                                    urutan="{{ $urutan }}, {{ $d->id_produk }}">{{ $urutan }}</td>
-                                <td>{{ !empty($datas) ? $datas->ttl ?? 0 : 0 }}</td>
-                            </tr>
+                        @php
+                        $datas = DB::selectOne("SELECT GROUP_CONCAT(CONCAT(urutan)) as urutan,count(*) as ttl,
+                        sum(total_rp) as ttl_rp FROM penjualan_agl
+                        WHERE id_produk = '$d->id_produk' AND cek = 'T' AND lokasi = 'mtd' GROUP BY id_produk");
+
+                        $urutan = implode(', ', explode(',', $datas->urutan));
+                        @endphp
+                        <tr>
+                            <td>{{ $d->nm_produk }}</td>
+                            <td>Rp. {{ !empty($datas) ? number_format($datas->ttl_rp, 0) ?? 0 : 0 }}</td>
+                            <td data-bs-toggle="modal" data-bs-target="#detail_nota"
+                                class="detail_nota text-primary cursor-pointer"
+                                urutan="{{ $urutan }}, {{ $d->id_produk }}">{{ $urutan }}</td>
+                            <td>{{ !empty($datas) ? $datas->ttl ?? 0 : 0 }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -209,11 +209,11 @@
                             <th width="1%" class="dhead text-center">Pop</th>
                             <th width="6%" class="dhead text-center">Mati / Jual</th>
                             @php
-                                $telur = DB::table('telur_produk')->get();
+                            $telur = DB::table('telur_produk')->get();
                             @endphp
                             @foreach ($telur as $d)
-                                <th width="1%" class="dhead text-center">
-                                    {{ ucwords(str_replace('telur', '', strtolower($d->nm_telur))) }}</th>
+                            <th width="1%" class="dhead text-center">
+                                {{ ucwords(str_replace('telur', '', strtolower($d->nm_telur))) }}</th>
                             @endforeach
                             <th width="1%" class="dhead text-center">Ttl Pcs</th>
                             <th width="1%" class="dhead text-center">Ttl Kg</th>
@@ -223,84 +223,85 @@
                     </thead>
                     <tbody class="text-center">
                         @foreach ($kandang as $no => $d)
-                            <tr>
-                                <td>{{ tanggal(date('Y-m-d')) }}</td>
-                                <td align="center" data-bs-toggle="modal" data-bs-target="#tambah_kandang">
-                                    {{ $d->nm_kandang }}</td>
-                                @php
-                                    $populasi = DB::table('populasi')
-                                        ->where([['id_kandang', $d->id_kandang], ['tgl', date('Y-m-d')]])
-                                        ->first();
-                                    $mati = $populasi->mati ?? 0;
-                                    $jual = $populasi->jual ?? 0;
-                                    $kelas = $mati > 3 ? 'merah' : 'putih';
-                                @endphp
-                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi putih"
-                                    data-bs-target="#tambah_populasi">82 / 91%</td>
+                        <tr>
+                            <td>{{ tanggal(date('Y-m-d')) }}</td>
+                            <td align="center" data-bs-toggle="modal" data-bs-target="#tambah_kandang">
+                                {{ $d->nm_kandang }}</td>
+                            @php
+                            $populasi = DB::table('populasi')
+                            ->where([['id_kandang', $d->id_kandang], ['tgl', date('Y-m-d')]])
+                            ->first();
+                            $mati = $populasi->mati ?? 0;
+                            $jual = $populasi->jual ?? 0;
+                            $kelas = $mati > 3 ? 'merah' : 'putih';
+                            @endphp
+                            <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi putih"
+                                data-bs-target="#tambah_populasi">82 / 91%</td>
 
-                                @php
-                                    $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
-                                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
-                                            WHERE a.id_kandang = '$d->id_kandang';");
-                                @endphp
+                            @php
+                            $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
+                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
+                            WHERE a.id_kandang = '$d->id_kandang';");
+                            @endphp
 
-                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi putih"
-                                    data-bs-target="#tambah_populasi">{{ $pop->stok_awal - $pop->pop }}</td>
+                            <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi putih"
+                                data-bs-target="#tambah_populasi">{{ $pop->stok_awal - $pop->pop }}</td>
 
 
-                                {{-- mati dan jual --}}
-                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi {{ $kelas }}"
-                                    data-bs-target="#tambah_populasi">{{ $mati ?? 0 }} / {{ $jual ?? 0 }}</td>
-                                {{-- end mati dan jual --}}
+                            {{-- mati dan jual --}}
+                            <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi {{ $kelas }}"
+                                data-bs-target="#tambah_populasi">{{ $mati ?? 0 }} / {{ $jual ?? 0 }}</td>
+                            {{-- end mati dan jual --}}
 
-                                {{-- telur --}}
-                                @php
-                                    $telur = DB::table('telur_produk')->get();
-                                    $ttlKg = 0;
-                                    $ttlPcs = 0;
-                                @endphp
-                                @foreach ($telur as $t)
-                                    @php
-                                        $tgl = date('Y-m-d');
-                                        $tglKemarin = Carbon\Carbon::yesterday()->format('Y-m-d');
-                                        
-                                        $stok = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang = '$d->id_kandang'
-                                                AND a.tgl = '$tgl' AND a.id_telur = '$t->id_produk_telur'");
-                                        $stokKemarin = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang = '$d->id_kandang'
-                                                AND a.tgl = '$tglKemarin' AND a.id_telur = '$t->id_produk_telur'");
+                            {{-- telur --}}
+                            @php
+                            $telur = DB::table('telur_produk')->get();
+                            $ttlKg = 0;
+                            $ttlPcs = 0;
+                            @endphp
+                            @foreach ($telur as $t)
+                            @php
+                            $tgl = date('Y-m-d');
+                            $tglKemarin = Carbon\Carbon::yesterday()->format('Y-m-d');
 
-                                        $pcs = $stok->pcs ?? 0;
-                                        $pcsKemarin = $stokKemarin->pcs ?? 0;
+                            $stok = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang = '$d->id_kandang'
+                            AND a.tgl = '$tgl' AND a.id_telur = '$t->id_produk_telur'");
+                            $stokKemarin = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang =
+                            '$d->id_kandang'
+                            AND a.tgl = '$tglKemarin' AND a.id_telur = '$t->id_produk_telur'");
 
-                                        $ttlKg += $stok->kg ?? 0;
-                                        $ttlPcs += $stok->pcs ?? 0;
-                                        // dd($pcsKemarin - $pcs);
-                                        $kelasTelur =  $pcsKemarin - $pcs > 60 ? 'merah' : 'abu';
-                                    @endphp
+                            $pcs = $stok->pcs ?? 0;
+                            $pcsKemarin = $stokKemarin->pcs ?? 0;
 
-                                    <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                        nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur {{$kelasTelur}}"
-                                        data-bs-target="#tambah_telur">
-                                        {{ $stok->pcs ?? 0 }}
-                                    </td>
-                                @endforeach
-                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu        "
-                                    data-bs-target="#tambah_telur">{{ $ttlPcs }}</td>
-                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu        "
-                                    data-bs-target="#tambah_telur">{{ $ttlKg }}</td>
-                                {{-- end telur --}}
+                            $ttlKg += $stok->kg ?? 0;
+                            $ttlPcs += $stok->pcs ?? 0;
+                            // dd($pcsKemarin - $pcs);
+                            $kelasTelur = $pcsKemarin - $pcs > 60 ? 'merah' : 'abu';
+                            @endphp
 
-                                <td>150</td>
-                                <td>65</td>
-                                <td align="center">
-                                    <a href="" class="badge bg-primary"><i class="fas fa-check"></i></a>
-                                </td>
-                            </tr>
+                            <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur {{$kelasTelur}}"
+                                data-bs-target="#tambah_telur">
+                                {{ $stok->pcs ?? 0 }}
+                            </td>
+                            @endforeach
+                            <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu        "
+                                data-bs-target="#tambah_telur">{{ $ttlPcs }}</td>
+                            <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu        "
+                                data-bs-target="#tambah_telur">{{ $ttlKg }}</td>
+                            {{-- end telur --}}
+
+                            <td>150</td>
+                            <td>65</td>
+                            <td align="center">
+                                <a href="" class="badge bg-primary"><i class="fas fa-check"></i></a>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
 
@@ -338,10 +339,11 @@
 
         @include('dashboard_kandang.modal.tambah_kandang')
         @include('dashboard_kandang.modal.tambah_karung')
+        @include('dashboard_kandang.modal.history_opname')
     </x-slot>
     @section('js')
-        <script>
-            edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
+    <script>
+        edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
 
@@ -373,6 +375,28 @@
                 var ttlKg = parseFloat(pcs) - parseFloat(potongan)
                 $('.ttlKgPcs' + count).val(ttlKg);
             });
-        </script>
+            $(document).on("click", ".history_opname", function() {
+                $.ajax({
+                    type: "get",
+                    url: "/history_opname_mtd",
+                    success: function (data) {
+                        $('#history_opname').html(data)
+                        $('#history_opn').modal('show')
+                    }
+                });
+            });
+            $(document).on('submit', '#history_serach_opname_mtd', function(e) {
+                e.preventDefault();
+                var tgl1 = $(".tgl1").val();
+                var tgl2 = $(".tgl2").val();
+                $.ajax({
+                    type: "get",
+                    url: "/history_opname_mtd?tgl1=" + tgl1 + "&tgl2=" + tgl2,
+                    success: function (data) {
+                        $('#history_opname').html(data)
+                    }
+                });
+            });  
+    </script>
     @endsection
 </x-theme.app>
