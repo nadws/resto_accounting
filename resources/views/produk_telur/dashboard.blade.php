@@ -63,7 +63,8 @@
                             @php
                             $total_mtd = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg
                             FROM stok_telur as a
-                            where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '1'
+                            where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '1' and
+                            a.id_kandang != '0'
                             ");
                             @endphp
                             <th>{{number_format($total_mtd->pcs,0)}}</th>
@@ -76,7 +77,8 @@
                 </table>
                 @php
                 $cek = DB::selectOne("SELECT a.check FROM stok_telur as a
-                WHERE a.tgl = '$tanggal' and a.id_gudang = '1'
+                WHERE a.tgl = '$tanggal' and a.id_gudang = '1' and
+                a.id_kandang != '0'
                 group by a.tgl;");
                 @endphp
 
@@ -182,7 +184,19 @@
                                 </a>
                                 <a href="{{ route('penjualan_agrilaras') }}" {{$g->id_gudang_telur == '2' ? '' :
                                     'hidden' }}
-                                    class="badge bg-primary text-sm float-end"><i class="fas fa-plus"></i>
+                                    class="badge bg-primary text-sm float-end"><i class="fas fa-plus"
+                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Penjualan telur"></i>
+                                </a>
+                                <a href="{{ route('piutang_telur') }}" {{$g->id_gudang_telur == '2' ? '' :
+                                    'hidden' }}
+                                    class="badge bg-primary text-sm me-2 float-end" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Piutang telur"><i class="far fa-credit-card"></i></i>
+                                </a>
+                                <a href="{{ route('penyetoran_telur') }}" {{$g->id_gudang_telur == '2' ? '' :
+                                    'hidden' }}
+                                    class="badge bg-success text-sm me-2 float-end" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="penyetoran telur">
+                                    <i class="fas fa-money-bill-wave-alt"></i>
                                 </a>
                             </td>
                             @foreach ($produk as $p)

@@ -225,7 +225,7 @@ class NavbarController extends Controller
                 'img' => 'kandang.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-          
+
 
         ];
         $title = 'Kandang AGL';
@@ -240,24 +240,24 @@ class NavbarController extends Controller
                 'img' => 'egg.png',
                 'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
             ],
-            [
-                'judul' => 'Penjualan Telur',
-                'route' => 'penjualan_agrilaras',
-                'img' => 'online-shopping.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Piutang Telur',
-                'route' => 'piutang_telur',
-                'img' => 'online-payment.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-            [
-                'judul' => 'Penyetoran Telur',
-                'route' => 'penyetoran_telur',
-                'img' => 'exchange.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
+            // [
+            //     'judul' => 'Penjualan Telur',
+            //     'route' => 'penjualan_agrilaras',
+            //     'img' => 'online-shopping.png',
+            //     'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            // ],
+            // [
+            //     'judul' => 'Piutang Telur',
+            //     'route' => 'piutang_telur',
+            //     'img' => 'online-payment.png',
+            //     'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            // ],
+            // [
+            //     'judul' => 'Penyetoran Telur',
+            //     'route' => 'penyetoran_telur',
+            //     'img' => 'exchange.png',
+            //     'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
+            // ],
 
         ];
         $title = 'Penjualan';
