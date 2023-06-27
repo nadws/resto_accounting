@@ -32,6 +32,19 @@
 
 
 <script>
+    document.addEventListener(
+                "DOMContentLoaded",
+                function() {
+                    var tooltipTriggerList = [].slice.call(
+                        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                    );
+                    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+                        return new bootstrap.Tooltip(tooltipTriggerEl);
+                    });
+                },
+                false
+            );
+            
     $(document).on('click', '.akses_h', function() {
         var id_user = $(this).attr('id_user');
         if ($('.akses_h' + id_user).prop("checked") == true) {
