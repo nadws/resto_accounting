@@ -1,4 +1,4 @@
-<x-theme.modal size="modal-lg" title="History Opname" idModal="history_opn">
+<x-theme.modal size="modal-lg" btnSave='T' title="History Opname" idModal="history_opn">
     <div class="row">
         <div class="col-lg-12">
             <div id="history_opname"></div>

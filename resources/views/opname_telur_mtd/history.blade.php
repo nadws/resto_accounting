@@ -28,7 +28,7 @@
 </div>
 <br>
 <br>
-<table class="table table-bordered">
+<table class="table table-bordered" id="table_history">
     <thead>
         <tr>
             <th class="dhead" width="5">#</th>

@@ -380,8 +380,15 @@
                     type: "get",
                     url: "/history_opname_mtd",
                     success: function (data) {
-                        $('#history_opname').html(data)
-                        $('#history_opn').modal('show')
+                        $('#history_opname').html(data);
+                        $('#history_opn').modal('show');
+                        $('#table_history').DataTable({
+                            "paging": true,
+                            "pageLength": 10,
+                            "lengthChange": true,
+                            "stateSave": true,
+                            "searching": true,
+                        });
                     }
                 });
             });
@@ -393,7 +400,15 @@
                     type: "get",
                     url: "/history_opname_mtd?tgl1=" + tgl1 + "&tgl2=" + tgl2,
                     success: function (data) {
+                        
                         $('#history_opname').html(data)
+                        $('#table_history').DataTable({
+                            "paging": true,
+                            "pageLength": 10,
+                            "lengthChange": true,
+                            "stateSave": true,
+                            "searching": true,
+                        });
                     }
                 });
             });  
