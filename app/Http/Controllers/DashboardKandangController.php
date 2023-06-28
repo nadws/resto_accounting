@@ -343,7 +343,7 @@ class DashboardKandangController extends Controller
 
     public function penjualan_umum()
     {
-        
+
         $tgl1 = $this->tgl1;
         $tgl2 = $this->tgl2;
         $id_user = auth()->user()->id;
@@ -545,10 +545,10 @@ class DashboardKandangController extends Controller
         $id_produk = $urutan[count($urutan) - 1];
 
         $produk = DB::table('penjualan_agl as a')
-        ->join('tb_produk as b', 'a.id_produk', 'b.id_produk')
-        ->where('a.id_produk', $id_produk)
-        ->whereIn('a.urutan', $urutan)
-        ->get();
+            ->join('tb_produk as b', 'a.id_produk', 'b.id_produk')
+            ->where('a.id_produk', $id_produk)
+            ->whereIn('a.urutan', $urutan)
+            ->get();
         $data = [
             'title' => 'Detail Penjaulan Umum',
             'produk' => $produk
@@ -564,6 +564,6 @@ class DashboardKandangController extends Controller
             'kandang' => DB::table('kandang')->where('id_kandang', $id_kandang)->first(),
             'pakan' => DB::table('pakan')->get()
         ];
-        return view('dashboard_kandang.perencanaan.index',$data);
+        return view('dashboard_kandang.perencanaan.index', $data);
     }
 }

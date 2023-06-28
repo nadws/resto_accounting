@@ -13,33 +13,32 @@
             <section class="row">
                 <div class="col-lg-12">
                     <table class="table">
-                    <tr>
-                        <th width="20%" class="dhead">Tanggal</th>
-                        <th width="10%" class="dhead">No Nota</th>
-                        <th class="dhead">Customer</th>
-                        <th class="dhead">Tipe Penjualan</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="date" class="form-control tgl_nota" name="tgl"
-                                value="{{ date('Y-m-d') }}">
+                        <tr>
+                            <th width="20%" class="dhead">Tanggal</th>
+                            <th width="10%" class="dhead">No Nota</th>
+                            <th class="dhead">Customer</th>
+                            <th class="dhead">Tipe Penjualan</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="date" class="form-control tgl_nota" name="tgl" value="{{ date('Y-m-d') }}">
 
-                        </td>
-                        <td>
-                            <input type="text" class="form-control nota_bk" name="no_nota"
-                                value="T{{ $nota }}" readonly>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control" name="customer">
-                        </td>
-                        <td>
-                            <input type="hidden" name="tipe" value="kg">
-                            <input type="text" readonly value="Kg" class="form-control">
-                        </td>
-                    </tr>
-                </table>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control nota_bk" name="no_nota" value="T{{ $nota }}"
+                                    readonly>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="customer">
+                            </td>
+                            <td>
+                                <input type="hidden" name="tipe" value="kg">
+                                <input type="text" readonly value="Kg" class="form-control">
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-               
+
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
                 </div>
@@ -61,8 +60,8 @@
         </form>
     </x-slot>
     @section('scripts')
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
                 function loadkg() {
                     $.ajax({
@@ -426,10 +425,10 @@
 
 
             });
-        </script>
+    </script>
 
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 $(document).on("keyup", ".tipe_pcs", function() {
                     var count = $(this).attr("count");
                     var input = $(this).val();
@@ -674,10 +673,10 @@
                 });
 
             });
-        </script>
+    </script>
 
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                 $(document).on("keyup", ".debit", function() {
                     var count = $(this).attr("count");
                     var input = $(this).val();
@@ -851,6 +850,6 @@
 
                 });
             });
-        </script>
+    </script>
     @endsection
 </x-theme.app>
