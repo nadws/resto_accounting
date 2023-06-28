@@ -35,12 +35,11 @@
                 <input type="text" class="ikat1 form-control" name="ikat[]" value="0">
             </td>
             <td align="right">
-                <input type="text" class="kgminrak1 form-control" value="0">
+                <input type="text" class="kgminrakbiasa1 form-control" name="kg_jual[]" value="0">
             </td>
             <td align="right">
                 <input type="text" class="form-control rp_satuan rp_satuan1" count="1" style="text-align: right"
                     required>
-                <input type="hidden" class="kgminrakbiasa1 form-control" name="kg_jual[]" value="0">
 
                 <input type="hidden" class="form-control rp_satuanbiasa1" name="rp_satuan[]" value="0">
                 <input type="hidden" class="form-control ttl_rpbiasa ttl_rpbiasa1" name="total_rp[]" value="0">

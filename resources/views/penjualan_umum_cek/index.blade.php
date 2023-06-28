@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="11">
     <x-slot name="cardHeader">
         <div class="row">
             <div class="col-lg-6">
@@ -6,9 +6,8 @@
                 <p>Piutang Diceklis : Rp. <span class="piutangBayar">0</span></p>
             </div>
             <div class="col-lg-6">
-                <x-theme.button modal="T" icon="fa-plus" addClass="float-end btn_bayar" teks="Bayar" />
-                <x-theme.button modal="T" href="/produk_telur" icon="fa-long-arrow-alt-left" addClass="float-end"
-                    teks="Kembali ke dashboard" />
+                <x-theme.button modal="T" icon="fa-plus" addClass="float-end btn_bayar" teks="Setor" />
+                <x-theme.button modal="T" href="/produk_telur" icon="fa-home" addClass="float-end" teks="" />
             </div>
         </div>
 
@@ -33,6 +32,7 @@
                         <th width="20%" class="text-center">Total Produk</th>
                         <th class="text-end">Total Rp</th>
                         <th width="20%" class="text-center">Cek</th>
+                        <th class="text-center">Diterima</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -45,6 +45,7 @@
                         <td>{{ $d->nm_customer }}</td>
                         <td align="center">{{ $d->ttl_produk }}</td>
                         <td align="right">Rp. {{ number_format($d->total, 2) }}</td>
+
                         <td align="center">
                             @if ($d->cek == 'Y')
                             <i class="fas fa-check text-success"></i>
@@ -53,6 +54,7 @@
                                 class="cek_bayar">
                             @endif
                         </td>
+                        <td align="center">{{ $d->admin_cek }}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <span class="btn btn-sm" data-bs-toggle="dropdown">

@@ -30,17 +30,17 @@
             @csrf
 
             <section class="row">
-                <div class="col-lg-2 col-6">
+                {{-- <div class="col-lg-2 col-6">
                     <label for="">Tanggal</label>
                     <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
                 </div>
                 <div class="col-lg-2 col-6">
                     <label for="">No Nota</label>
-                    <input type="text" class="form-control nota_bk" name="no_nota" value="PET-{{$nota}}" readonly>
+                    <input type="text" class="form-control nota_bk" name="no_nota" value="PE-{{$nota}}" readonly>
                 </div>
                 <div class="col-lg-12">
                     <hr style="border: 1px solid black">
-                </div>
+                </div> --}}
                 <div class="col-lg-12">
                     <table class="table table-striped table-bordered">
                         <thead>
@@ -100,6 +100,35 @@
 
 
             </section>
+            <div class="row">
+                <div class="col-lg-3">
+                    <label for="">Tanggal</label>
+                    <input type="date" class="form-control" name="tgl" value="{{date('Y-m-d')}}">
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Pilih Akun Debit</label>
+                    <Select class="select2_add" name="id_akun">
+                        <option value="">-Pilih Akun-</option>
+                        @foreach ($akun as $a)
+                        <option value="{{$a->id_akun}}">{{$a->nm_akun}}</option>
+                        @endforeach
+                    </Select>
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Keterangan</label>
+                    <input type="text" class="form-control" name="ket" value="PE-{{$nota}}">
+                    <input type="hidden" name="no_nota" value="PE-{{$nota}}">
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Total Setor</label>
+                    <input type="text" class="form-control " style="text-align: right"
+                        value="Rp {{number_format($total,0,',','.')}}" readonly>
+
+                    <input type="hidden" value="{{$total}}" name="total_setor">
+                    <input type="hidden" value="3" name="id_akun_kredit">
+                    <input type="hidden" value="PE-{{$nota}}" name="no_nota">
+                </div>
+            </div>
     </x-slot>
     <x-slot name="cardFooter">
         <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>

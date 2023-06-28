@@ -131,8 +131,10 @@
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Debit</label>
-                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right">
-                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1" value="0">
+                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right"
+                                value="Rp {{number_format($total,0,',','.')}}">
+                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1"
+                                value="{{$total}}">
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Kredit</label>
@@ -157,10 +159,10 @@
                             <h6>Total Pembayaran</h6>
                         </div>
                         <div class="col-lg-3">
-                            <h6 class="total_debit float-end">Rp 0</h6>
+                            <h6 class="total_debit float-end">Rp {{number_format($total,2,',','.')}}</h6>
                         </div>
                         <div class="col-lg-4">
-                            <h6 class="total_kredit float-end">Rp {{number_format($total,0)}} </h6>
+                            <h6 class="total_kredit float-end">Rp {{number_format($total,2,',','.')}} </h6>
                         </div>
                         <div class="col-lg-5">
                             <h6 class="cselisih">Selisih</h6>
@@ -178,7 +180,7 @@
             </section>
     </x-slot>
     <x-slot name="cardFooter">
-        <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
         <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...
