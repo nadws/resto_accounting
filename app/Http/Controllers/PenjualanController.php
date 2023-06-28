@@ -118,7 +118,7 @@ class PenjualanController extends Controller
 
     public function save_penjualan_telur(Request $r)
     {
-        $max = DB::table('invoice_telur')->latest('urutan')->first();
+        $max = DB::table('invoice_telur')->latest('urutan')->where('lokasi', 'alpa')->first();
 
         if (empty($max) || $max->urutan == '0') {
             $nota_t = '1001';

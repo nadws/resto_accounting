@@ -82,7 +82,7 @@
                             <input type="hidden" name="id_jurnal[]" value="{{$invoice->id_jurnal}}">
                             <input type="hidden" name="no_nota_jurnal[]" value="{{$invoice->no_nota}}">
                             <input type="hidden" name="nominal[]" value="{{$invoice->debit}}">
-                            <input type="hidden" name="id_akun[]" value="{{$invoice->id_akun}}">
+                            <input type="hidden" name="id_akun_pem[]" value="{{$invoice->id_akun}}">
 
                             @endforeach
 

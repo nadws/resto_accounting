@@ -167,7 +167,7 @@ class Produk_telurController extends Controller
 
             $data = [
                 'tgl' => $r->tgl[$x],
-                'no_nota' => 'PMTD-' . $nota_t,
+                'no_nota' => $r->no_nota[$x],
                 'id_akun' => '517',
                 'id_buku' => '6',
                 'ket' => 'Penjualan telur ' . $r->no_nota[$x],
@@ -179,17 +179,13 @@ class Produk_telurController extends Controller
             ];
             DB::table('jurnal')->insert($data);
 
-            DB::table('invoice_telur')->where('no_nota', $r->no_nota[$x])->update(['cek' => 'Y', 'admin_cek' => Auth::user()->name]);
-        }
-
-        for ($x = 0; $x < count($r->id_akun); $x++) {
             $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $r->id_akun[$x])->first();
             $akun = DB::table('akun')->where('id_akun', $r->id_akun[$x])->first();
 
             $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
             $data = [
                 'tgl' => $r->tgl[$x],
-                'no_nota' => 'PMTD-' . $nota_t,
+                'no_nota' => $r->no_nota[$x],
                 'id_akun' => $r->id_akun[$x],
                 'id_buku' => '6',
                 'ket' => 'Penjualan telur di martadah',
@@ -200,7 +196,26 @@ class Produk_telurController extends Controller
                 'urutan' => $urutan,
             ];
             DB::table('jurnal')->insert($data);
+
+            $data = [
+                'tgl' => $r->tgl[$x],
+                'no_nota' => $r->no_nota[$x],
+                'debit' => 0,
+                'kredit' => $r->pembayaran[$x],
+            ];
+            DB::table('bayar_telur')->insert($data);
+            $data = [
+                'tgl' => $r->tgl[$x],
+                'no_nota' => $r->no_nota[$x],
+                'debit' => $r->pembayaran[$x],
+                'kredit' => 0,
+                'no_nota_piutang' => $r->no_nota[$x]
+            ];
+            DB::table('bayar_telur')->insert($data);
+
+            DB::table('invoice_telur')->where('no_nota', $r->no_nota[$x])->update(['cek' => 'Y', 'admin_cek' => Auth::user()->name]);
         }
+
 
         return redirect()->route('penjualan_martadah_cek')->with('sukses', 'Data berhasil ditambahkan');
     }
