@@ -308,8 +308,12 @@
                                     data-bs-target="#tambah_telur">{{ $ttlKg }}</td>
                                 {{-- end telur --}}
 
-                                <td>150</td>
-                                <td>65</td>
+                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                     class="tambah_perencanaan"
+                                    data-bs-target="#tambah_perencanaan">150</td>
+                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                     class="tambah_perencanaan"
+                                    data-bs-target="#tambah_perencanaan">65</td>
                                 <td align="center">
                                     <a href="" class="badge bg-primary"><i class="fas fa-check"></i></a>
                                 </td>
@@ -319,6 +323,8 @@
 
                 </table>
             </div>
+
+            @include('dashboard_kandang.stok.index')
         </section>
 
         {{-- tambah telur --}}
@@ -340,6 +346,15 @@
         </form>
         {{-- end tambah populasi --}}
 
+        {{-- tambah perencanaan --}}
+        <form action="{{ route('dashboard_kandang.tambah_perencanaan') }}" method="post">
+            @csrf
+            <x-theme.modal title="Tambah Perencanaan" size="modal-lg" idModal="tambah_perencanaan">
+                <div id="load_perencanaan"></div>
+            </x-theme.modal>
+        </form>
+        {{-- end tambah perencanaan --}}
+
 
         {{-- tambah detail nota --}}
         <x-theme.modal title="Detail Nota Penjualan Umum" btnSave="" size="modal-lg" idModal="detail_nota">
@@ -352,11 +367,14 @@
         @include('dashboard_kandang.modal.tambah_kandang')
         @include('dashboard_kandang.modal.tambah_karung')
         @include('dashboard_kandang.modal.history_opname')
+
+        
     </x-slot>
     @section('js')
         <script>
             edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
+            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
 
             modalSelect2()

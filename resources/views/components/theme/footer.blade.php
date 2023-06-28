@@ -421,6 +421,21 @@
             });
         })
     }
+    function editPerencanaan(kelas, attr, link, load) {
+        $(document).on('click', `.${kelas}`, function() {
+            var id = $(this).attr(`${attr}`)
+            $.ajax({
+                type: "GET",
+                url: `${link}/${id}`,
+                success: function(r) {
+                    $(`#${load}`).html(r);
+                    $('.select2-edit').select2({
+                        dropdownParent: $(`#${kelas} .modal-content`)
+                    });
+                }
+            });
+        })
+    }
 
     function inputChecked(allId, itemClass) {
         $(document).on('click', '#' + allId, function() {

@@ -555,4 +555,15 @@ class DashboardKandangController extends Controller
         ];
         return view('dashboard_kandang.penjualan_umum.detail', $data);
     }
+
+    public function load_perencanaan($id_kandang)
+    {
+        $data = [
+            'title' => 'Perencanaan',
+            'id_kandang' => $id_kandang,
+            'kandang' => DB::table('kandang')->where('id_kandang', $id_kandang)->first(),
+            'pakan' => DB::table('pakan')->get()
+        ];
+        return view('dashboard_kandang.perencanaan.index',$data);
+    }
 }
