@@ -102,9 +102,11 @@
                     <tr>
                         <td align="left">
                             Penjualan Martadah
-                            <a href="{{ route('dashboard_kandang.add_penjualan_telur') }}"
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Penjualan Martadah"
+                                href="{{ route('dashboard_kandang.add_penjualan_telur') }}"
                                 class="badge bg-primary text-sm"><i class="fas fa-plus"></i></a>
-                            <a href="{{ route('dashboard_kandang.penjualan_telur', ['id_gudang' => 1]) }}"
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="History Penjualan Martadah"
+                                href="{{ route('dashboard_kandang.penjualan_telur', ['id_gudang' => 1]) }}"
                                 class="badge bg-primary text-sm"><i class="fas fa-history"></i>
                             </a>
                         </td>
@@ -122,9 +124,11 @@
                     <tr>
                         <td align="left">
                             Transfer Alpa
-                            <a href="{{ route('dashboard_kandang.add_transfer_stok', ['id_gudang' => 1]) }}"
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Transfer Alpa"
+                                href="{{ route('dashboard_kandang.add_transfer_stok', ['id_gudang' => 1]) }}"
                                 class="badge bg-primary text-sm"><i class="fas fa-plus"></i></a>
-                            <a href="{{ route('dashboard_kandang.transfer_stok', ['id_gudang' => 1]) }}"
+                            <a data-bs-toggle="tooltip" data-bs-placement="top" title="History Transfer Alpa"
+                                href="{{ route('dashboard_kandang.transfer_stok', ['id_gudang' => 1]) }}"
                                 class="badge bg-primary text-sm"><i class="fas fa-history"></i>
                             </a>
                         </td>
@@ -156,11 +160,14 @@
             <div class="col-lg-4">
                 <h6>
                     Penjualan Umum
-                    <a href="{{ route('dashboard_kandang.add_penjualan_umum') }}" class="badge bg-primary text-sm"><i
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Tambah Penjualan Umum"
+                        href="{{ route('dashboard_kandang.add_penjualan_umum') }}" class="badge bg-primary text-sm"><i
                             class="fas fa-plus"></i></a>
-                    <a href="{{ route('dashboard_kandang.penjualan_umum') }}" class="badge bg-primary text-sm"><i
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="History Penjualan Umum"
+                        href="{{ route('dashboard_kandang.penjualan_umum') }}" class="badge bg-primary text-sm"><i
                             class="fas fa-history"></i></a>
-                    <a href="{{ route('barang_dagangan.index') }}" class="badge bg-primary text-sm"><i
+                    <a data-bs-toggle="tooltip" data-bs-placement="top" title="Data Produk"
+                        href="{{ route('barang_dagangan.index') }}" class="badge bg-primary text-sm"><i
                             class="fas fa-list"></i> Produk</a>
                 </h6>
                 <table class="table table-bordered table-hover" id="">
@@ -176,17 +183,23 @@
                         @foreach ($produk as $d)
                             @php
                                 $datas = DB::selectOne("SELECT GROUP_CONCAT(CONCAT(urutan)) as urutan,count(*) as ttl,
-                        sum(total_rp) as ttl_rp FROM penjualan_agl
-                        WHERE id_produk = '$d->id_produk' AND cek = 'T' AND lokasi = 'mtd' GROUP BY id_produk");
-                                
-                                $urutan = implode(', ', explode(',', $datas->urutan));
+                                    sum(total_rp) as ttl_rp FROM penjualan_agl
+                                    WHERE id_produk = '$d->id_produk' AND cek = 'T' AND lokasi = 'mtd' GROUP BY id_produk");
+                                if (!empty($datas)) {
+                                    $urutan = implode(', ', explode(',', $datas->urutan));
+                                }
                             @endphp
+
                             <tr>
                                 <td>{{ $d->nm_produk }}</td>
                                 <td>Rp. {{ !empty($datas) ? number_format($datas->ttl_rp, 0) ?? 0 : 0 }}</td>
-                                <td data-bs-toggle="modal" data-bs-target="#detail_nota"
-                                    class="detail_nota text-primary cursor-pointer"
-                                    urutan="{{ $urutan }}, {{ $d->id_produk }}">{{ $urutan }}</td>
+                                @if (!empty($datas))
+                                    <td data-bs-toggle="modal" data-bs-target="#detail_nota"
+                                        class="detail_nota text-primary cursor-pointer"
+                                        urutan="{{ $urutan }}, {{ $d->id_produk }}">{{ $urutan }}</td>
+                                @else
+                                    <td>0</td>
+                                @endif
                                 <td>{{ !empty($datas) ? $datas->ttl ?? 0 : 0 }}</td>
                             </tr>
                         @endforeach
@@ -195,15 +208,13 @@
             </div>
             <div class="col-lg-8">
 
-                <h6>Input Kandang Harian</h6>
+                <h6>Input Kandang Harian ~ {{ tanggal(date('Y-m-d')) }}</h6>
                 <table class="table table-bordered table-hover " id="">
                     <thead>
                         <tr>
-                            <th rowspan="2" width="7%" class="text-center dhead">Tanggal</th>
                             <th rowspan="2" width="1%" class="text-center dhead">Kdg</th>
                             <th colspan="3" class="text-center  putih">Populasi</th>
-                            <th colspan="7" class="text-center abu" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="tes"> Telur</th>
+                            <th colspan="7" class="text-center abu"> Telur </th>
                             <th colspan="2" class="text-center putih">pakan</th>
                             <th width="2%" class="text-center dhead" rowspan="2">Aksi</th>
                         </tr>
@@ -227,7 +238,6 @@
                     <tbody class="text-center">
                         @foreach ($kandang as $no => $d)
                             <tr>
-                                <td>{{ tanggal(date('Y-m-d')) }}</td>
                                 <td align="center" data-bs-toggle="modal" data-bs-target="#tambah_kandang">
                                     {{ $d->nm_kandang }}</td>
                                 @php
@@ -244,14 +254,13 @@
 
                                 @php
                                     $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
-                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
-                            WHERE a.id_kandang = '$d->id_kandang';");
+                                        LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
+                                        WHERE a.id_kandang = '$d->id_kandang';");
                                 @endphp
 
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
                                     nm_kandang="{{ $d->nm_kandang }}" class="tambah_populasi putih"
                                     data-bs-target="#tambah_populasi">{{ $pop->stok_awal - $pop->pop }}</td>
-
 
                                 {{-- mati dan jual --}}
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
@@ -271,10 +280,10 @@
                                         $tglKemarin = Carbon\Carbon::yesterday()->format('Y-m-d');
                                         
                                         $stok = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang = '$d->id_kandang'
-                            AND a.tgl = '$tgl' AND a.id_telur = '$t->id_produk_telur'");
+                                            AND a.tgl = '$tgl' AND a.id_telur = '$t->id_produk_telur'");
                                         $stokKemarin = DB::selectOne("SELECT * FROM stok_telur as a WHERE a.id_kandang =
-                            '$d->id_kandang'
-                            AND a.tgl = '$tglKemarin' AND a.id_telur = '$t->id_produk_telur'");
+                                            '$d->id_kandang'
+                                            AND a.tgl = '$tglKemarin' AND a.id_telur = '$t->id_produk_telur'");
                                         
                                         $pcs = $stok->pcs ?? 0;
                                         $pcsKemarin = $stokKemarin->pcs ?? 0;
@@ -299,8 +308,12 @@
                                     data-bs-target="#tambah_telur">{{ $ttlKg }}</td>
                                 {{-- end telur --}}
 
-                                <td>150</td>
-                                <td>65</td>
+                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                     class="tambah_perencanaan"
+                                    data-bs-target="#tambah_perencanaan">150</td>
+                                <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
+                                     class="tambah_perencanaan"
+                                    data-bs-target="#tambah_perencanaan">65</td>
                                 <td align="center">
                                     <a href="" class="badge bg-primary"><i class="fas fa-check"></i></a>
                                 </td>
@@ -310,6 +323,8 @@
 
                 </table>
             </div>
+
+            @include('dashboard_kandang.stok.index')
         </section>
 
         {{-- tambah telur --}}
@@ -331,6 +346,15 @@
         </form>
         {{-- end tambah populasi --}}
 
+        {{-- tambah perencanaan --}}
+        <form action="{{ route('dashboard_kandang.tambah_perencanaan') }}" method="post">
+            @csrf
+            <x-theme.modal title="Tambah Perencanaan" size="modal-lg" idModal="tambah_perencanaan">
+                <div id="load_perencanaan"></div>
+            </x-theme.modal>
+        </form>
+        {{-- end tambah perencanaan --}}
+
 
         {{-- tambah detail nota --}}
         <x-theme.modal title="Detail Nota Penjualan Umum" btnSave="" size="modal-lg" idModal="detail_nota">
@@ -343,12 +367,14 @@
         @include('dashboard_kandang.modal.tambah_kandang')
         @include('dashboard_kandang.modal.tambah_karung')
         @include('dashboard_kandang.modal.history_opname')
+
+        
     </x-slot>
     @section('js')
         <script>
-            
             edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
+            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
 
             modalSelect2()

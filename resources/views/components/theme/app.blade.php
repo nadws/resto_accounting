@@ -46,8 +46,8 @@
                                     </div>
                                     @if (Schema::hasTable('route_agl'))
                                         <div class="col-lg-6">
-                                            <x-theme.button modal="T" href="{{ route('dashboard_kandang.index') }}"
-                                                icon="fa-arrow-left" addClass="float-end" teks="Kembali Ke Dashboard" />
+                                            <x-theme.btn_dashboard route="dashboard_kandang.index" />
+
                                         </div>
                                     @endif
                                 </div>

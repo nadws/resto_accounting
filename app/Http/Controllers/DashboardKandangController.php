@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gudang;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardKandangController extends Controller
 {
-    protected $tgl1, $tgl2, $period, $produk;
+    protected $tgl1, $tgl2, $period, $produk, $gudang;
     public function __construct(Request $r)
     {
         $this->produk = Produk::with('satuan')->where([['kontrol_stok', 'Y'], ['kategori_id', 3]])->get();
+        $this->gudang = Gudang::where('kategori_id', 3)->get();
         if (empty($r->period)) {
             $this->tgl1 = date('Y-m-01');
             $this->tgl2 = date('Y-m-t');
@@ -341,12 +343,14 @@ class DashboardKandangController extends Controller
 
     public function penjualan_umum()
     {
+        
         $tgl1 = $this->tgl1;
         $tgl2 = $this->tgl2;
         $id_user = auth()->user()->id;
         $penjualan = DB::select("SELECT *, sum(a.total_rp) as total, count(*) as ttl_produk  FROM `penjualan_agl` as a
         WHERE a.tgl BETWEEN '$tgl1' AND '$tgl2'
-        GROUP BY a.urutan");
+        GROUP BY a.urutan
+        ORDER BY a.id_penjualan DESC");
         $data = [
             'title' => 'Penjualan Umum',
             'penjualan' => $penjualan,
@@ -358,12 +362,16 @@ class DashboardKandangController extends Controller
 
     public function add_penjualan_umum()
     {
+        $kd_produk = Produk::latest('kd_produk')->first();
         $nota = buatNota('penjualan_agl', 'urutan');
         $data = [
             'title' => 'Tambah Penjualan Umum',
             'customer' => DB::table('customer')->get(),
             'produk' => $this->produk,
-            'no_nota' => $nota
+            'no_nota' => $nota,
+            'kd_produk' => empty($kd_produk) ? 1 : $kd_produk->kd_produk + 1,
+            'satuan' => DB::table('tb_satuan')->get(),
+            'gudang' => $this->gudang,
         ];
         return view('dashboard_kandang.penjualan_umum.add', $data);
     }
@@ -405,7 +413,7 @@ class DashboardKandangController extends Controller
                 'urutan' => $r->no_nota,
                 'nota_manual' => $r->nota_manual,
                 'tgl' => $r->tgl,
-                'kode' => 'PAGL',
+                'kode' => 'PUM',
                 'id_customer' => $r->id_customer,
                 'driver' => '',
                 'id_produk' => $r->id_produk[$i],
@@ -435,7 +443,7 @@ class DashboardKandangController extends Controller
                 'debit' => 0,
                 'kredit' => $r->qty[$i],
                 'rp_satuan' => 0,
-                'ket' => 'PAGL-' . $r->no_nota,
+                'ket' => 'PUM-' . $r->no_nota,
                 'gudang_id' => $getProduk->gudang_id,
                 'kategori_id' => 3,
                 'departemen_id' => 1,
@@ -467,7 +475,7 @@ class DashboardKandangController extends Controller
 
     public function update_penjualan(Request $r)
     {
-        DB::table('tb_stok_produk')->where('no_nota', 'PAGL-' . $r->no_nota)->delete();
+        DB::table('tb_stok_produk')->where('no_nota', 'PUM-' . $r->no_nota)->delete();
         DB::table('penjualan_agl')->where('urutan', $r->no_nota)->delete();
 
         for ($i = 0; $i < count($r->id_produk); $i++) {
@@ -475,7 +483,6 @@ class DashboardKandangController extends Controller
                 'urutan' => $r->no_nota,
                 'nota_manual' => $r->nota_manual,
                 'tgl' => $r->tgl,
-                'kode' => 'PAGL',
                 'id_customer' => $r->id_customer,
                 'driver' => '',
                 'id_produk' => $r->id_produk[$i],
@@ -504,7 +511,7 @@ class DashboardKandangController extends Controller
                 'debit' => 0,
                 'kredit' => $r->qty[$i],
                 'rp_satuan' => 0,
-                'ket' => 'PAGL-' . $r->no_nota,
+                'ket' => 'PUM-' . $r->no_nota,
                 'gudang_id' => $getProduk->gudang_id,
                 'kategori_id' => 3,
                 'departemen_id' => 1,
@@ -547,5 +554,16 @@ class DashboardKandangController extends Controller
             'produk' => $produk
         ];
         return view('dashboard_kandang.penjualan_umum.detail', $data);
+    }
+
+    public function load_perencanaan($id_kandang)
+    {
+        $data = [
+            'title' => 'Perencanaan',
+            'id_kandang' => $id_kandang,
+            'kandang' => DB::table('kandang')->where('id_kandang', $id_kandang)->first(),
+            'pakan' => DB::table('pakan')->get()
+        ];
+        return view('dashboard_kandang.perencanaan.index',$data);
     }
 }

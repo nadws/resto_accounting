@@ -3,7 +3,7 @@
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <hr class="mt-3">
-            
+
             <div class="col-lg-6">
                 <h6 class="float-start mt-1">{{ $title }}
                 </h6>
@@ -13,8 +13,7 @@
                 <select name="example" class="form-control float-end select-gudang" id="select2">
                     <option value="" selected>All Warehouse </option>
                     @foreach ($gudang as $g)
-                        <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }}
-                            value="{{ $g->id_gudang }}">
+                        <option {{ Request::segment(2) == $g->id_gudang ? 'selected' : '' }} value="{{ $g->id_gudang }}">
                             {{ ucwords($g->nm_gudang) }}</option>
                     @endforeach
                 </select>
@@ -112,6 +111,11 @@
             </table>
         </section>
 
+
+
+        {{-- tambah produk --}}
+        @include('persediaan_barang.barang_dagangan.tambah_produk')
+        {{-- ------ --}}
         {{-- gudang create --}}
         <form action="{{ route('gudang.create') }}" method="post">
             @csrf
@@ -134,7 +138,6 @@
                                 <option value="2">Bahan Baku</option>
                                 <option value="3">Barang Dagangan</option>
                             </select>
-
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -147,66 +150,6 @@
             </x-theme.modal>
         </form>
         {{-- ------ --}}
-
-        {{-- tambah produk --}}
-        <form action="{{ route('barang_dagangan.create') }}" method="post" enctype="multipart/form-data">
-            @csrf
-            <x-theme.modal size="modal-lg" title="Tambah Baru" idModal="tambah">
-                <input type="hidden" name="url" value="{{ request()->route()->getName() }}">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="">Image <span class="text-warning text-xs">Ukuran harus dibawah
-                                    1MB</span></label>
-                            <input type="file" class="form-control" id="image" name="img"
-                                accept="image/*">
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div id="image-preview"></div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="form-group">
-                            <label for="">Nama Produk</label>
-                            <input required type="text" name="nm_produk" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Kode Produk</label>
-                            <input type="hidden" name="kd_produk" value="{{ $kd_produk }}">
-                            <input required value="P-{{ kode($kd_produk) }}" readonly type="text"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Satuan</label>
-                            <select required name="satuan_id" class="form-control select2" id="">
-                                <option value="">- Pilih Satuan -</option>
-                                @foreach ($satuan as $d)
-                                    <option value="{{ $d->id_satuan }}">{{ $d->nm_satuan }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-lg-12 mb-2">
-                        <div class="form-group">
-                            <label for="">Gudang</label>
-                            <select required name="gudang_id" class="form-control select2" id="">
-                                <option value="">- Pilih Gudang -</option>
-                                @foreach ($gudang as $d)
-                                    <option value="{{ $d->id_gudang }}">{{ $d->nm_gudang }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <x-theme.toggle name="kontrol stok" />
-                </div>
-            </x-theme.modal>
-        </form>
-        {{-- ------ --}}
-
         {{-- edit produk --}}
         <form action="{{ route('barang_dagangan.edit') }}" method="post" enctype="multipart/form-data">
             @csrf
@@ -228,6 +171,12 @@
                     var gudang_id = $(this).val()
                     document.location.href = `/barang_dagangan/${gudang_id}`
                 });
+
+                $(document).on('change', '.tambah-gudang-select', function() {
+                    if ($(this).val() == 'tambah') {
+                        $("#tambah2").modal('show')
+                    }
+                })
 
                 // edit
                 edit('edit', 'id_produk', 'produk/edit', 'load-edit')

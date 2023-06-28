@@ -2,7 +2,7 @@
     <thead>
         <tr>
             <th class="dhead" width="2%">#</th>
-            <th class="dhead" width="15%">Produk</th>
+            <th class="dhead" width="15%">Produk </th>
             <th class="dhead" width="10%" style="text-align: right">Pcs</th>
             <th class="dhead" width="10%" style="text-align: right">Kg</th>
             <th class="dhead" width="10%" style="text-align: right">Ikat</th>
