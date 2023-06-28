@@ -57,7 +57,8 @@
                             @endphp
                             @foreach ($nota as $no => $n)
                             @php
-                            $hutang = DB::selectOne("SELECT a.tgl, a.no_nota, b.nm_customer, sum(a.total_rp) as ttl_rp,
+                            $hutang = DB::selectOne("SELECT a.tgl, a.no_nota, a.customer, b.nm_customer, sum(a.total_rp)
+                            as ttl_rp,
                             a.tipe, a.admin,a.urutan_customer
                             FROM invoice_telur as a
                             left join customer as b on b.id_customer = a.id_customer
@@ -76,7 +77,7 @@
                                         class="form-control bayar_biasa bayar_biasa{{$no+1}}" style="text-align: right"
                                         value="{{$hutang->ttl_rp}}">
                                 </td>
-                                <td>{{$hutang->nm_customer}}{{$hutang->urutan_customer}}</td>
+                                <td>{{$hutang->customer}}</td>
                                 <td align="right">
                                     Rp {{number_format($hutang->ttl_rp,0)}}
 
@@ -118,8 +119,10 @@
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Debit</label>
-                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right">
-                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1" value="0">
+                            <input type="text" class="form-control debit debit1" count="1" style="text-align: right"
+                                value="Rp {{number_format($total,2,',','.')}}">
+                            <input type="hidden" name="debit[]" class="form-control debit_biasa debit_biasa1"
+                                value="{{$total}}">
                         </div>
                         <div class="col-lg-3 mt-2">
                             <label for="">Kredit</label>
@@ -127,14 +130,14 @@
                             <input type="hidden" name="kredit[]" class="form-control kredit_biasa kredit_biasa1"
                                 value="0">
                         </div>
-                        <div class="col-lg-1 mt-2">
+                        {{-- <div class="col-lg-1 mt-2">
                             <label for="">aksi</label> <br>
                             <button type="button" class="btn rounded-pill tbh_pembayaran" count="1">
                                 <i class="fas fa-plus text-success"></i>
                             </button>
                         </div>
                     </div>
-                    <div id="load_pembayaran"></div>
+                    <div id="load_pembayaran"></div> --}}
 
                     <div class="row">
                         <div class="col-lg-12">
@@ -144,7 +147,7 @@
                             <h6>Total Setor</h6>
                         </div>
                         <div class="col-lg-3">
-                            <h6 class="total_debit float-end">Rp 0</h6>
+                            <h6 class="total_debit float-end">Rp {{number_format($total,0)}}</h6>
                         </div>
                         <div class="col-lg-4">
                             <h6 class="total_kredit float-end">Rp {{number_format($total,0)}} </h6>
@@ -165,7 +168,7 @@
             </section>
     </x-slot>
     <x-slot name="cardFooter">
-        <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        <button type="submit" class="float-end btn btn-primary button-save">Simpan</button>
         <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...

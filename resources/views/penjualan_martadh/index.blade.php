@@ -39,7 +39,7 @@
                         <td>{{$no+1}}</td>
                         <td>{{tanggal($i->tgl)}}</td>
                         <td>{{$i->no_nota}}</td>
-                        <td>{{$i->nm_customer}}{{$i->urutan_customer}}</td>
+                        <td>{{$i->customer}}</td>
                         <td align="right">Rp {{number_format($i->ttl_rp,0)}}</td>
                         <td align="center">
                             @if ($i->cek == 'Y')

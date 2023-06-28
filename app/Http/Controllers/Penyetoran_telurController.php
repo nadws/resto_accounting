@@ -98,7 +98,7 @@ class Penyetoran_telurController extends Controller
                 'no_nota_jurnal' => $r->no_nota_jurnal[$x],
                 'nominal' => $r->nominal[$x],
                 'urutan' => $nota_t,
-                'id_akun' => $r->id_akun[$x]
+                'id_akun' => $r->id_akun_pem[$x]
             ];
             DB::table('setoran_telur')->insert($data);
 
@@ -246,10 +246,12 @@ class Penyetoran_telurController extends Controller
         $invoice = DB::table('setoran_telur')->where('nota_setor', $r->no_nota)->get();
         foreach ($invoice as $i) {
             $data = [
-                'setor' => 'T'
+                'setor' => 'T',
+                'nota_setor' => ''
             ];
             DB::table('jurnal')->where('id_jurnal', $i->id_jurnal)->update($data);
         }
+        DB::table('jurnal')->where('no_nota', $r->no_nota)->delete();
         DB::table('setoran_telur')->where('nota_setor', $r->no_nota)->delete();
 
         return redirect()->route('penyetoran_telur')->with('sukses', 'Data berhasil dihapus');
@@ -273,7 +275,9 @@ class Penyetoran_telurController extends Controller
             left join akun as b on b.id_akun = a.id_akun
             where a.tgl between '$tgl1' and '$tgl2'
             group by a.nota_setor
-            ")
+            "),
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
         ];
         return view('penyetoran.history_perencanaan', $data);
     }

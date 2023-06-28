@@ -204,10 +204,11 @@ class DashboardKandangController extends Controller
     {
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
-        $transfer = DB::table('stok_telur as a')
-            ->join('telur_produk as c', 'a.id_telur', 'c.id_produk_telur')
-            ->where('a.jenis', 'penjualan')
-            ->get();
+        $transfer = DB::select("SELECT a.tgl, a.no_nota, a.customer,  b.nm_telur,  sum(a.total_rp) as ttl_rp , a.admin, a.admin_cek
+        FROM invoice_telur as a 
+        left join telur_produk as b on b.id_produk_telur = a.id_produk
+        WHERE a.lokasi = 'mtd' and a.tgl between '$tgl1' and '$tgl2'
+        GROUP by a.no_nota;");
 
         $data = [
             'title' => 'Penjualan Telur',
@@ -251,7 +252,7 @@ class DashboardKandangController extends Controller
 
     public function save_penjualan_telur(Request $r)
     {
-        $max = DB::table('invoice_telur')->latest('urutan')->first();
+        $max = DB::table('invoice_telur')->latest('urutan')->where('lokasi', 'mtd')->first();
 
         if (empty($max)) {
             $nota_t = '1000';
@@ -271,9 +272,9 @@ class DashboardKandangController extends Controller
             if ($r->tipe == 'kg') {
                 $data = [
                     'tgl' => $r->tgl,
-                    'id_customer' => $r->customer,
+                    'customer' => $r->customer,
                     'tipe' => $r->tipe,
-                    'no_nota' => 'T' . $nota_t,
+                    'no_nota' => 'TM' . $nota_t,
                     'id_produk' => $r->id_produk[$x],
                     'pcs' => $r->pcs[$x],
                     'kg' => $r->kg[$x],
@@ -291,9 +292,9 @@ class DashboardKandangController extends Controller
             } else {
                 $data = [
                     'tgl' => $r->tgl,
-                    'id_customer' => $r->customer,
+                    'customer' => $r->customer,
                     'tipe' => $r->tipe,
-                    'no_nota' => 'T' . $nota_t,
+                    'no_nota' => 'TM' . $nota_t,
                     'id_produk' => $r->id_produk[$x],
                     'pcs' => $r->pcs[$x],
                     'kg' => $r->kg[$x],
@@ -318,9 +319,10 @@ class DashboardKandangController extends Controller
                 'kg' => 0,
                 'admin' => auth()->user()->name,
                 'id_gudang' => 1,
-                'nota_transfer' => 'T' . $nota_t,
+                'nota_transfer' => 'TM' . $nota_t,
                 'ket' => '',
-                'jenis' => 'penjualan'
+                'jenis' => 'penjualan',
+                'check' => 'Y'
             ]);
         }
 
@@ -572,6 +574,6 @@ class DashboardKandangController extends Controller
             'title' => 'Perencanaan',
             'pakan' => DB::table('pakan')->get()
         ];
-        return view('dashboard_kandang.perencanaan.load_pakan_perencanaan',$data);
+        return view('dashboard_kandang.perencanaan.load_pakan_perencanaan', $data);
     }
 }

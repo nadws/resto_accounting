@@ -10,11 +10,11 @@
             <div class="row">
                 <div class="col-lg-5">
                     <label for="">Dari</label>
-                    <input type="date" class="form-control tgl1" name="tgl1">
+                    <input type="date" class="form-control tgl1" name="tgl1" value="{{$tgl1}}">
                 </div>
                 <div class="col-lg-5">
                     <label for="">Sampai</label>
-                    <input type="date" class="form-control tgl2" name="tgl2">
+                    <input type="date" class="form-control tgl2" name="tgl2" value="{{$tgl2}}">
                 </div>
                 <div class="col-lg-2">
                     <label for="">Aksi</label>
@@ -51,6 +51,9 @@
             <td>
                 <a href="{{route('print_setoran',['no_nota' => $i->nota_setor])}}" target="_blank"
                     class="btn btn-sm btn-success"><i class="fas fa-print"></i></a>
+
+                <a href="{{route('delete_perencanaan',['no_nota' => $i->nota_setor])}}" class="btn btn-sm btn-danger"><i
+                        class="fas fa-trash-alt"></i></a>
             </td>
         </tr>
         @endforeach
