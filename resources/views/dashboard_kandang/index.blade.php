@@ -371,6 +371,7 @@
         
     </x-slot>
     @section('js')
+    <script src="/js/kandang.js"></script>
         <script>
             edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
