@@ -122,7 +122,8 @@
                         @php
                         $stok_transfer = DB::selectOne("SELECT sum(a.pcs) as pcs , sum(a.kg) as kg
                         FROM stok_telur as a
-                        where a.tgl = '$tanggal' and a.id_telur = '$p->id_produk_telur' and a.id_gudang = '2'
+                        where a.tgl = '$tanggal' and a.pcs != '0' and a.id_telur = '$p->id_produk_telur' and a.id_gudang
+                        = '2'
                         ");
                         @endphp
                         <td>{{empty($stok_transfer->pcs) ? '0' : number_format($stok_transfer->pcs,0)}}</td>
@@ -133,7 +134,7 @@
                 </table>
                 @php
                 $cek2 = DB::selectOne("SELECT a.check FROM stok_telur as a
-                WHERE a.tgl = '$tanggal' and a.id_gudang = '2'
+                WHERE a.tgl = '$tanggal' and a.id_gudang = '2' and a.pcs != '0'
                 group by a.tgl;");
                 @endphp
 
@@ -176,27 +177,25 @@
                         <tr>
                             <td>
                                 {{ $g->nm_gudang }}
-
-
                                 <a href="#" onclick="event.preventDefault();"
                                     class="badge bg-primary float-end ms-2  text-sm {{$g->id_gudang_telur == '2' ? 'history-tf-alpa' : 'history-mtd' }} "><i
                                         class="fas fa-history"></i></i>
                                 </a>
-                                <a href="{{ route('penjualan_agrilaras') }}" {{$g->id_gudang_telur == '2' ? '' :
+                                <a href="{{ route('penyetoran_telur') }}" {{$g->id_gudang_telur == '2' ? '' :
                                     'hidden' }}
-                                    class="badge bg-primary text-sm float-end"><i class="fas fa-plus"
-                                        data-bs-toggle="tooltip" data-bs-placement="top" title="Penjualan telur"></i>
+                                    class="badge bg-success text-sm float-end" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="penyetoran telur">
+                                    <i class="fas fa-money-bill-wave-alt"></i>
                                 </a>
                                 <a href="{{ route('piutang_telur') }}" {{$g->id_gudang_telur == '2' ? '' :
                                     'hidden' }}
                                     class="badge bg-primary text-sm me-2 float-end" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Piutang telur"><i class="far fa-credit-card"></i></i>
                                 </a>
-                                <a href="{{ route('penyetoran_telur') }}" {{$g->id_gudang_telur == '2' ? '' :
+                                <a href="{{ route('tbh_invoice_telur') }}" {{$g->id_gudang_telur == '2' ? '' :
                                     'hidden' }}
-                                    class="badge bg-success text-sm me-2 float-end" data-bs-toggle="tooltip"
-                                    data-bs-placement="top" title="penyetoran telur">
-                                    <i class="fas fa-money-bill-wave-alt"></i>
+                                    class="badge bg-primary me-2 text-sm float-end" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="Penjualan telur"><i class="fas fa-plus"></i>
                                 </a>
                             </td>
                             @foreach ($produk as $p)
@@ -205,8 +204,7 @@
                             pcs_kredit, sum(a.kg_kredit) as kg_kredit
                             FROM stok_telur as a
                             where a.id_gudang ='$g->id_gudang_telur' and a.id_telur = '$p->id_produk_telur' and a.check
-                            ='Y'
-                            group by a.id_telur");
+                            ='Y' and a.opname = 'T' group by a.id_telur");
                             @endphp
                             <td>{{ empty($stok->pcs) ? '0' : number_format($stok->pcs - $stok->pcs_kredit, 0) }}
                             </td>
@@ -251,9 +249,14 @@
                                 $penjualan_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($penjualan_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center"><a href="{{route('penjualan_martadah_cek',['lokasi' => 'mtd'])}}"
+                            <td align="center">
+                                <a href="{{route('penjualan_martadah_cek',['lokasi' => 'mtd'])}}"
                                     class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
-                                    History</a></td>
+                                    History
+                                    <span class="badge bg-danger">{{empty($penjualan_blmcek_mtd->jumlah) ? '0' :
+                                        $penjualan_blmcek_mtd->jumlah}}</span>
+                                </a>
+                            </td>
                         </tr>
                         <tr>
                             <td>2</td>
@@ -265,6 +268,8 @@
                             <td align="center">
                                 <a href="{{route('penjualan_umum_cek')}}" class="btn btn-primary btn-sm">
                                     <i class="fas fa-history"></i> History
+                                    <span class="badge bg-danger">{{empty($penjualan_umum_blmcek_mtd->jumlah) ? '0' :
+                                        $penjualan_umum_blmcek_mtd->jumlah}}</span>
                                 </a>
                             </td>
                         </tr>
@@ -275,9 +280,14 @@
                                 $opname_blmcek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($opname_cek_mtd->ttl_rp,0)}}</td>
                             <td align="right">Rp {{number_format($opname_blmcek_mtd->ttl_rp,0)}}</td>
-                            <td align="center"><a href="{{route('bukukan_opname_martadah')}}"
-                                    class="btn btn-primary btn-sm"><i class="fas fa-history"></i>
-                                    History</a></td>
+                            <td align="center">
+                                <a href="{{route('bukukan_opname_martadah')}}" class="btn btn-primary btn-sm"><i
+                                        class="fas fa-history"></i>
+                                    History
+                                    <span class="badge bg-danger">{{empty($opname_blmcek_mtd->jumlah) ? '0' :
+                                        $opname_blmcek_mtd->jumlah}}</span>
+                                </a>
+                            </td>
                         </tr>
 
                     </tbody>

@@ -60,7 +60,7 @@ class PenjualanController extends Controller
                 FROM bayar_telur as c
                 group by c.no_nota
             ) as c on c.no_nota = a.no_nota
-            where a.tgl between '$tgl1' and '$tgl2'
+            where a.tgl between '$tgl1' and '$tgl2' and a.lokasi ='alpa'
             group by a.no_nota
             order by a.urutan DESC
             ")
@@ -73,8 +73,8 @@ class PenjualanController extends Controller
     {
         $max = DB::table('invoice_telur')->latest('urutan')->first();
 
-        if (empty($max)) {
-            $nota_t = '1000';
+        if (empty($max) || $max->urutan == '0') {
+            $nota_t = '1001';
         } else {
             $nota_t = $max->urutan + 1;
         }
@@ -120,8 +120,8 @@ class PenjualanController extends Controller
     {
         $max = DB::table('invoice_telur')->latest('urutan')->first();
 
-        if (empty($max)) {
-            $nota_t = '1000';
+        if (empty($max) || $max->urutan == '0') {
+            $nota_t = '1001';
         } else {
             $nota_t = $max->urutan + 1;
         }
@@ -175,6 +175,18 @@ class PenjualanController extends Controller
                 ];
                 DB::table('invoice_telur')->insert($data);
             }
+
+            $data = [
+                'id_telur' => $r->id_produk[$x],
+                'tgl' => $r->tgl,
+                'pcs_kredit' => $r->pcs[$x],
+                'kg_kredit' => $r->kg[$x],
+                'admin' => Auth::user()->name,
+                'id_gudang' => '2',
+                'check' => 'Y',
+                'nota_transfer' => 'T' . $nota_t,
+            ];
+            DB::table('stok_telur')->insert($data);
         }
         $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', '517')->first();
         $akun = DB::table('akun')->where('id_akun', '517')->first();

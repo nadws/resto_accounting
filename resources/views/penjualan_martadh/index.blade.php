@@ -7,8 +7,7 @@
             </div>
             <div class="col-lg-6">
                 <x-theme.button modal="T" icon="fa-plus" addClass="float-end btn_bayar" teks="Setor" />
-                <x-theme.button modal="T" href="/produk_telur" icon="fa-long-arrow-alt-left" addClass="float-end"
-                    teks="Kembali ke dashboard" />
+                <x-theme.button modal="T" href="/produk_telur" icon="fa-home" addClass="float-end" teks="" />
             </div>
         </div>
     </x-slot>

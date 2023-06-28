@@ -44,28 +44,31 @@ class OpnamemtdController extends Controller
         } else {
             $urutan_cus = $max_customer->urutan_customer + 1;
         }
-        DB::table('stok_telur')->where(['opname' => 'T', 'id_gudang' => '1'])->update(['opname' => 'Y']);
+
         for ($x = 0; $x < count($r->id_telur); $x++) {
-            $data = [
-                'id_telur' => $r->id_telur[$x],
-                'tgl' => $r->tgl,
-                'pcs' => $r->pcs[$x],
-                'kg' => $r->kg[$x],
-                'admin' => Auth::user()->name,
-                'id_gudang' => '1',
-                'jenis' => 'Opname',
-                'nota_transfer' => 'ST-' . $urutan,
-                'opname' => 'T'
-            ];
-            DB::table('stok_telur')->insert($data);
+
 
             if ($r->pcs_selisih[$x] + $r->kg_selisih[$x] == 0) {
                 # code...
             } else {
+                DB::table('stok_telur')->where(['opname' => 'T', 'id_gudang' => '1', 'id_telur' => $r->id_telur[$x]])->update(['opname' => 'Y']);
+                $data = [
+                    'id_telur' => $r->id_telur[$x],
+                    'tgl' => $r->tgl,
+                    'pcs' => $r->pcs[$x],
+                    'kg' => $r->kg[$x],
+                    'admin' => Auth::user()->name,
+                    'id_gudang' => '1',
+                    'jenis' => 'Opname',
+                    'nota_transfer' => 'Opname-' . $urutan,
+                    'opname' => 'T',
+                    'check' => 'Y'
+                ];
+                DB::table('stok_telur')->insert($data);
                 $data = [
                     'id_customer' => '3',
                     'tgl' => $r->tgl,
-                    'no_nota' => 'ST-' . $urutan,
+                    'no_nota' => 'Opname-' . $urutan,
                     'urutan_customer' => $urutan_cus,
                     'pcs' => $r->pcs_selisih[$x],
                     'kg' => $r->kg_selisih[$x],

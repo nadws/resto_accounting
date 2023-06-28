@@ -34,11 +34,29 @@ class Produk_telurController extends Controller
             'kandang' => DB::table('kandang')->get(),
             'gudang' => DB::table('gudang_telur')->get(),
             'penjualan_cek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='Y' and a.lokasi ='mtd';"),
-            'penjualan_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='T' and a.lokasi ='mtd';"),
+            'penjualan_blmcek_mtd' => DB::selectOne("SELECT sum(a.ttl_rp) as ttl_rp , count(a.no_nota) as jumlah
+            FROM 
+                (
+                    SELECT a.no_nota, sum(a.total_rp) as ttl_rp
+                    FROM invoice_telur as a
+                    where a.cek ='T' and a.lokasi ='mtd'
+                    group by a.no_nota
+                ) as a;"),
             'penjualan_umum_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM penjualan_agl as a where a.cek ='Y' and a.lokasi ='mtd';"),
-            'penjualan_umum_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM penjualan_agl as a where a.cek ='T' and a.lokasi ='mtd';"),
+            'penjualan_umum_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp , COUNT(a.urutan) as jumlah
+            FROM (
+            SELECT a.urutan, sum(a.total_rp) as total_rp
+                FROM penjualan_agl as a 
+            where a.cek ='T' and a.lokasi ='mtd'
+            group by a.urutan
+            ) as a;"),
             'opname_cek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='Y' and a.lokasi ='opname';"),
-            'opname_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp FROM invoice_telur as a where a.cek ='T' and a.lokasi ='opname';"),
+            'opname_blmcek_mtd' => DB::selectOne("SELECT sum(a.total_rp) as ttl_rp , count(a.no_nota) as jumlah
+            FROM ( SELECT a.no_nota, sum(a.total_rp) as total_rp
+                  FROM invoice_telur as a 
+                  where a.cek ='T' and a.lokasi ='opname'
+                  group by a.no_nota
+                ) as a;;"),
         ];
         return view('produk_telur.dashboard', $data);
     }
@@ -46,18 +64,18 @@ class Produk_telurController extends Controller
     public function CheckMartadah(Request $r)
     {
         if ($r->cek == 'T') {
-            DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '1'])->where('pcs', '!=', '0')->update(['check' => 'Y']);
+            DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '1'])->where('id_kandang', '!=', '0')->update(['check' => 'Y']);
         } else {
-            DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '1'])->where('pcs', '!=', '0')->update(['check' => 'T']);
+            DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '1'])->where('id_kandang', '!=', '0')->update(['check' => 'T']);
         }
         return redirect()->route('produk_telur', ['tgl' => $r->tgl])->with('sukses', 'Data berhasil di save');
     }
     public function CheckAlpa(Request $r)
     {
         if ($r->cek == 'T') {
-            DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '2'])->where('pcs', '!=', '0')->update(['check' => 'Y']);
+            DB::table('stok_telur')->where([['tgl', $r->tgl],  ['jenis', 'tf']])->update(['check' => 'Y']);
         } else {
-            DB::table('stok_telur')->where(['tgl' => $r->tgl, 'id_gudang' => '2'])->where('pcs', '!=', '0')->update(['check' => 'T']);
+            DB::table('stok_telur')->where([['tgl', $r->tgl],  ['jenis', 'tf']])->update(['check' => 'T']);
         }
         return redirect()->route('produk_telur', ['tgl' => $r->tgl])->with('sukses', 'Data berhasil di save');
     }
@@ -161,7 +179,7 @@ class Produk_telurController extends Controller
             ];
             DB::table('jurnal')->insert($data);
 
-            DB::table('invoice_telur')->where('no_nota', $r->no_nota[$x])->update(['cek' => 'Y']);
+            DB::table('invoice_telur')->where('no_nota', $r->no_nota[$x])->update(['cek' => 'Y', 'admin_cek' => Auth::user()->name]);
         }
 
         for ($x = 0; $x < count($r->id_akun); $x++) {

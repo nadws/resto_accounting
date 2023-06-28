@@ -2,8 +2,8 @@
 
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
-            <div class="col-lg-2">
-
+            <div class="col-lg-6">
+                <x-theme.button modal="T" href="/produk_telur" icon="fa-home" addClass="float-end" teks="" />
             </div>
         </div>
 
@@ -65,7 +65,7 @@
                             <h6>Total</h6>
                         </div>
                         <div class="col-lg-6">
-                            <h6 class="total float-end">Rp 0</h6>
+                            <h6 class="total float-end">Rp 0 </h6>
                             <input type="hidden" class="total_semua_biasa" name="total_penjualan">
                         </div>
                         <div class="col-lg-5 mt-2">
@@ -194,8 +194,8 @@
                 var kg = $('.kgbiasa' + count).val();
                 var ikat = parseFloat(input2) / 180;
                 var kg_jual = parseFloat(kg) - ikat;
-                $('.ikat' + count).text(ikat.toFixed(1));
-                $('.kgminrak' + count).text(kg_jual.toFixed(1));
+                $('.ikat' + count).val(ikat.toFixed(1));
+                $('.kgminrak' + count).val(kg_jual.toFixed(1));
                 $('.kgminrakbiasa' + count).val(kg_jual.toFixed(1));
 
                 var rp_satuan = $('.rp_satuanbiasa' + count).val();
@@ -233,6 +233,8 @@
                 $(".total").text(totalRupiahall);
                 $(".total_kredit").text(totalkreditall)
                 $(".total_semua_biasa").val(Math.round(total_all))
+                $(".debit1").val(totalRupiahall);
+                $(".debit_biasa1").val(Math.round(total_all));
 
                 // selisih
                 var total_debit = 0;
@@ -244,6 +246,7 @@
                     currency: "IDR",
                 });
                 $(".total_debit").text(totaldebitall);
+                
 
                 var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
@@ -317,6 +320,8 @@
                 $(".total").text(totalRupiahall)
                 $(".total_kredit").text(totalkreditall)
                 $(".total_semua_biasa").val(Math.round(total_all))
+                $(".debit1").val(totalRupiahall);
+                $(".debit_biasa1").val(Math.round(total_all));
 
 
                 // selisih
@@ -329,6 +334,7 @@
                     currency: "IDR",
                 });
                 $(".total_debit").text(totaldebitall);
+                
 
                 var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {
@@ -397,6 +403,8 @@
                 $(".total").text(totalRupiahall)
                 $(".total_kredit").text(totalkreditall)
                 $(".total_semua_biasa").val(Math.round(total_all))
+                $(".debit1").val(totalRupiahall);
+                $(".debit_biasa1").val(Math.round(total_all));
 
 
                 // selisih
@@ -409,6 +417,7 @@
                     currency: "IDR",
                 });
                 $(".total_debit").text(totaldebitall);
+                
 
                 var selisih = Math.round(total_all + total_kredit) - total_debit;
                 var selisih_total = selisih.toLocaleString("id-ID", {

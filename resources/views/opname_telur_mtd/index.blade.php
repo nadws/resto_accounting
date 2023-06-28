@@ -2,8 +2,8 @@
 
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
-            <div class="col-lg-2">
-
+            <div class="col-lg-6">
+                <x-theme.button modal="T" href="/dashboard_kandang" icon="fa-home" addClass="float-end" teks="" />
             </div>
         </div>
 

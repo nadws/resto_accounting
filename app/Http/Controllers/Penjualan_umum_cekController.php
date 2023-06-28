@@ -61,7 +61,7 @@ class Penjualan_umum_cekController extends Controller
             ];
             DB::table('jurnal')->insert($data);
 
-            DB::table('penjualan_agl')->where('urutan', $r->urutan[$x])->update(['cek' => 'Y']);
+            DB::table('penjualan_agl')->where('urutan', $r->urutan[$x])->update(['cek' => 'Y', 'admin_cek' => Auth::user()->name]);
         }
 
         for ($x = 0; $x < count($r->id_akun); $x++) {
