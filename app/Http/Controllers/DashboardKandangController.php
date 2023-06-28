@@ -574,4 +574,43 @@ class DashboardKandangController extends Controller
         ];
         return view('dashboard_kandang.perencanaan.load_pakan_perencanaan',$data);
     }
+
+    public function tbh_pakan(Request $r)
+    {
+        $data = [
+            'pakan' => DB::table('pakan')->get(),
+            'count' => $r->count
+        ];
+        return view('dashboard_kandang.perencanaan.tbh_pakan',$data);
+    }
+
+    public function save_tambah_pakan(Request $r)
+    {
+        $id = DB::table('pakan')->insertGetId([
+            'kode_pakan' => $r->kd_pakan,
+            'nm_pakan' => $r->nm_pakan,
+        ]);
+        
+        DB::table('stok_pakan')->insert([
+            'id_kandang' => 0,
+            'id_pakan' => $id,
+            'tgl' => date('Y-m-d'),
+            'pcs' => $r->stok_awal,
+            'kg' => 0,
+            'pcs_kredit' => 0,
+            'kg_kredit' => 0,
+            'admin' => auth()->user()->name,
+            'cek_admin' => '',
+            'total_rp' => $r->total_rp
+        ]);
+
+    }
+    
+    public function get_stok_pakan(Request $r)
+    {
+        $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_pakan WHERE id_pakan = '$r->id_pakan'");
+        echo $stok->stok;
+    }
+
+
 }

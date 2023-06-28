@@ -1,9 +1,9 @@
-<div class="row">
+<div class="row baris{{$count}}">
     <div class="col-lg-3">
         <div class="form-group">
             <label for="">Type</label>
             <select name="id_pakan[]" id="" persen="1"
-                count="1" class="form-control select2-edit persen_pakan pakan_input">
+                count="{{ $count }}" class="form-control select2-pakan persen_pakan pakan_input">
                 <option value="">- Pilih Pakan -</option>
                 @foreach ($pakan as $p)
                     <option value="{{ $p->id_pakan }}">{{ $p->nm_pakan }}</option>
@@ -15,7 +15,7 @@
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Stok</label>
-            <input type="text" name="stok" readonly class="form-control get_stok_pakan1">
+            <input type="text" name="stok" readonly class="form-control get_stok_pakan{{$count}}">
         </div>
     </div>
     <div class="col-lg-2">
@@ -35,21 +35,8 @@
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Aksi</label><br>
-            <button class="btn btn-primary btn-md pakan_input tbhPakan" type="button"><i
-                    class="fa fa-plus"></i></button>
+            <button count="{{$count}}" class="remove_baris btn btn-danger btn-md" type="button"><i
+                    class="fa fa-minus"></i></button>
         </div>
     </div>
 </div>
-<div id="tbhPakan"></div>
-<div class="row">
-    <div class="col-lg-3">
-    </div>
-    <div class="col-lg-2">
-    </div>
-    <div class="col-lg-3">
-        <hr style="border: 1px solid #6777EF;">
-        <input type="text" readonly name="pakanGrTotal" id="total" class="form-control">
-    </div>
-</div>
-
-

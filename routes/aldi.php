@@ -313,6 +313,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/load_perencanaan/{id_kandang}', 'load_perencanaan')->name('load_perencanaan');
             Route::post('/tambah_perencanaan', 'tambah_perencanaan')->name('tambah_perencanaan');
             Route::get('/load_pakan_perencanaan', 'load_pakan_perencanaan')->name('load_pakan_perencanaan');
+            Route::get('/save_tambah_pakan', 'save_tambah_pakan')->name('save_tambah_pakan');
+            Route::get('/tbh_pakan', 'tbh_pakan')->name('tbh_pakan');
+            Route::get('/get_stok_pakan', 'get_stok_pakan')->name('get_stok_pakan');
 
 
             // penjualan martadah

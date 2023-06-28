@@ -309,11 +309,9 @@
                                 {{-- end telur --}}
 
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                     class="tambah_perencanaan"
-                                    data-bs-target="#tambah_perencanaan">150</td>
+                                    class="tambah_perencanaan" data-bs-target="#tambah_perencanaan">150</td>
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                     class="tambah_perencanaan"
-                                    data-bs-target="#tambah_perencanaan">65</td>
+                                    class="tambah_perencanaan" data-bs-target="#tambah_perencanaan">65</td>
                                 <td align="center">
                                     <a href="" class="badge bg-primary"><i class="fas fa-check"></i></a>
                                 </td>
@@ -353,6 +351,7 @@
                 <div id="load_perencanaan"></div>
             </x-theme.modal>
         </form>
+        @include('dashboard_kandang.modal.tambah_pakan')
         {{-- end tambah perencanaan --}}
 
 
@@ -368,17 +367,115 @@
         @include('dashboard_kandang.modal.tambah_karung')
         @include('dashboard_kandang.modal.history_opname')
 
-        
+
     </x-slot>
     @section('js')
-    <script src="/js/kandang.js"></script>
-    <script src="/js/perencanaan.js"></script>
+        <script src="/js/kandang.js"></script>
         <script>
             edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
-            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
 
+            // perencanaan -------------------------------------
+            function toast(pesan) {
+                Toastify({
+                    text: pesan,
+                    duration: 3000,
+                    style: {
+                        background: "#EAF7EE",
+                        color: "#7F8B8B"
+                    },
+                    close: true,
+                    avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                }).showToast();
+            }
+            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
+
+            function editPerencanaan(kelas, attr, link, load) {
+                $(document).on('click', `.${kelas}`, function() {
+                    var id = $(this).attr(`${attr}`)
+                    $.ajax({
+                        type: "GET",
+                        url: `${link}/${id}`,
+                        success: function(r) {
+                            $(`#${load}`).html(r);
+
+                            loadPakanPerencanaan()
+                        }
+                    });
+                })
+            }
+
+            function loadPakanPerencanaan() {
+                var count = 2
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.load_pakan_perencanaan') }}",
+                    success: function(r) {
+                        $("#load_pakan_perencanaan").html(r);
+                        $('.select2-edit').select2({
+                            dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                        });
+                        plusRowPakan(count, 'tbhPakan', 'dashboard_kandang/tbh_pakan')
+                    }
+                });
+            }
+
+            function plusRowPakan(count, classPlus, url) {
+                $(document).on("click", "." + classPlus, function() {
+                    count = count + 1;
+                    $.ajax({
+                        url: `${url}?count=` + count,
+                        type: "GET",
+                        success: function(data) {
+                            $("#" + classPlus).append(data);
+                            $(".select2-pakan").select2({
+                                dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                            });
+                        },
+                    });
+                });
+
+                $(document).on('click', '.remove_baris', function() {
+                    var delete_row = $(this).attr("count");
+                    $(".baris" + delete_row).remove();
+
+                })
+            }
+
+            $(document).on("change", '.pakan_input', function() {
+                var id_pakan = $(this).val()
+                var count = $(this).attr('count')
+                if (id_pakan == 'tambah') {
+                    $("#tambah_pakan").modal('show')
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{route('dashboard_kandang.get_stok_pakan')}}?id_pakan="+id_pakan,
+                        success: function (r) {
+                            $(".get_stok_pakan"+count).val(r);
+                        }
+                    });
+                }
+            })
+
+            $(document).on('submit', '#form_tambah_pakan', function(e) {
+                e.preventDefault()
+                var datas = $("#form_tambah_pakan").serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.save_tambah_pakan') }}",
+                    data: datas,
+                    success: function(response) {
+                        toast('Berhasil tambah Pakan')
+                        loadPakanPerencanaan()
+                        $("#tambah_pakan").modal('hide')
+
+                    }
+                });
+            })
+
+            // end perencanaan -------------------------------------
             modalSelect2()
 
             function modalSelect2() {
