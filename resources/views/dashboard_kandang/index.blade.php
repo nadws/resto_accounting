@@ -183,8 +183,8 @@
                         @foreach ($produk as $d)
                             @php
                                 $datas = DB::selectOne("SELECT GROUP_CONCAT(CONCAT(urutan)) as urutan,count(*) as ttl,
-                                    sum(total_rp) as ttl_rp FROM penjualan_agl
-                                    WHERE id_produk = '$d->id_produk' AND cek = 'T' AND lokasi = 'mtd' GROUP BY id_produk");
+                        sum(total_rp) as ttl_rp FROM penjualan_agl
+                        WHERE id_produk = '$d->id_produk' AND cek = 'T' AND lokasi = 'mtd' GROUP BY id_produk");
                                 if (!empty($datas)) {
                                     $urutan = implode(', ', explode(',', $datas->urutan));
                                 }
@@ -254,8 +254,8 @@
 
                                 @php
                                     $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
-                                        LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
-                                        WHERE a.id_kandang = '$d->id_kandang';");
+                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
+                            WHERE a.id_kandang = '$d->id_kandang';");
                                 @endphp
 
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
@@ -301,10 +301,10 @@
                                     </td>
                                 @endforeach
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu        "
+                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu"
                                     data-bs-target="#tambah_telur">{{ $ttlPcs }}</td>
                                 <td data-bs-toggle="modal" id_kandang="{{ $d->id_kandang }}"
-                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu        "
+                                    nm_kandang="{{ $d->nm_kandang }}" class="tambah_telur abu"
                                     data-bs-target="#tambah_telur">{{ $ttlKg }}</td>
                                 {{-- end telur --}}
 
@@ -377,6 +377,8 @@
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
 
             // perencanaan -------------------------------------
+            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
+
             function toast(pesan) {
                 Toastify({
                     text: pesan,
@@ -389,8 +391,6 @@
                     avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
                 }).showToast();
             }
-            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
-
             function editPerencanaan(kelas, attr, link, load) {
                 $(document).on('click', `.${kelas}`, function() {
                     var id = $(this).attr(`${attr}`)
@@ -400,14 +400,12 @@
                         success: function(r) {
                             $(`#${load}`).html(r);
 
-                            loadPakanPerencanaan()
+                            loadPakanPerencanaan(0)
                         }
                     });
                 })
             }
-
-            function loadPakanPerencanaan() {
-                var count = 2
+            function loadPakanPerencanaan(count = 1) {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('dashboard_kandang.load_pakan_perencanaan') }}",
@@ -416,12 +414,12 @@
                         $('.select2-edit').select2({
                             dropdownParent: $(`#tambah_perencanaan .modal-content`)
                         });
-                        plusRowPakan(count, 'tbhPakan', 'dashboard_kandang/tbh_pakan')
+                        plusRowPakan('tbhPakan', 'dashboard_kandang/tbh_pakan')
                     }
                 });
             }
-
-            function plusRowPakan(count, classPlus, url) {
+            var count = 1
+            function plusRowPakan(classPlus, url) {
                 $(document).on("click", "." + classPlus, function() {
                     count = count + 1;
                     $.ajax({
@@ -439,8 +437,12 @@
                 $(document).on('click', '.remove_baris', function() {
                     var delete_row = $(this).attr("count");
                     $(".baris" + delete_row).remove();
-
                 })
+            }
+            function modalSelect2() {
+                $('.select2-kandang').select2({
+                    dropdownParent: $('#tambah_kandang .modal-content')
+                });
             }
 
             $(document).on("change", '.pakan_input', function() {
@@ -451,9 +453,9 @@
                 } else {
                     $.ajax({
                         type: "GET",
-                        url: "{{route('dashboard_kandang.get_stok_pakan')}}?id_pakan="+id_pakan,
-                        success: function (r) {
-                            $(".get_stok_pakan"+count).val(r);
+                        url: "{{ route('dashboard_kandang.get_stok_pakan') }}?id_pakan=" + id_pakan,
+                        success: function(r) {
+                            $(".get_stok_pakan" + count).val(r);
                         }
                     });
                 }
@@ -475,14 +477,9 @@
                 });
             })
 
+
             // end perencanaan -------------------------------------
             modalSelect2()
-
-            function modalSelect2() {
-                $('.select2-kandang').select2({
-                    dropdownParent: $('#tambah_kandang .modal-content')
-                });
-            }
 
             $(document).on("keyup", ".pcs", function() {
                 var count = $(this).attr('count');

@@ -24,7 +24,7 @@
         <div class="form-group">
             <label for="">Populasi</label>
             <input type="text" id="getPopulasi" readonly name="populasi"
-                class="form-control">
+                class="form-control" value="{{ $pop->stok_awal - $pop->pop }}">
         </div>
     </div>
     <div class="col-lg-3">

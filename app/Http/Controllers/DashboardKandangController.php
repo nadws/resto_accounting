@@ -560,19 +560,25 @@ class DashboardKandangController extends Controller
 
     public function load_perencanaan($id_kandang)
     {
+        $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
+                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
+                            WHERE a.id_kandang = '$id_kandang';");
         $data = [
             'title' => 'Perencanaan',
             'id_kandang' => $id_kandang,
             'kandang' => DB::table('kandang')->where('id_kandang', $id_kandang)->first(),
+            'pop' => $pop
         ];
         return view('dashboard_kandang.perencanaan.index', $data);
     }
 
     public function load_pakan_perencanaan()
     {
+
         $data = [
             'title' => 'Perencanaan',
-            'pakan' => DB::table('pakan')->get()
+            'pakan' => DB::table('pakan')->get(),
+
         ];
         return view('dashboard_kandang.perencanaan.load_pakan_perencanaan', $data);
     }
@@ -583,7 +589,7 @@ class DashboardKandangController extends Controller
             'pakan' => DB::table('pakan')->get(),
             'count' => $r->count
         ];
-        return view('dashboard_kandang.perencanaan.tbh_pakan',$data);
+        return view('dashboard_kandang.perencanaan.tbh_pakan', $data);
     }
 
     public function save_tambah_pakan(Request $r)
@@ -592,7 +598,7 @@ class DashboardKandangController extends Controller
             'kode_pakan' => $r->kd_pakan,
             'nm_pakan' => $r->nm_pakan,
         ]);
-        
+
         DB::table('stok_pakan')->insert([
             'id_kandang' => 0,
             'id_pakan' => $id,
@@ -605,14 +611,11 @@ class DashboardKandangController extends Controller
             'cek_admin' => '',
             'total_rp' => $r->total_rp
         ]);
-
     }
-    
+
     public function get_stok_pakan(Request $r)
     {
         $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_pakan WHERE id_pakan = '$r->id_pakan'");
         echo $stok->stok;
     }
-
-
 }
