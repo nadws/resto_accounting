@@ -6,7 +6,7 @@
                 count="1" class="form-control select2-edit persen_pakan pakan_input">
                 <option value="">- Pilih Pakan -</option>
                 @foreach ($pakan as $p)
-                    <option value="{{ $p->id_pakan }}">{{ $p->nm_pakan }}</option>
+                    <option value="{{ $p->id_produk }}">{{ $p->nm_produk }}</option>
                 @endforeach
                 <option value="tambah">+ Pakan</option>
             </select>

@@ -577,10 +577,20 @@ class DashboardKandangController extends Controller
 
         $data = [
             'title' => 'Perencanaan',
-            'pakan' => DB::table('pakan')->get(),
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'pakan')->get(),
 
         ];
         return view('dashboard_kandang.perencanaan.load_pakan_perencanaan', $data);
+    }
+
+    public function load_obat_pakan()
+    {
+
+        $data = [
+            'title' => 'Perencanaan',
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get(),
+        ];
+        return view('dashboard_kandang.perencanaan.load_obat_pakan', $data);
     }
 
     public function tbh_pakan(Request $r)
@@ -591,15 +601,50 @@ class DashboardKandangController extends Controller
         ];
         return view('dashboard_kandang.perencanaan.tbh_pakan', $data);
     }
+    public function tbh_obatPakan(Request $r)
+    {
+        $data = [
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get(),
+            'count' => $r->count
+        ];
+        return view('dashboard_kandang.perencanaan.tbh_obatPakan', $data);
+    }
 
     public function save_tambah_pakan(Request $r)
     {
-        $id = DB::table('pakan')->insertGetId([
-            'kode_pakan' => $r->kd_pakan,
-            'nm_pakan' => $r->nm_pakan,
+        $id = DB::table('tb_produk_perencanaan')->insertGetId([
+            'nm_produk' => $r->nm_produk,
+            'kategori' => 'pakan',
+            'tgl' => date('Y-m-d'),
+            'admin' => auth()->user()->name
         ]);
 
-        DB::table('stok_pakan')->insert([
+        DB::table('stok_produk_perencanaan')->insert([
+            'id_kandang' => 0,
+            'id_pakan' => $id,
+            'tgl' => date('Y-m-d'),
+            'pcs' => $r->stok_awal,
+            'kg' => 0,
+            'pcs_kredit' => 0,
+            'kg_kredit' => 0,
+            'admin' => auth()->user()->name,
+            'cek_admin' => '',
+            'total_rp' => $r->total_rp
+        ]);
+    }
+
+    public function save_tambah_obat_pakan(Request $r)
+    {
+        $id = DB::table('tb_produk_perencanaan')->insertGetId([
+            'nm_produk' => $r->nm_produk,
+            'kategori' => 'obat_pakan',
+            'tgl' => date('Y-m-d'),
+            'dosis_satuan' => $r->dosis_satuan ?? '',
+            'campuran_satuan' => $r->campuran_satuan ?? '',
+            'admin' => auth()->user()->name
+        ]);
+
+        DB::table('stok_produk_perencanaan')->insert([
             'id_kandang' => 0,
             'id_pakan' => $id,
             'tgl' => date('Y-m-d'),
@@ -615,7 +660,21 @@ class DashboardKandangController extends Controller
 
     public function get_stok_pakan(Request $r)
     {
-        $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_pakan WHERE id_pakan = '$r->id_pakan'");
+        $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$r->id_pakan'");
         echo $stok->stok;
+    }
+    public function get_stok_obat_pakan(Request $r)
+    {
+        $stok = DB::selectOne("SELECT b.nm_satuan AS dosis_satuan, c.nm_satuan AS campuran_satuan
+                FROM tb_produk_perencanaan a
+                LEFT JOIN tb_satuan b ON a.dosis_satuan = b.id_satuan
+                LEFT JOIN tb_satuan c ON a.campuran_satuan = c.id_satuan
+                WHERE a.id_produk = '$r->id_produk';");
+
+        $data = [
+            'dosis_satuan' => $stok->dosis_satuan,
+            'campuran_satuan' => $stok->campuran_satuan,
+        ];
+        echo json_encode($data);
     }
 }

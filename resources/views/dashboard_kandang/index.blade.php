@@ -352,6 +352,8 @@
             </x-theme.modal>
         </form>
         @include('dashboard_kandang.modal.tambah_pakan')
+        @include('dashboard_kandang.modal.tambah_obat_pakan')
+        {{-- @include('dashboard_kandang.modal.tambah_pakan') --}}
         {{-- end tambah perencanaan --}}
 
 
@@ -372,12 +374,20 @@
     @section('js')
         <script src="/js/kandang.js"></script>
         <script>
+            function modalSelect2() {
+                $('.select2-kandang').select2({
+                    dropdownParent: $('#tambah_kandang .modal-content')
+                });
+                $('.select2-obat').select2({
+                    dropdownParent: $('#tambah_obat_pakan .modal-content')
+                });
+            }
             edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
 
             // perencanaan -------------------------------------
-            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
+            var count = 1
 
             function toast(pesan) {
                 Toastify({
@@ -391,6 +401,7 @@
                     avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
                 }).showToast();
             }
+            editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
             function editPerencanaan(kelas, attr, link, load) {
                 $(document).on('click', `.${kelas}`, function() {
                     var id = $(this).attr(`${attr}`)
@@ -400,12 +411,15 @@
                         success: function(r) {
                             $(`#${load}`).html(r);
 
-                            loadPakanPerencanaan(0)
+                            loadPakanPerencanaan()
+                            loadObatPakan()
                         }
                     });
                 })
             }
-            function loadPakanPerencanaan(count = 1) {
+
+            // tambah pakan perencanaan
+            function loadPakanPerencanaan() {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('dashboard_kandang.load_pakan_perencanaan') }}",
@@ -418,10 +432,9 @@
                     }
                 });
             }
-            var count = 1
             function plusRowPakan(classPlus, url) {
                 $(document).on("click", "." + classPlus, function() {
-                    count = count + 1;
+                    count += 1;
                     $.ajax({
                         url: `${url}?count=` + count,
                         type: "GET",
@@ -439,12 +452,6 @@
                     $(".baris" + delete_row).remove();
                 })
             }
-            function modalSelect2() {
-                $('.select2-kandang').select2({
-                    dropdownParent: $('#tambah_kandang .modal-content')
-                });
-            }
-
             $(document).on("change", '.pakan_input', function() {
                 var id_pakan = $(this).val()
                 var count = $(this).attr('count')
@@ -460,7 +467,6 @@
                     });
                 }
             })
-
             $(document).on('submit', '#form_tambah_pakan', function(e) {
                 e.preventDefault()
                 var datas = $("#form_tambah_pakan").serialize()
@@ -477,6 +483,76 @@
                 });
             })
 
+            // tambah obat pakan
+            function loadObatPakan() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.load_obat_pakan') }}",
+                    success: function(r) {
+                        $("#load_obat_pakan").html(r);
+                        $('.select2-edit').select2({
+                            dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                        });
+                        plusRowObatPakan('tbhObatPakan', 'dashboard_kandang/tbh_obatPakan')
+                    }
+                });
+            }
+            function plusRowObatPakan(classPlus, url) {
+                $(document).on("click", "." + classPlus, function() {
+                    count += 1;
+                    $.ajax({
+                        url: `${url}?count=` + count,
+                        type: "GET",
+                        success: function(data) {
+                            $("#" + classPlus).append(data);
+                            $(".select2-pakan").select2({
+                                dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                            });
+                        },
+                    });
+                });
+
+                $(document).on('click', '.remove_baris', function() {
+                    var delete_row = $(this).attr("count");
+                    $(".baris" + delete_row).remove();
+                })
+            }
+            $(document).on("change", '.obat_pakan_input', function() {
+                var id_produk = $(this).val()
+                var count = $(this).attr('count')
+                if (id_produk == 'tambah') {
+                    $("#tambah_obat_pakan").modal('show')
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.get_stok_obat_pakan') }}?id_produk=" + id_produk,
+                        dataType:'json',
+                        success: function(r) {
+                            $(".get_dosis_satuan" + count).val(r.dosis_satuan);
+                            $(".get_campuran_satuan" + count).val(r.campuran_satuan);
+                        }
+                    });
+                }   
+            })
+
+            $(document).on('submit', '#form_tambah_obat_pakan', function(e) {
+                e.preventDefault()
+                var datas = $("#form_tambah_obat_pakan").serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.save_tambah_obat_pakan') }}",
+                    data: datas,
+                    success: function(response) {
+                        toast('Berhasil tambah Obat Pakan')
+                        loadObatPakan()
+                        $("#tambah_obat_pakan").modal('hide')
+
+                    }
+                });
+            })
+            // tambah obat pakan
+
+            
 
             // end perencanaan -------------------------------------
             modalSelect2()
