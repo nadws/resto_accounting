@@ -2,11 +2,11 @@
     <div class="col-lg-3">
         <div class="form-group">
             <label for="">Type</label>
-            <select name="id_pakan[]" id="" persen="1"
+            <select name="id_pakan[]" id="" persen="{{$count}}"
                 count="{{ $count }}" class="form-control select2-pakan persen_pakan pakan_input">
                 <option value="">- Pilih Pakan -</option>
                 @foreach ($pakan as $p)
-                    <option value="{{ $p->id_pakan }}">{{ $p->nm_pakan }}</option>
+                    <option value="{{ $p->id_produk }}">{{ $p->nm_produk }}</option>
                 @endforeach
                 <option value="tambah">+ Pakan</option>
             </select>
@@ -15,20 +15,20 @@
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Stok</label>
-            <input type="text" name="stok" readonly class="form-control get_stok_pakan{{$count}}">
+            <input type="text" name="stok[]" readonly class="form-control get_stok_pakan{{$count}}">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">%</label>
-            <input type="text" id="prsn1" name="persenPakan[]"
-                class="form-control pakan_input persen" kd="1">
+            <input type="text" id="prsn{{$count}}" name="persen_pakan[]"
+                class="form-control pakan_input persen" kd="{{$count}}">
         </div>
     </div>
     <div class="col-lg-3">
         <div class="form-group">
             <label for="">Pakan (Gr)</label>
-            <input type="text" readonly name="pakanGr[]" id="hasil1"
+            <input type="text" readonly name="gr_pakan[]" id="hasil{{$count}}"
                 class="form-control hasil">
         </div>
     </div>

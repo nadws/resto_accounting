@@ -567,6 +567,7 @@ class DashboardKandangController extends Controller
             'title' => 'Perencanaan',
             'id_kandang' => $id_kandang,
             'kandang' => DB::table('kandang')->where('id_kandang', $id_kandang)->first(),
+            'obatAyam' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_ayam')->get(),
             'pop' => $pop
         ];
         return view('dashboard_kandang.perencanaan.index', $data);
@@ -582,34 +583,14 @@ class DashboardKandangController extends Controller
         ];
         return view('dashboard_kandang.perencanaan.load_pakan_perencanaan', $data);
     }
-
-    public function load_obat_pakan()
-    {
-
-        $data = [
-            'title' => 'Perencanaan',
-            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get(),
-        ];
-        return view('dashboard_kandang.perencanaan.load_obat_pakan', $data);
-    }
-
     public function tbh_pakan(Request $r)
     {
         $data = [
-            'pakan' => DB::table('pakan')->get(),
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'pakan')->get(),
             'count' => $r->count
         ];
         return view('dashboard_kandang.perencanaan.tbh_pakan', $data);
     }
-    public function tbh_obatPakan(Request $r)
-    {
-        $data = [
-            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get(),
-            'count' => $r->count
-        ];
-        return view('dashboard_kandang.perencanaan.tbh_obatPakan', $data);
-    }
-
     public function save_tambah_pakan(Request $r)
     {
         $id = DB::table('tb_produk_perencanaan')->insertGetId([
@@ -624,15 +605,36 @@ class DashboardKandangController extends Controller
             'id_pakan' => $id,
             'tgl' => date('Y-m-d'),
             'pcs' => $r->stok_awal,
-            'kg' => 0,
             'pcs_kredit' => 0,
-            'kg_kredit' => 0,
             'admin' => auth()->user()->name,
             'cek_admin' => '',
             'total_rp' => $r->total_rp
         ]);
     }
 
+    public function load_obat_pakan()
+    {
+
+        $data = [
+            'title' => 'Perencanaan',
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get(),
+        ];
+        return view('dashboard_kandang.perencanaan.load_obat_pakan', $data);
+    }
+
+    public function get_stok_pakan(Request $r)
+    {
+        $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$r->id_pakan'");
+        echo $stok->stok;
+    }
+    public function tbh_obatPakan(Request $r)
+    {
+        $data = [
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get(),
+            'count' => $r->count
+        ];
+        return view('dashboard_kandang.perencanaan.tbh_obatPakan', $data);
+    }
     public function save_tambah_obat_pakan(Request $r)
     {
         $id = DB::table('tb_produk_perencanaan')->insertGetId([
@@ -649,19 +651,11 @@ class DashboardKandangController extends Controller
             'id_pakan' => $id,
             'tgl' => date('Y-m-d'),
             'pcs' => $r->stok_awal,
-            'kg' => 0,
             'pcs_kredit' => 0,
-            'kg_kredit' => 0,
             'admin' => auth()->user()->name,
             'cek_admin' => '',
             'total_rp' => $r->total_rp
         ]);
-    }
-
-    public function get_stok_pakan(Request $r)
-    {
-        $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$r->id_pakan'");
-        echo $stok->stok;
     }
     public function get_stok_obat_pakan(Request $r)
     {
@@ -676,5 +670,532 @@ class DashboardKandangController extends Controller
             'campuran_satuan' => $stok->campuran_satuan,
         ];
         echo json_encode($data);
+    }
+
+    public function load_obat_air()
+    {
+
+        $data = [
+            'title' => 'Perencanaan',
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_air')->get(),
+        ];
+        return view('dashboard_kandang.perencanaan.load_obat_air', $data);
+    }
+    public function tbh_obatAir(Request $r)
+    {
+        $data = [
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_air')->get(),
+            'count' => $r->count
+        ];
+        return view('dashboard_kandang.perencanaan.tbh_obatAir', $data);
+    }
+    public function save_tambah_obat_air(Request $r)
+    {
+        $id = DB::table('tb_produk_perencanaan')->insertGetId([
+            'nm_produk' => $r->nm_produk,
+            'kategori' => 'obat_air',
+            'tgl' => date('Y-m-d'),
+            'dosis_satuan' => $r->dosis_satuan ?? '',
+            'campuran_satuan' => $r->campuran_satuan ?? '',
+            'admin' => auth()->user()->name
+        ]);
+
+        DB::table('stok_produk_perencanaan')->insert([
+            'id_kandang' => 0,
+            'id_pakan' => $id,
+            'tgl' => date('Y-m-d'),
+            'pcs' => $r->stok_awal,
+            'pcs_kredit' => 0,
+            'admin' => auth()->user()->name,
+            'cek_admin' => '',
+            'total_rp' => $r->total_rp
+        ]);
+    }
+    public function get_stok_obat_air(Request $r)
+    {
+        $stok = DB::selectOne("SELECT b.nm_satuan AS dosis_satuan, c.nm_satuan AS campuran_satuan
+                FROM tb_produk_perencanaan a
+                LEFT JOIN tb_satuan b ON a.dosis_satuan = b.id_satuan
+                LEFT JOIN tb_satuan c ON a.campuran_satuan = c.id_satuan
+                WHERE a.id_produk = '$r->id_produk';");
+
+        $data = [
+            'dosis_satuan' => $stok->dosis_satuan,
+            'campuran_satuan' => $stok->campuran_satuan,
+        ];
+        echo json_encode($data);
+    }
+    
+    public function load_obat_ayam()
+    {
+        $data = [
+            'title' => 'Perencanaan',
+            'pakan' => DB::table('tb_produk_perencanaan')->where('kategori', 'obat_ayam')->get(),
+        ];
+        return view('dashboard_kandang.perencanaan.load_obat_ayam', $data);
+    }
+    public function save_tambah_obat_ayam(Request $r)
+    {
+        $id = DB::table('tb_produk_perencanaan')->insertGetId([
+            'nm_produk' => $r->nm_produk,
+            'kategori' => 'obat_ayam',
+            'tgl' => date('Y-m-d'),
+            'dosis_satuan' => $r->dosis_satuan ?? '',
+            'campuran_satuan' => $r->campuran_satuan ?? '',
+            'admin' => auth()->user()->name
+        ]);
+
+        DB::table('stok_produk_perencanaan')->insert([
+            'id_kandang' => 0,
+            'id_pakan' => $id,
+            'tgl' => date('Y-m-d'),
+            'pcs' => $r->stok_awal,
+            'pcs_kredit' => 0,
+            'admin' => auth()->user()->name,
+            'cek_admin' => '',
+            'total_rp' => $r->total_rp
+        ]);
+    }
+    public function get_stok_obat_ayam(Request $r)
+    {
+        $stok = DB::selectOne("SELECT b.nm_satuan AS dosis_satuan, c.nm_satuan AS campuran_satuan
+                FROM tb_produk_perencanaan a
+                LEFT JOIN tb_satuan b ON a.dosis_satuan = b.id_satuan
+                LEFT JOIN tb_satuan c ON a.campuran_satuan = c.id_satuan
+                WHERE a.id_produk = '$r->id_produk';");
+
+        echo $stok->dosis_satuan;
+    }
+
+    public function tambah_perencanaan(Request $r)
+    {
+        $tgl = $r->tgl;
+        $id_kandang = $r->id_kandang;
+        $kg_pakan_box = $r->kg_pakan_box;
+        $populasi = $r->populasi;
+        $gr_pakan_ekor = $r->gr_pakan_ekor;
+        $kg_karung = $r->kg_karung;
+        $kg_karung_sisa = $r->kg_karung_sisa;
+        $no_nota = strtoupper(str()->random(5));
+        if(!empty($r->id_pakan)) {
+            for ($i=0; $i < count($r->id_pakan); $i++) { 
+                $dataPakan = [
+                    'id_kandang' => $id_kandang,
+                    'id_produk_pakan' => $r->id_pakan[$i],
+                    'tgl' => $tgl,
+                    'no_nota' => $no_nota,
+                    'gr' => $r->gr_pakan[$i],
+                    'persen' => $r->persen_pakan[$i],
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('tb_pakan_perencanaan')->insert($dataPakan);
+               
+                $dataStok = [
+                    'id_kandang' => $id_kandang,
+                    'id_pakan' => $r->id_pakan[$i],
+                    'tgl' => $tgl,
+                    'pcs' => 0,
+                    'total_rp' => 0,
+                    'no_nota' => $no_nota,
+                    'pcs_kredit' =>  ($r->gr_pakan[$i] / 1000) - $r->stok[$i],
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('stok_produk_perencanaan')->insert($dataStok);
+            }
+        }
+
+        if (!empty($kg_pakan_box)) {
+            $dataKarung = [
+                'tgl' => $tgl,
+                'id_kandang' => $id_kandang,
+                'karung' => $kg_pakan_box,
+                'gr' => $kg_karung,
+                'gr2' => $kg_karung_sisa,
+                'no_nota' => $no_nota,
+            ];
+            DB::table('tb_karung_perencanaan')->insert($dataKarung);
+        }
+
+        if(!empty($r->id_obat_pakan)) {
+            for ($i=0; $i < count($r->id_obat_pakan); $i++) { 
+                $data1 = [
+                    'kategori' => 'obat_pakan',
+                    'id_produk' => $r->id_obat_pakan[$i],
+                    'dosis' => $r->dosis_obat_pakan[$i],
+                    'campuran' => $r->campuran_obat_pakan[$i],
+                    'tgl' => $tgl,
+                    'no_nota' => $no_nota,
+                    'id_kandang' => $id_kandang,
+                    'admin' => auth()->user()->name,
+                ];
+
+                DB::table('tb_obat_perencanaan')->insert($data1);
+                $id_obat_pakan = $r->id_obat_pakan[$i];
+                $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_obat_pakan'");
+                $dataStok = [
+                    'id_kandang' => $id_kandang,
+                    'id_pakan' => $id_obat_pakan,
+                    'tgl' => $tgl,
+                    'pcs' => 0,
+                    'total_rp' => 0,
+                    'no_nota' => $no_nota,
+                    'id_kandang' => $id_kandang,
+                    'pcs_kredit' =>  ($r->dosis_obat_pakan[$i]  / 1000) - $stok->stok,
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('stok_produk_perencanaan')->insert($dataStok);
+            }
+        }
+
+        if(!empty($r->id_obat_air)) {
+            for ($i=0; $i < count($r->id_obat_air); $i++) { 
+                $data1 = [
+                    'kategori' => 'obat_air',
+                    'id_produk' => $r->id_obat_air[$i],
+                    'dosis' => $r->dosis_obat_air[$i],
+                    'campuran' => $r->campuran_obat_air[$i],
+                    'tgl' => $tgl,
+                    'no_nota' => $no_nota,
+                    'waktu' => $r->waktu_obat_air[$i],
+                    'ket' => $r->ket_obat_air[$i],
+                    'cara_pemakaian' => $r->cara_pemakaian_obat_air[$i],
+                    'id_kandang' => $id_kandang,
+                    'admin' => auth()->user()->name,
+                ];
+
+                DB::table('tb_obat_perencanaan')->insert($data1);
+
+                $id_obat_air = $r->id_obat_air[$i];
+                $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_obat_air'");
+                $dataStok = [
+                    'id_kandang' => $id_kandang,
+                    'id_pakan' => $id_obat_air,
+                    'tgl' => $tgl,
+                    'pcs' => 0,
+                    'total_rp' => 0,
+                    'no_nota' => $no_nota,
+                    'pcs_kredit' =>  ($r->dosis_obat_pakan[$i] / 1000) - $stok->stok,
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('stok_produk_perencanaan')->insert($dataStok);
+            }
+        }
+
+        if(!empty($r->id_obat_ayam)) {
+            $data1 = [
+                'kategori' => 'obat_air',
+                'id_produk' => $r->id_obat_ayam,
+                'dosis' => $r->dosis_obat,
+                'campuran' => $r->campuran_obat,
+                'tgl' => $tgl,
+                'no_nota' => $no_nota,
+                'admin' => auth()->user()->name,
+            ];
+
+            DB::table('tb_obat_perencanaan')->insert($data1);
+
+            $id_obat_ayam = $r->id_obat_ayam;
+            $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_obat_ayam'");
+            $dataStok = [
+                'id_kandang' => $id_kandang,
+                'id_pakan' => $id_obat_ayam,
+                'tgl' => $tgl,
+                'pcs' => 0,
+                'total_rp' => 0,
+                'no_nota' => $no_nota,
+                'pcs_kredit' =>  ($r->dosis_obat_ayam[$i] / 1000) - $stok->stok,
+                'admin' => auth()->user()->name
+            ];
+            DB::table('stok_produk_perencanaan')->insert($dataStok);
+        }
+
+        return redirect()->route('dashboard_kandang.index')->with('sukses', 'Data Perencanaan Berhasil ditambahkan');
+
+    }
+
+    public function load_detail_perencanaan($id_kandang)
+    {
+        $data = [
+            'title' => 'Detail Perencanaan',
+            'kandang' => DB::table('kandang')->where('id_kandang', $id_kandang)->first()
+        ];
+        return view('dashboard_kandang.modal.detail_perencanaan',$data);
+    }
+
+    public function getQueryObatPerencanaan($tgl, $id_kandang, $kategori)
+    {
+        return DB::table('tb_obat_perencanaan as a')
+                    ->select(
+                        'a.tgl',
+                        'b.id_produk',
+                        'b.nm_produk',
+                        'a.waktu',
+                        'a.cara_pemakaian as cara',
+                        'a.id_kandang',
+                        'a.ket',
+                        'a.dosis',
+                        'a.campuran',
+                        'c.nm_satuan as satuan', 
+                        'd.nm_satuan as satuan2'
+                    )
+                    ->leftJoin('tb_produk_perencanaan as b', 'a.id_produk', 'b.id_produk')
+                    ->leftJoin('tb_satuan as c', 'b.dosis_satuan', 'c.id_satuan')
+                    ->leftJoin('tb_satuan as d', 'b.campuran_satuan', 'd.id_satuan')
+                    ->where([['a.tgl', $tgl], ['a.id_kandang', $id_kandang], ['a.kategori', $kategori]])
+                    ->get();
+    }
+
+    public function viewHistoryPerencanaan(Request $r)
+    {
+        $id_kandang = $r->id_kandang;
+        $tgl = $r->tgl;
+
+        $tgl1 = date('Y-m-d', strtotime('-1 days', strtotime($tgl)));
+
+        $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
+                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
+                            WHERE a.id_kandang = '$id_kandang'");
+        $populasi = $pop->stok_awal - $pop->pop;
+
+        $kandang = DB::table('kandang')->where('id_kandang', $id_kandang)->first();
+        $pakan = DB::selectOne("SELECT *,sum(gr) as total FROM tb_pakan_perencanaan as a 
+                    WHERE a.tgl = '$tgl' AND a.id_kandang = '$id_kandang' 
+                    GROUP BY a.id_kandang");
+
+        $umur = DB::selectOne("SELECT TIMESTAMPDIFF(WEEK, a.chick_in, '$tgl') as mgg FROM kandang as a 
+        WHERE a.id_kandang = '$id_kandang'");
+
+        $pakan1 = DB::table('tb_karung_perencanaan')->where([['id_kandang', $id_kandang], ['tgl', $tgl]])->first();
+
+        $pakan2 = DB::select("SELECT  a.tgl, b.nm_produk as nm_pakan, a.persen, a.gr as gr_pakan
+        FROM tb_pakan_perencanaan as a 
+        left join tb_produk_perencanaan as b on a.id_produk_pakan = b.id_produk 
+        where a.id_kandang = '$id_kandang' AND  a.tgl = '$tgl'");
+
+        $obat_pakan = $this->getQueryObatPerencanaan($tgl, $id_kandang, 'obat_pakan');
+
+        $obat_air = $this->getQueryObatPerencanaan($tgl, $id_kandang, 'obat_air');
+        $obat_ayam = $this->getQueryObatPerencanaan($tgl, $id_kandang, 'obat_ayam');
+        $data = [
+            'tgl_per' => $tgl,
+            'id_kandang' => $id_kandang,
+            'kandang' => $kandang,
+            'pakan' => $pakan,
+            'populasi' => $populasi,
+            'umur' => $umur,
+            'pakan1' => $pakan1,
+            'pakan2' => $pakan2,
+            'obat_pakan' => $obat_pakan,
+            'obat_air' => $obat_air,
+            'obat_ayam' => $obat_ayam,
+        ];
+        return view("dashboard_kandang.history.hasilPerencanaan", $data);
+    }
+
+    public function viewHistoryEditPerencanaan(Request $r)
+    {
+        $tgl = $r->tgl;
+        $tgl1 = date('Y-m-d', strtotime('-1 days', strtotime($tgl)));
+        $id_kandang = $r->id_kandang;
+        $pakan_id = DB::select("SELECT a.no_nota, a.id_pakan_perencanaan,a.tgl,b.id_produk, b.nm_produk as nm_pakan, a.persen, a.gr as gr_pakan
+                    FROM tb_pakan_perencanaan as a 
+                    left join tb_produk_perencanaan as b on a.id_produk_pakan = b.id_produk 
+                    where a.id_kandang = '$id_kandang' AND  a.tgl = '$tgl'");
+        $pakan = DB::table('tb_produk_perencanaan')->where('kategori', 'pakan')->get();
+        $obat = DB::table('tb_produk_perencanaan')->where('kategori', 'obat_pakan')->get();
+        $obat_air2 = DB::table('tb_produk_perencanaan')->where('kategori', 'obat_air')->get();
+        $obat_ayam = DB::table('tb_produk_perencanaan')->where('kategori', 'obat_ayam')->get();
+        $karung = DB::table('tb_karung_perencanaan')->where([['id_kandang', $id_kandang], ['tgl', $tgl]])->first();
+        $kandang = DB::table('kandang')->get();
+        $pop = DB::selectOne("SELECT sum(a.mati + a.jual) as pop,b.stok_awal FROM populasi as a
+                            LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
+                            WHERE a.id_kandang = '$id_kandang'");
+        $populasi = $pop->stok_awal - $pop->pop;
+        $gr_pakan = DB::selectOne("SELECT sum(a.gr) as ttl, a.no_nota FROM tb_pakan_perencanaan as a where a.id_kandang = '$id_kandang' and a.tgl = '$tgl' group by a.id_kandang");
+        $obat_pakan = $this->getQueryObatPerencanaan($tgl, $id_kandang, 'obat_pakan');
+        $obat_air = $this->getQueryObatPerencanaan($tgl, $id_kandang, 'obat_air');
+        $obat_aym = $this->getQueryObatPerencanaan($tgl, $id_kandang, 'obat_ayam');
+
+        $data = [
+            'tgl' => $tgl,
+            'id_kandang' => $id_kandang,
+            'pakan_id' => $pakan_id,
+            'pakan' => $pakan,
+            'karung' => $karung,
+            'kandang' => $kandang,
+            'populasi' => $populasi,
+            'gr_pakan' => $gr_pakan,
+            'obat_pakan' => $obat_pakan,
+            'obat_air' => $obat_air,
+            'obat' => $obat,
+            'obat_air2' => $obat_air2,
+            'obat_ayam' => $obat_ayam,
+            'obat_aym' => $obat_aym,
+        ];
+        return view('dashboard_kandang.history.editPerencanaan',$data);
+    }
+
+    public function edit_perencanaan(Request $r)
+    {
+        $no_nota = $r->no_nota;
+        $id_kandang = $r->id_kandang;
+        $tgl = $r->tgl;
+        $kg_pakan_box = $r->kg_pakan_box;
+        $populasi = $r->populasi;
+        $gr_pakan_ekor = $r->gr_pakan_ekor;
+        $kg_karung = $r->kg_karung;
+        $kg_karung_sisa = $r->kg_karung_sisa;
+
+        DB::table('stok_produk_perencanaan')->where('no_nota', $no_nota)->delete();
+        DB::table('tb_karung_perencanaan')->where('no_nota', $no_nota)->delete();
+        DB::table('tb_obat_perencanaan')->where('no_nota', $no_nota)->delete();
+        DB::table('tb_pakan_perencanaan')->where('no_nota', $no_nota)->delete();
+
+        $no_nota = strtoupper(str()->random(5));
+
+        if(!empty($r->id_pakan)) {
+            for ($i=0; $i < count($r->id_pakan); $i++) { 
+                $dataPakan = [
+                    'id_kandang' => $id_kandang,
+                    'id_produk_pakan' => $r->id_pakan[$i],
+                    'tgl' => $tgl,
+                    'no_nota' => $no_nota,
+                    'gr' => $r->gr_pakan[$i],
+                    'persen' => $r->persen_pakan[$i],
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('tb_pakan_perencanaan')->insert($dataPakan);
+                $id_pakan = $r->id_pakan[$i];
+                $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_pakan'");
+                $dataStok = [
+                    'id_kandang' => $id_kandang,
+                    'id_pakan' => $r->id_pakan[$i],
+                    'tgl' => $tgl,
+                    'pcs' => 0,
+                    'total_rp' => 0,
+                    'no_nota' => $no_nota,
+                    'pcs_kredit' =>  ($r->gr_pakan[$i] / 1000) - $stok->stok,
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('stok_produk_perencanaan')->insert($dataStok);
+            }
+        }
+
+        if (!empty($kg_pakan_box)) {
+            $dataKarung = [
+                'tgl' => $tgl,
+                'id_kandang' => $id_kandang,
+                'karung' => $kg_pakan_box,
+                'gr' => $kg_karung,
+                'gr2' => $kg_karung_sisa,
+                'no_nota' => $no_nota,
+            ];
+            DB::table('tb_karung_perencanaan')->insert($dataKarung);
+        }
+
+        if(!empty($r->id_obat_pakan)) {
+            for ($i=0; $i < count($r->id_obat_pakan); $i++) { 
+                $data1 = [
+                    'kategori' => 'obat_pakan',
+                    'id_produk' => $r->id_obat_pakan[$i],
+                    'dosis' => $r->dosis_obat_pakan[$i],
+                    'campuran' => $r->campuran_obat_pakan[$i],
+                    'tgl' => $tgl,
+                    'no_nota' => $no_nota,
+                    'id_kandang' => $id_kandang,
+                    'admin' => auth()->user()->name,
+                ];
+
+                DB::table('tb_obat_perencanaan')->insert($data1);
+                $id_obat_pakan = $r->id_obat_pakan[$i];
+                $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_obat_pakan'");
+                $dataStok = [
+                    'id_kandang' => $id_kandang,
+                    'id_pakan' => $id_obat_pakan,
+                    'tgl' => $tgl,
+                    'pcs' => 0,
+                    'total_rp' => 0,
+                    'no_nota' => $no_nota,
+                    'id_kandang' => $id_kandang,
+                    'pcs_kredit' =>  ($r->dosis_obat_pakan[$i]  / 1000) - $stok->stok,
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('stok_produk_perencanaan')->insert($dataStok);
+            }
+        }
+
+        if(!empty($r->id_obat_air)) {
+            for ($i=0; $i < count($r->id_obat_air); $i++) { 
+                $data1 = [
+                    'kategori' => 'obat_air',
+                    'id_produk' => $r->id_obat_air[$i],
+                    'dosis' => $r->dosis_obat_air[$i],
+                    'campuran' => $r->campuran_obat_air[$i],
+                    'tgl' => $tgl,
+                    'no_nota' => $no_nota,
+                    'waktu' => $r->waktu_obat_air[$i],
+                    'ket' => $r->ket_obat_air[$i],
+                    'cara_pemakaian' => $r->cara_pemakaian_obat_air[$i],
+                    'id_kandang' => $id_kandang,
+                    'admin' => auth()->user()->name,
+                ];
+
+                DB::table('tb_obat_perencanaan')->insert($data1);
+
+                $id_obat_air = $r->id_obat_air[$i];
+                $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_obat_air'");
+                $dataStok = [
+                    'id_kandang' => $id_kandang,
+                    'id_pakan' => $id_obat_air,
+                    'tgl' => $tgl,
+                    'pcs' => 0,
+                    'total_rp' => 0,
+                    'no_nota' => $no_nota,
+                    'pcs_kredit' =>  ($r->dosis_obat_pakan[$i] / 1000) - $stok->stok,
+                    'admin' => auth()->user()->name
+                ];
+                DB::table('stok_produk_perencanaan')->insert($dataStok);
+            }
+        }
+
+        if(!empty($r->id_obat_ayam)) {
+            $data1 = [
+                'kategori' => 'obat_air',
+                'id_produk' => $r->id_obat_ayam,
+                'dosis' => $r->dosis_obat,
+                'campuran' => $r->campuran_obat,
+                'tgl' => $tgl,
+                'no_nota' => $no_nota,
+                'admin' => auth()->user()->name,
+            ];
+
+            DB::table('tb_obat_perencanaan')->insert($data1);
+
+            $id_obat_ayam = $r->id_obat_ayam;
+            $stok = DB::selectOne("SELECT sum(pcs) as stok FROM stok_produk_perencanaan WHERE id_pakan = '$id_obat_ayam'");
+            $dataStok = [
+                'id_kandang' => $id_kandang,
+                'id_pakan' => $id_obat_ayam,
+                'tgl' => $tgl,
+                'pcs' => 0,
+                'total_rp' => 0,
+                'no_nota' => $no_nota,
+                'pcs_kredit' =>  ($r->dosis_obat_ayam[$i] / 1000) - $stok->stok,
+                'admin' => auth()->user()->name
+            ];
+            DB::table('stok_produk_perencanaan')->insert($dataStok);
+        }
+
+        return redirect()->route('dashboard_kandang.index')->with('sukses', 'Data Perencanaan Berhasil didedit');
+    }
+
+    public function hasilLayer(Request $r)
+    {
+        $data = [
+            'title' => 'Layer',
+            'kandang' => DB::table('kandang')->get(),
+            'tgl' => $r->tgl
+        ];
+        return view('dashboard_kandang.history.layer',$data);
     }
 }

@@ -3,7 +3,7 @@
     <div class="col-lg-3">
         <div class="form-group">
             <label for="">Obat</label>
-            <select name="id_obatPakan[]" id="" count="1" class="form-control select2-edit obat_pakan_input" detail="1">
+            <select name="id_obat_pakan[]" id="" count="1" class="form-control select2-edit obat_pakan_input" detail="1">
                 <option value="">- Pilih Obat -</option>
                 @foreach ($pakan as $o)
                     <option value="{{ $o->id_produk }}">{{ $o->nm_produk }}</option>
@@ -15,25 +15,25 @@
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Dosis</label>
-            <input type="text" class="form-control" id="ds1" name="dosisPakan[]">
+            <input type="text" class="form-control" id="ds1" name="dosis_obat_pakan[]">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Satuan</label>
-            <input type="text" readonly name="satuanObat[]" id="stn1" class="form-control get_dosis_satuan1">
+            <input type="text" readonly name="satuan_obat_pakan[]" id="stn1" class="form-control get_dosis_satuan1">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Campuran</label>
-            <input type="text" class="form-control" id="cmpr1" name="obatCampuran[]">
+            <input type="text" class="form-control" id="cmpr1" name="campuran_obat_pakan[]">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Satuan</label>
-            <input type="text" id="stnc1" readonly name="satuanObat2[]" class="form-control get_campuran_satuan1">
+            <input type="text" id="stnc1" readonly name="satuan_obat_pakan[]" class="form-control get_campuran_satuan1">
         </div>
     </div>
     <div class="col-lg-1">

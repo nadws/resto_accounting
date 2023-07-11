@@ -309,17 +309,37 @@ Route::middleware('auth')->group(function () {
             Route::post('/tambah_populasi', 'tambah_populasi')->name('tambah_populasi');
             Route::post('/tambah_karung', 'tambah_karung')->name('tambah_karung');
             
+            
             // perencanaan
             Route::get('/load_perencanaan/{id_kandang}', 'load_perencanaan')->name('load_perencanaan');
             Route::post('/tambah_perencanaan', 'tambah_perencanaan')->name('tambah_perencanaan');
+
             Route::get('/load_pakan_perencanaan', 'load_pakan_perencanaan')->name('load_pakan_perencanaan');
-            Route::get('/load_obat_pakan', 'load_obat_pakan')->name('load_obat_pakan');
-            Route::get('/save_tambah_pakan', 'save_tambah_pakan')->name('save_tambah_pakan');
-            Route::get('/save_tambah_obat_pakan', 'save_tambah_obat_pakan')->name('save_tambah_obat_pakan');
-            Route::get('/tbh_obatPakan', 'tbh_obatPakan')->name('tbh_obatPakan');
             Route::get('/tbh_pakan', 'tbh_pakan')->name('tbh_pakan');
             Route::get('/get_stok_pakan', 'get_stok_pakan')->name('get_stok_pakan');
+            Route::get('/save_tambah_pakan', 'save_tambah_pakan')->name('save_tambah_pakan');
+
+            Route::get('/load_obat_pakan', 'load_obat_pakan')->name('load_obat_pakan');
+            Route::get('/tbh_obatPakan', 'tbh_obatPakan')->name('tbh_obatPakan');
             Route::get('/get_stok_obat_pakan', 'get_stok_obat_pakan')->name('get_stok_obat_pakan');
+            Route::get('/save_tambah_obat_pakan', 'save_tambah_obat_pakan')->name('save_tambah_obat_pakan');
+
+            Route::get('/load_obat_air', 'load_obat_air')->name('load_obat_air');
+            Route::get('/tbh_obatAir', 'tbh_obatAir')->name('tbh_obatAir');
+            Route::get('/save_tambah_obat_air', 'save_tambah_obat_air')->name('save_tambah_obat_air');
+            Route::get('/get_stok_obat_air', 'get_stok_obat_air')->name('get_stok_obat_air');
+
+            Route::get('/load_obat_ayam', 'load_obat_ayam')->name('load_obat_ayam');
+            Route::get('/save_tambah_obat_ayam', 'save_tambah_obat_ayam')->name('save_tambah_obat_ayam');
+            Route::get('/get_stok_obat_ayam', 'get_stok_obat_ayam')->name('get_stok_obat_ayam');
+            
+            // history perencanaan
+            Route::get('/load_detail_perencanaan/{id_kandang}', 'load_detail_perencanaan')->name('load_detail_perencanaan');
+            Route::get('/viewHistoryPerencanaan', 'viewHistoryPerencanaan')->name('viewHistoryPerencanaan');
+            Route::get('/viewHistoryEditPerencanaan', 'viewHistoryEditPerencanaan')->name('viewHistoryEditPerencanaan');
+            Route::post('/edit_perencanaan', 'edit_perencanaan')->name('edit_perencanaan');
+            Route::get('/hasilLayer', 'hasilLayer')->name('hasilLayer');
+            
 
 
             // penjualan martadah

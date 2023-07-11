@@ -2,8 +2,8 @@
     <div class="col-lg-3">
         <div class="form-group">
             <label for="">Type</label>
-            <select name="id_obat_pakan[]" id="" persen="1"
-                count="{{ $count }}" class="form-control select2-pakan persen_pakan obat_pakan_input">
+            <select name="id_obat_air[]" id="" persen="1"
+                count="{{ $count }}" class="form-control select2-pakan persen_pakan obat_air_input">
                 <option value="">- Pilih Obat -</option>
                 @foreach ($pakan as $p)
                     <option value="{{ $p->id_produk }}">{{ $p->nm_produk }}</option>
@@ -15,25 +15,43 @@
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Dosis</label>
-            <input type="text" name="dosis_obat_pakan[]" readonly class="form-control">
+            <input type="text" name="dosis_obat_air[]" readonly class="form-control">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Satuan</label>
-            <input type="text" readonly name="satuan_obat_pakan[]" id="stn1" class="form-control get_dosis_satuan{{$count}}">
+            <input type="text" readonly name="satuan_obat_air[]" id="stn1" class="form-control get_dosis_satuan_air{{$count}}">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Campuran</label>
-            <input type="text" class="form-control" id="cmpr1" name="campuran_obat_pakan[]">
+            <input type="text" class="form-control" id="cmpr1" name="campuran_obat_air[]">
         </div>
     </div>
     <div class="col-lg-2">
         <div class="form-group">
             <label for="">Satuan</label>
-            <input type="text" id="stnc1" readonly name="satuan_obat_pakan[]" class="form-control get_campuran_satuan{{$count}}">
+            <input type="text" id="stnc1" readonly name="satuan[]" class="form-control get_campuran_satuan_air{{$count}}">
+        </div>
+    </div>
+    <div class="col-lg-2">
+        <div class="form-group">
+            <label for="">Waktu</label><br>
+            <input type="time" name="waktu_obat_air[]" class="form-control">
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label for="">Cara Pemakaian</label>
+            <input type="text" name="cara_pemakaian_obat_air[]" class="form-control">
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <div class="form-group">
+            <label for="">Keterangan</label>
+            <input type="text" name="ket_obat_air[]" class="form-control">
         </div>
     </div>
     <div class="col-lg-1">  

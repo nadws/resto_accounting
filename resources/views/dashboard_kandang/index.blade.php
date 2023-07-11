@@ -238,7 +238,8 @@
                     <tbody class="text-center">
                         @foreach ($kandang as $no => $d)
                             <tr>
-                                <td align="center" data-bs-toggle="modal" data-bs-target="#tambah_kandang">
+                                <td align="center" class="detail_perencanaan" id_kandang="{{ $d->id_kandang }}"
+                                    data-bs-toggle="modal" data-bs-target="#detail_perencanaan">
                                     {{ $d->nm_kandang }}</td>
                                 @php
                                     $populasi = DB::table('populasi')
@@ -353,9 +354,39 @@
         </form>
         @include('dashboard_kandang.modal.tambah_pakan')
         @include('dashboard_kandang.modal.tambah_obat_pakan')
-        {{-- @include('dashboard_kandang.modal.tambah_pakan') --}}
+        @include('dashboard_kandang.modal.tambah_obat_air')
+        @include('dashboard_kandang.modal.tambah_obat_ayam')
         {{-- end tambah perencanaan --}}
 
+
+        {{-- detail perencanaan --}}
+        <x-theme.modal title="Detail Perencanaan" btnSave="" size="modal-lg-max" idModal="detail_perencanaan">
+            <div class="row">
+                <div class="col-lg-12">
+                    <a data-bs-toggle="collapse" href="#perencanaan" class="btn btn-sm btn-primary">History
+                        Perencanaan</a>
+                    <button data-bs-toggle="collapse" href="#layer" type="button"
+                        class="btn btn-sm btn-primary">History Layer</button>
+                    {{-- <button data-bs-toggle="collapse" href="#pullet" type="button"
+                        class="btn btn-sm btn-primary">History Pullet</button>
+                    <button data-bs-toggle="collapse" href="#stok" type="button"
+                        class="btn btn-sm btn-primary">History Stok</button> --}}
+                </div>
+            </div>
+            <hr style="border: 1px solid #6777EF;">
+            
+            <div id="load_detail_perencanaan"></div>
+        </x-theme.modal>
+        {{-- end detail perencanaan --}}
+
+        {{-- edit perencanaan --}}
+        <form action="{{ route('dashboard_kandang.edit_perencanaan') }}" method="post">
+            @csrf
+            <x-theme.modal title="Edit Perencanaan" size="modal-lg" idModal="edit_perencanaan">
+                <div id="hasilEditPerencanaan"></div>
+            </x-theme.modal>
+        </form>
+        {{-- end edit perencanaan --}}
 
         {{-- tambah detail nota --}}
         <x-theme.modal title="Detail Nota Penjualan Umum" btnSave="" size="modal-lg" idModal="detail_nota">
@@ -372,7 +403,6 @@
 
     </x-slot>
     @section('js')
-        <script src="/js/kandang.js"></script>
         <script>
             function modalSelect2() {
                 $('.select2-kandang').select2({
@@ -381,10 +411,71 @@
                 $('.select2-obat').select2({
                     dropdownParent: $('#tambah_obat_pakan .modal-content')
                 });
+                $('.select2-air').select2({
+                    dropdownParent: $('#tambah_obat_air .modal-content')
+                });
+                $('.select2-edit-perencanaan').select2({
+                    dropdownParent: $('#edit_perencanaan .modal-content')
+                });
             }
             edit('tambah_telur', 'id_kandang', 'dashboard_kandang/load_telur', 'load_telur')
             edit('tambah_populasi', 'id_kandang', 'dashboard_kandang/load_populasi', 'load_populasi')
             edit('detail_nota', 'urutan', 'dashboard_kandang/load_detail_nota', 'load_detail_nota')
+            edit('detail_perencanaan', 'id_kandang', 'dashboard_kandang/load_detail_perencanaan', 'load_detail_perencanaan')
+            viewHistoryPerencanaan()
+            viewEditPerencanaan()
+            hasilLayer()
+            function viewHistoryPerencanaan() {
+                $(document).on('click', '#btnPerencanaan', function() {
+                    var tgl = $("#tglHistoryPerencanaan").val();
+                    var id_kandang = $("#id_kandangPerencanaan").val();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.viewHistoryPerencanaan') }}",
+                        data: {
+                            tgl: tgl,
+                            id_kandang: id_kandang
+                        },
+                        success: function(r) {
+                            $("#hasilPerencanaan").html(r);
+                        }
+                    });
+                })
+            }
+            function hasilLayer() {
+                $(document).on('click', '#btnLayer', function() {
+                    var tgl = $("#tglLayer").val();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.hasilLayer') }}?tgl=" + tgl,
+                        success: function(data) {
+                            $("#hasilLayer").html(data);
+                            $('.select2').select2()
+                        }
+                    });
+                })
+            }
+            function viewEditPerencanaan() {
+                $(document).on('click', "#edit_per", function() {
+                    var id_kandang = $(this).attr('id_kandang')
+                    var tgl = $(this).attr('tgl')
+                    $("#edit_perencanaan").modal('show')
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.viewHistoryEditPerencanaan') }}",
+                        data: {
+                            id_kandang: id_kandang,
+                            tgl: tgl,
+                        },
+                        success: function(r) {
+                            $('#hasilEditPerencanaan').html(r)
+                            $('.select2').select2()
+                        }
+                    });
+                })
+            } 
 
             // perencanaan -------------------------------------
             var count = 1
@@ -402,6 +493,7 @@
                 }).showToast();
             }
             editPerencanaan('tambah_perencanaan', 'id_kandang', 'dashboard_kandang/load_perencanaan', 'load_perencanaan')
+
             function editPerencanaan(kelas, attr, link, load) {
                 $(document).on('click', `.${kelas}`, function() {
                     var id = $(this).attr(`${attr}`)
@@ -413,12 +505,103 @@
 
                             loadPakanPerencanaan()
                             loadObatPakan()
+                            loadObatAir()
+                            loadObatAyam()
                         }
                     });
                 })
             }
 
             // tambah pakan perencanaan
+            keyupKgPakanBox()
+            keyupPersen()
+            keyupPersenEdit()
+            function keyupPersenEdit() {
+                $(document).on('keyup', '.persenEdit', function() {
+                    var detail = $(this).attr('kd');
+                    var persen = $(this).val();
+                    var pop = $("#getPopulasiEdit").val();
+                    var gr = $("#grEdit").val();
+                    // alert(`${detail} - ${persen} - ${pop} - ${gr}`)
+                    var krng = $("#krngEdit").val();
+
+
+                    var hasil = (parseFloat(persen) * parseFloat(gr) * parseFloat(pop)) / 100;
+                    // alert(hasil);
+
+                    $("#hasilEdit" + detail).val(hasil);
+
+                    var total = 0;
+                    $(".hasilEdit").each(function() {
+                        total += parseFloat($(this).val());
+                    });
+                    // var kg = parseFloat(total) / (parseFloat(krng) * 1000)
+                    var kg = Math.floor(parseFloat(total) / (parseFloat(krng) * 1000));
+
+
+                    $('#totalEdit').val(total);
+                    $('#krng_fEdit').val(kg);
+                    var krng_f = $("#krng_fEdit").val();
+                    var kg_sisa = ((parseFloat(total) / (parseFloat(krng) * 1000)) - parseFloat(krng_f)) *
+                        10;
+                    var number = kg_sisa.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $('#krng_sEdit').val(number);
+                })
+
+            }
+            function keyupKgPakanBox() {
+                $(document).on('keyup', '#krng', function() {
+                    var krng = $(this).val()
+                    var pop = $("#getPopulasi").val();
+                    var gr = $("#gr").val();
+
+                    var total = 0;
+                    $(".hasil").each(function() {
+                        total += parseFloat($(this).val());
+                    });
+                    var kg = Math.floor(parseFloat(total) / (parseFloat(krng) * 1000));
+                    $('#total').val(total);
+                    $('#krng_f').val(kg);
+                    var krng_f = $("#krng_f").val();
+                    var kg_sisa = ((parseFloat(total) / (parseFloat(krng) * 1000)) - parseFloat(krng_f)) *
+                        10;
+                    var number = kg_sisa.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $('#krng_s').val(number);
+                })
+            }
+
+            function keyupPersen() {
+                $(document).on('keyup', '.persen', function() {
+                    var detail = $(this).attr('kd');
+                    var persen = $(this).val();
+                    var pop = $("#getPopulasi").val();
+                    var gr = $("#gr").val();
+                    // alert(`${detail} - ${persen} - ${pop} - ${gr}`)
+                    var krng = $("#krng").val();
+
+                    var hasil = (parseFloat(persen) * parseFloat(gr) * parseFloat(pop)) / 100;
+                    // alert(hasil);
+
+                    $("#hasil" + detail).val(hasil);
+
+                    var total = 0;
+                    $(".hasil").each(function() {
+                        total += parseFloat($(this).val());
+                    });
+                    console.log(total)
+                    // var kg = parseFloat(total) / (parseFloat(krng) * 1000)
+                    var kg = Math.floor(parseFloat(total) / (parseFloat(krng) * 1000));
+
+                    $('#total').val(total);
+                    $('#krng_f').val(kg);
+                    var krng_f = $("#krng_f").val();
+                    var kg_sisa = ((parseFloat(total) / (parseFloat(krng) * 1000)) - parseFloat(krng_f)) *
+                        10;
+                    var number = kg_sisa.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $('#krng_s').val(number);
+                })
+            }
+
             function loadPakanPerencanaan() {
                 $.ajax({
                     type: "GET",
@@ -432,6 +615,7 @@
                     }
                 });
             }
+
             function plusRowPakan(classPlus, url) {
                 $(document).on("click", "." + classPlus, function() {
                     count += 1;
@@ -450,6 +634,23 @@
                 $(document).on('click', '.remove_baris', function() {
                     var delete_row = $(this).attr("count");
                     $(".baris" + delete_row).remove();
+
+                    var pop = $("#getPopulasi").val();
+                    var gr = $("#gr").val();
+                    var krng = $("#krng").val();
+
+                    var total = 0;
+                    $(".hasil").each(function() {
+                        total += parseFloat($(this).val());
+                    });
+                    var kg = Math.floor(parseFloat(total) / (parseFloat(krng) * 1000));
+                    $('#total').val(total);
+                    $('#krng_f').val(kg);
+                    var krng_f = $("#krng_f").val();
+                    var kg_sisa = ((parseFloat(total) / (parseFloat(krng) * 1000)) - parseFloat(krng_f)) *
+                        10;
+                    var number = kg_sisa.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                    $('#krng_s').val(number);
                 })
             }
             $(document).on("change", '.pakan_input', function() {
@@ -497,6 +698,7 @@
                     }
                 });
             }
+
             function plusRowObatPakan(classPlus, url) {
                 $(document).on("click", "." + classPlus, function() {
                     count += 1;
@@ -526,15 +728,14 @@
                     $.ajax({
                         type: "GET",
                         url: "{{ route('dashboard_kandang.get_stok_obat_pakan') }}?id_produk=" + id_produk,
-                        dataType:'json',
+                        dataType: 'json',
                         success: function(r) {
                             $(".get_dosis_satuan" + count).val(r.dosis_satuan);
                             $(".get_campuran_satuan" + count).val(r.campuran_satuan);
                         }
                     });
-                }   
+                }
             })
-
             $(document).on('submit', '#form_tambah_obat_pakan', function(e) {
                 e.preventDefault()
                 var datas = $("#form_tambah_obat_pakan").serialize()
@@ -550,10 +751,117 @@
                     }
                 });
             })
-            // tambah obat pakan
 
-            
+            function loadObatAir() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.load_obat_air') }}",
+                    success: function(r) {
+                        $("#load_obat_air").html(r);
+                        $('.select2-edit').select2({
+                            dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                        });
+                        plusRowObatAir('tbhObatAir', 'dashboard_kandang/tbh_obatAir')
+                    }
+                });
+            }
 
+            function plusRowObatAir(classPlus, url) {
+                $(document).on("click", "." + classPlus, function() {
+                    count += 1;
+                    $.ajax({
+                        url: `${url}?count=` + count,
+                        type: "GET",
+                        success: function(data) {
+                            $("#" + classPlus).append(data);
+                            $(".select2-pakan").select2({
+                                dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                            });
+                        },
+                    });
+                });
+
+                $(document).on('click', '.remove_baris', function() {
+                    var delete_row = $(this).attr("count");
+                    $(".baris" + delete_row).remove();
+                })
+            }
+            $(document).on("change", '.obat_air_input', function() {
+                var id_produk = $(this).val()
+                var count = $(this).attr('count')
+                if (id_produk == 'tambah') {
+                    $("#tambah_obat_air").modal('show')
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.get_stok_obat_air') }}?id_produk=" + id_produk,
+                        dataType: 'json',
+                        success: function(r) {
+                            $(".get_dosis_satuan_air" + count).val(r.dosis_satuan);
+                            $(".get_campuran_satuan_air" + count).val(r.campuran_satuan);
+                        }
+                    });
+                }
+            })
+            $(document).on('submit', '#form_tambah_obat_air', function(e) {
+                e.preventDefault()
+                var datas = $("#form_tambah_obat_air").serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.save_tambah_obat_air') }}",
+                    data: datas,
+                    success: function(response) {
+                        toast('Berhasil tambah Obat Air')
+                        loadObatAir()
+                        $("#tambah_obat_air").modal('hide')
+
+                    }
+                });
+            })
+
+            // obat ayam
+            function loadObatAyam() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.load_obat_ayam') }}",
+                    success: function(r) {
+                        $("#load_obat_ayam").html(r);
+                        $('.select2-edit').select2({
+                            dropdownParent: $(`#tambah_perencanaan .modal-content`)
+                        });
+                    }
+                });
+            }
+            $(document).on("change", '.obat_ayam_input', function() {
+                var id_produk = $(this).val()
+                var count = $(this).attr('count')
+                if (id_produk == 'tambah') {
+                    $("#tambah_obat_ayam").modal('show')
+                } else {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('dashboard_kandang.get_stok_obat_ayam') }}?id_produk=" + id_produk,
+                        success: function(r) {
+                            $(".get_dosis_satuan_ayam").val(r);
+                        }
+                    });
+                }
+            })
+            $(document).on('submit', '#form_tambah_obat_ayam', function(e) {
+                e.preventDefault()
+                var datas = $("#form_tambah_obat_ayam").serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('dashboard_kandang.save_tambah_obat_ayam') }}",
+                    data: datas,
+                    success: function(response) {
+                        toast('Berhasil tambah Obat Ayam')
+                        loadObatAyam()
+                        $("#tambah_obat_ayam").modal('hide')
+
+                    }
+                });
+            })
             // end perencanaan -------------------------------------
             modalSelect2()
 
