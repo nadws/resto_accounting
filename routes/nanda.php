@@ -45,10 +45,8 @@ Route::get('/template2', function () {
 })->name('template2');
 
 
-
-
 Route::get('/dashboard', function () {
-    return view('dashboard', ['title' => 'Administrator']);
+    return redirect()->route('dashboard_kandang.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
