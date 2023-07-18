@@ -12,7 +12,7 @@
                     </a>
                 </li>
                 @php
-                    $navbar = DB::table('navbar')
+                    $navbar = DB::table('navbar_kandang')
                         ->orderBy('urutan', 'ASC')
                         ->get();
                     
