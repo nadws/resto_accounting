@@ -8,7 +8,7 @@
                 @foreach ($pakan as $p)
                     <option value="{{ $p->id_produk }}">{{ $p->nm_produk }}</option>
                 @endforeach
-                <option value="tambah">+ Pakan</option>
+                <option value="tambah">+ Pakan Baru</option>
             </select>
         </div>
     </div>

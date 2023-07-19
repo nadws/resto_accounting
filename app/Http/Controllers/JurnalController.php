@@ -298,7 +298,7 @@ class JurnalController extends Controller
         return view('jurnal.detail', $data);
     }
 
-    public function import_jurnal()
+    public function import_jurnal(Request $r)
     {
         Excel::import(new JurnalImport, request()->file('file'));
 

@@ -27,6 +27,10 @@ Route::middleware('auth')->group(function () {
         view('error.403');
     })->name('403');
 
+    Route::get('/import', function () {
+        return view('import_jurnal');
+    })->name('import');
+
     Route::controller(PoController::class)
         ->prefix('po')
         ->name('po.')

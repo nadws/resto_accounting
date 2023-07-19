@@ -22,7 +22,7 @@
                             @foreach ($produk as $p)
                             <option value="{{$p->id_produk}}">{{$p->nm_produk}}</option>
                             @endforeach
-                            <option value="tambah">+ Produk</option>
+                            <option value="tambah">+ Produk Baru</option>
                         </select>
                     </td>
                     <td><input type="text" name="pcs[]" class="form-control"></td>
