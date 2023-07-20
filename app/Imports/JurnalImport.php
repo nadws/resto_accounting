@@ -15,7 +15,6 @@ class JurnalImport implements ToModel, WithHeadingRow
 
         return new Jurnal(
             [
-                'id_jurnal' => $row['id_jurnal'],
                 'tgl' => $row['tgl'],
                 'id_akun' => $row['id_akun'],
                 'id_buku' => $row['id_buku'],
