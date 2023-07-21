@@ -808,7 +808,7 @@ class DashboardKandangController extends Controller
         $no_nota = strtoupper(str()->random(5));
         if (!empty($r->id_pakan)) {
             for ($i = 0; $i < count($r->id_pakan); $i++) {
-                if($r->stok[$i] < $r->gr_pakan[$i]) {
+                if ($r->stok[$i] < $r->gr_pakan[$i]) {
                     $error = 'error';
                     $pesan = 'STOK KURANG!! PERENCANAAN GAGAL DITAMBAH';
                 } else {
@@ -823,7 +823,7 @@ class DashboardKandangController extends Controller
                         'admin' => auth()->user()->name
                     ];
                     DB::table('tb_pakan_perencanaan')->insert($dataPakan);
-    
+
                     $dataStok = [
                         'id_kandang' => $id_kandang,
                         'id_pakan' => $r->id_pakan[$i],
@@ -836,7 +836,7 @@ class DashboardKandangController extends Controller
                     ];
                     DB::table('stok_produk_perencanaan')->insert($dataStok);
                     $id_pakan = $r->id_pakan[$i];
-    
+
                     $hrga = $this->getHargaSatuan($id_pakan);
                     $nota_t = $this->getNoNota();
                     $data = [
@@ -850,7 +850,7 @@ class DashboardKandangController extends Controller
                         'admin' => auth()->user()->name,
                     ];
                     DB::table('jurnal')->insert($data);
-    
+
                     $data = [
                         'id_akun' => '519',
                         'id_buku' => '2',
