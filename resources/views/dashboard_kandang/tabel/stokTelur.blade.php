@@ -52,7 +52,7 @@
                         }
                     @endphp
                     <td>{{ $stok->pcs }}</td>
-                    <td>{{ $stok->kg }}</td>
+                    <td>{{ number_format($stok->kg,2) }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
             </tr>
