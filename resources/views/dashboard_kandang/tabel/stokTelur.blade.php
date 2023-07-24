@@ -74,7 +74,7 @@
                         
                     @endphp
                     <td>{{ $stok->pcs ?? 0 }}</td>
-                    <td>{{ $stok->kg ?? 0 }}</td>
+                    <td>{{ number_format($stok->kg,2) ?? 0 }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
             </tr>
@@ -97,7 +97,7 @@
                         
                     @endphp
                     <td>{{ $stok->pcs ?? 0 }}</td>
-                    <td>{{ $stok->kg ?? 0 }}</td>
+                    <td>{{ number_format($stok->kg,2) ?? 0 }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
             </tr>

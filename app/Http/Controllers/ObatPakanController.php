@@ -32,10 +32,8 @@ class ObatPakanController extends Controller
 
     public function history_stok(Request $r)
     {
-        // $tgl1 = $r->tgl1 ?? date('Y-m-01');
-        // $tgl2 = $r->tgl2 ?? date('Y-m-t');
-        $tgl1 = '2022-01-01';
-        $tgl2 = date('Y-m-t');
+        $tgl1 = $r->tgl1 ?? '2022-01-01';
+        $tgl2 = $r->tgl2 ?? date('Y-m-t');
 
         $data = [
             'stok' => DB::select("SELECT a.tgl, b.nm_produk, a.pcs, a.pcs_kredit, a.admin, a.h_opname
