@@ -596,6 +596,8 @@
                     type: "GET",
                     url: "{{ route('dashboard_kandang.load_stok_pakan') }}",
                     success: function(r) {
+                        $("#load_stok_pakan").html(r);
+                        $('[data-bs-toggle="tooltip"]').tooltip();
                         $('#tablePakan').DataTable({
                             "paging": true,
                             "pageLength": 10,
@@ -610,8 +612,6 @@
                             "ordering": true,
                             "searching": true,
                         });
-                        $("#load_stok_pakan").html(r);
-                        $('[data-bs-toggle="tooltip"]').tooltip();
                     },
                 });
             }
