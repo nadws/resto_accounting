@@ -1,10 +1,13 @@
 <div class="row">
     <div class="col-lg-4">
         <div class="row mb-2">
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <h6>Stok Pakan</h6>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
+                <input id="pencarianPakan" placeholder="Pencarian" type="text" class="form-control">
+            </div>
+            <div class="col-lg-4">
                 <button type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Opname"
                     class="btn btn-primary btn-sm float-end opnme_pakan me-2">Opname</i>
                 </button>
@@ -41,10 +44,13 @@
     <div class="col-lg-4">
         <div class="row mb-2">
 
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <h6>Stok Vitamin</h6>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
+                <input id="pencarianVitamin" placeholder="Pencarian" type="text" class="form-control">
+            </div>
+            <div class="col-lg-4">
                 <button data-bs-toggle="tooltip" data-bs-placement="top" title="Opname" type="button"
                     class="btn btn-primary btn-sm float-end opnme_vitamin">Opname
                 </button>
