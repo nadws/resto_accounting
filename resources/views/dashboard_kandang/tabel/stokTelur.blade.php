@@ -51,7 +51,7 @@
                                 ->put('errorMin', '1');
                         }
                     @endphp
-                    <td>{{ $stok->pcs }}</td>
+                    <td>{{ number_format($stok->pcs,0) }}</td>
                     <td>{{ number_format($stok->kg,2) }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
@@ -73,7 +73,7 @@
                 WHERE id_telur = '$d->id_produk_telur' AND jenis = 'penjualan' AND opname = 'T';");
                         
                     @endphp
-                    <td>{{ $stok->pcs ?? 0 }}</td>
+                    <td>{{ number_format($stok->pcs,0) ?? 0 }}</td>
                     <td>{{ number_format($stok->kg,2) ?? 0 }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
@@ -96,7 +96,7 @@
                 WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 2 AND opname = 'T';");
                         
                     @endphp
-                    <td>{{ $stok->pcs ?? 0 }}</td>
+                    <td>{{ number_format($stok->pcs,) ?? 0 }}</td>
                     <td>{{ number_format($stok->kg,2) ?? 0 }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach

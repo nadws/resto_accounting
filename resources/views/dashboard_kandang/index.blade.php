@@ -601,20 +601,6 @@
                         pencarian('pencarianPakan', 'tablePakan')
                         pencarian('pencarianVitamin', 'tableVitamin')
                         pencarian('pencarianVaksin', 'tableVaksin')
-                        // $('#tablePakan').DataTable({
-                        //     "paging": true,
-                        //     "pageLength": 10,
-                        //     "lengthChange": true,
-                        //     "ordering": true,
-                        //     "searching": true,
-                        // });
-                        // $('#tableVitamin').DataTable({
-                        //     "paging": true,
-                        //     "pageLength": 10,
-                        //     "lengthChange": true,
-                        //     "ordering": true,
-                        //     "searching": true,
-                        // });
                     },
                 });
             }
