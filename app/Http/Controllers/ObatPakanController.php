@@ -45,6 +45,7 @@ class ObatPakanController extends Controller
             'tgl2' => $tgl2,
             'id_pakan' => $r->id_pakan
         ];
+        dd($data['stok']);
         return view('stok_pakan.history_stok', $data);
     }
 
