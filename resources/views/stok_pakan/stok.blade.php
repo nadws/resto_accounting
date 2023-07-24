@@ -85,11 +85,10 @@
             <div class="col-lg-3">
                 <h6>Stok Vaksin</h6>
             </div>
-            <div class="col-lg-5">
+            <div class="col-lg-5 float-end">
                 <input id="pencarianVaksin" placeholder="Pencarian" type="text" class="form-control">
             </div>
             <div class="col-lg-4">
-
                 <a href="#" onclick="event.preventDefault();" data-bs-toggle="modal" data-bs-target="#tbh_vaksin"
                     class="btn btn-sm btn-primary float-end me-2"><i class="fas fa-plus"></i></a>
             </div>
