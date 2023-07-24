@@ -600,6 +600,7 @@
                         $('[data-bs-toggle="tooltip"]').tooltip();
                         pencarian('pencarianPakan', 'tablePakan')
                         pencarian('pencarianVitamin', 'tableVitamin')
+                        pencarian('pencarianVaksin', 'tableVaksin')
                         // $('#tablePakan').DataTable({
                         //     "paging": true,
                         //     "pageLength": 10,

@@ -82,17 +82,20 @@
     <div class="col-lg-4">
         <div class="row mb-2">
 
-            <div class="col-lg-6">
+            <div class="col-lg-3">
                 <h6>Stok Vaksin</h6>
             </div>
-            <div class="col-lg-6">
+            <div class="col-lg-5">
+                <input id="pencarianVaksin" placeholder="Pencarian" type="text" class="form-control">
+            </div>
+            <div class="col-lg-4">
 
                 <a href="#" onclick="event.preventDefault();" data-bs-toggle="modal" data-bs-target="#tbh_vaksin"
                     class="btn btn-sm btn-primary float-end me-2"><i class="fas fa-plus"></i></a>
             </div>
         </div>
 
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="tableVaksin">
             <thead>
                 <tr>
                     <th class="dhead">Tgl</th>
