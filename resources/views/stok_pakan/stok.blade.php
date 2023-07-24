@@ -12,7 +12,7 @@
                     class="btn btn-sm btn-primary float-end me-2 tbh_pakan"><i class="fas fa-plus"></i></a>
             </div>
         </div>
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="tablePakan">
             <thead>
                 <tr>
                     <th class="dhead">Nama Pakan</th>
@@ -53,7 +53,7 @@
             </div>
         </div>
 
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="tableVitamin">
             <thead>
                 <tr>
                     <th class="dhead">Nama Vitamin</th>

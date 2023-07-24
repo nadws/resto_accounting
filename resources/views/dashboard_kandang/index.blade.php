@@ -321,7 +321,7 @@
                 var count = $(this).attr('count')
                 if (id_pakan == 'tambah') {
                     $("#tambah_pakan").modal('show')
-                } else {    
+                } else {
                     $.ajax({
                         type: "GET",
                         url: "{{ route('dashboard_kandang.get_stok_pakan') }}?id_pakan=" + id_pakan,
@@ -596,6 +596,20 @@
                     type: "GET",
                     url: "{{ route('dashboard_kandang.load_stok_pakan') }}",
                     success: function(r) {
+                        $('#tablePakan').DataTable({
+                            "paging": true,
+                            "pageLength": 10,
+                            "lengthChange": true,
+                            "ordering": true,
+                            "searching": true,
+                        });
+                        $('#tableVitamin').DataTable({
+                            "paging": true,
+                            "pageLength": 10,
+                            "lengthChange": true,
+                            "ordering": true,
+                            "searching": true,
+                        });
                         $("#load_stok_pakan").html(r);
                         $('[data-bs-toggle="tooltip"]').tooltip();
                     },
