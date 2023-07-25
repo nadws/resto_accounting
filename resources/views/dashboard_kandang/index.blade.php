@@ -663,13 +663,7 @@
                     success: function(r) {
                         $("#history_stk").html(r);
                         $("#history_stok").modal("show");
-                        $('#tableHistory').DataTable({
-                            "paging": true,
-                            "pageLength": 10,
-                            "lengthChange": true,
-                            "stateSave": true,
-                            "searching": true,
-                        });
+                      
                     },
                 });
             });
