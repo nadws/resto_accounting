@@ -15,7 +15,7 @@
         </div>
     </div>
 </form>
-<table class="table table-bordered">
+<table class="table table-bordered" id="tableHistory">
     <thead>
         <tr>
             <td class="dhead">Tanggal</td>
