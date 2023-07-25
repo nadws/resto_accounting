@@ -304,7 +304,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', 'add')->name('add');
         });
 
-    Route::get('commercial_layer', [ExportRecordingController::class, 'index'])->name('commercial_layer');
+    Route::post('commercial_layer', [ExportRecordingController::class, 'index'])->name('commercial_layer');
     Route::controller(DashboardKandangController::class)
         ->prefix('dashboard_kandang')
         ->name('dashboard_kandang.')
