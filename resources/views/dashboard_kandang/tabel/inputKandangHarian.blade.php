@@ -14,6 +14,7 @@
               <h6 class="dropdown-header text-white">Data Export</h6>
                 {{-- <a data-bs-toggle="modal" data-bs-target="#export_telur" class="text-white dropdown-item hoverbtn" href="#"> Telur</a> --}}
                 <a data-bs-toggle="modal" data-bs-target="#daily_layer" class="text-white dropdown-item hoverbtn" href="#"> Daily Layer</a>
+                <a data-bs-toggle="modal" data-bs-target="#commercial_layer" class="text-white dropdown-item hoverbtn" href="#"> Commercial Layer</a>
                 <a href="{{ route('dashboard_kandang.export_perencanaan') }}" class="text-white dropdown-item hoverbtn" href="#"> Perencanaan</a>
                 {{-- <a data-bs-toggle="modal" data-bs-target="#week_layer" class="text-white dropdown-item hoverbtn" href="#"> Week Layer</a> --}}
             </div>
@@ -236,6 +237,22 @@
     </x-theme.modal>
 </form>
 
+<form action="{{ route('commercial_layer') }}" method="post">
+    @csrf
+    <x-theme.modal title="Export Daily Layer" idModal="commercial_layer">
+        <div class="row">
+            <div class="form-group">
+                <label for="">Kandang</label>
+                <select name="id_kandang" class="form-control" id="">
+                    <option value="">- Pilih Kandang -</option>
+                    @foreach ($kandang as $kd)
+                        <option value="{{ $kd->id_kandang }}">{{ $kd->nm_kandang }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </x-theme.modal>
+</form>
 <form action="{{ route('dashboard_kandang.daily_layer') }}" method="post">
     @csrf
     <x-theme.modal title="Export Daily Layer" idModal="daily_layer">

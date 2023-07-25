@@ -6,6 +6,7 @@ use App\Http\Controllers\BarangDaganganController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\DashboardKandangController;
 use App\Http\Controllers\DataKandangController;
+use App\Http\Controllers\ExportRecordingController;
 use App\Http\Controllers\JualController;
 use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\ObatPakanController;
@@ -303,6 +304,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', 'add')->name('add');
         });
 
+    Route::get('commercial_layer', [ExportRecordingController::class, 'index'])->name('commercial_layer');
     Route::controller(DashboardKandangController::class)
         ->prefix('dashboard_kandang')
         ->name('dashboard_kandang.')
