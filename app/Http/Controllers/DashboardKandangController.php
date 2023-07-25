@@ -1602,7 +1602,6 @@ class DashboardKandangController extends Controller
         // daily production
         $pullet = DB::select("SELECT a.tgl, sum(c.mati + c.jual) as pop, b.stok_awal, SUM(a.gr) as kg_pakan, TIMESTAMPDIFF(WEEK, b.chick_in , a.tgl) AS mgg,
         c.mati as death, c.jual as culling, normal.normalPcs, normal.normalKg, abnormal.abnormalPcs, abnormal.abnormalKg, d.pcs,d.kg, sum(d.pcs) as ttl_pcs, SUM(d.kg) as ttl_kg, b.chick_in as ayam_awal
-        
         FROM tb_pakan_perencanaan as a
         LEFT JOIN kandang as b ON a.id_kandang = b.id_kandang
         LEFT JOIN populasi as c ON c.id_kandang = a.id_kandang AND c.tgl = a.tgl
@@ -1695,7 +1694,7 @@ class DashboardKandangController extends Controller
                 ->setCellValue("Q$kolom", number_format($cum_ttlkg - ($cum_ttlpcs / 180), 2))
                 ->setCellValue("R$kolom", empty($d->normalPcs) ? 0 : number_format(($weightKg / $d->normalPcs ?? 0) * 1000, 2))
                 ->setCellValue("S$kolom", number_format($d->kg_pakan ?? 0 / $weightKg ?? 0, 2))
-                ->setCellValue("T$kolom", number_format($cum_kg / ($cum_ttlkg - ($cum_ttlpcs / 180)), 2));
+                ->setCellValue("T$kolom", empty($cum_ttlpcs) ? 0 : number_format($cum_kg / ($cum_ttlkg - ($cum_ttlpcs / 180)), 2));
 
             $kolom++;
         }
