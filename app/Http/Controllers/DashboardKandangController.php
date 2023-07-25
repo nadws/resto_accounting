@@ -1554,7 +1554,8 @@ class DashboardKandangController extends Controller
     {
         $id_kandang = $r->id_kandang;
 
-        $kandang = DB::selectOne("SELECT a.stok_awal as ayam_awal, a.nm_kandang, a.strain as nm_strain FROM `kandang` as a
+        $kandang = DB::selectOne("SELECT a.stok_awal as ayam_awal, a.nm_kandang, b.nm_strain FROM `kandang` as a
+        LEFT JOIN strain as b on a.id_strain = b.id_strain
         WHERE a.id_kandang = '$id_kandang'");
 
         $spreadsheet = new Spreadsheet;

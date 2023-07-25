@@ -5,7 +5,6 @@
     <div class="col-lg-12">
         <h6>
             Stok Telur
-
         </h6>
         <table class="table table-bordered text-center">
             @php
@@ -51,8 +50,8 @@
                                 ->put('errorMin', '1');
                         }
                     @endphp
-                    <td>{{ number_format($stok->pcs,0) }}</td>
-                    <td>{{ number_format($stok->kg,2) }}</td>
+                    <td>{{ number_format($stok->pcs, 0) }}</td>
+                    <td>{{ number_format($stok->kg, 2) }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
             </tr>
@@ -73,8 +72,8 @@
                 WHERE id_telur = '$d->id_produk_telur' AND jenis = 'penjualan' AND opname = 'T';");
                         
                     @endphp
-                    <td>{{ number_format($stok->pcs,0) ?? 0 }}</td>
-                    <td>{{ number_format($stok->kg,2) ?? 0 }}</td>
+                    <td>{{ number_format($stok->pcs, 0) ?? 0 }}</td>
+                    <td>{{ number_format($stok->kg, 2) ?? 0 }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
             </tr>
@@ -93,11 +92,11 @@
                     @php
                         $stok = DB::selectOne("SELECT SUM(pcs - pcs_kredit) as pcs, SUM(kg - kg_kredit) as kg FROM
                 `stok_telur`
-                WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 2 AND opname = 'T';");
+                WHERE id_telur = '$d->id_produk_telur' AND id_gudang = 2 AND opname = 'T'");
                         
                     @endphp
-                    <td>{{ number_format($stok->pcs,) ?? 0 }}</td>
-                    <td>{{ number_format($stok->kg,2) ?? 0 }}</td>
+                    <td>{{ number_format($stok->pcs) ?? 0 }}</td>
+                    <td>{{ number_format($stok->kg, 2) ?? 0 }}</td>
                     <td>{{ number_format($stok->pcs / 180, 1) }}</td>
                 @endforeach
             </tr>
