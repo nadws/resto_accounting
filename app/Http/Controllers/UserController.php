@@ -22,23 +22,19 @@ class UserController extends Controller
         return view('user.user', $data);
     }
 
-    public function register(Request $r)
-    {
-        dd($r->all());
-    }
-
     public function create(Request $r)
     {
         $uuid = Uuid::uuid4()->toString();
         User::create([
             'id' => $uuid,
-            'name' => $r->name, 
+            'name' => $r->name,
             'email' => $r->email,
-            'posisi_id' => $r->posisi_id,
+            'posisi_id' => $r->posisi_id ?? 2,
             'password' => bcrypt($r->password),
         ]);
 
-        return redirect()->route('user.index')->with('sukses', 'Data Berhasil Dibuat');
+
+        return redirect()->route($r->jenis == 'register' ? 'login' : 'user.index')->with('sukses', 'Data Berhasil Dibuat');
     }
     
     public function delete(Request $r)
