@@ -4,14 +4,14 @@
             <div class="col-lg-4 col-4">
                 <h5 class="float-start">Cashflow</h5>
             </div>
-            <div class="col-lg-4 col-4">
+            <div class="col-lg-4 col-8">
                 <button
                         class="btn rounded-pill btn-outline-primary btn-block"
                         >
                         <span style="font-size: 25px">Rp. {{ number_format($sisa,0) }}</span> 
                     </button>
             </div>
-            <div class="col-lg-4 col-4">
+            <div class="col-lg-4 col-12">
                 <a class="me-2 btn btn-primary float-end" href="{{ route('cashflow.add') }}"><i class="fas fa-plus"></i> Tambah</a>
                 <x-theme.btn_filter />
             </div>
