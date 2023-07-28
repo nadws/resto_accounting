@@ -68,7 +68,7 @@
 
                 <form class="login100-form validate-form" action="{{ route('login') }}" method="post">
                     <center>
-                        <img src="https://agrilaras.putrirembulan.com/assets/img/logo.png" alt="" width="80px">
+                        <img src="{{asset('img/penutup.png')}}" alt="" width="80px">
                     </center>
                     @csrf
                     <span class="login100-form-title p-b-43">

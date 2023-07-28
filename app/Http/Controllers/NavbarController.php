@@ -6,91 +6,12 @@ use Illuminate\Http\Request;
 
 class NavbarController extends Controller
 {
-    public function data_master()
-    {
-        $data = [
-            [
-                'judul' => 'Data User',
-                'route' => 'user.index',
-                'img' => 'team.png',
-                'deskripsi' => 'ini adalah data user',
-            ],
-            [
-                'judul' => 'Gudang',
-                'route' => 'gudang.index',
-                'img' => 'gudang.png',
-                'deskripsi' => 'membuat dan mengelola data gudang',
-            ],
-            [
-                'judul' => 'Data Proyek',
-                'route' => 'proyek',
-                'img' => 'clipboard.png',
-                'deskripsi' => 'Membuat dan mengelola data proyek beserta anggaran pendapatan dan biaya.',
-            ],
-            [
-                'judul' => 'Data Suplier',
-                'route' => 'suplier.index',
-                'img' => 'suplier.png',
-                'deskripsi' => 'membuat dan menyunting data rekening',
-            ],
-            [
-                'judul' => 'Data Satuan',
-                'route' => 'user.index',
-                'img' => 'measure-cup.png',
-                'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
-            ],
-        ];
-        $title = 'Data Master';
-        return view('navbar.data_master', compact(['data', 'title']));
-    }
+    
 
-    public function persediaan_barang()
-    {
-        $data = [
-            [
-                'judul' => 'Data Atk',
-                'route' => 'produk.index',
-                'img' => 'product.png',
-                'deskripsi' => 'mengelola data barang atk',
-            ],
-            [
-                'judul' => 'Data Bahan Baku',
-                'route' => 'bahan_baku.index',
-                'img' => 'bahan_baku.png',
-                'deskripsi' => 'mengelola data barang atk dan peralatan',
-            ],
-            [
-                'judul' => 'Data Barang Dagangan',
-                'route' => 'barang_dagangan.index',
-                'img' => 'penjualan.png',
-                'deskripsi' => 'mengelola data barang atk dan peralatan',
-            ],
-            [
-                'judul' => 'Data Peralatan',
-                'route' => 'peralatan.index',
-                'img' => 'peralatan.png',
-                'deskripsi' => 'mengelola data barang peralatan',
-            ],
-            [
-                'judul' => 'Aktiva',
-                'route' => 'aktiva',
-                'img' => 'buildings.png',
-                'deskripsi' => 'Mengelola harta tetap, akun berkaitan, dan penyusutannya menurut metode yang tersedia.',
-            ],
-            [
-                'judul' => 'Jurnal Penyesuaian',
-                'route' => 'penyesuaian.index',
-                'img' => 'journalism.png',
-                'deskripsi' => 'Mencatat berbagai transaksi keuangan dengan menetapkan langsung rekening di sisi debit dan kredit.',
-            ],
-        ];
-        $title = 'Persediaan Barang';
-        return view('navbar.data_master', compact(['data', 'title']));
-    }
+    
     public function buku_besar()
     {
         $data = [
-
             [
                 'judul' => 'Daftar Akun',
                 'route' => 'akun',

@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class CashflowController extends Controller
 {
-    protected $tgl1, $tgl2, $period;
+    protected $tgl1, $tgl2;
     public function __construct(Request $r)
     {
         if (empty($r->period)) {
-            $this->tgl1 = date('Y-m-01');
+            $this->tgl1 = date('2022-01-01');
             $this->tgl2 = date('Y-m-t');
         } elseif ($r->period == 'daily') {
             $this->tgl1 = date('Y-m-d');
@@ -39,129 +39,61 @@ class CashflowController extends Controller
             $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
         }
     }
+
     public function index(Request $r)
     {
-        $tgl1 =  $r->tgl1;
-        $tgl2 =  $r->tgl2;
+        $tgl1 =  $this->tgl1;
+        $tgl2 =  $this->tgl2;
 
-        $tgl2_pref = date('Y-m-15', strtotime($tgl2));
-        $tgl_back = date('Y-m-t', strtotime('previous month', strtotime($tgl2_pref)));
+        $datas = DB::table('tb_transaksi as a')
+            ->where('user_id', auth()->user()->id)
+            ->whereBetween('tgl', [$tgl1, $tgl2])
+            ->orderBy('id_transaksi', 'DESC')
+            ->get();
 
+        $ttlDebit = 0;
+        $ttlKredit = 0;
+        foreach ($datas as $d) {
+            $ttlDebit += $d->debit;
+            $ttlKredit += $d->kredit;
+        }
 
         $data = [
-            'title' => 'Cashflow',
-            'piutang' => DB::select("SELECT a.nm_akun, b.debit, b.kredit
-            FROM akun as a
-            left join (
-            SELECT b.id_akun , sum(b.debit) as debit , sum(b.kredit) as kredit
-            FROM jurnal as b
-            where b.tgl BETWEEN '2022-01-01' and '$tgl_back' and  b.id_buku = '6'
-            ) as b on b.id_akun = a.id_akun
-            where a.id_akun in(SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '1');"),
-
-            'penjualan' => DB::select("SELECT a.nm_akun, b.debit, b.kredit
-            FROM akun as a
-            left join (
-            SELECT b.id_akun, sum(b.debit) as debit , sum(b.kredit) as kredit
-            FROM jurnal as b
-            where b.tgl BETWEEN '$tgl1' and '$tgl2' and b.id_buku = '6'
-            group by b.id_akun
-            ) as b on b.id_akun = a.id_akun
-            where a.id_akun in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '2');"),
-
-            'uang' => DB::select("SELECT a.nm_akun, b.debit, b.kredit
-            FROM akun as a
-            left join (
-            SELECT b.id_akun, sum(b.debit) as debit , sum(b.kredit) as kredit
-            FROM jurnal as b
-            where b.tgl BETWEEN '$tgl1' and '$tgl2' and b.id_buku = '6'
-            group by b.id_akun
-            ) as b on b.id_akun = a.id_akun
-            where a.id_akun in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '3');"),
-
-            'piutang2' => DB::select("SELECT a.nm_akun, b.debit, b.kredit
-            FROM akun as a
-            left join (
-            SELECT b.id_akun, sum(b.debit) as debit , sum(b.kredit) as kredit
-            FROM jurnal as b
-            where b.tgl BETWEEN '2020-01-01' and '$tgl2' and b.id_buku = '6'
-            group by b.id_akun
-            ) as b on b.id_akun = a.id_akun
-            where a.id_akun in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '4');"),
-
-            'biaya' => DB::select("SELECT a.nm_akun, b.debit, b.kredit
-            FROM akun as a
-            left join (
-            SELECT b.id_akun, sum(b.debit) as debit , sum(b.kredit) as kredit
-            FROM jurnal as b
-            where b.tgl BETWEEN '$tgl1' and '$tgl2' and b.id_buku = '2'
-            group by b.id_akun
-            ) as b on b.id_akun = a.id_akun
-            where a.id_akun in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '5') "),
-
-            'uangbiaya' => DB::select("SELECT ak.nm_akun, a.debit , a.kredit
-            FROM akun as ak
-            
-            left join (
-            SELECT a.id_akun , sum(a.debit) as debit , sum(a.kredit) as kredit
-                FROM jurnal as a 
-                left join (
-                	SELECT j.no_nota, j.id_akun
-                    FROM jurnal as j
-                    LEFT JOIN akun as b ON b.id_akun = j.id_akun
-                    WHERE j.debit != '0'
-                    GROUP BY j.no_nota
-                ) d ON a.no_nota = d.no_nota AND d.id_akun != a.id_akun
-                WHERE d.id_akun in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '5') 
-                and a.tgl between '$tgl1' and '$tgl2'  and a.id_buku = '2'
-                 group by a.id_akun
-            ) as a on a.id_akun = ak.id_akun
-            WHERE ak.id_akun in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '6');"),
-
-            'tgl_back' => $tgl_back,
-            'tgl2' => $tgl2
+            'title' => "Cashflow",
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+            'datas' => $datas,
+            'ttlDebit' => $ttlDebit,
+            'ttlKredit' => $ttlKredit,
+            'sisa' =>  $ttlDebit - $ttlKredit,
         ];
         return view('cashflow.cashflow', $data);
     }
 
-    public function loadInputKontrol(Request $r)
+    public function add()
     {
         $data = [
-            'title' => 'load',
-            'akun1' => DB::Select("SELECT * FROM akun as a where a.id_akun not in (SELECT t.id_akun FROM akuncash_ibu as t where t.kategori = '$r->kategori')"),
-            'cash' => DB::select("SELECT *
-            FROM akuncash_ibu as a 
-            left join akun as b on b.id_akun = a.id_akun
-            where a.kategori = '$r->kategori'
-            "),
-            'kategori' => $r->kategori
-
+            'title' => 'Tambah Cashflow'
         ];
-        return view('cashflow.loadinputakun', $data);
+        return view('dashboard', $data);
     }
 
-    public function save_akun_ibu(Request $r)
+    public function keluar(Request $r)
     {
-        $data = [
-            'id_akun' => $r->id_akun,
-            'kategori' => $r->kategori,
-            'urutan' => $r->urutan
-        ];
-        DB::table('akuncash_ibu')->insert($data);
+        $nominal = str_replace('.', '', $r->nominal);
+        $pilihan = $r->pilihan;
+        DB::table('tb_transaksi')->insert([
+            'user_id' => auth()->user()->id,
+            'debit' => $pilihan == 'uangMasuk' ? $nominal : 0,
+            'kredit' => $pilihan == 'uangMasuk' ? 0 : $nominal,
+            'tgl' => $r->tgl,
+            'ket' => $r->ket
+        ]);
     }
 
-    public function delete_akun_ibu(Request $r)
+    public function destroy(Request $r)
     {
-        DB::table('akuncash_ibu')->where('id_akuncashibu', $r->id_akuncashibu)->delete();
-    }
-
-    public function edit_akun_ibu(Request $r)
-    {
-        for ($x = 0; $x < count($r->id_akuncashibu); $x++) {
-            $data = [
-                'urutan' => $r->urutan[$x]
-            ];
-            DB::table('akuncash_ibu')->where('id_akuncashibu', $r->id_akuncashibu[$x])->update($data);
-        }
+        DB::table('tb_transaksi')->where('id_transaksi', $r->no_nota)->delete();
+        return redirect()->route('cashflow.index')->with('sukses', 'Berhasil hapus data');
     }
 }

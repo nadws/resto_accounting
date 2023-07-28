@@ -1,168 +1,87 @@
-<style>
-    .dhead {
-        background-color: #435EBE !important;
-        color: white;
-    }
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
+    <x-slot name="cardHeader">
+        <div class="row">
+            <div class="col-lg-4 col-4">
+                <h5 class="float-start">Cashflow</h5>
+            </div>
+            <div class="col-lg-4 col-4">
+                <button
+                        class="btn rounded-pill btn-outline-primary btn-block"
+                        >
+                        <span style="font-size: 25px">Rp. {{ number_format($sisa,0) }}</span> 
+                    </button>
+            </div>
+            <div class="col-lg-4 col-4">
+                <a class="me-2 btn btn-primary float-end" href="{{ route('cashflow.add') }}"><i class="fas fa-plus"></i> Tambah</a>
+                <x-theme.btn_filter />
+            </div>
+        </div>
 
-    .dhead2 {
-        background-color: #f01e2c !important;
-        color: white;
-    }
-</style>
-<div class="row">
-    <div class="col-lg-6">
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <th class="dhead2">Akun</th>
-                    <th class="dhead2">Rupiah</th>
-                </tr>
-                <tr>
-                    <td colspan="2" class="fw-bold"><a href="#" onclick="event.preventDefault();"
-                            class="tmbhakun_control" kategori='1'>Piutang Bulan Lalu</a>
-                    </td>
-                </tr>
-                @php
-                $total_pi = 0;
-                $total_pe = 0;
-                @endphp
-                @foreach ($piutang as $p)
-                @php
-                $total_pi += $p->debit - $p->kredit;
-                @endphp
-                <tr>
-                    <td>{{ucwords(strtolower($p->nm_akun))}} ({{date('F Y',strtotime($tgl_back))}}) </td>
-                    <td align="right">Rp {{number_format($p->debit - $p->kredit,0)}}</td>
-                </tr>
-                @endforeach
-                <tr>
-                    <td colspan="2" class="fw-bold"><a href="#" onclick="event.preventDefault();"
-                            class="tmbhakun_control" kategori='2'>Penjualan</a></td>
-                </tr>
-                @foreach ($penjualan as $p)
-                @php
-                $total_pe += $p->kredit;
-                @endphp
-                <tr>
-                    <td>{{ucwords(strtolower($p->nm_akun))}} </td>
-                    <td align="right">Rp {{number_format($p->kredit,0)}}</td>
-                </tr>
-                @endforeach
-                <tr>
-                    <td colspan="2" class="fw-bold">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Grand Total</td>
-                    <td class="fw-bold" align="right">Rp {{number_format($total_pi + $total_pe,0)}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="col-lg-6">
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th class="dhead2">Akun</th>
-                    <th style="text-align: right" class="dhead2">Rupiah</th>
-                </tr>
-                <tr>
-                    <td colspan="2" class="fw-bold"><a href="#" onclick="event.preventDefault();"
-                            class="tmbhakun_control" kategori='3'>Uang Ditarik</a></td>
-                </tr>
-                @php
-                $t_uang = 0;
-                $t_piutang = 0;
-                @endphp
-                @foreach ($uang as $u)
-                @php
-                $t_uang += $u->debit;
-                @endphp
+    </x-slot>
+    <x-slot name="cardBody">
 
-                <tr>
-                    <td>{{ucwords(strtolower($u->nm_akun))}} </td>
-                    <td align="right">{{number_format($u->debit,0)}} </td>
-                </tr>
-                @endforeach
-                <tr>
-                    <td colspan="2" class="fw-bold"><a href="#" onclick="event.preventDefault();"
-                            class="tmbhakun_control" kategori='4'>Piutang Bulan Ini</a></td>
-                </tr>
-                @foreach ($piutang2 as $u)
-                @php
-                $t_piutang += $u->debit - $u->kredit;
-                @endphp
-                <tr>
-                    <td>{{ucwords(strtolower($u->nm_akun))}} ({{date('F Y',strtotime($tgl2))}})</td>
-                    <td align="right">{{number_format($u->debit - $u->kredit,0)}} </td>
-                </tr>
-                @endforeach
-                <tr>
-                    <td colspan="2" class="fw-bold">&nbsp;</td>
-                </tr>
-                <tr>
-                    <td class="fw-bold">Grand Total</td>
-                    <td class="fw-bold" align="right">Rp {{number_format($t_uang + $t_piutang,0)}}</td>
-                </tr>
-            </thead>
-        </table>
-    </div>
-    <div class="col-lg-12">
-        <hr style="border: 1">
-    </div>
-    <div class="col-lg-6 mt-2">
-        @php
-        $total_b = 0;
-        @endphp
-        @foreach ($biaya as $b)
-        @php
-        $total_b += $b->debit;
-        @endphp
-        @endforeach
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <th class="dhead2">Total Uang Keluar</th>
-                    <th class="dhead2" style="white-space: nowrap">Rp {{number_format($total_b,0)}}</th>
-                </tr>
-                <tr>
-                    <td colspan="2" class="fw-bold"><a href="#" onclick="event.preventDefault();"
-                            class="tmbhakun_control" kategori='5'>Biaya</a></td>
-                </tr>
-                @foreach ($biaya as $b)
-                <tr>
-                    <td>{{ucwords(strtolower($b->nm_akun))}} </td>
-                    <td align="right">Rp {{number_format($b->debit ,0)}}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    <div class="col-lg-6 mt-2">
-        @php
-        $total_bi = 0;
-        @endphp
-        @foreach ($uangbiaya as $b)
-        @php
-        $total_bi += $b->kredit;
-        @endphp
-        @endforeach
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <th class="dhead2">Total Uang Keluar</th>
-                    <th class="dhead2" style="white-space: nowrap">Rp {{number_format($total_bi,0)}}</th>
-                </tr>
-                <tr>
-                    <td colspan="2" class="fw-bold"><a href="#" onclick="event.preventDefault();"
-                            class="tmbhakun_control" kategori='6'>Uang Keluar</a></td>
-                </tr>
-                @foreach ($uangbiaya as $b)
-                <tr>
-                    <td>{{ucwords(strtolower($b->nm_akun))}} </td>
-                    <td align="right">Rp {{number_format($b->kredit ,0)}}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-</div>
+        <section class="row">
+            <table class="table stripped" id="table1">
+                <thead class="bg-primary text-white">
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Debit ({{number_format($ttlDebit,0)}})</th>
+                        <th>Kredit ({{ number_format($ttlKredit,0) }})</th>
+                        <th>Keterangan</th>
+                        <th class="text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($datas as $no => $d)
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ tanggal($d->tgl) }}</td>
+                            <td>{{ number_format($d->debit, 0) }}</td>
+                            <td>{{ number_format($d->kredit, 0) }}</td>
+                            <td>{{ ucwords($d->ket) }}</td>
+                            <td align="right">
+                                <a href="" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
+                                <a class="btn btn-sm btn-danger delete_nota" no_nota="{{ $d->id_transaksi }}" href="#"
+                                    data-bs-toggle="modal" data-bs-target="#delete"><i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </section>
+        <form action="{{ route('cashflow.destroy') }}" method="post">
+            @csrf
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <input type="hidden" class="no_nota" name="no_nota">
+                                <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
+                                <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @section('scripts')
+            <script>
+                $(document).on('click', '.delete_nota', function() {
+                    var no_nota = $(this).attr('no_nota');
+                    $('.no_nota').val(no_nota);
+                })
+            </script>
+        @endsection
+    </x-slot>
+
+</x-theme.app>

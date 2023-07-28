@@ -1,7 +1,7 @@
 @props([
-'title' => '',
+    'title' => '',
 ])
-<x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end" teks="" />
+<x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end" teks="Filter" />
 <form action="" method="get">
     <x-theme.modal title="Filter Tanggal" idModal="view">
         <div class="row">
@@ -28,27 +28,26 @@
                 <label for="">Bulan</label>
                 <select name="bulan" id="bulan" class="selectView bulan">
                     @php
-                    $listBulan = DB::table('bulan')->get();
+                        $listBulan = DB::table('bulan')->get();
                     @endphp
-                    @foreach($listBulan as $l)
-                    <option value="{{ $l->bulan }}" {{ (int) date('m')==$l->bulan ? 'selected' : ''
-                        }}>{{
-                        $l->nm_bulan }}</option>
+                    @foreach ($listBulan as $l)
+                        <option value="{{ $l->bulan }}" {{ (int) date('m') == $l->bulan ? 'selected' : '' }}>
+                            {{ $l->nm_bulan }}</option>
                     @endforeach
                 </select>
             </div>
             <div class="col-lg-4 bulan_muncul mt-2">
                 <label for="">Tahun</label>
                 <select name="tahun" id="" class="selectView bulan">
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
+                    <option {{date('Y') == '2022' ? 'selected' : ''}} value="2022">2022</option>
+                    <option {{date('Y') == '2023' ? 'selected' : ''}} value="2023">2023</option>
                 </select>
             </div>
             <div class="col-lg-8 tahun_muncul mt-2">
                 <label for="">Tahun</label>
                 <select name="tahunfilter" id="" class="selectView tahun">
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
+                    <option {{date('Y') == '2022' ? 'selected' : ''}} value="2022">2022</option>
+                    <option {{date('Y') == '2023' ? 'selected' : ''}} value="2023">2023</option>
                 </select>
             </div>
         </div>

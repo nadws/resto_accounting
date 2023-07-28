@@ -4,20 +4,36 @@
         <div class="container font-bold">
             <ul>
                 <li class="menu-item">
-                    <a href="dashboard"
+                    <a href="{{ route('dashboard') }}"
                         class='menu-link {{ request()->route()->getName() == 'dashboard'
                             ? 'active_navbar_new'
                             : '' }}'>
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li class="menu-item">
+                    <a href="{{ route('cashflow.add') }}"
+                        class='menu-link {{ request()->route()->getName() == 'cashflow.add'
+                            ? 'active_navbar_new'
+                            : '' }}'>
+                        <span>Tambah Cashflow</span>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('cashflow.index') }}"
+                        class='menu-link {{ request()->route()->getName() == 'cashflow.index'
+                            ? 'active_navbar_new'
+                            : '' }}'>
+                        <span>Transaksi</span>
+                    </a>
+                </li>
                 @php
-                    $navbar = DB::table('navbar_kandang')
+                    $navbar = DB::table('navbar')
                         ->orderBy('urutan', 'ASC')
                         ->get();
                     
                 @endphp
-                @foreach ($navbar as $d)
+                {{-- @foreach ($navbar as $d)
                     @php
                         $string = $d->isi;
                         $string = str_replace(['[', ']', "'"], '', $string);
@@ -30,7 +46,7 @@
                             <span>{{ ucwords($d->nama) }}</span>
                         </a>
                     </li>
-                @endforeach
+                @endforeach --}}
             </ul>
         </div>
     </nav>
