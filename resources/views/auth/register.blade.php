@@ -66,7 +66,7 @@
 
             <div class="wrap-login100">
 
-                <form class="login100-form validate-form" action="{{ route('register_nanda') }}" method="post">
+                <form class="login100-form validate-form" action="{{ route('user.create') }}" method="post">
                     <center>
                         <img src="{{asset('img/penutup.png')}}" alt="" width="80px">
                     </center>
