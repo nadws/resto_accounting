@@ -22,6 +22,11 @@ class UserController extends Controller
         return view('user.user', $data);
     }
 
+    public function register(Request $r)
+    {
+        dd($r->all());
+    }
+
     public function create(Request $r)
     {
         $uuid = Uuid::uuid4()->toString();
