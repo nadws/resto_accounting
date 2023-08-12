@@ -84,10 +84,11 @@ class CashflowController extends Controller
         $nominal = str_replace('.', '', $r->nominal);
         $pilihan = $r->pilihan;
         $nominal = Crypt::encrypt($nominal);
+        $nol = Crypt::encrypt('0');
         DB::table('tb_transaksi')->insert([
             'user_id' => auth()->user()->id,
-            'debit' => $pilihan == 'uangMasuk' ? $nominal : 0,
-            'kredit' => $pilihan == 'uangMasuk' ? 0 : $nominal,
+            'debit' => $pilihan == 'uangMasuk' ? $nominal : $nol,
+            'kredit' => $pilihan == 'uangMasuk' ? $nol : $nominal,
             'tgl' => $r->tgl,
             'ket' => $r->ket
         ]);
