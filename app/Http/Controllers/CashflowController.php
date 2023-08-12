@@ -55,8 +55,10 @@ class CashflowController extends Controller
         $ttlDebit = 0;
         $ttlKredit = 0;
         foreach ($datas as $d) {
-            $ttlDebit += (int) $d->debit;
-            $ttlKredit += (int) $d->kredit;
+            $debit = (int) Crypt::decrypt($d->debit);
+                            $kredit = (int) Crypt::decrypt($d->kredit);
+            $ttlDebit += $debit;
+            $ttlKredit += $kredit;
         }
         dd($ttlDebit - $ttlKredit);
 
