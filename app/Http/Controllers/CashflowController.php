@@ -58,6 +58,7 @@ class CashflowController extends Controller
             $ttlDebit += (int) $d->debit;
             $ttlKredit += (int) $d->kredit;
         }
+        dd($ttlDebit);
 
         $data = [
             'title' => "Cashflow",
