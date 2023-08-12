@@ -37,8 +37,8 @@
                         <tr>
                             <td>{{ $no + 1 }}</td>
                             <td>{{ tanggal($d->tgl) }}</td>
-                            <td>{{ number_format($d->debit, 0) }}</td>
-                            <td>{{ number_format($d->kredit, 0) }}</td>
+                            <td>{{ number_format((int) $d->debit, 0) }}</td>
+                            <td>{{ number_format((int) $d->kredit, 0) }}</td>
                             <td>{{ ucwords($d->ket) }}</td>
                             <td align="right">
                                 <a href="" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
