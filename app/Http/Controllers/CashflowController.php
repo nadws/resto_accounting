@@ -60,7 +60,6 @@ class CashflowController extends Controller
             $ttlDebit += $debit;
             $ttlKredit += $kredit;
         }
-        dd($ttlDebit - $ttlKredit);
 
         $data = [
             'title' => "Cashflow",
