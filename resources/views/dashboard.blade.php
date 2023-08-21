@@ -105,7 +105,7 @@
 
                 $(document).on('keyup', '#angka', function() {
                     var angka = $(this).val()
-                    if (angka !== '' && !isNaN(angka)) {
+                    if (angka !== '') {
                         $("#btnLanjutkan").removeAttr('disabled');
                     } else {
                         $("#btnLanjutkan").attr('disabled', true);
