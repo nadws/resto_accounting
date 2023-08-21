@@ -34,11 +34,15 @@
                 </thead>
                 <tbody>
                     @foreach ($datas as $no => $d)
+                        @php
+                            $debit = (int) Crypt::decrypt($d->debit);
+                            $kredit = (int) Crypt::decrypt($d->kredit);
+                        @endphp
                         <tr>
                             <td>{{ $no + 1 }}</td>
                             <td>{{ tanggal($d->tgl) }}</td>
-                            <td>{{ number_format($d->debit, 0) }}</td>
-                            <td>{{ number_format($d->kredit, 0) }}</td>
+                            <td>{{ number_format($debit, 0) }}</td>
+                            <td>{{ number_format($kredit, 0) }}</td>
                             <td>{{ ucwords($d->ket) }}</td>
                             <td align="right">
                                 <a href="" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
