@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/add', 'add')->name('add');
+            Route::get('/edit', 'edit')->name('edit');
+            Route::post('/update', 'update')->name('update');
             Route::get('/keluar', 'keluar')->name('keluar');
             Route::post('/destroy', 'destroy')->name('destroy');
         });

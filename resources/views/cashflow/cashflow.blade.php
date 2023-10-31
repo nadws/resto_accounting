@@ -1,38 +1,37 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="9">
     <x-slot name="cardHeader">
         <div class="row">
             <div class="col-lg-4 col-4">
                 <h5 class="float-start">Cashflow</h5>
             </div>
             <div class="col-lg-4 col-8">
-                <button
-                        class="btn rounded-pill btn-outline-primary btn-block"
-                        >
-                        <span style="font-size: 25px">Rp. {{ number_format($sisa,0) }}</span> 
-                    </button>
+                <button class="btn rounded-pill btn-outline-primary btn-block">
+                    <span style="font-size: 25px">Rp. {{ number_format($sisa, 0) }}</span>
+                </button>
             </div>
             <div class="col-lg-4 col-12">
-                <a class="me-2 btn btn-primary float-end" href="{{ route('cashflow.add') }}"><i class="fas fa-plus"></i> Tambah</a>
+                <a class="me-2 btn btn-primary btn-sm float-end" href="{{ route('cashflow.add') }}"><i
+                        class="fas fa-plus"></i> Tambah</a>
                 <x-theme.btn_filter />
             </div>
         </div>
 
     </x-slot>
     <x-slot name="cardBody">
-
         <section class="row">
             <table class="table stripped" id="table1">
                 <thead class="bg-primary text-white">
                     <tr>
                         <th>No</th>
                         <th>Tanggal</th>
-                        <th>Debit ({{number_format($ttlDebit,0)}})</th>
-                        <th>Kredit ({{ number_format($ttlKredit,0) }})</th>
+                        <th class="text-end">Debit ({{ number_format($ttlDebit, 0) }})</th>
+                        <th class="text-end">Kredit ({{ number_format($ttlKredit, 0) }})</th>
                         <th>Keterangan</th>
                         <th class="text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach ($datas as $no => $d)
                         @php
                             $debit = (int) Crypt::decrypt($d->debit);
@@ -41,13 +40,15 @@
                         <tr>
                             <td>{{ $no + 1 }}</td>
                             <td>{{ tanggal($d->tgl) }}</td>
-                            <td>{{ number_format($debit, 0) }}</td>
-                            <td>{{ number_format($kredit, 0) }}</td>
+                            <td align="right">{{ number_format($debit, 0) }}</td>
+                            <td align="right">{{ number_format($kredit, 0) }}</td>
                             <td>{{ ucwords($d->ket) }}</td>
                             <td align="right">
-                                <a href="" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
-                                <a class="btn btn-sm btn-danger delete_nota" no_nota="{{ $d->id_transaksi }}" href="#"
-                                    data-bs-toggle="modal" data-bs-target="#delete"><i class="fas fa-trash"></i>
+                                <a href="#" id_transaksi="{{ $d->id_transaksi }}"
+                                    class="edit btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
+                                <a class="btn btn-sm btn-danger delete_nota" no_nota="{{ $d->id_transaksi }}"
+                                    href="#" data-bs-toggle="modal" data-bs-target="#delete"><i
+                                        class="fas fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
@@ -78,11 +79,30 @@
                 </div>
             </div>
         </form>
+
+        <form action="{{ route('cashflow.update') }}" method="post">
+            @csrf
+            <x-theme.modal title="Edit Cashflow" size="modal-lg" idModal="edit">
+                
+                <div id="load_edit"></div>
+            </x-theme.modal>
+        </form>
         @section('scripts')
             <script>
                 $(document).on('click', '.delete_nota', function() {
                     var no_nota = $(this).attr('no_nota');
                     $('.no_nota').val(no_nota);
+                })
+                $(document).on('click', '.edit', function() {
+                    var id = $(this).attr('id_transaksi')
+                    $("#edit").modal('show')
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('cashflow.edit') }}?id_transaksi=" + id,
+                        success: function(r) {
+                            $("#load_edit").html(r);
+                        }
+                    });
                 })
             </script>
         @endsection

@@ -8,44 +8,11 @@ use Illuminate\Support\Facades\Crypt;
 
 class CashflowController extends Controller
 {
-    protected $tgl1, $tgl2;
-    public function __construct(Request $r)
-    {
-        if (empty($r->period)) {
-            $this->tgl1 = date('2022-01-01');
-            $this->tgl2 = date('Y-m-t');
-        } elseif ($r->period == 'daily') {
-            $this->tgl1 = date('Y-m-d');
-            $this->tgl2 = date('Y-m-d');
-        } elseif ($r->period == 'weekly') {
-            $this->tgl1 = date('Y-m-d', strtotime("-6 days"));
-            $this->tgl2 = date('Y-m-d');
-        } elseif ($r->period == 'mounthly') {
-            $bulan = $r->bulan;
-            $tahun = $r->tahun;
-            $tglawal = "$tahun" . "-" . "$bulan" . "-" . "01";
-            $tglakhir = "$tahun" . "-" . "$bulan" . "-" . "01";
-
-            $this->tgl1 = date('Y-m-01', strtotime($tglawal));
-            $this->tgl2 = date('Y-m-t', strtotime($tglakhir));
-        } elseif ($r->period == 'costume') {
-            $this->tgl1 = $r->tgl1;
-            $this->tgl2 = $r->tgl2;
-        } elseif ($r->period == 'years') {
-            $tahun = $r->tahunfilter;
-            $tgl_awal = "$tahun" . "-" . "01" . "-" . "01";
-            $tgl_akhir = "$tahun" . "-" . "12" . "-" . "01";
-
-            $this->tgl1 = date('Y-m-01', strtotime($tgl_awal));
-            $this->tgl2 = date('Y-m-t', strtotime($tgl_akhir));
-        }
-    }
-
     public function index(Request $r)
     {
-        $tgl1 =  $this->tgl1;
-        $tgl2 =  $this->tgl2;
-
+        $tgl = tanggalFilter($r);
+        $tgl1 =  $tgl['tgl1'];
+        $tgl2 =  $tgl['tgl2'];
         $datas = DB::table('tb_transaksi as a')
             ->where('user_id', auth()->user()->id)
             ->whereBetween('tgl', [$tgl1, $tgl2])
@@ -56,7 +23,7 @@ class CashflowController extends Controller
         $ttlKredit = 0;
         foreach ($datas as $d) {
             $debit = (int) Crypt::decrypt($d->debit);
-                            $kredit = (int) Crypt::decrypt($d->kredit);
+            $kredit = (int) Crypt::decrypt($d->kredit);
             $ttlDebit += $debit;
             $ttlKredit += $kredit;
         }
@@ -72,6 +39,8 @@ class CashflowController extends Controller
         ];
         return view('cashflow.cashflow', $data);
     }
+
+
 
     public function add()
     {
@@ -94,6 +63,30 @@ class CashflowController extends Controller
             'tgl' => $r->tgl,
             'ket' => $r->ket
         ]);
+    }
+
+    public function edit(Request $r)
+    {
+        $data = [
+            'detail' => DB::table('tb_transaksi')->where('id_transaksi', $r->id_transaksi)->first()
+        ];
+        return view('cashflow.edit',$data);
+    }
+
+    public function update(Request $r)
+    {
+        $debit = str()->remove(',', $r->debit);
+        $kredit = str()->remove(',', $r->kredit);
+        $debit = Crypt::encrypt($debit);
+        $kredit = Crypt::encrypt($kredit);
+        DB::table('tb_transaksi')->where('id_transaksi', $r->id_transaksi)->update([
+            'debit' => $debit,
+            'kredit' => $kredit,
+            'tgl' => $r->tgl,
+            'ket' => $r->ket
+        ]);
+        return redirect()->route('cashflow.index')->with('sukses', 'Berhasil update data');
+
     }
 
     public function destroy(Request $r)

@@ -6,13 +6,13 @@
     'id_proyek' => '',
 ])
 <form action="{{ route($route) }}" method="get">
-    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="row">
                         <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
-                        <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                        <p class="ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
                         <input type="hidden" class="no_nota" name="{{$name}}">
                         <input type="hidden" name="tgl1" value="{{ $tgl1 ?? '' }}">
                         <input type="hidden" name="tgl2" value="{{ $tgl2 ?? '' }}">
