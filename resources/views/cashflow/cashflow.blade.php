@@ -83,7 +83,6 @@
         <form action="{{ route('cashflow.update') }}" method="post">
             @csrf
             <x-theme.modal title="Edit Cashflow" size="modal-lg" idModal="edit">
-                
                 <div id="load_edit"></div>
             </x-theme.modal>
         </form>
