@@ -97,7 +97,6 @@
     </script>
 @endif
 @yield('scripts')
-@livewireStyles
 </body>
 
 </html>
