@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -13,9 +14,9 @@ Route::middleware('auth')->group(function () {
         return view('template-notable');
     })->name('template1');
 
-    Route::get('/dashboard', function () {
-        return view('template-notable');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return view('template-notable');
+    // })->name('dashboard');
 
     Route::get('/template2', function () {
         return view('template-table');
@@ -60,3 +61,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+require __DIR__ . '/nanda.php';

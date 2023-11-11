@@ -1,8 +1,8 @@
 <div class="header-top">
     <div class="container">
         <div class="logo text-center">
-            <a href="dashboard"><img src="{{asset('img/penutup.png')}}" alt="Logo"></a>
-            <h5>Cashflow</h5>
+            <a href="dashboard"><img src="{{ asset('img/takemori_3.jpg') }}" alt="Logo"></a>
+            {{-- <h5>Cashflow</h5> --}}
         </div>
         <div class="header-top-right">
 
@@ -12,8 +12,8 @@
                     aria-expanded="false">
                     <div class="avatar avatar-md2">
                         @php
-                        $idPosisi = auth()->user()->posisi->id_posisi;
-                        $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
+                            $idPosisi = auth()->user()->posisi->id_posisi;
+                            $gambar = $idPosisi == 1 ? 'kitchen' : 'server';
                         @endphp
                         <img src='{{ asset("img/$gambar.png") }}' alt="Avatar">
                     </div>

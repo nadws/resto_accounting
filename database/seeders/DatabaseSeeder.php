@@ -23,24 +23,9 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'posisi_id' => 1,
-            'name' => 'aldi',
-            'email' => 'aldi@gmail.com',
+            'name' => 'nanda',
+            'email' => 'nandw567@gmail.com',
             'password' => bcrypt('password'),
         ]);
-
-
-        # code...
-
-
-
-        $satuan = [
-            'pcs', 'box', 'pack', 'gr', 'kg'
-        ];
-
-        foreach ($satuan as $d) {
-            \App\Models\Satuan::create([
-                'nm_satuan' => $d
-            ]);
-        }
     }
 }

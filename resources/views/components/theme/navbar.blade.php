@@ -3,15 +3,15 @@
     <nav class="main-navbar ">
         <div class="container font-bold">
             <ul>
-                <li class="menu-item">
-                    <a href="{{ route('dashboard') }}"
-                        class='menu-link {{ request()->route()->getName() == 'dashboard'
+                <li class="menu-item ">
+                    <a href="{{ route('dashboard.index') }}"
+                        class='menu-link {{ request()->route()->getName() == 'dashboard.index'
                             ? 'active_navbar_new'
                             : '' }}'>
-                        <span>Dashboard</span>
+                        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item">
+                {{-- <li class="menu-item">
                     <a href="{{ route('cashflow.add') }}"
                         class='menu-link {{ request()->route()->getName() == 'cashflow.add'
                             ? 'active_navbar_new'
@@ -26,14 +26,14 @@
                             : '' }}'>
                         <span>Transaksi</span>
                     </a>
-                </li>
+                </li> --}}
                 @php
                     $navbar = DB::table('navbar')
                         ->orderBy('urutan', 'ASC')
                         ->get();
-                    
+
                 @endphp
-                {{-- @foreach ($navbar as $d)
+                @foreach ($navbar as $d)
                     @php
                         $string = $d->isi;
                         $string = str_replace(['[', ']', "'"], '', $string);
@@ -43,10 +43,10 @@
                         <a href="{{ route($d->route) }}"
                             class='menu-link 
                     {{ in_array(request()->route()->getName(),$array)? 'active_navbar_new': '' }}'>
-                            <span>{{ ucwords($d->nama) }}</span>
+                            <span>{!! $d->icon !!} {{ ucwords($d->nama) }}</span>
                         </a>
                     </li>
-                @endforeach --}}
+                @endforeach
             </ul>
         </div>
     </nav>

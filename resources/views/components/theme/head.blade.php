@@ -103,9 +103,28 @@
         }
 
         .active_navbar_new {
-            text-decoration: underline;
             color: #ffffff !important;
         }
+
+        .active_navbar_new,
+        .active_navbar_new i {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-decoration-skip-ink: none;
+        }
+
+        .menu-link:hover {
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-decoration-skip-ink: none;
+        }
+
+
+
+        .menu-link:hover i {
+            transform: translateY(-3px);
+        }
+
 
         .active-nvs {
             text-decoration: underline;
@@ -166,6 +185,11 @@
             height: 50px;
         }
 
+        .layout-horizontal .main-navbar {
+            background-color: #0B7372;
+            padding: 1rem;
+        }
+
         .modal-dialog-centered {
             justify-content: center;
         }
@@ -181,7 +205,7 @@
         }
 
         th {
-            background-color: #435EBE;
+            background-color: #0B7372;
 
         }
     </style>
