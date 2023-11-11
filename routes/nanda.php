@@ -27,5 +27,6 @@ Route::middleware('auth')->group(function () {
         ->name('akun.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::post('/save', 'save')->name('save');
         });
 });

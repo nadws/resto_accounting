@@ -10,9 +10,25 @@
                     foreach ($kas as $k) {
                         $ttl_kas += $k->debit - $k->kredit;
                     }
+
+                    $ttl_bank = 0;
+                    foreach ($bank as $k) {
+                        $ttl_bank += $k->debit - $k->kredit;
+                    }
+                    $ttl_piutang = 0;
+                    foreach ($piutang as $k) {
+                        $ttl_piutang += $k->debit - $k->kredit;
+                    }
+                    $ttl_persediaan = 0;
+                    foreach ($persediaan as $k) {
+                        $ttl_persediaan += $k->debit - $k->kredit;
+                    }
                 @endphp
                 <table class="table table-bordered" x-data="{
                     openkas: false,
+                    openbank: false,
+                    openpiutang: false,
+                    openpersediaan: false,
                 }">
                     <tr>
                         <th colspan="2" class="text-center">Aktiva</th>
@@ -33,17 +49,38 @@
                     @endforeach
 
                     <tr>
-                        <td>BANK</td>
-                        <td class="text-end">Rp 100,000</td>
+                        <td>BANK <a href="javascript:void(0);" class="float-end" @click="openbank = ! openbank"><i
+                                    class=" fas fa-caret-down"></i></a></td>
+                        <td class="text-end">Rp {{ number_format($ttl_bank, 0) }}</td>
                     </tr>
+                    @foreach ($bank as $k)
+                        <tr x-show="openbank">
+                            <td>&nbsp;&nbsp; <a href="">{{ $k->nm_akun }}</a></td>
+                            <td class="text-end">Rp {{ number_format($k->debit - $k->kredit) }} </td>
+                        </tr>
+                    @endforeach
                     <tr>
-                        <td>PIUTANG DAGANG</td>
-                        <td class="text-end">Rp 100,000</td>
+                        <td>PIUTANG DAGANG <a href="javascript:void(0);" class="float-end"
+                                @click="openpiutang = ! openpiutang"><i class=" fas fa-caret-down"></i></a></td>
+                        <td class="text-end">Rp {{ number_format($ttl_piutang, 0) }}</td>
                     </tr>
+                    @foreach ($piutang as $k)
+                        <tr x-show="openpiutang">
+                            <td>&nbsp;&nbsp; <a href="">{{ $k->nm_akun }}</a></td>
+                            <td class="text-end">Rp {{ number_format($k->debit - $k->kredit) }} </td>
+                        </tr>
+                    @endforeach
                     <tr>
-                        <td>PERSEDIAN</td>
-                        <td class="text-end">Rp 100,000</td>
+                        <td>PERSEDIAN<a href="javascript:void(0);" class="float-end"
+                                @click="openpersediaan = ! openpersediaan"><i class=" fas fa-caret-down"></i></a></td>
+                        <td class="text-end">Rp {{ number_format($ttl_persediaan, 0) }}</td>
                     </tr>
+                    @foreach ($persediaan as $k)
+                        <tr x-show="openpersediaan">
+                            <td>&nbsp;&nbsp; <a href="">{{ $k->nm_akun }}</a></td>
+                            <td class="text-end">Rp {{ number_format($k->debit - $k->kredit) }} </td>
+                        </tr>
+                    @endforeach
                     <tr>
                         <td colspan="2">&nbsp;</td>
                     </tr>
@@ -68,22 +105,13 @@
                     <tr>
                         <td class="fw-bold">Hutang</td>
                     </tr>
-                    <tr>
-                        <td>Hutang 1</td>
-                        <td class="text-end">Rp 100,000</td>
-                    </tr>
-                    <tr>
-                        <td>Hutang 2</td>
-                        <td class="text-end">Rp 100,000</td>
-                    </tr>
-                    <tr>
-                        <td>Hutang 3</td>
-                        <td class="text-end">Rp 100,000</td>
-                    </tr>
-                    <tr>
-                        <td>hutang 4</td>
-                        <td class="text-end">Rp 100,000</td>
-                    </tr>
+                    @foreach ($hutang as $k)
+                        <tr>
+                            <td>&nbsp;&nbsp; <a href="">{{ $k->nm_akun }}</a></td>
+                            <td class="text-end">Rp {{ number_format($k->debit - $k->kredit) }} </td>
+                        </tr>
+                    @endforeach
+
                     <tr>
                         <td colspan="2">&nbsp;</td>
                     </tr>
