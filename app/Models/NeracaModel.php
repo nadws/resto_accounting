@@ -12,6 +12,7 @@ class NeracaModel extends Model
 
     public static function Getaktiva_tetap($tgl1, $tgl2, $id_klasifikasi)
     {
+        $id_klasifikasi_values = implode(",", $id_klasifikasi);
         $result = DB::select("SELECT a.id_akun, a.nm_akun, b.kredit, b.debit
             FROM akun as a
             LEFT JOIN (
@@ -20,8 +21,8 @@ class NeracaModel extends Model
                 WHERE b.id_buku NOT IN (5, 13) AND b.tgl BETWEEN ? AND ?
                 GROUP BY b.id_akun
             ) as b ON b.id_akun = a.id_akun
-            WHERE a.id_klasifikasi = ?;
-        ", [$tgl1, $tgl2, $id_klasifikasi]);
+            WHERE a.id_klasifikasi in( {$id_klasifikasi_values} );
+        ", [$tgl1, $tgl2]);
 
         return $result;
     }
