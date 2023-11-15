@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
+        Route::get('/pembukuan', 'pembukuan')->name('pembukuan');
     });
 
     Route::controller(CashflowController::class)
@@ -58,6 +61,25 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete', 'delete')->name('delete');
             Route::get('/edit', 'edit')->name('edit');
         });
+
+    Route::controller(JurnalController::class)
+        ->prefix('jurnal')
+        ->name('jurnal.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::get('/load_menu', 'load_add_menu')->name('load_menu');
+            Route::post('/create', 'create')->name('create');
+        });
+    Route::controller(ProfitController::class)
+        ->prefix('profit')
+        ->name('profit.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/createAkun', 'createAkun')->name('createAkun');
+        });
+
+
 });
 
 require __DIR__ . '/auth.php';
