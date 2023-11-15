@@ -8,148 +8,53 @@
 
             <div class="col-lg-12">
                 <div id="load_profit"></div>
+                @php
+                    $form = [
+                        1 => ['tbhBiaya', 'Biaya'],
+                        2 => ['tbhPendapatan', 'Pendapatan'],
+                        3 => ['tbhBiayaPenyesuaian', 'Biaya Penyesuaian'],
+                        4 => ['tbhBiayaDisusutkan', 'Biaya Disusutkan'],
+                    ];
+                @endphp
+                @foreach ($form as $d => $i)
+                    <form id="save_akun_profit">
+                        <x-theme.modal title="Tambah Akun Profit Pendapatan" size="modal-lg"
+                            idModal="{{ $i[0] }}">
 
-                <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit Pendapatan" size="modal-lg" idModal="tbhPendapatan">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <label for="">Nama akun</label>
+                                    <input type="text" class="form-control" name="nm_akun[]" required>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">Nomer akun</label>
+                                    <input type="text" class="form-control" name="kode_akun[]" required>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">Kategori</label>
+                                    <input type="hidden" name="id_klasifikasi[]" value="{{ $d }}">
+                                    <input type="text" class="form-control" readonly value="{{ $i[1] }}">
+                                </div>
+                            </div>
+                            <x-theme.multiple-input>
+                                <div class="col-lg-4">
+                                    <label for="">Nama akun</label>
+                                    <input type="text" class="form-control" name="nm_akun[]" required>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">Nomer akun</label>
+                                    <input type="text" class="form-control" name="kode_akun[]" required>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">Kategori</label>
+                                    <input type="hidden" name="id_klasifikasi[]" value="{{ $d }}">
+                                    <input type="text" class="form-control" readonly value="{{ $i[1] }}">
+                                </div>
+                            </x-theme.multiple-input>
+                        </x-theme.modal>
+                    </form>
+                @endforeach
 
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="1">
-                                <input type="text" class="form-control" readonly value="Pendapatan">
-                            </div>
-                        </div>
-                        <x-theme.multiple-input>
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="1">
-                                <input type="text" class="form-control" readonly value="Pendapatan">
-                            </div>
-                        </x-theme.multiple-input>
-                    </x-theme.modal>
-                </form>
-                <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit" size="modal-lg" idModal="tbhBiaya">
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="2">
-                                <input type="text" class="form-control" readonly value="Biaya">
-                            </div>
-                        </div>
-                        <x-theme.multiple-input>
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="2">
-                                <input type="text" class="form-control" readonly value="Biaya">
-                            </div>
-                        </x-theme.multiple-input>
-                    </x-theme.modal>
-                </form>
-                <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit" size="modal-lg" idModal="tbhBiayaPenyesuaian">
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="3">
-                                <input type="text" class="form-control" readonly value="Biaya Penyesuaian">
-                            </div>
-                        </div>
-                        <x-theme.multiple-input>
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="3">
-                                <input type="text" class="form-control" readonly value="Biaya Penyesuaian">
-                            </div>
-                        </x-theme.multiple-input>
-                    </x-theme.modal>
-                </form>
-                <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit Disusutkan" size="modal-lg"
-                        idModal="tbhBiayaDisusutkan">
-
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="4">
-                                <input type="text" class="form-control" readonly value="Biaya Disusutkan">
-                            </div>
-                        </div>
-                        <x-theme.multiple-input>
-                            <div class="col-lg-4">
-                                <label for="">Nama akun</label>
-                                <input type="text" class="form-control" name="nm_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Nomer akun</label>
-                                <input type="text" class="form-control" name="kode_akun[]" required>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]" value="4">
-                                <input type="text" class="form-control" readonly value="Biaya Disusutkan">
-                            </div>
-                        </x-theme.multiple-input>
-                    </x-theme.modal>
-                </form>
             </div>
             <div class="col-lg-12">
                 <div id="load_cashflow"></div>
