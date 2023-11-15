@@ -13,6 +13,6 @@ class CashflowController extends Controller
         $data = [
             'cahsflow' => 'tes'
         ];
-        return view('cashflow.index', $data);
+        return view('dashboard.cashflow.index', $data);
     }
 }

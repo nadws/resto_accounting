@@ -5,7 +5,9 @@
             <div class="col-lg-8 mb-2">
                 <h6>Dashboard</h6>
             </div>
-
+            <div class="col-lg-12">
+                <div id="load_cashflow"></div>
+            </div>
             <div class="col-lg-12">
                 <div id="load_profit"></div>
                 @php
@@ -56,9 +58,7 @@
                 @endforeach
 
             </div>
-            <div class="col-lg-12">
-                <div id="load_cashflow"></div>
-            </div>
+
             <div class="col-lg-6">
                 <div id="load_akun"></div>
             </div>
@@ -160,9 +160,9 @@
                         $("#load_cashflow").html(response);
                         setTimeout(function() {
                             $('#loading_cashflow').hide();
-                            $('#show2').show();
+                            $('#show_cashflow').show();
                         }, 1000);
-                        $('.select').select2({
+                        $('.select_cashflow').select2({
                             language: {
                                 searching: function() {
                                     $('.select2-search__field').focus();
