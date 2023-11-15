@@ -96,6 +96,7 @@
         <script>
             load_neraca();
             load_akun();
+            load_cashflow();
 
             function toast(pesan) {
                 Toastify({
@@ -132,6 +133,31 @@
                     },
                     success: function(response) {
                         $("#load_neraca").html(response);
+                        setTimeout(function() {
+                            $('#loading2').hide();
+                            $('#show2').show();
+                        }, 1000);
+                        $('.select').select2({
+                            language: {
+                                searching: function() {
+                                    $('.select2-search__field').focus();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            function load_cashflow(bulan, tahun) {
+                $.ajax({
+                    type: "get",
+                    url: "{{ route('cashflow.index') }}",
+                    data: {
+                        bulan: bulan,
+                        tahun: tahun,
+                    },
+                    success: function(response) {
+                        $("#load_cashflow").html(response);
                         setTimeout(function() {
                             $('#loading2').hide();
                             $('#show2').show();
