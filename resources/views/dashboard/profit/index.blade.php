@@ -3,12 +3,12 @@
         <h6 class="text-success float-start">{{ $title }}</h6>
         <x-theme.button modal="Y" idModal="listAkunProfit" icon="fa-plus" variant="primary" addClass="float-end"
             teks="Daftar Akun" />
-        
+
     </div>
     <div class="card-body">
         <div class="row">
             @php
-                
+
                 function sumTotal($data)
                 {
                     $totalsPerMonth = array_fill(0, count(array_keys(reset($data))), 0);
@@ -180,13 +180,13 @@
                                 {{ number_format($totalsData1['totalsPerMonth'][$month] - $totalsData2['totalsPerMonth'][$month] - $totalsData3['totalsPerMonth'][$month], 0) }}
                             </td>
                         @endforeach
-                        
+
                     </tr>
                     <tr>
                         <td class="fw-bold"><a href="#" data-bs-target="#tbhBiayaDisusutkan"
-                            data-bs-toggle="modal">Biaya Disusutkan</a> <span
-                            @click="open_disusutkan = ! open_disusutkan" class="badge bg-primary float-end"
-                            style="cursor: pointer"><i class="fas fa-caret-down"></i>
+                                data-bs-toggle="modal">Biaya Disusutkan</a> <span
+                                @click="open_disusutkan = ! open_disusutkan" class="badge bg-primary float-end"
+                                style="cursor: pointer"><i class="fas fa-caret-down"></i>
                         </td>
                         @foreach (array_keys(reset($data4)) as $month)
                             <td class="fw-bold text-end">
@@ -228,3 +228,49 @@
         </div>
     </div>
 </div>
+
+@php
+    $form = [
+        1 => ['tbhPendapatan', 'Pendapatan'],
+        2 => ['tbhBiaya', 'Biaya'],
+        3 => ['tbhBiayaPenyesuaian', 'Biaya Penyesuaian'],
+        4 => ['tbhBiayaDisusutkan', 'Biaya Disusutkan'],
+    ];
+@endphp
+@foreach ($form as $d => $i)
+    <form id="save_akun_profit">
+        <x-theme.modal title="Tambah Akun Profit Pendapatan" size="modal-lg" idModal="{{ $i[0] }}">
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <label for="">Nama akun</label>
+                    <input type="text" class="form-control" name="nm_akun[]" required>
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Nomer akun</label>
+                    <input type="text" class="form-control" name="kode_akun[]" required>
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Kategori</label>
+                    <input type="hidden" name="id_klasifikasi[]" value="{{ $d }}">
+                    <input type="text" class="form-control" readonly value="{{ $i[1] }}">
+                </div>
+            </div>
+            <x-theme.multiple-input>
+                <div class="col-lg-4">
+                    <label for="">Nama akun</label>
+                    <input type="text" class="form-control" name="nm_akun[]" required>
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Nomer akun</label>
+                    <input type="text" class="form-control" name="kode_akun[]" required>
+                </div>
+                <div class="col-lg-3">
+                    <label for="">Kategori</label>
+                    <input type="hidden" name="id_klasifikasi[]" value="{{ $d }}">
+                    <input type="text" class="form-control" readonly value="{{ $i[1] }}">
+                </div>
+            </x-theme.multiple-input>
+        </x-theme.modal>
+    </form>
+@endforeach
