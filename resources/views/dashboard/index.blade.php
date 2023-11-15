@@ -199,6 +199,7 @@
                 Toastify({
                     text: pesan,
                     duration: 3000,
+                    position: 'center',
                     style: {
                         background: "#EAF7EE",
                         color: "#7F8B8B"
@@ -219,12 +220,27 @@
                 });
             }
 
-            function load_neraca() {
+            function load_neraca(bulan, tahun) {
                 $.ajax({
                     type: "get",
                     url: "{{ route('neraca.index') }}",
+                    data: {
+                        bulan: bulan,
+                        tahun: tahun,
+                    },
                     success: function(response) {
                         $("#load_neraca").html(response);
+                        setTimeout(function() {
+                            $('#loading2').hide();
+                            $('#show2').show();
+                        }, 1000);
+                        $('.select').select2({
+                            language: {
+                                searching: function() {
+                                    $('.select2-search__field').focus();
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -234,6 +250,7 @@
                     type: "get",
                     url: "{{ route('akun.index') }}",
                     success: function(response) {
+
                         $("#load_akun").html(response);
                         $('#table_akun').DataTable({
                             "paging": true,
@@ -242,6 +259,10 @@
                             "stateSave": true,
                             "searching": true,
                         });
+                        setTimeout(function() {
+                            $('#loading').hide();
+                            $('#show').show();
+                        }, 1000);
                     }
                 });
             }
@@ -253,15 +274,25 @@
                 var formData = $(this).serialize();
                 formData += "&_token=" + csrfToken;
 
+                $('#loading').show();
+                $('#show').hide();
+                $('#loading2').show();
+                $('#show2').hide();
+
                 $.ajax({
                     url: "{{ route('akun.save') }}", // Replace with your Laravel route
                     method: "POST",
                     data: formData,
                     success: function(response) {
-                        // Handle success response
                         toast('Akun berhasil di simpan')
                         load_neraca();
                         load_akun();
+                        setTimeout(function() {
+                            $('#loading').hide();
+                            $('#show').show();
+                            $('#loading2').hide();
+                            $('#show2').show();
+                        }, 1000);
                         $("#tambah").modal('hide');
                     },
                     error: function(xhr) {
@@ -269,6 +300,17 @@
                         toast('Data gagal di simpan')
                     }
                 });
+            });
+            $(document).on('submit', '#history_neraca', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var bulan = $("#bulan").val();
+                var tahun = $("#tahun").val();
+
+
+
+                load_neraca(bulan, tahun);
+
             });
      
             $(document).on('submit', '#save_akun_profit', function(e) {

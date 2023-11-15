@@ -1,13 +1,9 @@
 <div class="card">
     <div class="card-header">
-        <div class="row">
-            <div class="col-lg-10">
-                <h6>{{ $title }}</h6>
-            </div>
-            <div class="col-lg-2">
-                <x-theme.button  idModal="listAkunProfit" teks="Daftar Akun" icon="fa-plus" />
-            </div>
-        </div>
+        <h6 class="text-success float-start">{{ $title }}</h6>
+        <x-theme.button modal="Y" idModal="listAkunProfit" icon="fa-plus" variant="primary" addClass="float-end"
+            teks="Daftar Akun" />
+        
     </div>
     <div class="card-body">
         <div class="row">
