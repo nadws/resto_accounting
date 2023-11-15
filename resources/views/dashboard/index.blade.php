@@ -159,7 +159,7 @@
                     success: function(response) {
                         $("#load_cashflow").html(response);
                         setTimeout(function() {
-                            $('#loading2').hide();
+                            $('#loading_cashflow').hide();
                             $('#show2').show();
                         }, 1000);
                         $('.select').select2({
