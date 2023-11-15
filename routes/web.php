@@ -39,18 +39,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
         Route::get('/pembukuan', 'pembukuan')->name('pembukuan');
     });
-
-    Route::controller(CashflowController::class)
-        ->prefix('cashflow')
-        ->name('cashflow.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/add', 'add')->name('add');
-            Route::get('/edit', 'edit')->name('edit');
-            Route::post('/update', 'update')->name('update');
-            Route::get('/keluar', 'keluar')->name('keluar');
-            Route::post('/destroy', 'destroy')->name('destroy');
-        });
     Route::controller(UserController::class)
         ->prefix('user')
         ->name('user.')
@@ -78,8 +66,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/createAkun', 'createAkun')->name('createAkun');
         });
-
-
 });
 
 require __DIR__ . '/auth.php';

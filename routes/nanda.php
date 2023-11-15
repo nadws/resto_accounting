@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\UserController;
@@ -28,5 +29,11 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/save', 'save')->name('save');
+        });
+    Route::controller(CashflowController::class)
+        ->prefix('cashflow')
+        ->name('cashflow.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 });
