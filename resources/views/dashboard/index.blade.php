@@ -5,13 +5,7 @@
             <div class="col-lg-8 mb-2">
                 <h6>Dashboard</h6>
             </div>
-            <div class="col-lg-12">
-                <div id="load_cashflow"></div>
 
-
-
-
-            </div>
             <div class="col-lg-12">
                 <div id="load_profit"></div>
 
@@ -29,7 +23,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="1">
+                                <input type="hidden" name="id_klasifikasi[]" value="1">
                                 <input type="text" class="form-control" readonly value="Pendapatan">
                             </div>
                         </div>
@@ -44,15 +38,14 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="1">
+                                <input type="hidden" name="id_klasifikasi[]" value="1">
                                 <input type="text" class="form-control" readonly value="Pendapatan">
                             </div>
                         </x-theme.multiple-input>
                     </x-theme.modal>
                 </form>
-
                 <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit" size="modal-lg"  idModal="tbhBiaya">
+                    <x-theme.modal title="Tambah Akun Profit" size="modal-lg" idModal="tbhBiaya">
 
                         <div class="row">
                             <div class="col-lg-4">
@@ -65,7 +58,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="2">
+                                <input type="hidden" name="id_klasifikasi[]" value="2">
                                 <input type="text" class="form-control" readonly value="Biaya">
                             </div>
                         </div>
@@ -80,14 +73,14 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="2">
+                                <input type="hidden" name="id_klasifikasi[]" value="2">
                                 <input type="text" class="form-control" readonly value="Biaya">
                             </div>
                         </x-theme.multiple-input>
                     </x-theme.modal>
                 </form>
                 <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit" size="modal-lg"  idModal="tbhBiayaPenyesuaian">
+                    <x-theme.modal title="Tambah Akun Profit" size="modal-lg" idModal="tbhBiayaPenyesuaian">
 
                         <div class="row">
                             <div class="col-lg-4">
@@ -100,7 +93,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="3">
+                                <input type="hidden" name="id_klasifikasi[]" value="3">
                                 <input type="text" class="form-control" readonly value="Biaya Penyesuaian">
                             </div>
                         </div>
@@ -115,14 +108,15 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="3">
+                                <input type="hidden" name="id_klasifikasi[]" value="3">
                                 <input type="text" class="form-control" readonly value="Biaya Penyesuaian">
                             </div>
                         </x-theme.multiple-input>
                     </x-theme.modal>
                 </form>
                 <form id="save_akun_profit">
-                    <x-theme.modal title="Tambah Akun Profit Disusutkan" size="modal-lg"  idModal="tbhBiayaDisusutkan">
+                    <x-theme.modal title="Tambah Akun Profit Disusutkan" size="modal-lg"
+                        idModal="tbhBiayaDisusutkan">
 
                         <div class="row">
                             <div class="col-lg-4">
@@ -135,7 +129,7 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="4">
+                                <input type="hidden" name="id_klasifikasi[]" value="4">
                                 <input type="text" class="form-control" readonly value="Biaya Disusutkan">
                             </div>
                         </div>
@@ -150,12 +144,15 @@
                             </div>
                             <div class="col-lg-3">
                                 <label for="">Kategori</label>
-                                <input type="hidden" name="id_klasifikasi[]"  value="4">
+                                <input type="hidden" name="id_klasifikasi[]" value="4">
                                 <input type="text" class="form-control" readonly value="Biaya Disusutkan">
                             </div>
                         </x-theme.multiple-input>
                     </x-theme.modal>
                 </form>
+            </div>
+            <div class="col-lg-12">
+                <div id="load_cashflow"></div>
             </div>
             <div class="col-lg-6">
                 <div id="load_akun"></div>
@@ -166,7 +163,7 @@
         </div>
 
         <form id="save_akun">
-            <x-theme.modal title="Tambah Akun"  idModal="tambah">
+            <x-theme.modal title="Tambah Akun" idModal="tambah">
                 <div class="row">
                     <div class="col-lg-4">
                         <label for="">Nama akun</label>
@@ -312,7 +309,7 @@
                 load_neraca(bulan, tahun);
 
             });
-     
+
             $(document).on('submit', '#save_akun_profit', function(e) {
                 e.preventDefault()
                 var formData = $(this).serialize();
@@ -325,7 +322,8 @@
                         load_neraca();
                         load_akun();
                         load_profit()
-                        $("#tbhBiaya, #tbhPendapatan, #tbhBiayaPenyesuaian, #tbhBiayaDisusutkan").modal('hide');
+                        $("#tbhBiaya, #tbhPendapatan, #tbhBiayaPenyesuaian, #tbhBiayaDisusutkan").modal(
+                            'hide');
                     }
                 });
             })
