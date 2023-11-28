@@ -10,7 +10,7 @@
             </div>
             <div class="col-lg-12">
                 <div id="load_profit"></div>
-                
+
 
             </div>
 
@@ -212,6 +212,78 @@
                             'hide');
                     }
                 });
+            })
+
+
+            function loadProfitAkun() {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('profit.loadListAkunProfit') }}",
+                    success: function(r) {
+                        $("#loadListAkunProfit").html(r);
+                        $('#tblProfit').DataTable({
+                            "paging": true,
+                            "pageLength": 10,
+                            "lengthChange": true,
+                            "searching": true,
+                        });
+                    }
+                });
+            }
+            $(document).on('click', '.btnListAkunProfit', function(e) {
+                e.preventDefault()
+                $("#listAkunProfit").modal('show')
+                loadProfitAkun()
+            })
+
+            $(document).on('click', '.edit', function(e) {
+                e.preventDefault()
+                var id_akun = $(this).attr('id_akun')
+
+                $("#editAkunProfit").modal('show')
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('profit.loadEdit') }}?id_akun=" + id_akun,
+                    success: function(r) {
+                        $("#loadEditAkunProfit").html(r);
+                    }
+                });
+
+            })
+
+            $(document).on('submit', '#formEditAkunProfit', function(e) {
+                e.preventDefault()
+                var datas = $(this).serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('profit.updateAkun') }}",
+                    data: datas,
+                    success: function(r) {
+                        $("#editAkunProfit").modal('hide')
+                        toast('Berhasil edit')
+                        loadProfitAkun()
+
+                    }
+                });
+            })
+            $(document).on('hidden.bs.modal', '#listAkunProfit', function(){
+                load_profit()
+            })
+           
+            $(document).on('click', '.hapus', function(e) {
+                e.preventDefault()
+                var id_akun = $(this).attr('id_akun')
+                if (confirm('Yakin ingin dihapus ? ')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('profit.hapusAkun') }}?id_akun=" + id_akun,
+                        success: function(r) {
+                            toast(r)
+                            loadProfitAkun()
+
+                        }
+                    });
+                }
             })
         </script>
     @endsection

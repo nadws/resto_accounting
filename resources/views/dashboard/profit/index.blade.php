@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header">
         <h6 class="text-success float-start">{{ $title }}</h6>
-        <x-theme.button modal="Y" idModal="listAkunProfit" icon="fa-plus" variant="primary" addClass="float-end"
+        <x-theme.button icon="fa-plus" variant="primary" addClass="float-end btnListAkunProfit"
             teks="Daftar Akun" />
 
     </div>
@@ -59,6 +59,7 @@
                             </td>
                         @endforeach
                     </tr>
+                   
                     @foreach ($data as $akun => $months)
                         <tr x-show="open_pendapatan">
                             <td>
@@ -274,3 +275,13 @@
         </x-theme.modal>
     </form>
 @endforeach
+
+<x-theme.modal title="List Akun Profit" btnSave="T" size="modal-lg" idModal="listAkunProfit">
+    <div id="loadListAkunProfit"></div>
+</x-theme.modal>
+
+<form id="formEditAkunProfit">
+<x-theme.modal title="Edit Akun Profit" size="modal-lg" idModal="editAkunProfit">
+    <div id="loadEditAkunProfit"></div>
+</x-theme.modal>
+</form>

@@ -65,6 +65,11 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/createAkun', 'createAkun')->name('createAkun');
+            Route::get('/importLaporan', 'importLaporan')->name('importLaporan');
+            Route::get('/loadListAkunProfit', 'loadListAkunProfit')->name('loadListAkunProfit');
+            Route::get('/loadEdit', 'loadEdit')->name('loadEdit');
+            Route::get('/updateAkun', 'updateAkun')->name('updateAkun');
+            Route::get('/hapusAkun', 'hapusAkun')->name('hapusAkun');
         });
 });
 
