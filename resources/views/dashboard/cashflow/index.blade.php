@@ -32,8 +32,46 @@
         </div>
         <div class="row" id="show_cashflow" style="display: none;">
             <div class="col-lg-12">
-
-
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="dhead">Akun</th>
+                            <th class="dhead text-end">Januari</th>
+                            <th class="dhead text-end">Februari</th>
+                            <th class="dhead text-end">Maret</th>
+                            <th class="dhead text-end">April</th>
+                            <th class="dhead text-end">Mei</th>
+                            <th class="dhead text-end">Juni</th>
+                            <th class="dhead text-end">Juli</th>
+                            <th class="dhead text-end">Agustus</th>
+                            <th class="dhead text-end">September</th>
+                            <th class="dhead text-end">Oktober</th>
+                            <th class="dhead text-end">November</th>
+                            <th class="dhead text-end">Desember</th>
+                            <th class="dhead text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-bold">Uang Masuk <button type="button"
+                                    class="btn btn-primary btn-sm btn-buka float-end"
+                                    @click="open_umasuk = ! open_umasuk"><i class="fas fa-caret-down"></i></button></td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                            <td class="text-end fw-bold">0</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

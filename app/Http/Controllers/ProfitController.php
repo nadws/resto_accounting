@@ -60,6 +60,8 @@ class ProfitController extends Controller
 
         $pendapatan = Profit::pendapatan_setahun($tahun, '1');
         $biaya = Profit::pendapatan_setahun($tahun, '2');
+
+
         $biaya_penyesuaian = Profit::biaya_penyesuaian_setahun($tahun);
         $biaya_disusutkan = Profit::biaya_disusutkan_setahun($tahun);
 
@@ -107,9 +109,9 @@ class ProfitController extends Controller
     public function loadEdit(Request $r)
     {
         $getAkun = DB::table('akun as a')
-                    ->join('klasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_klasifikasi')
-                    ->where('a.id_akun', $r->id_akun)
-                    ->first();
+            ->join('klasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_klasifikasi')
+            ->where('a.id_akun', $r->id_akun)
+            ->first();
         $html = <<<HTML
             <div class="row">
                 <input type="hidden" name="id_akun" value="{$getAkun->id_akun}">
@@ -145,18 +147,17 @@ class ProfitController extends Controller
 
     public function updateAkun(Request $r)
     {
-        DB::table('akun')->where('id_akun',$r->id_akun)->update([
+        DB::table('akun')->where('id_akun', $r->id_akun)->update([
             'kode_akun' => $r->kode,
             'inisial' => $r->inisial,
             'nm_akun' => $r->nm_akun,
         ]);
-
     }
 
     public function hapusAkun(Request $r)
     {
         $cek = DB::table('jurnal')->where('id_akun', $r->id_akun)->first();
-        if(!$cek) {
+        if (!$cek) {
             DB::table('akun')->where('id_akun', $r->id_akun)->delete();
             $pesan = 'Data dihapus';
         }

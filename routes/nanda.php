@@ -3,6 +3,7 @@
 use App\Http\Controllers\AkunController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImportApiInvoiceController;
 use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,5 +36,11 @@ Route::middleware('auth')->group(function () {
         ->name('cashflow.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+        });
+    Route::controller(ImportApiInvoiceController::class)
+        ->prefix('importapi')
+        ->name('importapi.')
+        ->group(function () {
+            Route::get('/invoice', 'invoice')->name('invoice');
         });
 });
