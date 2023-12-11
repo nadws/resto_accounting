@@ -29,6 +29,12 @@ class NavbarController extends Controller
                 'img' => 'invoice.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
+            [
+                'judul' => 'Buku Besar',
+                'route' => 'bukubesar.index',
+                'img' => 'ledger.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
 
         ];
         $title = 'Data Master';

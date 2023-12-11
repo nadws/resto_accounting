@@ -42,13 +42,16 @@
             <th width="18%">Keterangan</th>
             <th width="12%" style="text-align: right;">Debit</th>
             <th width="12%" style="text-align: right;">Kredit</th>
+            {{-- <th width="12%" style="text-align: right;">Saldo</th> --}}
             <th width="5%">Aksi</th>
         </tr>
     </thead>
     <tbody>
         <tr class="baris1">
             <td style="vertical-align: top;">
-                
+                {{-- <button type="button" data-bs-toggle="collapse" href=".join1" class="btn rounded-pill "
+                    count="1"><i class="fas fa-angle-down"></i>
+                </button> --}}
             </td>
             <td style="vertical-align: top;">
                 <select name="id_akun[]" id="" class="select pilih_akun pilih_akun1" count="1" required>
@@ -79,20 +82,31 @@
 
             </td>
             <td style="vertical-align: top;">
-                <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="1">
+                <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="1"
+                    onclick="selectAllText(this)">
+
                 <input type="hidden" class="form-control debit_biasa debit_biasa1" value="0" name="debit[]">
-                <p class="peringatan_debit1 mt-2 text-danger" hidden>Data yang dimasukkan salah harap cek kembali !!
-                </p>
+
+                @if ($id_buku != 4)
+                    <p class="peringatan_debit1 mt-2 text-danger" hidden>Data yang dimasukkan salah harap cek kembali !!
+                    </p>
+                @endif
+
             </td>
             <td style="vertical-align: top;">
-                <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="1">
+                <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="1"
+                    onclick="selectAllText(this)">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa1" value="0" name="kredit[]">
                 <input type="hidden" class="form-control id_klasifikasi1" value="0" name="id_klasifikasi[]">
                 <input type="hidden" class="form-control nilai nilai1" value="0">
+                <input type="hidden" class="form-control saldo saldo1" value="0">
                 <p class="peringatan1 mt-2 text-danger" hidden>Apakah anda yakin ingin memasukkan biaya disebelah kredit
                 </p>
+                <p class="peringatan_saldo1 mt-2 text-danger" hidden></p>
             </td>
-        
+            {{-- <td style="vertical-align: top;">
+                <p class="saldo_akun1 text-end" style="font-size: 12px"></p>
+            </td> --}}
             <td style="vertical-align: top;">
                 <button type="button" class="btn rounded-pill remove_baris" count="1"><i
                         class="fas fa-trash text-danger"></i>
@@ -103,7 +117,9 @@
 
         <tr class="baris2">
             <td style="vertical-align: top;">
-                
+                {{-- <button type="button" data-bs-toggle="collapse" href=".join2" class="btn rounded-pill "
+                    count="1"><i class="fas fa-angle-down"></i>
+                </button> --}}
             </td>
             <td style="vertical-align: top;">
                 <select name="id_akun[]" id="" class="select pilih_akun pilih_akun2" count="2" required>
@@ -132,21 +148,26 @@
                 </p>
             </td>
             <td style="vertical-align: top;">
-                <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="2">
+                <input type="text" class="form-control debit_rupiah text-end" value="Rp 0" count="2"
+                    onclick="selectAllText(this)">
                 <input type="hidden" class="form-control debit_biasa debit_biasa2" value="0" name="debit[]">
+
                 <p class="peringatan_debit2 mt-2 text-danger" hidden>Data yang dimasukkan salah harap cek kembali !!
                 </p>
 
             </td>
             <td style="vertical-align: top;">
-                <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="2">
+                <input type="text" class="form-control kredit_rupiah text-end" value="Rp 0" count="2"
+                    onclick="selectAllText(this)">
                 <input type="hidden" class="form-control kredit_biasa kredit_biasa2" value="0"
                     name="kredit[]">
                 <input type="hidden" class="form-control id_klasifikasi2" value="0" name="id_klasifikasi[]">
                 <input type="hidden" class="form-control nilai nilai2" value="0">
+                <input type="hidden" class="form-control saldo saldo2" value="0">
                 <p class="peringatan2 mt-2 text-danger" hidden>Apakah anda yakin ingin memasukkan biaya disebelah
                     kredit
                 </p>
+                <p class="peringatan_saldo2 mt-2 text-danger" hidden></p>
             </td>
             {{-- <td style="vertical-align: top;">
                 <p class="saldo_akun2 text-end" style="font-size: 12px"></p>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\BukubesarController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImportApiInvoiceController;
@@ -42,5 +43,11 @@ Route::middleware('auth')->group(function () {
         ->name('importapi.')
         ->group(function () {
             Route::get('/invoice', 'invoice')->name('invoice');
+        });
+    Route::controller(BukubesarController::class)
+        ->prefix('bukubesar')
+        ->name('bukubesar.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 });

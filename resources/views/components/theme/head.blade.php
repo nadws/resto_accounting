@@ -32,10 +32,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Alpine Plugins -->
-<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
- 
-<!-- Alpine Core -->
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- Alpine Core -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     {{-- my css --}}
 
@@ -48,7 +48,7 @@
         }
 
         .dhead {
-            background-color: #435EBE !important;
+            background-color: #0B7372 !important;
             color: white;
         }
 
@@ -77,8 +77,6 @@
             color: #000000;
             line-height: 36px;
             /* font-size: 12px; */
-
-
         }
 
         .select2-container--default .select2-selection--single .select2-selection__arrow {

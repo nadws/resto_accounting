@@ -23,12 +23,26 @@
                     }
 
                     return ['totalsPerMonth' => $totalsPerMonth, 'total_seluruh' => $total_seluruh];
+
+                    $totalsPerMonth2 = array_fill(0, count(array_keys(reset($data2))), 0);
+                    $total_seluruh2 = 0;
+
+                    foreach ($data2 as $akun => $months) {
+                        $totalPerAkun2 = 0;
+                        foreach ($months as $month => $nominal) {
+                            $totalPerAkun2 += $nominal;
+                            $totalsPerMonth2[$month] = ($totalsPerMonth2[$month] ?? 0) + $nominal;
+                        }
+                        $total_seluruh2 += $totalPerAkun2;
+                    }
+
+                    return ['totalsPerMonth2' => $totalsPerMonth2, 'total_seluruh2' => $total_seluruh2];
                 }
 
                 $totalsData1 = sumTotal($data);
                 $totalsData2 = sumTotal($data2);
-                $totalsData3 = sumTotal($data3);
-                $totalsData4 = sumTotal($data4);
+                // $totalsData3 = sumTotal($data3);
+                // $totalsData4 = sumTotal($data4);
             @endphp
             <table class="table table-bordered" x-data="{
                 open_biaya: false,
@@ -57,6 +71,7 @@
                             <td class="fw-bold text-end">{{ number_format($totalsData1['totalsPerMonth'][$month], 0) }}
                             </td>
                         @endforeach
+                        <td class="fw-bold text-end">{{ number_format($totalsData1['total_seluruh'], 0) }}</td>
                     </tr>
 
                     @foreach ($data as $akun => $months)
@@ -86,6 +101,7 @@
                                     $totalPerAkun2 += $nominal;
                                 @endphp
                             @endforeach
+                            <td class="text-end">{{ number_format($totalPerAkun2, 0) }}</td>
                         </tr>
                     @endforeach
 
@@ -100,6 +116,7 @@
                             <td class="fw-bold text-end">{{ number_format($totalsData2['totalsPerMonth'][$month], 0) }}
                             </td>
                         @endforeach
+                        <td class="text-end fw-bold">{{ number_format($totalsData2['total_seluruh'], 0) }}</td>
                     </tr>
                     @foreach ($data2 as $akun => $months)
                         <tr x-show="open_biaya">
@@ -112,7 +129,7 @@
                                 {{ $nm_akun->nm_akun }}
                             </td>
                             @php
-                                $totalPerAkun2 = 0;
+                                $totalPerAkun3 = 0;
                             @endphp
                             @foreach ($months as $month => $nominal)
                                 @php
@@ -125,104 +142,13 @@
                                         href="{{ route('summary_buku_besar.detail', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a> --}}
                                 </td>
                                 @php
-                                    $totalPerAkun2 += $nominal;
+                                    $totalPerAkun3 += $nominal;
                                 @endphp
                             @endforeach
+                            <td class="text-end">{{ number_format($totalPerAkun3, 0) }}</td>
                         </tr>
                     @endforeach
 
-                    <tr>
-                        <td class="fw-bold"><a href="#" data-bs-target="#tbhBiayaPenyesuaian"
-                                data-bs-toggle="modal">Biaya Penyesuaian</a> <span
-                                @click="open_penyesuaian = ! open_penyesuaian" class="badge bg-primary float-end"
-                                style="cursor: pointer"><i class="fas fa-caret-down"></i></span>
-
-                        </td>
-                        @foreach (array_keys(reset($data3)) as $month)
-                            <td class="fw-bold text-end">{{ number_format($totalsData3['totalsPerMonth'][$month], 0) }}
-                            </td>
-                        @endforeach
-                    </tr>
-                    @foreach ($data3 as $akun => $months)
-                        <tr x-show="open_penyesuaian">
-                            <td>
-                                @php
-                                    $nm_akun = DB::table('akun')
-                                        ->where('id_akun', $akun)
-                                        ->first();
-                                @endphp
-                                {{ $nm_akun->nm_akun }}
-                            </td>
-                            @php
-                                $totalPerAkun2 = 0;
-                            @endphp
-                            @foreach ($months as $month => $nominal)
-                                @php
-                                    $tgl1 = $thn . '-' . $loop->iteration . '-01';
-                                    $tgl2 = date('Y-m-t', strtotime($tgl1));
-                                @endphp
-                                <td class="text-end">
-                                    {{ number_format($nominal, 0) }}
-                                    {{-- <a target="_blank"
-                                        href="{{ route('summary_buku_besar.detail', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a> --}}
-                                </td>
-                                @php
-                                    $totalPerAkun2 += $nominal;
-                                @endphp
-                            @endforeach
-                        </tr>
-                    @endforeach
-
-                    <tr>
-                        <td class="fw-bold dhead">LABA KOTOR</td>
-                        @foreach (array_keys(reset($data)) as $month)
-                            <td class="fw-bold text-end dhead">
-                                {{ number_format($totalsData1['totalsPerMonth'][$month] - $totalsData2['totalsPerMonth'][$month] - $totalsData3['totalsPerMonth'][$month], 0) }}
-                            </td>
-                        @endforeach
-
-                    </tr>
-                    <tr>
-                        <td class="fw-bold"><a href="#" data-bs-target="#tbhBiayaDisusutkan"
-                                data-bs-toggle="modal">Biaya Disusutkan</a> <span
-                                @click="open_disusutkan = ! open_disusutkan" class="badge bg-primary float-end"
-                                style="cursor: pointer"><i class="fas fa-caret-down"></i>
-                        </td>
-                        @foreach (array_keys(reset($data4)) as $month)
-                            <td class="fw-bold text-end">
-                                {{ number_format($totalsData4['totalsPerMonth'][$month], 0) }}
-                            </td>
-                        @endforeach
-                    </tr>
-                    @foreach ($data4 as $akun => $months)
-                        <tr x-show="open_disusutkan">
-                            <td>
-                                @php
-                                    $nm_akun = DB::table('akun')
-                                        ->where('id_akun', $akun)
-                                        ->first();
-                                @endphp
-                                {{ $nm_akun->nm_akun }}
-                            </td>
-                            @php
-                                $totalPerAkun2 = 0;
-                            @endphp
-                            @foreach ($months as $month => $nominal)
-                                @php
-                                    $tgl1 = $thn . '-' . $loop->iteration . '-01';
-                                    $tgl2 = date('Y-m-t', strtotime($tgl1));
-                                @endphp
-                                <td class="text-end">
-                                    {{ number_format($nominal, 0) }}
-                                    {{-- <a target="_blank"
-                                        href="{{ route('summary_buku_besar.detail', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a> --}}
-                                </td>
-                                @php
-                                    $totalPerAkun2 += $nominal;
-                                @endphp
-                            @endforeach
-                        </tr>
-                    @endforeach
                 </tbody>
             </table>
         </div>

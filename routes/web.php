@@ -56,7 +56,8 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/add', 'add')->name('add');
-            Route::get('/load_menu', 'load_add_menu')->name('load_menu');
+            Route::get('/load_menu', 'load_menu')->name('load_menu');
+            Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
             Route::post('/create', 'create')->name('create');
         });
     Route::controller(ProfitController::class)

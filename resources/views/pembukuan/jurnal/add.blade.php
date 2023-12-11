@@ -9,7 +9,6 @@
             <div class="col-lg-6">
                 {{-- <a href="{{ route('controlflow') }}" class="btn btn-primary float-end"><i class="fas fa-home"></i></a> --}}
             </div>
-
         </div>
 
     </x-slot>
@@ -86,7 +85,9 @@
 
     </x-slot>
     <x-slot name="cardFooter">
-        <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        <div class="alert_saldo">
+            <button type="submit" class="float-end btn btn-primary button-save" hidden>Simpan</button>
+        </div>
         <button class="float-end btn btn-primary btn_save_loading" type="button" disabled hidden>
             <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
             Loading...
@@ -121,59 +122,14 @@
 
     </x-slot>
     @section('scripts')
+        <script src="{{ asset('theme') }}/assets/js/jurnal/format_rupiah.js"></script>
+        <script src="{{ asset('theme') }}/assets/js/jurnal/load_menu.js"></script>
         <script>
-            load_menu()
-            function load_menu() {
-                var urlParams = new URLSearchParams(window.location.search);
-                var id_akun = urlParams.get('id_akun');
-
-
-                if (id_akun) {
-                    $.ajax({
-                        method: "GET",
-                        url: "{{route('jurnal.load_menu')}}",
-                        dataType: "html",
-                        data: {
-                            id_akun: id_akun
-                        },
-                        success: function(hasil) {
-                            $("#load_menu").html(hasil);
-                            $('.select').select2({
-                                language: {
-                                    searching: function() {
-                                        $('.select2-search__field').focus();
-                                    }
-                                }
-                            });
-
-                        },
-                    });
-                } else {
-                    var defaultIdAkun = 'default_value';
-                    $.ajax({
-                        method: "GET",
-                        url: "{{route('jurnal.load_menu')}}",
-                        dataType: "html",
-                        data: {
-                            id_akun: defaultIdAkun
-                        },
-                        success: function(hasil) {
-                            $("#load_menu").html(hasil);
-                            $('.select').select2({
-                                language: {
-                                    searching: function() {
-                                        $('.select2-search__field').focus();
-                                    }
-                                }
-                            });
-
-                        },
-                    });
-                }
-
-
-
+            function selectAllText(input) {
+                input.focus();
+                input.select();
             }
+            $(".select2suplier").select2()
         </script>
     @endsection
 </x-theme.app>
