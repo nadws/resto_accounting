@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="8">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
         <div class="row justify-content-end">
             <div class="col-lg-6">
@@ -44,7 +44,8 @@
                         <tr>
                             <td>{{ $no + 1 }}</td>
                             <td>{{ $a->kode_akun }}</td>
-                            <td>{{ ucwords(strtolower($a->nm_akun)) }}
+                            <td><a
+                                    href="{{ route('bukubesar.detail_buku_besar', ['id_akun' => $a->id_akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ ucwords(strtolower($a->nm_akun)) }}</a>
                             </td>
                             <td style="text-align: right">{{ number_format($a->debit, 2) }}</td>
                             <td style="text-align: right">{{ number_format($a->kredit, 2) }}</td>

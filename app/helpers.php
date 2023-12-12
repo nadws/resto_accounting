@@ -46,47 +46,56 @@ if (!function_exists('tanggalFilter')) {
     }
 }
 
+
 if (!function_exists('tanggal')) {
     function tanggal($tgl)
     {
         $date = explode("-", $tgl);
-        $tahun = $date[0];
-        $bulan = $date[1];
+
+        $bln  = $date[1];
+
+        switch ($bln) {
+            case '01':
+                $bulan = "Januari";
+                break;
+            case '02':
+                $bulan = "Februari";
+                break;
+            case '03':
+                $bulan = "Maret";
+                break;
+            case '04':
+                $bulan = "April";
+                break;
+            case '05':
+                $bulan = "Mei";
+                break;
+            case '06':
+                $bulan = "Juni";
+                break;
+            case '07':
+                $bulan = "Juli";
+                break;
+            case '08':
+                $bulan = "Agustus";
+                break;
+            case '09':
+                $bulan = "September";
+                break;
+            case '10':
+                $bulan = "Oktober";
+                break;
+            case '11':
+                $bulan = "November";
+                break;
+            case '12':
+                $bulan = "Desember";
+                break;
+        }
         $tanggal = $date[2];
+        $tahun   = $date[0];
 
-        $nama_bulan = array(
-            '01' => "Januari",
-            '02' => "Februari",
-            '03' => "Maret",
-            '04' => "April",
-            '05' => "Mei",
-            '06' => "Juni",
-            '07' => "Juli",
-            '08' => "Agustus",
-            '09' => "September",
-            '10' => "Oktober",
-            '11' => "November",
-            '12' => "Desember"
-        );
-
-        $bulan = $nama_bulan[$bulan];
-
-        $timestamp = strtotime($tgl);
-        $hari = date("l", $timestamp); // "l" akan mengembalikan nama hari dalam bahasa Inggris
-
-        $nama_hari = array(
-            'Sunday'    => 'Minggu',
-            'Monday'    => 'Senin',
-            'Tuesday'   => 'Selasa',
-            'Wednesday' => 'Rabu',
-            'Thursday'  => 'Kamis',
-            'Friday'    => 'Jumat',
-            'Saturday'  => 'Sabtu'
-        );
-
-        $hari = $nama_hari[$hari];
-
-        $strTanggal = "$hari, $tanggal $bulan $tahun";
+        $strTanggal = "$tanggal $bulan $tahun";
         return $strTanggal;
     }
 }

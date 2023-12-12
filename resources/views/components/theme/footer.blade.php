@@ -61,6 +61,68 @@
     $('.select2_readonly').select2({
         disabled: true
     });
+
+    function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
+        $(document).on("keyup", "." + classNoHide, function() {
+            var count = $(this).attr("count");
+            var rupiah = $(this)
+                .val()
+                .replace(/[^,\d]/g, "")
+                .toString(),
+                split = rupiah.split(","),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? "." : "";
+                rupiah += separator + ribuan.join(".");
+            }
+
+            rupiah = split[1] != undefined ? rupiah + "," + split[1] : rupiah;
+            var debit = 0;
+            $("." + classNoHide).each(function() {
+                debit += parseFloat($(this).val());
+            });
+
+            if (rupiah === "") {
+                $(this).val("Rp 0");
+                $("." + classHide + count).val("0");
+            } else {
+                $(this).val("Rp " + rupiah);
+                var rupiah_biasa = parseFloat(rupiah.replace(/[^\d]/g, ""));
+                $("." + classHide + count).val(rupiah_biasa);
+            }
+
+
+            var total_debit = 0;
+            $("." + classHide).each(function() {
+                total_debit += parseFloat($(this).val());
+            });
+
+
+            $("." + classTotalhide).val(total_debit);
+
+            var totalRupiah = total_debit.toLocaleString("id-ID", {
+                style: "currency",
+                currency: "IDR",
+            });
+            var debit = $("." + classTotal).text(totalRupiah);
+
+
+        });
+
+
+    }
+
+    function pencarian(inputId, tblId) {
+        $(document).on('keyup', "#" + inputId, function() {
+            var value = $(this).val().toLowerCase();
+            $(`#${tblId} tbody tr`).filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        })
+    }
 </script>
 @if (session()->has('sukses'))
     <script>
