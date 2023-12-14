@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\JurnalAktivaController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\UserController;
@@ -57,8 +59,29 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/add', 'add')->name('add');
             Route::get('/load_menu', 'load_menu')->name('load_menu');
+            Route::get('/get_post', 'get_post')->name('get_post');
             Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
             Route::post('/create', 'create')->name('create');
+        });
+    Route::controller(JurnalAktivaController::class)
+        ->prefix('jurnal')
+        ->name('jurnal.')
+        ->group(function () {
+            Route::get('/add_balik_aktiva', 'add_balik_aktiva')->name('add_balik_aktiva');
+            Route::get('/get_total_post', 'get_total_post')->name('get_total_post');
+            Route::get('/cek_aktiva', 'cek_aktiva')->name('cek_aktiva');
+            Route::get('/cek_aktiva', 'cek_aktiva')->name('cek_aktiva');
+            Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
+            Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+            Route::post('/save_jurnal_aktiva', 'save_jurnal_aktiva')->name('save_jurnal_aktiva');
+
+        });
+    Route::controller(PeralatanController::class)
+        ->prefix('peralatan')
+        ->name('peralatan.')
+        ->group(function () {
+            Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+
         });
     Route::controller(ProfitController::class)
         ->prefix('profit')

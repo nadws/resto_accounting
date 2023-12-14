@@ -36,14 +36,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th width="2%">#</th>
-            <th width="14%">Akun</th>
-            <th width="10%">Sub Akun</th>
-            <th width="18%">Keterangan</th>
-            <th width="12%" style="text-align: right;">Debit</th>
-            <th width="12%" style="text-align: right;">Kredit</th>
+            <th class="dhead" width="2%">#</th>
+            <th class="dhead" width="14%">Akun</th>
+            <th class="dhead" width="10%">Sub Akun</th>
+            <th class="dhead" width="18%">Keterangan</th>
+            <th class="dhead" width="12%" style="text-align: right;">Debit</th>
+            <th class="dhead" width="12%" style="text-align: right;">Kredit</th>
             {{-- <th width="12%" style="text-align: right;">Saldo</th> --}}
-            <th width="5%">Aksi</th>
+            <th class="dhead" width="5%">Aksi</th>
         </tr>
     </thead>
     <tbody>

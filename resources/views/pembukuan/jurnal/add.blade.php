@@ -130,6 +130,8 @@
                 input.select();
             }
             $(".select2suplier").select2()
+
+            
         </script>
     @endsection
 </x-theme.app>

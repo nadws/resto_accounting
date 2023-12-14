@@ -68,4 +68,19 @@ function load_menu() {
         var delete_row = $(this).attr("count");
         $(".baris" + delete_row).remove();
     });
+
+    $(document).on("change", ".pilih_akun", function() {
+        var count = $(this).attr("count");
+        var id_akun = $(".pilih_akun" + count).val();
+        $.ajax({
+            url: "get_post",
+            type: "GET",
+            data:{
+                id_akun:id_akun
+            },
+            success: function(data) {
+                $(".post" + count).html(data);
+            },
+        });
+    });
 }
