@@ -6,12 +6,12 @@ use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImportApiInvoiceController;
 use App\Http\Controllers\NeracaController;
+use App\Http\Controllers\PenutupController;
+use App\Http\Controllers\SaldoAwalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect('login');
-});
+
 Route::middleware('auth')->group(function () {
     Route::controller(DashboardController::class)
         ->prefix('dashboard')
@@ -54,5 +54,20 @@ Route::middleware('auth')->group(function () {
         ->name('bukubesar.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/detail_buku_besar', 'detail_buku_besar')->name('detail_buku_besar');
+        });
+    Route::controller(SaldoAwalController::class)
+        ->prefix('saldoawal')
+        ->name('saldoawal.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/saveSaldo', 'saveSaldo')->name('saveSaldo');
+        });
+    Route::controller(PenutupController::class)
+        ->prefix('penutup')
+        ->name('penutup.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/saldo', 'saldo')->name('saldo');
         });
 });

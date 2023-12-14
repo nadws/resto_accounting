@@ -8,7 +8,7 @@
                         class='menu-link {{ request()->route()->getName() == 'dashboard.index'
                             ? 'active_navbar_new'
                             : '' }}'>
-                        <span><i class="fas fa-tachometer-alt"></i> Dashboard</span>
+                        <span>Dashboard</span>
                     </a>
                 </li>
                 {{-- <li class="menu-item">
@@ -43,7 +43,7 @@
                         <a href="{{ route($d->route) }}"
                             class='menu-link 
                     {{ in_array(request()->route()->getName(),$array)? 'active_navbar_new': '' }}'>
-                            <span>{!! $d->icon !!} {{ ucwords($d->nama) }}</span>
+                            <span> {{ ucwords($d->nama) }}</span>
                         </a>
                     </li>
                 @endforeach

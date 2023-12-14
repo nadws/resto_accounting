@@ -102,27 +102,11 @@
         }
 
         .active_navbar_new {
+            text-decoration: underline;
             color: #ffffff !important;
         }
 
-        .active_navbar_new,
-        .active_navbar_new i {
-            text-decoration: underline;
-            text-decoration-thickness: 2px;
-            text-decoration-skip-ink: none;
-        }
 
-        .menu-link:hover {
-            text-decoration: underline;
-            text-decoration-thickness: 2px;
-            text-decoration-skip-ink: none;
-        }
-
-
-
-        .menu-link:hover i {
-            transform: translateY(-3px);
-        }
 
 
         .active-nvs {
