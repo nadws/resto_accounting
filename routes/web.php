@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
         Route::get('/pembukuan', 'pembukuan')->name('pembukuan');
+        Route::get('/persediaan', 'persediaan')->name('persediaan');
     });
     Route::controller(UserController::class)
         ->prefix('user')

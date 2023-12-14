@@ -42,9 +42,41 @@ class NavbarController extends Controller
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
             [
+                'judul' => 'Jurnal Penyesuaian',
+                'route' => 'jurnalpenyesuaian.index',
+                'img' => 'journalism.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
                 'judul' => 'Jurnal Penutup',
                 'route' => 'penutup.index',
                 'img' => 'penutup.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+
+        ];
+        $title = 'Data Master';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
+    public function persediaan()
+    {
+        $data = [
+            [
+                'judul' => 'Aktiva',
+                'route' => 'aktiva.index',
+                'img' => 'asset.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
+                'judul' => 'Peralatan',
+                'route' => 'peralatan.index',
+                'img' => 'peralatan.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
+                'judul' => 'ATK',
+                'route' => 'atk.index',
+                'img' => 'stationery.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
 

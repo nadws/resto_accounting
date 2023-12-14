@@ -1,12 +1,17 @@
 <?php
 
+use App\Http\Controllers\AktivaController;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\AtkController;
 use App\Http\Controllers\BukubesarController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ImportApiInvoiceController;
+use App\Http\Controllers\JurnalPenyesuaianController;
 use App\Http\Controllers\NeracaController;
 use App\Http\Controllers\PenutupController;
+use App\Http\Controllers\PeralatanController;
+use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\SaldoAwalController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -64,5 +69,45 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/saldo', 'saldo')->name('saldo');
+        });
+    Route::controller(AktivaController::class)
+        ->prefix('aktiva')
+        ->name('aktiva.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/print_aktiva', 'print_aktiva')->name('print_aktiva');
+            Route::get('/add', 'add')->name('add');
+            Route::get('/load_aktiva', 'load_aktiva')->name('load_aktiva');
+            Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+            Route::get('/tambah_baris_aktiva', 'tambah_baris_aktiva')->name('tambah_baris_aktiva');
+            Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
+        });
+    Route::controller(PeralatanController::class)
+        ->prefix('peralatan')
+        ->name('peralatan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+    Route::controller(AtkController::class)
+        ->prefix('atk')
+        ->name('atk.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/save', 'save')->name('save');
+            Route::get('/stok_masuk', 'stok_masuk')->name('stok_masuk');
+            Route::get('/tmbh_stok', 'tmbh_stok')->name('tmbh_stok');
+            Route::post('/save_stk_masuk', 'save_stk_masuk')->name('save_stk_masuk');
+        });
+    Route::controller(JurnalPenyesuaianController::class)
+        ->prefix('jurnalpenyesuaian')
+        ->name('jurnalpenyesuaian.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/aktiva', 'aktiva')->name('aktiva');
+            Route::post('/save_penyesuaian_aktiva', 'save_penyesuaian_aktiva')->name('save_penyesuaian_aktiva');
+            Route::get('/peralatan', 'peralatan')->name('peralatan');
+            Route::post('/save_peralatan', 'save_peralatan')->name('save_peralatan');
+            Route::get('/atk', 'atk')->name('atk');
+            Route::post('/save_atk', 'save_atk')->name('save_atk');
         });
 });

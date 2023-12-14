@@ -39,7 +39,7 @@ class Profit extends Model
         left join (
          SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit, MONTH(b.tgl) as bulan, YEAR(b.tgl) as tahun, b.penutup
          FROM jurnal as b
-         WHERE b.id_buku not in(5,13)  and Year(b.tgl) = ?  
+         WHERE b.id_buku not in(8,6)  and Year(b.tgl) = ?  
          group by b.id_akun , MONTH(b.tgl), YEAR(b.tgl)
         ) as b on b.id_akun = a.id_akun
         
@@ -49,7 +49,7 @@ class Profit extends Model
            where Year(c.tgl) = ?
            group by c.id_akun , MONTH(c.tgl), YEAR(c.tgl)
         ) as c on c.id_akun = a.id_akun and b.tahun = c.tahun2 and b.bulan = c.bulan2
-        where a.id_klasifikasi = '3' and a.id_akun not in(51,58);
+        where a.id_klasifikasi = '3';
         ", [$tahun, $tahun]);
         return $result;
     }
@@ -60,7 +60,7 @@ class Profit extends Model
         left join (
          SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit, MONTH(b.tgl) as bulan, YEAR(b.tgl) as tahun,b.penutup
          FROM jurnal as b
-         WHERE b.id_buku not in(5,13)  and Year(b.tgl) = ?  
+         WHERE b.id_buku not in(8,6)  and Year(b.tgl) = ?  
          group by b.id_akun , MONTH(b.tgl), YEAR(b.tgl)
         ) as b on b.id_akun = a.id_akun
         
@@ -70,7 +70,7 @@ class Profit extends Model
            where Year(c.tgl) = ?
            group by c.id_akun , MONTH(c.tgl), YEAR(c.tgl)
         ) as c on c.id_akun = a.id_akun and b.tahun = c.tahun2 and b.bulan = c.bulan2
-        where a.id_klasifikasi = '4';
+        where a.id_klasifikasi = '13';
         ", [$tahun, $tahun]);
         return $result;
     }
