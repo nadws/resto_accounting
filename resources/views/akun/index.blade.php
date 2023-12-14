@@ -31,8 +31,11 @@
                             <td>{{ $a->nm_subklasifikasi }}</td>
                             <td>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#edit"
-                                    class="btn btn-sm btn-warning edit_akun" id_akun="{{ $a->id_akun }}"><i
-                                        class="fas fa-edit"></i></a>
+                                    class="btn btn-sm btn-primary post_center" id_akun="{{ $a->id_akun }}"><i
+                                        class="fas fa-layer-group"></i></a>
+                                <a href="#"
+                                    class="btn btn-sm btn-primary edit_akun" id_akun="{{ $a->id_akun }}"><i
+                                        class="fas fa-pen"></i></a>
                                 <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>

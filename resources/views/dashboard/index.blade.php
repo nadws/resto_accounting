@@ -45,6 +45,18 @@
                 </div>
             </x-theme.modal>
         </form>
+        <form id="formTmbhPostCenter">
+
+            <x-theme.modal title="Post Center" idModal="post_center">
+                <div id="load_post_center"></div>
+            </x-theme.modal>
+        </form>
+        <form id="form_edit_post">
+            <x-theme.modal title="Edit Post Center" idModal="edit_post">
+                <div id="load_edit_post_center"></div>
+
+            </x-theme.modal>
+        </form>
     </x-slot>
 
     @section('scripts')
@@ -266,10 +278,10 @@
                     }
                 });
             })
-            $(document).on('hidden.bs.modal', '#listAkunProfit', function(){
+            $(document).on('hidden.bs.modal', '#listAkunProfit', function() {
                 load_profit()
             })
-           
+
             $(document).on('click', '.hapus', function(e) {
                 e.preventDefault()
                 var id_akun = $(this).attr('id_akun')
@@ -281,6 +293,83 @@
                             toast(r)
                             loadProfitAkun()
 
+                        }
+                    });
+                }
+            })
+
+            function load_post_center(id_akun) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('akun.post_center') }}?id_akun=" + id_akun,
+                    success: function(r) {
+                        $("#load_post_center").html(r);
+                        $('#tblPost').DataTable({
+                            "paging": true,
+                            "pageLength": 10,
+                            "lengthChange": true,
+                            "ordering": false,
+                            "searching": true,
+                        });
+                    }
+                });
+            }
+            $(document).on('click', '.post_center', function() {
+                var id_akun = $(this).attr('id_akun')
+                $("#post_center").modal('show')
+                load_post_center(id_akun)
+            })
+            $(document).on('submit', '#formTmbhPostCenter', function(e) {
+                e.preventDefault()
+                var datas = $(this).serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('akun.create_post_center') }}",
+                    data: datas,
+                    success: function(r) {
+                        load_post_center(r)
+
+                    }
+                });
+            })
+            $(document).on('click', '.edit_post', function(e) {
+                e.preventDefault()
+                var id_post = $(this).attr('id_post')
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('akun.edit_post') }}?id_post=" + id_post,
+                    success: function(r) {
+                        $("#load_edit_post_center").html(r);
+                        $("#edit_post").modal('show')
+                    }
+                });
+            })
+
+            $(document).on('submit', '#form_edit_post', function(e) {
+                e.preventDefault()
+                var datas = $(this).serialize()
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('akun.update_post_center') }}",
+                    data: datas,
+                    success: function(r) {
+                        load_post_center(r)
+                        $("#edit_post").modal('hide')
+
+                    }
+                });
+            })
+
+            $(document).on('click', '.hapus_post', function(e){
+                e.preventDefault()
+                var id_post = $(this).attr('id_post')
+                var id_akun = $(this).attr('id_akun')
+                if(confirm('Yakin dihapus ? ')) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{route('akun.delete_post_center')}}?id_post="+id_post,
+                        success: function (r) {
+                            load_post_center(id_akun)
                         }
                     });
                 }

@@ -38,9 +38,17 @@ class JurnalController extends Controller
         $kategori = [
             2 => 'biaya',
             4 => 'Hutang',
+            5 => 'pengeluaran aktiva gantung',
+            6 => 'pembalikan aktiva gantung',
         ];
-        $nota_t = 1000;
-        // $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
+
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->nomor_nota + 1;
+        }
 
         $data = [
             'title' => "Tambah Jurnal " . ucwords($kategori[$r->id_buku]),
@@ -48,7 +56,24 @@ class JurnalController extends Controller
             'suplier' => DB::table('tb_suplier')->get(),
             'id_buku' => $r->id_buku,
         ];
-        return view('pembukuan.jurnal.add', $data);
+        switch ($r->id_buku) {
+            case '6':
+                return redirect()->route('jurnal.add_balik_aktiva', ['id_buku' => $r->id_buku]);
+            default:
+                return view('pembukuan.jurnal.add', $data);
+                break;
+        }
+    }
+
+    public function get_post(Request $r)
+    {
+        $id_akun = $r->id_akun;
+        $post = DB::table('tb_post_center')->where('id_akun', $id_akun)->get();
+
+        echo "<option value=''>Pilih sub akun</option>";
+        foreach ($post as $k) {
+            echo "<option value='" . $k->id_post_center  . "'>" . $k->nm_post . "</option>";
+        }
     }
 
     public function load_menu(Request $r)
