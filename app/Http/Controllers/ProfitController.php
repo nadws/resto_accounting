@@ -24,8 +24,10 @@ class ProfitController extends Controller
                     break;
                 case 'disusutkan':
                     $nominal = $transaction->debit;
+                    break;
                 case 'biaya':
                     $nominal = $transaction->debit;
+                    break;
                 default:
                     $nominal = $transaction->debit - $transaction->kredit;
                     break;
@@ -63,8 +65,8 @@ class ProfitController extends Controller
 
         $pendapatan = Profit::pendapatan_setahun($tahun, '1');
         $biaya = Profit::pendapatan_setahun($tahun, '2');
-        $biaya_penyesuaian = Profit::biaya_penyesuaian_setahun($tahun);
-        $biaya_disusutkan = Profit::biaya_disusutkan_setahun($tahun);
+        $biaya_penyesuaian = Profit::pendapatan_setahun($tahun, '3');
+        $biaya_disusutkan = Profit::pendapatan_setahun($tahun, '13');
 
 
         $data = $this->prosesTransaksi($pendapatan, 'pendapatan');
