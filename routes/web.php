@@ -64,7 +64,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/add', 'add')->name('add');
             Route::get('/load_menu', 'load_menu')->name('load_menu');
             Route::get('/get_post', 'get_post')->name('get_post');
+            Route::get('/edit_jurnal', 'edit_jurnal')->name('edit_jurnal');
+            Route::post('/update_jurnal', 'update_jurnal')->name('update_jurnal');
             Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
+            Route::get('/delete', 'delete')->name('delete');
             Route::post('/create', 'create')->name('create');
         });
     Route::controller(JurnalAktivaController::class)
@@ -75,8 +78,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/get_total_post', 'get_total_post')->name('get_total_post');
             Route::get('/cek_aktiva', 'cek_aktiva')->name('cek_aktiva');
             Route::get('/cek_aktiva', 'cek_aktiva')->name('cek_aktiva');
+            Route::get('/get_post_pembalikan', 'get_post_pembalikan')->name('get_post_pembalikan');
             Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
             Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
+            Route::post('/save_atk_pembalik', 'save_atk_pembalik')->name('save_atk_pembalik');
             Route::post('/save_jurnal_aktiva', 'save_jurnal_aktiva')->name('save_jurnal_aktiva');
 
         });

@@ -47,6 +47,7 @@ class AtkController extends Controller
 
     function stok_masuk(Request $r)
     {
+
         $data = [
             'title' => 'Stok Masuk',
             'invoice' => DB::select("SELECT a.tgl, a.invoice, sum(a.debit) as stok, a.admin
@@ -95,12 +96,13 @@ class AtkController extends Controller
                 # code...
             } else {
                 $data = [
-                    'invoice' => 'STKM-' . $invoice,
+                    'invoice' => 'STKM-' . $invoice,    
                     'tgl' => $r->tgl,
                     'id_atk' => $r->id_atk[$x],
                     'debit' => $r->debit[$x],
                     'rupiah' => $r->total_rp[$x],
-                    'urutan' => $invoice
+                    'urutan' => $invoice,
+                    'admin' => auth()->user()->name
                 ];
                 DB::table('stok_atk')->insert($data);
             }

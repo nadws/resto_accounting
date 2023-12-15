@@ -99,7 +99,8 @@
                                             <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                                 @if ($id_buku != '1')
                                                     <li><a class="dropdown-item text-primary edit_akun"
-                                                            href="#"><i class="me-2 fas fa-pen"></i>Edit</a>
+                                                            href="{{ route('jurnal.edit_jurnal', ['no_nota' => $a->no_nota]) }}"><i
+                                                                class="me-2 fas fa-pen"></i>Edit</a>
                                                     </li>
                                                 @endif
                                                 <li>
@@ -180,7 +181,60 @@
             </x-theme.modal>
         </form>
 
+        <form action="{{ route('jurnal.delete') }}" method="get">
+            <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row">
+                                <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                <input type="hidden" class="no_nota" name="no_nota">
+                                <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
+                                <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
+                                <input type="hidden" name="id_buku" value="{{ $id_buku }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @section('js')
+            <script>
+                $(document).ready(function() {
 
+                    function readMore() {
+                        $(document).on('click', '.readMore', function(e) {
+                            e.preventDefault()
+                            var id = $(this).attr('id')
+                            $(".teksLimit" + id).css('display', 'none')
+                            $(".teksFull" + id).css('display', 'block')
+                        })
+                        $(document).on('click', '.less', function(e) {
+                            e.preventDefault()
+                            var id = $(this).attr('id')
+                            $(".teksLimit" + id).css('display', 'block')
+                            $(".teksFull" + id).css('display', 'none')
+                        })
+                    }
+
+                    readMore()
+
+                    $(document).on('click', '.delete_nota', function() {
+                        var no_nota = $(this).attr('no_nota');
+                        $('.no_nota').val(no_nota);
+                    })
+                  
+                   
+                });
+            </script>
+        @endsection
     </x-slot>
 
 </x-theme.app>

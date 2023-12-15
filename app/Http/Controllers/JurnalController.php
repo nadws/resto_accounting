@@ -152,4 +152,82 @@ class JurnalController extends Controller
         $tgl2 = date('Y-m-t', strtotime($r->tgl));
         return redirect()->route('jurnal.index', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => 0, 'id_buku' => $id_buku])->with('sukses', 'Data berhasil ditambahkan');
     }
+
+    public function edit_jurnal(Request $r)
+    {
+        $data =  [
+            'title' => 'Edit Jurnal Umum',
+            'jurnal' => DB::table('jurnal')->where('no_nota', $r->no_nota)->get(),
+            'akun' => DB::table('akun')->get(),
+            'no_nota' => $r->no_nota,
+            'head_jurnal' => DB::selectOne("SELECT a.id_buku, a.tgl, a.id_proyek, a.no_dokumen,a.tgl_dokumen, sum(a.debit) as debit , sum(a.kredit) as kredit FROM jurnal as a where a.no_nota = '$r->no_nota'")
+        ];
+        return view('pembukuan.jurnal.edit', $data);
+    }
+    public function update_jurnal(Request $r)
+    {
+        $tgl = $r->tgl;
+        // $no_nota = $r->no_nota;
+        $id_akun = $r->id_akun;
+        $id_akun2 = $r->id_akun2;
+        $keterangan = $r->keterangan;
+        $debit = $r->debit;
+        $kredit = $r->kredit;   
+        $id_proyek = $r->id_proyek;
+        $no_urut = $r->no_urut;
+        $nota_t = $r->no_nota;
+        $id_post = $r->id_post;
+        $id_jurnal = $r->id_jurnal;
+        $no_dokumen = $r->no_dokumen;
+
+        DB::table('jurnal')->where('no_nota', $nota_t)->delete();
+
+        for ($i = 0; $i < count($id_akun); $i++) {
+            if ($id_akun[$i] == $id_akun2[$i] || !empty($id_akun2[$i])) {
+                $no_urutan = $no_urut[$i];
+            } else {
+                $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun[$i])->first();
+                $akun = DB::table('akun')->where('id_akun', $id_akun[$i])->first();
+                if (empty($max_akun) || $max_akun->urutan == 0) {
+                    $urutan = '1001';
+                } else {
+                    $urutan = $max_akun->urutan + 1;
+                }
+                $no_urutan = $akun->inisial . '-' . $urutan;
+            }
+
+            $data = [
+                'tgl' => $tgl,
+                'no_nota' => $nota_t,
+                'id_akun' => $id_akun[$i],
+                'id_buku' => $r->id_buku,
+                'ket' => $keterangan[$i],
+                'debit' => $debit[$i],
+                'kredit' => $kredit[$i],
+                'admin' => Auth::user()->name,
+                'no_dokumen' => empty($no_dokumen[$i]) ? ' ' : $no_dokumen[$i],
+                'tgl_dokumen' => $r->tgl_dokumen,
+                'id_proyek' => $id_proyek,
+                'no_urut' => $no_urutan,
+                'id_post_center' => $id_post[$i]
+            ];
+            DB::table('jurnal')->insert($data);
+        }
+
+        $tgl1 = date('Y-m-01', strtotime($r->tgl));
+        $tgl2 = date('Y-m-t', strtotime($r->tgl));
+        return redirect()->route('jurnal.index', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => 0, 'id_buku' => $r->id_buku])->with('sukses', 'Data berhasil diupdate');
+    }
+
+    public function delete(Request $r)
+    {
+        $nomer = substr($r->no_nota, 3);
+        DB::table('notas')->where('nomor_nota', $nomer)->delete();
+        DB::table('jurnal')->where('no_nota', $r->no_nota)->delete();
+
+        $tgl1 = $r->tgl1;
+        $tgl2 = $r->tgl2;
+        $id_proyek = $r->id_proyek;
+        return redirect()->route('jurnal.index', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => $r->id_buku])->with('sukses', 'Data berhasil dihapus');
+    }
 }
