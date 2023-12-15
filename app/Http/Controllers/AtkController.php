@@ -51,6 +51,7 @@ class AtkController extends Controller
             'title' => 'Stok Masuk',
             'invoice' => DB::select("SELECT a.tgl, a.invoice, sum(a.debit) as stok, a.admin
             FROM stok_atk as a 
+            where a.debit != 0
             group by a.invoice
             "),
             'atk' => DB::table('atk')->get()

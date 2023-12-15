@@ -6,20 +6,19 @@
                 <h6>Dashboard</h6>
             </div>
             <div class="col-lg-12">
-                <div id="load_cashflow"></div>
+                <div id="load_profit"></div>
             </div>
             <div class="col-lg-12">
-                <div id="load_profit"></div>
-
-
+                <div id="load_cashflow"></div>
             </div>
+
 
             <div class="col-lg-6">
                 <div id="load_akun"></div>
             </div>
-            <div class="col-lg-6">
+            {{-- <div class="col-lg-6">
                 <div id="load_neraca"></div>
-            </div>
+            </div> --}}
         </div>
 
         <form id="save_akun">
@@ -78,14 +77,35 @@
                     avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
                 }).showToast();
             }
+            $(document).on('submit', '#history_profit', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                var tahun = $("#tahun_profit").val();
+                load_profit(tahun);
+            });
+
             load_profit()
 
-            function load_profit() {
+            function load_profit(tahun) {
                 $.ajax({
                     type: "GET",
                     url: "{{ route('profit.index') }}",
+                    data: {
+                        tahun: tahun
+                    },
                     success: function(r) {
                         $("#load_profit").html(r);
+                        $('#show_profit').hide();
+                        setTimeout(function() {
+                            $('#loading_profit').hide();
+                            $('#show_profit').show();
+                        }, 1000);
+                        $('.select_profit').select2({
+                            language: {
+                                searching: function() {
+                                    $('.select2-search__field').focus();
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -207,6 +227,9 @@
                 load_neraca(bulan, tahun);
 
             });
+
+
+
 
             $(document).on('submit', '#save_akun_profit', function(e) {
                 e.preventDefault()
@@ -360,15 +383,15 @@
                 });
             })
 
-            $(document).on('click', '.hapus_post', function(e){
+            $(document).on('click', '.hapus_post', function(e) {
                 e.preventDefault()
                 var id_post = $(this).attr('id_post')
                 var id_akun = $(this).attr('id_akun')
-                if(confirm('Yakin dihapus ? ')) {
+                if (confirm('Yakin dihapus ? ')) {
                     $.ajax({
                         type: "GET",
-                        url: "{{route('akun.delete_post_center')}}?id_post="+id_post,
-                        success: function (r) {
+                        url: "{{ route('akun.delete_post_center') }}?id_post=" + id_post,
+                        success: function(r) {
                             load_post_center(id_akun)
                         }
                     });

@@ -48,9 +48,9 @@ class PenutupController extends Controller
             'tgl2Tutup' => $tgl2Tutup,
             // 'total' => DB::selectOne("SELECT count(a.id_akun) as total FROM akun as a where  a.iktisar='T'"),
 
-            'aktiva' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 51 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
-            'peralatan' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 58 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
-            'atk' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 91 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
+            'aktiva' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 26 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
+            'peralatan' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 28 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
+            'atk' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 30 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
             'cancel' => DB::select("SELECT a.tgl FROM jurnal as a where a.id_buku = '5' group by a.tgl ")
         ];
         return view('pembukuan.penutup.index', $data);
@@ -84,9 +84,9 @@ class PenutupController extends Controller
 
 
         for ($x = 0; $x < count($id_akun_pembelian); $x++) {
-            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '8')->first();
             $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
-            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
+            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '8']);
 
             if ($kredit_pembelian[$x] + $debit_pembelian[$x] == 0) {
                 # code...
@@ -95,7 +95,7 @@ class PenutupController extends Controller
                     'tgl' => $tgl,
                     'no_nota' => "PEN-$no_nota",
                     'id_akun' => $id_akun_pembelian[$x],
-                    'id_buku' => '5',
+                    'id_buku' => '8',
                     'ket' => 'Penutup Ikhtisar',
                     'debit' => $debit_pembelian[$x],
                     'kredit' => $kredit_pembelian[$x],
@@ -105,9 +105,9 @@ class PenutupController extends Controller
             }
         }
         for ($x = 0; $x < count($id_akun_biaya); $x++) {
-            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '8')->first();
             $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
-            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
+            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '8']);
 
             if ($debit_biaya[$x] + $kredit_biaya[$x] == 0) {
                 # code...
@@ -116,7 +116,7 @@ class PenutupController extends Controller
                     'tgl' => $tgl,
                     'no_nota' => "PEN-$no_nota",
                     'id_akun' => $id_akun_biaya[$x],
-                    'id_buku' => '5',
+                    'id_buku' => '8',
                     'ket' => 'Penutup Ikhtisar',
                     'debit' => $debit_biaya[$x],
                     'kredit' => $kredit_biaya[$x],
@@ -126,9 +126,9 @@ class PenutupController extends Controller
             }
         }
         for ($x = 0; $x < count($id_akun_modal); $x++) {
-            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+            $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '8')->first();
             $no_nota = empty($max) ? '1000' : $max->nomor_nota + 1;
-            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '5']);
+            DB::table('notas')->insert(['nomor_nota' => $no_nota, 'id_buku' => '8']);
 
             if ($debit_modal[$x] + $kredit_modal[$x] == 0) {
                 # code...
@@ -137,7 +137,7 @@ class PenutupController extends Controller
                     'tgl' => $tgl,
                     'no_nota' => "PEN-$no_nota",
                     'id_akun' => $id_akun_modal[$x],
-                    'id_buku' => '5',
+                    'id_buku' => '8',
                     'ket' => 'Penutup Ikhtisar',
                     'debit' => $debit_modal[$x],
                     'kredit' => $kredit_modal[$x],
@@ -148,9 +148,9 @@ class PenutupController extends Controller
         }
 
 
-        $max_prive = DB::table('notas')->latest('nomor_nota')->where('id_buku', '5')->first();
+        $max_prive = DB::table('notas')->latest('nomor_nota')->where('id_buku', '8')->first();
         $no_nota_prive = empty($max_prive) ? '1000' : $max_prive->nomor_nota + 1;
-        DB::table('notas')->insert(['nomor_nota' => $no_nota_prive, 'id_buku' => '5']);
+        DB::table('notas')->insert(['nomor_nota' => $no_nota_prive, 'id_buku' => '8']);
 
         if ($prive_biasa == 0) {
             # code...
@@ -158,8 +158,8 @@ class PenutupController extends Controller
             $data = [
                 'tgl' => $tgl2,
                 'no_nota' => "PEN-$no_nota_prive",
-                'id_akun' => 95,
-                'id_buku' => '5',
+                'id_akun' => 36,
+                'id_buku' => '8',
                 'ket' => 'Penutup Ikhtisar',
                 'debit' => $prive_biasa,
                 'kredit' => 0,
@@ -169,8 +169,8 @@ class PenutupController extends Controller
             $data = [
                 'tgl' => $tgl2,
                 'no_nota' => "PEN-$no_nota_prive",
-                'id_akun' => 57,
-                'id_buku' => '5',
+                'id_akun' => 37,
+                'id_buku' => '8',
                 'ket' => 'Penutup Ikhtisar',
                 'debit' => 0,
                 'kredit' => $prive_biasa,

@@ -64,12 +64,11 @@ class ProfitController extends Controller
 
         $biaya_penyesuaian = Profit::biaya_penyesuaian_setahun($tahun);
         $biaya_disusutkan = Profit::biaya_disusutkan_setahun($tahun);
-
-
         $data = $this->prosesTransaksi($pendapatan, 'pendapatan');
         $data2 = $this->prosesTransaksi($biaya, 'biaya');
         $data3 = $this->prosesTransaksi($biaya_penyesuaian, 'biaya');
         $data4 = $this->prosesTransaksi($biaya_disusutkan, 'disusutkan');
+
         $data = [
             'title' => 'Profit',
             'thn' => $tahun,
@@ -78,7 +77,8 @@ class ProfitController extends Controller
             'data2' => $data2,
             'data3' => $data3,
             'data4' => $data4,
-            'tahun' => DB::table('tahun')->get()
+            'tahun' => DB::table('tahun')->get(),
+            'bulan' => DB::table('bulan')->get(),
         ];
         return view('dashboard.profit.index', $data);
     }
