@@ -14,6 +14,7 @@ class ProfitController extends Controller
         $data = [];
 
         foreach ($transactions as $transaction) {
+
             $month = date('F', strtotime("{$transaction->tahun}-{$transaction->bulan}-01"));
 
             // Ubah bulan dan tahun menjadi format yang benar
@@ -22,6 +23,8 @@ class ProfitController extends Controller
                     $nominal = $transaction->kredit;
                     break;
                 case 'disusutkan':
+                    $nominal = $transaction->debit;
+                case 'biaya':
                     $nominal = $transaction->debit;
                 default:
                     $nominal = $transaction->debit - $transaction->kredit;
@@ -60,13 +63,13 @@ class ProfitController extends Controller
 
         $pendapatan = Profit::pendapatan_setahun($tahun, '1');
         $biaya = Profit::pendapatan_setahun($tahun, '2');
-
-
         $biaya_penyesuaian = Profit::biaya_penyesuaian_setahun($tahun);
         $biaya_disusutkan = Profit::biaya_disusutkan_setahun($tahun);
+
+
         $data = $this->prosesTransaksi($pendapatan, 'pendapatan');
-        $data2 = $this->prosesTransaksi($biaya, 'biaya');
-        $data3 = $this->prosesTransaksi($biaya_penyesuaian, 'biaya');
+        $data2 = $this->prosesTransaksi($biaya, 'disusutkan');
+        $data3 = $this->prosesTransaksi($biaya_penyesuaian, 'disusutkan');
         $data4 = $this->prosesTransaksi($biaya_disusutkan, 'disusutkan');
 
         $data = [

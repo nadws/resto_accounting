@@ -10,7 +10,7 @@
         </div>
     </x-slot>
     <x-slot name="cardBody">
-        <form action="#" method="post">
+        <form action="{{ route('penutup.saldo') }}" method="post">
             <section class="row">
                 @csrf
                 <div class="col-lg-6">
@@ -34,7 +34,7 @@
                     <a data-bs-toggle="modal" data-bs-target="#akun" href="#"
                         class="btn btn-primary btn-sm float-end me-2 list_akun"><i class="fas fa-clipboard-list"></i>
                         Akun
-                        <span class="badge bg-danger">5</span>
+                        <span class="badge bg-danger">{{ $total->total }}</span>
                     </a>
                 </div>
                 {{-- <div class="col-lg-12">
@@ -165,7 +165,7 @@
                     </table>
                 </div>
                 <div class="col-lg-7">
-                    {{-- @if (empty($aktiva) || empty($peralatan) || empty($atk))
+                    @if (empty($aktiva) || empty($peralatan) || empty($atk))
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -181,222 +181,226 @@
                                 </td>
                             </tbody>
                         </table>
-                    @else --}}
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                {{-- <th class="dhead" width="5">#</th> --}}
-                                {{-- <th class="dhead">Kode Akun</th> --}}
-                                <th class="dhead">Tangal</th>
-                                <th width="50%" class="dhead">Akun</th>
-                                <th width="25%" class="dhead" style="text-align: right">Debit</th>
-                                <th width="25%" class="dhead" style="text-align: right">Kredit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{-- <tr>
+                    @else
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    {{-- <th class="dhead" width="5">#</th> --}}
+                                    {{-- <th class="dhead">Kode Akun</th> --}}
+                                    <th class="dhead">Tangal</th>
+                                    <th width="50%" class="dhead">Akun</th>
+                                    <th width="25%" class="dhead" style="text-align: right">Debit</th>
+                                    <th width="25%" class="dhead" style="text-align: right">Kredit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{-- <tr>
                                 <td colspan="5" class="fw-bold"></td>
                             </tr> --}}
-                            <tr>
-                                <td rowspan="100">
-                                    <div class="vertical-text-container">
-                                        <div class="vertical-text">
-                                            Periode {{ tanggal($tgl2Tutup) }}
+                                <tr>
+                                    <td rowspan="100">
+                                        <div class="vertical-text-container">
+                                            <div class="vertical-text">
+                                                Periode {{ tanggal($tgl2Tutup) }}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <input type="hidden" name="tgl" value="{{ $tgl2Tutup }}">
-                                </td>
-                            </tr>
-                            @php
-                                $total_pendapatan = 0;
-                            @endphp
-                            @foreach ($pendapatan as $no => $b)
-                                @php
-                                    $total_pendapatan += $b->kredit - $b->debit;
-                                @endphp
-                                <tr>
-
-                                    <td>
-                                        {{ ucwords(strtolower($b->nm_akun)) }}
-                                        <input type="hidden" name="id_akun_pembelian[]" value="{{ $b->id_akun }}">
-                                    </td>
-                                    <td align="right">
-                                        Rp {{ number_format($b->kredit - $b->debit, 0) }}
-                                        <input type="hidden" name="debit_pembelian[]"
-                                            value="{{ $b->kredit - $b->debit }}">
-
-                                    </td>
-                                    <td align="right">
-                                        Rp 0
-                                        <input type="hidden" name="kredit_pembelian[]" value="0">
+                                        <input type="hidden" name="tgl" value="{{ $tgl2Tutup }}">
                                     </td>
                                 </tr>
-                            @endforeach
-                            <tr>
-                                <td style="padding-left: 20px;">
-                                    Ikhtisar Laba Rugi
-                                    <input type="hidden" name="id_akun_pembelian[]" value="31">
-                                </td>
-                                <td align="right">Rp 0
-                                    <input type="hidden" name="debit_pembelian[]" value="0">
-                                </td>
-                                <td align="right">
-                                    Rp {{ number_format($total_pendapatan, 0) }}
-                                    <input type="hidden" name="kredit_pembelian[]" value="{{ $total_pendapatan }}">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="fw-bold"></td>
-                            </tr>
-
-                            @php
-                                $total_biaya = 0;
-                                $laba = 0;
-                            @endphp
-                            @foreach ($biaya as $c)
                                 @php
-                                    $total_biaya += $c->debit - $c->kredit;
-                                    $laba += $c->debit;
+                                    $total_pendapatan = 0;
                                 @endphp
-                            @endforeach
-                            <tr>
-                                <td>
-                                    Ikhtisar Laba Rugi
-                                    <input type="hidden" name="id_akun_biaya[]" value="31">
-                                </td>
-                                <td align="right">
-                                    Rp {{ number_format($total_biaya, 0) }}
-                                    <input type="hidden" name="debit_biaya[]" value="{{ $total_biaya }}">
-                                </td>
-                                <td align="right">
-                                    Rp 0
-                                    <input type="hidden" name="kredit_biaya[]" value="0">
-                                </td>
-                            </tr>
-                            @foreach ($biaya as $no => $b)
+                                @foreach ($pendapatan as $no => $b)
+                                    @php
+                                        $total_pendapatan += $b->kredit - $b->debit;
+                                    @endphp
+                                    <tr>
+
+                                        <td>
+                                            {{ ucwords(strtolower($b->nm_akun)) }}
+                                            <input type="hidden" name="id_akun_pembelian[]"
+                                                value="{{ $b->id_akun }}">
+                                        </td>
+                                        <td align="right">
+                                            Rp {{ number_format($b->kredit - $b->debit, 0) }}
+                                            <input type="hidden" name="debit_pembelian[]"
+                                                value="{{ $b->kredit - $b->debit }}">
+
+                                        </td>
+                                        <td align="right">
+                                            Rp 0
+                                            <input type="hidden" name="kredit_pembelian[]" value="0">
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 <tr>
-                                    <td style="padding-left: 20px">
-                                        {{ ucwords(strtolower($b->nm_akun)) }}
-                                        <input type="hidden" name="id_akun_biaya[]" value="{{ $b->id_akun }}">
+                                    <td style="padding-left: 20px;">
+                                        Ikhtisar Laba Rugi
+                                        <input type="hidden" name="id_akun_pembelian[]" value="31">
+                                    </td>
+                                    <td align="right">Rp 0
+                                        <input type="hidden" name="debit_pembelian[]" value="0">
                                     </td>
                                     <td align="right">
-                                        Rp 0
-                                        <input type="hidden" name="debit_biaya[]" value="0">
-                                    </td>
-                                    <td align="right">
-                                        Rp {{ number_format($b->debit - $b->kredit, 0) }}
-                                        <input type="hidden" name="kredit_biaya[]"
-                                            value="{{ $b->debit - $b->kredit }}">
+                                        Rp {{ number_format($total_pendapatan, 0) }}
+                                        <input type="hidden" name="kredit_pembelian[]"
+                                            value="{{ $total_pendapatan }}">
                                     </td>
                                 </tr>
-                            @endforeach
-                            @php
-                                $pen = empty($total_pendapatan) ? '0' : $total_pendapatan;
-                                $biy = empty($total_biaya) ? '0' : $total_biaya;
-                                $biy2 = empty($laba) ? '0' : $laba;
-                            @endphp
-                            <tr>
-                                <td colspan="4" class="fw-bold"></td>
-                            </tr>
-                            <input type="hidden" name="laba_independent" value="{{ $pen - $biy2 }}">
-                            @if ($pen - $biy > 0)
+                                <tr>
+                                    <td colspan="4" class="fw-bold"></td>
+                                </tr>
+
+                                @php
+                                    $total_biaya = 0;
+                                    $laba = 0;
+                                @endphp
+                                @foreach ($biaya as $c)
+                                    @php
+                                        $total_biaya += $c->debit - $c->kredit;
+                                        $laba += $c->debit;
+                                    @endphp
+                                @endforeach
                                 <tr>
                                     <td>
                                         Ikhtisar Laba Rugi
-                                        <input type="hidden" name="id_akun_modal[]" value="31">
+                                        <input type="hidden" name="id_akun_biaya[]" value="31">
                                     </td>
                                     <td align="right">
-                                        Rp {{ number_format($pen - $biy, 0) }}
-                                        <input type="hidden" name="debit_modal[]" value="{{ $pen - $biy }}">
+                                        Rp {{ number_format($total_biaya, 0) }}
+                                        <input type="hidden" name="debit_biaya[]" value="{{ $total_biaya }}">
                                     </td>
                                     <td align="right">
                                         Rp 0
-                                        <input type="hidden" name="kredit_modal[]" value="0">
+                                        <input type="hidden" name="kredit_biaya[]" value="0">
                                     </td>
+                                </tr>
+                                @foreach ($biaya as $no => $b)
+                                    <tr>
+                                        <td style="padding-left: 20px">
+                                            {{ ucwords(strtolower($b->nm_akun)) }}
+                                            <input type="hidden" name="id_akun_biaya[]"
+                                                value="{{ $b->id_akun }}">
+                                        </td>
+                                        <td align="right">
+                                            Rp 0
+                                            <input type="hidden" name="debit_biaya[]" value="0">
+                                        </td>
+                                        <td align="right">
+                                            Rp {{ number_format($b->debit - $b->kredit, 0) }}
+                                            <input type="hidden" name="kredit_biaya[]"
+                                                value="{{ $b->debit - $b->kredit }}">
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                @php
+                                    $pen = empty($total_pendapatan) ? '0' : $total_pendapatan;
+                                    $biy = empty($total_biaya) ? '0' : $total_biaya;
+                                    $biy2 = empty($laba) ? '0' : $laba;
+                                @endphp
+                                <tr>
+                                    <td colspan="4" class="fw-bold"></td>
+                                </tr>
+                                <input type="hidden" name="laba_independent" value="{{ $pen - $biy2 }}">
+                                @if ($pen - $biy > 0)
+                                    <tr>
+                                        <td>
+                                            Ikhtisar Laba Rugi
+                                            <input type="hidden" name="id_akun_modal[]" value="31">
+                                        </td>
+                                        <td align="right">
+                                            Rp {{ number_format($pen - $biy, 0) }}
+                                            <input type="hidden" name="debit_modal[]" value="{{ $pen - $biy }}">
+                                        </td>
+                                        <td align="right">
+                                            Rp 0
+                                            <input type="hidden" name="kredit_modal[]" value="0">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left: 20px">
+                                            Laba Berjalan
+                                            <input type="hidden" name="id_akun_modal[]" value="95">
+                                        </td>
+                                        <td align="right">
+                                            Rp 0
+                                            <input type="hidden" name="debit_modal[]" value="0">
+                                        </td>
+                                        <td align="right">
+                                            Rp {{ number_format($pen - $biy, 0) }}
+                                            <input type="hidden" name="kredit_modal[]" value="{{ $pen - $biy }}">
+                                        </td>
+                                    </tr>
+                                @else
+                                    <tr>
+                                        <td>
+                                            Laba Berjalan
+                                            <input type="hidden" name="id_akun_modal[]" value="95">
+                                        </td>
+                                        <td align="right">
+                                            Rp {{ number_format(($pen - $biy) * -1, 0) }}
+                                            <input type="hidden" name="debit_modal[]"
+                                                value="{{ ($pen - $biy) * -1 }}">
+                                        </td>
+                                        <td align="right">
+                                            Rp 0
+                                            <input type="hidden" name="kredit_modal[]" value="0">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-left: 20px">
+                                            Ikhtisar Laba Rugi
+                                            <input type="hidden" name="id_akun_modal[]" value="31">
+                                        </td>
+                                        <td align="right">
+                                            Rp 0
+                                            <input type="hidden" name="debit_modal[]" value="0">
+                                        </td>
+                                        <td align="right">
+                                            Rp {{ number_format(($pen - $biy) * -1, 0) }}
+                                            <input type="hidden" name="kredit_modal[]"
+                                                value="{{ ($pen - $biy) * -1 }}">
+                                        </td>
+                                    </tr>
+                                @endif
+                                <tr>
+                                    <td colspan="4" class="fw-bold"></td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 20px">
-                                        Laba Berjalan
-                                        <input type="hidden" name="id_akun_modal[]" value="95">
+                                    <td>Laba Berjalan</td>
+                                    <td align="right"><input type="text" readonly class="form-control modal_1">
                                     </td>
-                                    <td align="right">
-                                        Rp 0
-                                        <input type="hidden" name="debit_modal[]" value="0">
-                                    </td>
-                                    <td align="right">
-                                        Rp {{ number_format($pen - $biy, 0) }}
-                                        <input type="hidden" name="kredit_modal[]" value="{{ $pen - $biy }}">
-                                    </td>
-                                </tr>
-                            @else
-                                <tr>
-                                    <td>
-                                        Laba Berjalan
-                                        <input type="hidden" name="id_akun_modal[]" value="95">
-                                    </td>
-                                    <td align="right">
-                                        Rp {{ number_format(($pen - $biy) * -1, 0) }}
-                                        <input type="hidden" name="debit_modal[]" value="{{ ($pen - $biy) * -1 }}">
-                                    </td>
-                                    <td align="right">
-                                        Rp 0
-                                        <input type="hidden" name="kredit_modal[]" value="0">
-                                    </td>
+                                    <td align="right">Rp 0</td>
                                 </tr>
                                 <tr>
-                                    <td style="padding-left: 20px">
-                                        Ikhtisar Laba Rugi
-                                        <input type="hidden" name="id_akun_modal[]" value="31">
-                                    </td>
+                                    <td style="padding-left: 20px">Prive</td>
+                                    <td align="right">Rp 0</td>
                                     <td align="right">
-                                        Rp 0
-                                        <input type="hidden" name="debit_modal[]" value="0">
-                                    </td>
-                                    <td align="right">
-                                        Rp {{ number_format(($pen - $biy) * -1, 0) }}
-                                        <input type="hidden" name="kredit_modal[]"
-                                            value="{{ ($pen - $biy) * -1 }}">
+                                        <input type="text" class="form-control prive">
+                                        <input type="hidden" name="prive_biasa" class="form-control prive_biasa"
+                                            value="0">
                                     </td>
                                 </tr>
-                            @endif
-                            <tr>
-                                <td colspan="4" class="fw-bold"></td>
-                            </tr>
-                            <tr>
-                                <td>Laba Berjalan</td>
-                                <td align="right"><input type="text" readonly class="form-control modal_1">
-                                </td>
-                                <td align="right">Rp 0</td>
-                            </tr>
-                            <tr>
-                                <td style="padding-left: 20px">Prive</td>
-                                <td align="right">Rp 0</td>
-                                <td align="right">
-                                    <input type="text" class="form-control prive">
-                                    <input type="hidden" name="prive_biasa" class="form-control prive_biasa"
-                                        value="0">
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <td style="font-weight: bold">Jumlah Total
-                                    <input type="hidden" class="form-control total_penutup"
-                                        value="{{ $pen - $biy + ($pen - $biy) }}">
-                                </td>
-                                <td align="right" class="total_all fw-bold">Rp
-                                    {{ $pen - $biy < 0
-                                        ? number_format(($pen - $biy + ($pen - $biy)) * -1, 2, ',', '.')
-                                        : number_format($pen - $biy + ($pen - $biy), 2, ',', '.') }}
-                                </td>
-                                <td align="right" class="total_all fw-bold">Rp
-                                    {{ $pen - $biy < 0
-                                        ? number_format(($pen - $biy + ($pen - $biy)) * -1, 2, ',', '.')
-                                        : number_format($pen - $biy + ($pen - $biy), 2, ',', '.') }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    {{-- @endif --}}
+                                <tr>
+                                    <td style="font-weight: bold">Jumlah Total
+                                        <input type="hidden" class="form-control total_penutup"
+                                            value="{{ $pen - $biy + ($pen - $biy) }}">
+                                    </td>
+                                    <td align="right" class="total_all fw-bold">Rp
+                                        {{ $pen - $biy < 0
+                                            ? number_format(($pen - $biy + ($pen - $biy)) * -1, 2, ',', '.')
+                                            : number_format($pen - $biy + ($pen - $biy), 2, ',', '.') }}
+                                    </td>
+                                    <td align="right" class="total_all fw-bold">Rp
+                                        {{ $pen - $biy < 0
+                                            ? number_format(($pen - $biy + ($pen - $biy)) * -1, 2, ',', '.')
+                                            : number_format($pen - $biy + ($pen - $biy), 2, ',', '.') }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    @endif
 
                 </div>
 
@@ -438,7 +442,7 @@
                             <p class=" ms-4 mt-4">Silahkan lakukan penyesuaian bulan
                                 <b>{{ date(
                                     'F
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Y',
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Y',
                                     strtotime($tgl2Tutup),
                                 ) }}</b>
                                 terlebih dahulu !!
@@ -462,7 +466,7 @@
             </x-theme.modal>
         </form>
 
-        <form action="#" method="post">
+        <form action="{{ route('penutup.edit_akun') }}" method="post">
             @csrf
             <x-theme.modal title="Akun" size="modal-lg" btnSave="" idModal="akun">
                 <div id="load-akun"></div>
@@ -525,7 +529,7 @@
             $(document).on('click', '.list_akun', function() {
                 $.ajax({
                     type: "GET",
-                    url: "",
+                    url: "{{ route('penutup.akun') }}",
                     success: function(r) {
                         $("#load-akun").html(r);
                         $('#tableScroll').DataTable({
