@@ -89,10 +89,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/tambah_baris_aktiva', 'tambah_baris_aktiva')->name('tambah_baris_aktiva');
             Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
         });
-    Route::controller(PeralatanController::class)
+        Route::controller(PeralatanController::class)
         ->prefix('peralatan')
         ->name('peralatan.')
         ->group(function () {
+            Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
             Route::get('/', 'index')->name('index');
         });
     Route::controller(AtkController::class)

@@ -1,5 +1,6 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
+        
         <div class="row justify-content-end">
             <div class="col-lg-6">
                 <h6 class="float-start mt-1">{{ $title }} </h6>
@@ -113,7 +114,15 @@
                     <hr style="border: 1px solid #435EBE">
                 </div>
                 <div class="col-lg-12">
-                    <table class="table table-bordered">
+                    <table>
+                        <tr>
+                            <td>Pencarian : </td>
+                            <td><input id="pencarian" type="text" class="form-control mb-3"
+                                    placeholder="pencarian..."></td>
+                        </tr>
+                    </table>
+
+                    <table class="table table-bordered" id="tblAldi1">
                         <thead>
                             <tr>
                                 <th class="dhead" width="20%">Tanggal Perolehan</th>
@@ -168,6 +177,8 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
+                pencarian('pencarian', 'tblAldi1')
+
                 $(document).on("keyup", ".beban", function() {
                     var count = $(this).attr("count");
                     var input = $(this).val();

@@ -85,7 +85,7 @@
         <a href="{{ empty($pembelian) ? route('jurnal.index', ['id_buku' => '13']) : route('jurnal.index', ['id_buku' => '10']) }}"
             class="float-end btn btn-outline-primary me-2">Kembali</a>
         <form
-            action="{{ $kategori == 'aktiva' ? route('jurnal.save_aktiva') : ($kategori == 'peralatan' ? route('peralatan.save_aktiva') : route('save_atk_pembalik')) }}"
+            action="{{ $kategori == 'aktiva' ? route('jurnal.save_aktiva') : ($kategori == 'peralatan' ? route('peralatan.save_aktiva') : route('jurnal.save_atk_pembalik')) }}"
             method="post" class="save_jurnal">
             @csrf
             <x-theme.modal title="Tambah {{ $kategori }}" idModal="tambah" size="modal-lg-max">
@@ -149,12 +149,12 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th width="15%">Kelompok</th>
-                                    <th width="15%">Nama Peralatan</th>
-                                    <th width="14%">Tanggal Perolehan</th>
-                                    <th width="14%">Nilai Perolehan</th>
-                                    <th width="10%" style="text-align: center">Umur</th>
-                                    <th width="14%">Penyusutan Perbulan</th>
+                                    <th class="dhead" width="15%">Kelompok</th>
+                                    <th class="dhead" width="15%">Nama Peralatan</th>
+                                    <th class="dhead" width="14%">Tanggal Perolehan</th>
+                                    <th class="dhead" width="14%">Nilai Perolehan</th>
+                                    <th class="dhead" width="10%" style="text-align: center">Umur</th>
+                                    <th class="dhead" width="14%">Penyusutan Perbulan</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -202,19 +202,20 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th width="15%">Tanggal</th>
-                                    <th width="15%">Nama Atk</th>
-                                    <th width="15%">Gudang</th>
-                                    <th width="15%">Stok</th>
-                                    <th width="14%">Satuan</th>
-                                    <th width="14%">Total Rp</th>
+                                    <th class="dhead" width="15%">Tanggal</th>
+                                    <th class="dhead" width="15%">Nama Atk</th>
+                                    <th class="dhead" width="10%">Cfm</th>
+                                    <th class="dhead" width="15%">Kategori</th>
+                                    <th class="dhead" width="10%">Stok</th>
+                                    <th class="dhead" width="13%">Satuan</th>
+                                    <th class="dhead" width="14%">Total Rp</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                                 <tr>
-                                    <td><input type="date" name="tgl" class="form-control"
-                                            value="{{ $head_jurnal->tgl }}">
+                                    <td>
+                                        <input name="tgl" type="date" value="{{$head_jurnal->tgl}}" class="form-control">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" name="nm_atk"
@@ -222,10 +223,17 @@
                                             readonly>
                                     </td>
                                     <td>
-                                        <select name="id_gudang" class="form-control select2" id="">
-                                            <option value="">- Pilih Gudang -</option>
-                                            @foreach ($gudang as $s)
-                                                <option value="{{ $s->id_gudang }}">{{ $s->nm_gudang }}</option>
+                                        <input type="text" class="form-control" name="cfm">
+                                    </td>
+                                    <td>
+                                        <select name="id_kategori" id="" class="select2">
+                                            <option value="">Pilih Kategori</option>
+                                            @php
+                                                $kategori = DB::table('kategori_atk')->get();
+
+                                            @endphp
+                                            @foreach ($kategori as $k)
+                                                <option value="{{ $k->id_kategori }}">{{ $k->nm_kategori }}</option>
                                             @endforeach
                                         </select>
                                     </td>
@@ -241,7 +249,7 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control"
+                                        <input type="text" class="form-control text-end"
                                             value="Rp. {{ number_format($head_jurnal->debit, 0) }}" readonly>
                                         <input type="hidden" name="total_rp" class="form-control"
                                             value="{{ $head_jurnal->debit }}">
@@ -267,7 +275,7 @@
 
                     $.ajax({
                         type: "GET",
-                        url: "{{route('jurnal.get_data_kelompok')}}?id_kelompok=" + id_kelompok,
+                        url: "{{ route('jurnal.get_data_kelompok') }}?id_kelompok=" + id_kelompok,
                         dataType: "json",
                         success: function(data) {
                             $('.nilai_persen' + count).text(data['nilai_persen'] * 100 + ' %');
@@ -294,7 +302,45 @@
                     });
                 });
 
+                $(document).on("change", ".pilih_kelompok_peralatan", function() {
+                    var count = $(this).attr("count");
+                    var id_kelompok = $('.pilih_kelompok' + count).val();
+                    var nilai = $('.nilai_perolehan_biasa' + count).val()
 
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('peralatan.get_data_kelompok') }}",
+                        data: {
+                            id_kelompok: id_kelompok
+                        },
+                        dataType: "json",
+                        success: function(data) {
+                            $('.nilai_persen' + count).text(data['nilai_persen'] * 100 + ' %');
+                            $('.inputnilai_persen' + count).val(data['nilai_persen']);
+                            $('.umur' + count).text(data['tahun'] + ' ' + data['periode']);
+                            $(".periode" + count).val(data['periode']);
+                            $(".umurInput" + count).val(data['tahun']);
+
+                            var bulan_bagi = data['periode'] === 'Bulan' ? parseFloat(data[
+                                'tahun']) : parseFloat(data['tahun']) * 12;
+
+                            var susut_bulan = parseFloat(nilai) / parseFloat(bulan_bagi);
+                            var susut_rupiah = susut_bulan.toLocaleString("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                            });
+
+                            if (nilai === '') {
+                                $('.susut_bulan' + count).text('Rp.0');
+
+                            } else {
+                                $('.susut_bulan' + count).text(susut_rupiah);
+
+                            }
+
+                        }
+                    });
+                });
                 aksiBtn("form");
             });
         </script>

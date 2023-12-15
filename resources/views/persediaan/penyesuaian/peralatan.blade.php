@@ -37,6 +37,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-12">
+                    
                     <table class="table table-striped">
                         <thead>
                             <tr>
@@ -98,7 +99,13 @@
                 </div>
 
                 <div class="col-lg-12">
-                    <table class="table table-bordered">
+                    <table>
+                        <tr>
+                            <td>Pencarian : </td>
+                            <td><input id="pencarian" type="text" class="form-control mb-3" placeholder="pencarian..."></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered" id="tblAldi1">
                         <thead>
 
                             <tr>
@@ -153,6 +160,7 @@
     @section('scripts')
         <script>
             $(document).ready(function() {
+                pencarian('pencarian', 'tblAldi1')
                 $(document).on("keyup", ".beban", function() {
                     var count = $(this).attr("count");
                     var input = $(this).val();

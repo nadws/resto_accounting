@@ -23,23 +23,18 @@ class JurnalAktivaController extends Controller
         }
 
         if ($kategori == 'aktiva') {
-            $akun_gantung = DB::table('akun')->where('id_akun', 25)->first();
-            $akun_aktiva = DB::table('akun')->where('id_akun', 26)->first();
+            $akun_gantung = DB::table('akun')->where('id_akun', 33)->first();
+            $akun_aktiva = DB::table('akun')->where('id_akun', 32)->first();
             $post = DB::select("SELECT * FROM tb_post_center as a where a.id_akun = '$akun_gantung->id_akun' and a.nm_post not in(SELECT b.nm_aktiva FROM aktiva as b)");
+        } else if ($kategori == 'peralatan') {
+            $akun_gantung = DB::table('akun')->whereIn('id_akun', [35])->get();
+            $akun_aktiva = DB::table('akun')->where('id_akun', 34)->first();
+            $post = 'peralatan';
+        } else {
+            $akun_gantung = DB::table('akun')->where('id_akun', 36)->first();
+            $akun_aktiva = DB::table('akun')->where('id_akun', 31)->first();
+            $post = DB::select("SELECT * FROM tb_post_center as a where a.id_akun = '$akun_gantung->id_akun' and a.nm_post not in(SELECT b.nm_produk FROM tb_produk as b)");
         }
-        // else if ($kategori == 'peralatan') {
-        //     $akun_gantung = DB::table('akun')->whereIn('id_akun', [61, 76])->get();
-        //     $akun_aktiva = DB::table('akun')->where('id_akun', 16)->first();
-        //     $post = 'peralatan';
-        // } else if ($kategori == 'pullet') {
-        //     $akun_gantung = DB::table('akun')->where('id_akun', 76)->first();
-        //     $akun_aktiva = DB::table('akun')->where('id_akun', 75)->first();
-        //     $post = DB::select("SELECT * FROM tb_post_center as a where a.id_akun = '$akun_gantung->id_akun' and a.nm_post not in(SELECT b.nm_aktiva FROM peralatan as b)");
-        // } else {
-        //     $akun_gantung = DB::table('akun')->where('id_akun', 60)->first();
-        //     $akun_aktiva = DB::table('akun')->where('id_akun', 30)->first();
-        //     $post = DB::select("SELECT * FROM tb_post_center as a where a.id_akun = '$akun_gantung->id_akun' and a.nm_post not in(SELECT b.nm_produk FROM tb_produk as b)");
-        // }
 
         $data =  [
             'title' => 'Tambah Jurnal Pembalik Aktiva Gantung',
@@ -55,6 +50,37 @@ class JurnalAktivaController extends Controller
 
         return view('pembukuan.jurnal_pembalik_aktiva.add_aktiva', $data);
     }
+    public function save_atk_pembalik(Request $r)
+    {
+        $getId = DB::table('atk')->insertGetId([
+            'cfm' => $r->cfm,
+            'id_kategori' => $r->id_kategori,
+            'nm_atk' => $r->nm_atk,
+            'id_satuan' => $r->id_satuan,
+            'foto' => '0',
+            'kontrol_stok' => 'Y',
+        ]);
+
+
+        $invo = DB::selectOne("SELECT max(a.urutan) as urutan
+        FROM stok_atk as a 
+        ");
+
+        $invoice = empty($invo->urutan) ? 1001 :  $invo->urutan + 1;
+
+        $data = [
+            'invoice' => 'STKM-' . $invoice,
+            'tgl' => $r->tgl,
+            'id_atk' => $getId,
+            'debit' => $r->stok,
+            'rupiah' => $r->total_rp,
+            'urutan' => $invoice,
+            'admin' => auth()->user()->name
+        ];
+        DB::table('stok_atk')->insert($data);
+
+        return redirect()->route('atk.index')->with('sukses', 'Data Berhasil Ditambahkan');
+    }
 
     public function get_total_post(Request $r)
     {
@@ -66,6 +92,17 @@ class JurnalAktivaController extends Controller
             'biasa' => $total->debit
         ];
         return response()->json($data);
+    }
+    public function get_post_pembalikan(Request $r)
+    {
+        $id_akun = $r->id_akun;
+        // $post = DB::table('tb_post_center')->where('id_akun', $id_akun)->get();
+        $post = DB::select("SELECT * FROM tb_post_center as a where a.id_akun = '$id_akun' and a.nm_post not in(SELECT b.nm_aktiva FROM peralatan as b)");
+
+        echo "<option value=''>Pilih sub akun</option>";
+        foreach ($post as $k) {
+            echo "<option value='" . $k->id_post_center  . "'>" . $k->nm_post . "</option>";
+        }
     }
 
     public function save_jurnal_aktiva(Request $r)
@@ -190,7 +227,6 @@ class JurnalAktivaController extends Controller
             ];
             DB::table('aktiva')->insert($data);
         }
-        return 'berhasil';
-        // return redirect()->route('aktiva')->with('sukses', 'Data berhasil ditambahkan');
+        return redirect()->route('aktiva.index')->with('sukses', 'Data berhasil ditambahkan');
     }
 }

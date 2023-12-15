@@ -46,7 +46,8 @@
                             <td>{{ $d->nm_satuan }}</td>
 
                             <td align="center">
-                                <a href="" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></a>
+                                <a href="#" id_atk="{{ $d->id_atk }}" class="btn btn-warning btn-sm edit"><i
+                                        class="fas fa-edit"></i></a>
                                 <a href="" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
@@ -100,6 +101,18 @@
 
             </x-theme.modal>
         </form>
+
+        @section('scripts')
+            <script>
+                $(document).ready(function() {
+
+                    $(document).on("click", '.edit', function(e) {
+                        e.preventDefault();
+                        var id_atk = $(this).attr('id_atk')
+                    })
+                });
+            </script>
+        @endsection
     </x-slot>
 
 

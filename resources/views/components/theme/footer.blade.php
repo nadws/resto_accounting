@@ -159,6 +159,7 @@
     </script>
 @endif
 @yield('scripts')
+@yield('js')
 </body>
 
 </html>

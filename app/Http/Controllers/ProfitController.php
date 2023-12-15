@@ -16,7 +16,6 @@ class ProfitController extends Controller
         foreach ($transactions as $transaction) {
 
             $month = date('F', strtotime("{$transaction->tahun}-{$transaction->bulan}-01"));
-
             // Ubah bulan dan tahun menjadi format yang benar
             switch ($type) {
                 case 'pendapatan':

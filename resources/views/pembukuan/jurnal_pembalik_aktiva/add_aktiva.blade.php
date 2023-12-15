@@ -481,7 +481,7 @@
                     var count = $(this).attr("count");
                     var id_akun = $(".pilih_akun" + count).val();
                     $.ajax({
-                        url: "/get_post_pembalikan?id_akun=" + id_akun,
+                        url: "{{route('jurnal.get_post_pembalikan')}}?id_akun=" + id_akun,
                         type: "Get",
                         success: function(data) {
                             $(".post" + count).html(data);

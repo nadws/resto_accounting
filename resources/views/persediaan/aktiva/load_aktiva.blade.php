@@ -1,14 +1,14 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th width="15%">Kelompok</th>
-            <th width="15%">Nama Aktiva</th>
-            <th width="14%">Tanggal Perolehan</th>
-            <th width="14%">Nilai Perolehan</th>
-            <th width="10%">Nilai/tahun (%)</th>
-            <th width="10%" style="text-align: center">Umur</th>
-            <th width="14%">Penyusutan Perbulan</th>
-            <th width="5%">Aksi</th>
+            <th class="dhead" width="15%">Kelompok</th>
+            <th class="dhead" width="15%">Nama Aktiva</th>
+            <th class="dhead" width="14%">Tanggal Perolehan</th>
+            <th class="dhead" width="14%">Nilai Perolehan</th>
+            <th class="dhead" width="10%">Nilai/tahun (%)</th>
+            <th class="dhead" width="10%" style="text-align: center">Umur</th>
+            <th class="dhead" width="14%">Penyusutan Perbulan</th>
+            <th class="dhead" width="5%">Aksi</th>
         </tr>
     </thead>
     <tbody>
