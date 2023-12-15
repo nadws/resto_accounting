@@ -73,7 +73,9 @@ Route::middleware('auth')->group(function () {
         ->name('penutup.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/saldo', 'saldo')->name('saldo');
+            Route::post('/saldo', 'saldo')->name('saldo');
+            Route::get('/akun', 'akun')->name('akun');
+            Route::post('/edit_akun', 'edit_akun')->name('edit_akun');
         });
     Route::controller(AktivaController::class)
         ->prefix('aktiva')

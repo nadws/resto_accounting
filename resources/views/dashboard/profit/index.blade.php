@@ -1,13 +1,38 @@
 <div class="card">
     <div class="card-header">
-        <h6 class="text-success float-start">{{ $title }}</h6>
-        <x-theme.button icon="fa-plus" variant="primary" addClass="float-end btnListAkunProfit" teks="Daftar Akun" />
+        <form id="history_profit">
+            <div class="row">
+                <div class="col-lg-6">
+                    <h6 class="text-success float-start">{{ $title }}</h6>
+                </div>
+                <div class="col-lg-3"></div>
+                <div class="col-lg-2">
+                    <select name="" id="tahun_profit" class="select_profit">
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                <div class="col-lg-1">
+                    <button class="btn btn-sm btn-primary"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </form>
+
+
 
     </div>
     <div class="card-body">
         <div class="row">
+            <div class="col-lg-12">
+                <div class="text-center">
+                    <div id="loading_profit" class="spinner-border text-center text-success "
+                        style="width: 6rem; height: 6rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="show_profit">
             @php
-
                 function sumTotal($data)
                 {
                     $totalsPerMonth = array_fill(0, count(array_keys(reset($data))), 0);
