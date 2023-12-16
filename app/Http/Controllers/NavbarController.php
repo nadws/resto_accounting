@@ -53,6 +53,12 @@ class NavbarController extends Controller
                 'img' => 'penutup.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
+            [
+                'judul' => 'Saldo Penutup',
+                'route' => 'saldopenutup.index',
+                'img' => 'law-book.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
 
         ];
         $title = 'Data Master';

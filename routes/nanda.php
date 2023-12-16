@@ -13,6 +13,7 @@ use App\Http\Controllers\PenutupController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\SaldoAwalController;
+use App\Http\Controllers\SaldoPenutupController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,6 +77,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/saldo', 'saldo')->name('saldo');
             Route::get('/akun', 'akun')->name('akun');
             Route::post('/edit_akun', 'edit_akun')->name('edit_akun');
+            Route::post('/cancel_penutup', 'cancel_penutup')->name('cancel_penutup');
         });
     Route::controller(AktivaController::class)
         ->prefix('aktiva')
@@ -89,7 +91,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/tambah_baris_aktiva', 'tambah_baris_aktiva')->name('tambah_baris_aktiva');
             Route::get('/get_data_kelompok', 'get_data_kelompok')->name('get_data_kelompok');
         });
-        Route::controller(PeralatanController::class)
+    Route::controller(PeralatanController::class)
         ->prefix('peralatan')
         ->name('peralatan.')
         ->group(function () {
@@ -119,5 +121,11 @@ Route::middleware('auth')->group(function () {
             Route::post('/save_peralatan', 'save_peralatan')->name('save_peralatan');
             Route::get('/atk', 'atk')->name('atk');
             Route::post('/save_atk', 'save_atk')->name('save_atk');
+        });
+    Route::controller(SaldoPenutupController::class)
+        ->prefix('saldopenutup')
+        ->name('saldopenutup.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 });
