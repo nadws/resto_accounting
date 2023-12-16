@@ -45,6 +45,37 @@ class AtkController extends Controller
         return redirect()->back()->with('success', 'Data ATK berhasil disimpan');
     }
 
+    public function load_edit(Request $r)
+    {
+        $data = [
+            'get' => DB::table('atk')->where('id_atk', $r->id_atk)->first(),    
+            'satuan' => DB::table('tb_satuan')->get(),
+            'kategori' => DB::table('kategori_atk')->get()
+        ];
+        return view('persediaan.atk.load_edit',$data);
+    }
+
+    public function update(Request $r)
+    {
+        $fotoPath = null;
+        if ($r->hasFile('foto')) {
+            $fotoPath = $r->file('foto')->store('foto_atk', 'public');
+        }
+
+        // Simpan data ke dalam database
+        DB::table('atk')->where('id_atk', $r->id_atk)->update([
+            'cfm' => $r->cfm,
+            'id_kategori' => $r->kategori_id,
+            'nm_atk' => $r->nm_atk,
+            'id_satuan' => $r->satuan_id,
+            'foto' => $fotoPath,
+            'kontrol_stok' => $r->kontrol_stok,
+        ]);
+
+        // Redirect atau berikan respons sesuai kebutuhan
+        return redirect()->back()->with('success', 'Data ATK berhasil disimpan');
+    }
+
     function stok_masuk(Request $r)
     {
 

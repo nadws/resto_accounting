@@ -20,16 +20,16 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Produk (Satuan)</th>
-                                <th width="150">Stok Masuk</th>
-                                <th width="250">Total Rp</th>
-                                <th>Aksi</th>
+                                <th class="dhead">Produk (Satuan)</th>
+                                <th class="dhead" width="150">Stok Masuk</th>
+                                <th class="dhead" width="250">Total Rp</th>
+                                <th class="dhead">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td>
-                                    <select name="id_atk[]" id="" class="select2_add">
+                                    <select name="id_atk[]" id="" class="select2_add pilihProduk">
                                         <option value="">Pilih Produk</option>
                                         @foreach ($atk as $a)
                                             <option value="{{ $a->id_atk }}">{{ $a->nm_atk }}
@@ -40,30 +40,12 @@
                                 </td>
                                 <td><input type="text" class="form-control" name="debit[]"></td>
                                 <td><input type="text" name="total_rp[]" class="form-control"></td>
-                                <td style="vertical-align: top;">
+                                {{-- <td style="vertical-align: top;">
                                     <button type="button" class="btn rounded-pill remove_baris" count="1"><i
                                             class="fas fa-trash text-danger"></i>
                                     </button>
-                                </td>
+                                </td> --}}
                             </tr>
-                            <tr>
-                                <td>
-                                    <select name="id_atk[]" id="" class="select2_add">
-                                        <option value="">Pilih Produk</option>
-                                        @foreach ($atk as $a)
-                                            <option value="{{ $a->id_atk }}">{{ $a->nm_atk }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-                                <td><input type="text" class="form-control" name="debit[]"></td>
-                                <td><input type="text" name="total_rp[]" class="form-control"></td>
-                                <td style="vertical-align: top;">
-                                    <button type="button" class="btn rounded-pill remove_baris" count="2"><i
-                                            class="fas fa-trash text-danger"></i>
-                                    </button>
-                                </td>
-                            </tr>
-
 
                         </tbody>
                         <tfoot>
@@ -93,7 +75,17 @@
 
 
 
+        @section('scripts')
+            <script>
+                $(document).ready(function () {
+                    $(document).on('change', '.pilihProduk', function(){
+                        // alert(1)
+                    })
 
+                    
+                });
+            </script>
+        @endsection
     </x-slot>
 
 

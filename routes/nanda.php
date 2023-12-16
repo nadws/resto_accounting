@@ -104,6 +104,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/save', 'save')->name('save');
             Route::get('/stok_masuk', 'stok_masuk')->name('stok_masuk');
             Route::get('/tmbh_stok', 'tmbh_stok')->name('tmbh_stok');
+            Route::get('/load_edit', 'load_edit')->name('load_edit');
+            Route::post('/update', 'update')->name('update');
             Route::post('/save_stk_masuk', 'save_stk_masuk')->name('save_stk_masuk');
         });
     Route::controller(JurnalPenyesuaianController::class)

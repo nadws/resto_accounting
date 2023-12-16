@@ -159,7 +159,7 @@
     </script>
 @endif
 @yield('scripts')
-@yield('js')
+{{-- @yield('js') --}}
 </body>
 
 </html>
