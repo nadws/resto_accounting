@@ -22,10 +22,10 @@ class ProfitController extends Controller
                     $nominal = $transaction->kredit;
                     break;
                 case 'disusutkan':
-                    $nominal = $transaction->debit;
+                    $nominal = $transaction->debit - $transaction->kredit;
                     break;
                 case 'biaya':
-                    $nominal = $transaction->debit;
+                    $nominal = $transaction->debit - $transaction->kredit;
                     break;
                 default:
                     $nominal = $transaction->debit - $transaction->kredit;

@@ -41,7 +41,7 @@ class PenutupController extends Controller
                 where b.tgl BETWEEN '$tgl1Tutup' and '$tgl2Tutup' and b.id_buku not in('8')
                 GROUP by b.id_akun
             ) as b on b.id_akun = a.id_akun
-            where a.iktisar ='Y' AND  a.id_klasifikasi in (2,3);"),
+            where a.iktisar ='Y' AND  a.id_klasifikasi in (2,3,13);"),
             'tgl' => $tgl,
             'penutup' => $tgl->penutup,
             'tgl1Tutup' => $tgl1Tutup,
@@ -51,7 +51,7 @@ class PenutupController extends Controller
             'aktiva' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 26 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
             'peralatan' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 28 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
             'atk' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 30 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
-            'cancel' => DB::select("SELECT a.tgl FROM jurnal as a where a.id_buku = '5' group by a.tgl ")
+            'cancel' => DB::select("SELECT a.tgl FROM jurnal as a where a.id_buku = '8' group by a.tgl ")
         ];
         return view('pembukuan.penutup.index', $data);
     }
@@ -181,7 +181,7 @@ class PenutupController extends Controller
             $data = [
                 'tgl' => $tgl2,
                 'no_nota' => "PEN-$no_nota_prive",
-                'id_akun' => 36,
+                'id_akun' => 37,
                 'id_buku' => '8',
                 'ket' => 'Penutup Ikhtisar',
                 'debit' => $prive_biasa,
@@ -192,7 +192,7 @@ class PenutupController extends Controller
             $data = [
                 'tgl' => $tgl2,
                 'no_nota' => "PEN-$no_nota_prive",
-                'id_akun' => 37,
+                'id_akun' => 38,
                 'id_buku' => '8',
                 'ket' => 'Penutup Ikhtisar',
                 'debit' => 0,
@@ -235,7 +235,7 @@ class PenutupController extends Controller
         left join(
             SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit
             FROM jurnal as b
-            where b.tgl BETWEEN '$tgl1' and '$tgl2' and b.id_buku != '5'
+            where b.tgl BETWEEN '$tgl1' and '$tgl2' and b.id_buku != '8'
             group by b.id_akun
         ) as b on b.id_akun  = a.id_akun;");
 
@@ -255,5 +255,18 @@ class PenutupController extends Controller
         }
         DB::table('jurnal')->whereBetween('tgl', ['2023-01-01', $tgl2])->update(['penutup' => 'Y']);
         DB::table('jurnal_saldo')->whereBetween('tgl', [$tgl1, $tgl2])->update(['penutup' => 'Y']);
+
+        return redirect()->route('penutup.index')->with('sukses', 'Berhasil Tutup Saldo');
+    }
+
+    function cancel_penutup(Request $r)
+    {
+
+        DB::table('jurnal')->where('id_buku', '8')->whereBetween('tgl', [$r->tgl1, $r->tgl2])->delete();
+        DB::table('jurnal_saldo')->whereBetween('tgl', [$r->tgl1, $r->tgl2])->delete();
+        DB::table('jurnal_saldo_sebelum_penutup')->whereBetween('tgl', [$r->tgl1, $r->tgl2])->delete();
+        $tgl1 = date('Y-m-01', strtotime($r->tgl1));
+        DB::table('jurnal')->where('id_buku', '!=', '8')->whereBetween('tgl', [$tgl1, $r->tgl2])->update(['penutup' => 'T']);
+        return redirect()->route('penutup.index')->with('sukses', 'Jurnal penutup berhasil di cancel');
     }
 }

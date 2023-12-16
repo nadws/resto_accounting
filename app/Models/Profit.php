@@ -17,7 +17,7 @@ class Profit extends Model
         left join (
          SELECT b.id_akun, sum(b.debit) as debit, sum(b.kredit) as kredit, MONTH(b.tgl) as bulan, YEAR(b.tgl) as tahun,b.penutup
          FROM jurnal as b
-         WHERE b.id_buku not in(5,13)  and Year(b.tgl) = ?  
+         WHERE b.id_buku not in(8) and Year(b.tgl) = ?  
          group by b.id_akun , MONTH(b.tgl), YEAR(b.tgl)
         ) as b on b.id_akun = a.id_akun
         
