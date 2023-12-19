@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
         Route::get('/pembukuan', 'pembukuan')->name('pembukuan');
         Route::get('/persediaan', 'persediaan')->name('persediaan');
+        Route::get('/menu', 'menu')->name('menu');
     });
     Route::controller(UserController::class)
         ->prefix('user')
@@ -65,7 +66,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/load_menu', 'load_menu')->name('load_menu');
             Route::get('/get_post', 'get_post')->name('get_post');
             Route::get('/edit_jurnal', 'edit_jurnal')->name('edit_jurnal');
-        Route::get('/export_jurnal', 'export_jurnal')->name('export_jurnal');
+            Route::get('/export_jurnal', 'export_jurnal')->name('export_jurnal');
             Route::post('/update_jurnal', 'update_jurnal')->name('update_jurnal');
             Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
             Route::get('/delete', 'delete')->name('delete');
@@ -84,14 +85,12 @@ Route::middleware('auth')->group(function () {
             Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
             Route::post('/save_atk_pembalik', 'save_atk_pembalik')->name('save_atk_pembalik');
             Route::post('/save_jurnal_aktiva', 'save_jurnal_aktiva')->name('save_jurnal_aktiva');
-
         });
     Route::controller(PeralatanController::class)
         ->prefix('peralatan')
         ->name('peralatan.')
         ->group(function () {
             Route::post('/save_aktiva', 'save_aktiva')->name('save_aktiva');
-
         });
     Route::controller(ProfitController::class)
         ->prefix('profit')

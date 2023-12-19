@@ -87,8 +87,22 @@ class NavbarController extends Controller
             ],
             [
                 'judul' => 'Persediaan Bahan Makanan',
-                'route' => 'atk.index',
+                'route' => 'bahan.index',
                 'img' => 'grocery.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+
+        ];
+        $title = 'Data Master';
+        return view('navbar.data_master', compact(['data', 'title']));
+    }
+    public function menu()
+    {
+        $data = [
+            [
+                'judul' => 'Aktiva',
+                'route' => 'aktiva.index',
+                'img' => 'menu.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
 
