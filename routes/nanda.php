@@ -105,6 +105,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/save', 'save')->name('save');
             Route::get('/stok_masuk', 'stok_masuk')->name('stok_masuk');
+            Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
             Route::get('/tmbh_stok', 'tmbh_stok')->name('tmbh_stok');
             Route::get('/load_edit', 'load_edit')->name('load_edit');
             Route::post('/update', 'update')->name('update');

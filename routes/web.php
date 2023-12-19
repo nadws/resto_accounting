@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/load_menu', 'load_menu')->name('load_menu');
             Route::get('/get_post', 'get_post')->name('get_post');
             Route::get('/edit_jurnal', 'edit_jurnal')->name('edit_jurnal');
+        Route::get('/export_jurnal', 'export_jurnal')->name('export_jurnal');
             Route::post('/update_jurnal', 'update_jurnal')->name('update_jurnal');
             Route::get('/tambah_baris_jurnal', 'tambah_baris_jurnal')->name('tambah_baris_jurnal');
             Route::get('/delete', 'delete')->name('delete');
