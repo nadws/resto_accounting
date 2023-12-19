@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BahanController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\JurnalAktivaController;
 use App\Http\Controllers\JurnalController;
@@ -104,6 +105,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/loadEdit', 'loadEdit')->name('loadEdit');
             Route::get('/updateAkun', 'updateAkun')->name('updateAkun');
             Route::get('/hapusAkun', 'hapusAkun')->name('hapusAkun');
+        });
+    Route::controller(BahanController::class)
+        ->prefix('bahan')
+        ->name('bahan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 });
 
