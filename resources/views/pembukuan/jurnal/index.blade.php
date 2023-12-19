@@ -10,6 +10,9 @@
                 <x-theme.button modal="T"
                     href="{{ $id_buku != '13' ? route('jurnal.add', ['id_buku' => $id_buku]) : route('add_balik_aktiva', ['id_buku' => $id_buku]) }}"
                     icon="fa-plus" addClass="float-end" teks="Buat Baru" />
+                <x-theme.button modal="T"
+                    href="/jurnal/export_jurnal?tgl1={{ $tgl1 }}&tgl2={{ $tgl2 }}&id_buku={{ $id_buku }}"
+                    icon="fa-file-excel" addClass="float-end float-end btn btn-success me-2" teks="Export" />
                 <x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end"
                     teks="View" />
             </div>
@@ -230,8 +233,8 @@
                         var no_nota = $(this).attr('no_nota');
                         $('.no_nota').val(no_nota);
                     })
-                  
-                   
+
+
                 });
             </script>
         @endsection

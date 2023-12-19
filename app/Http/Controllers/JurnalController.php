@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\JurnalExport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class JurnalController extends Controller
 {
@@ -229,5 +231,21 @@ class JurnalController extends Controller
         $tgl2 = $r->tgl2;
         $id_proyek = $r->id_proyek;
         return redirect()->route('jurnal.index', ['period' => 'costume', 'tgl1' => $tgl1, 'tgl2' => $tgl2, 'id_proyek' => $id_proyek, 'id_buku' => $r->id_buku])->with('sukses', 'Data berhasil dihapus');
+    }
+
+    public function export_jurnal(Request $r)
+    {
+        $tgl1 =  $r->tgl1;
+        $tgl2 =  $r->tgl2;
+        $id_proyek = $r->id_proyek;
+        $id_buku = $r->id_buku;
+
+        $idp = $id_proyek == 0 ? '' : "and a.id_proyek = '$id_proyek'";
+
+        $total = DB::selectOne("SELECT count(a.id_jurnal) as jumlah FROM jurnal as a where a.id_buku not in('6','4') and a.tgl between '$tgl1' and '$tgl2' and a.debit != '0'");
+
+        $totalrow = $total->jumlah;
+
+        return Excel::download(new JurnalExport($tgl1, $tgl2, $id_proyek, $id_buku, $totalrow), 'jurnal.xlsx');
     }
 }

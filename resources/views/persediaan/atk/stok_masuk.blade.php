@@ -17,9 +17,6 @@
                     teks="Buat Baru" />
             </div>
         </div>
-
-
-
     </x-slot>
     <x-slot name="cardBody">
 
@@ -52,10 +49,6 @@
                 </tbody>
             </table>
         </section>
-
-
-
-
     </x-slot>
 
 

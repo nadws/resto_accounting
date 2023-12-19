@@ -102,6 +102,15 @@
             </x-theme.modal>
         </form>
 
+        <form action="{{ route('atk.update') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <x-theme.modal title="Edit ATK" idModal="edit" size="modal-lg">
+                
+                <div id="load_edit"></div>
+
+            </x-theme.modal>
+        </form>
+
         @section('scripts')
             <script>
                 $(document).ready(function() {
@@ -109,6 +118,17 @@
                     $(document).on("click", '.edit', function(e) {
                         e.preventDefault();
                         var id_atk = $(this).attr('id_atk')
+                        $("#edit").modal('show')
+                        $.ajax({
+                            type: "GET",
+                            url: "{{route('atk.load_edit')}}?id_atk="+id_atk,
+                            success: function (r) {
+                                $("#load_edit").html(r);
+                                $('.selectEdit').select2({
+        dropdownParent: $('#edit .modal-content')
+    });
+                            }
+                        });
                     })
                 });
             </script>

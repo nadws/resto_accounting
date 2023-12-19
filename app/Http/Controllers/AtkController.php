@@ -45,11 +45,43 @@ class AtkController extends Controller
         return redirect()->back()->with('success', 'Data ATK berhasil disimpan');
     }
 
+    public function load_edit(Request $r)
+    {
+        $data = [
+            'get' => DB::table('atk')->where('id_atk', $r->id_atk)->first(),
+            'satuan' => DB::table('tb_satuan')->get(),
+            'kategori' => DB::table('kategori_atk')->get()
+        ];
+        return view('persediaan.atk.load_edit', $data);
+    }
+
+    public function update(Request $r)
+    {
+        $fotoPath = null;
+        if ($r->hasFile('foto')) {
+            $fotoPath = $r->file('foto')->store('foto_atk', 'public');
+        }
+
+        // Simpan data ke dalam database
+        DB::table('atk')->where('id_atk', $r->id_atk)->update([
+            'cfm' => $r->cfm,
+            'id_kategori' => $r->kategori_id,
+            'nm_atk' => $r->nm_atk,
+            'id_satuan' => $r->satuan_id,
+            'foto' => $fotoPath,
+            'kontrol_stok' => $r->kontrol_stok,
+        ]);
+
+        // Redirect atau berikan respons sesuai kebutuhan
+        return redirect()->back()->with('success', 'Data ATK berhasil disimpan');
+    }
+
     function stok_masuk(Request $r)
     {
 
         $data = [
             'title' => 'Stok Masuk',
+
             'invoice' => DB::select("SELECT a.tgl, a.invoice, sum(a.debit) as stok, a.admin
             FROM stok_atk as a 
             where a.debit != 0
@@ -75,13 +107,32 @@ class AtkController extends Controller
         $data = [
             'title' => 'Tambah stok masuk',
             'invoice' => $invoice,
+            'satuan' => DB::table('tb_satuan')->get(),
+            'kategori' => DB::table('kategori_atk')->get(),
             'atk' => DB::table('atk')->join('tb_satuan', 'tb_satuan.id_satuan', 'atk.id_satuan')->get()
         ];
         return view('persediaan.atk.add_stk_masuk', $data);
     }
 
+    public function load_produk_stok()
+    {
+        $atk = DB::table('atk')->join('tb_satuan', 'tb_satuan.id_satuan', 'atk.id_satuan')->get();
+
+        $html = "<select name='id_atk[]' class='select2_add pilihProduk'>";
+        $html .= "<option value=''>Pilih Produk</option>";
+
+        foreach ($atk as $a) {
+            $html .= "<option value='{$a->id_atk}'>{$a->nm_atk} ({$a->nm_satuan})</option>";
+        }
+
+        $html .= "<option value='tambah'>+ tambah baru</option></select>";
+        return $html;
+        return $html;
+    }
+
     function save_stk_masuk(Request $r)
     {
+        dd($r->all());
         $invo = DB::selectOne("SELECT max(a.urutan) as urutan
         FROM stok_atk as a 
         ");
