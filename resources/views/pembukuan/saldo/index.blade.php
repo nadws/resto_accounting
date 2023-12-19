@@ -1,6 +1,8 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
         <h6 class="float-start mt-1">{{ $title }} : {{ tanggal($tgl_saldo->tgl ?? '2023-01-01') }}</h6>
+        <a href="{{ route('saldoawal.export_saldo') }}" class="float-end btn   btn-success me-2"><i
+                class="fas fa-file-excel"></i> Export</a>
     </x-slot>
 
     <x-slot name="cardBody">
@@ -48,6 +50,7 @@
                                         count="{{ $no + 1 }}"
                                         value="Rp. {{ number_format($a->debit, 2, ',', '.') }}"
                                         {{ $a->penutup == 'Y' ? 'disabled' : '' }}>
+
                                     <input type="hidden" name="debit[]"
                                         class="form-control text-end rp-hide rp-hide{{ $no + 1 }}"
                                         value="{{ empty($a->debit) ? '0' : $a->debit }}">

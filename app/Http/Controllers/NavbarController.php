@@ -85,6 +85,12 @@ class NavbarController extends Controller
                 'img' => 'stationery.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
+            [
+                'judul' => 'Persediaan Bahan Makanan',
+                'route' => 'atk.index',
+                'img' => 'grocery.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
 
         ];
         $title = 'Data Master';

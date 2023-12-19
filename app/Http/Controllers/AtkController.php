@@ -10,7 +10,7 @@ class AtkController extends Controller
     function index(Request $r)
     {
         $data = [
-            'title' => 'Data ATK',
+            'title' => 'Data Persediaan bahan makanan',
             'atk' => DB::select("SELECT a.id_atk, a.cfm, a.nm_atk, sum(b.debit - b.kredit) as stok, c.nm_satuan, d.nm_kategori
             FROM atk as a 
             left join stok_atk as b on b.id_atk = a.id_atk
@@ -97,7 +97,7 @@ class AtkController extends Controller
                 # code...
             } else {
                 $data = [
-                    'invoice' => 'STKM-' . $invoice,    
+                    'invoice' => 'STKM-' . $invoice,
                     'tgl' => $r->tgl,
                     'id_atk' => $r->id_atk[$x],
                     'debit' => $r->debit[$x],

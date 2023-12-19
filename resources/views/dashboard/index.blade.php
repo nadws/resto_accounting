@@ -11,13 +11,14 @@
             <div class="col-lg-12">
                 <div id="load_cashflow"></div>
             </div>
-
-
-            <div class="col-lg-6">
-                <div id="load_akun"></div>
-            </div>
-            {{-- <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div id="load_neraca"></div>
+            </div>
+
+
+
+            {{-- <div class="col-lg-6">
+                <div id="load_akun"></div>
             </div> --}}
         </div>
 
@@ -140,7 +141,6 @@
                     type: "get",
                     url: "{{ route('cashflow.index') }}",
                     data: {
-                        bulan: bulan,
                         tahun: tahun,
                     },
                     success: function(response) {
@@ -216,20 +216,11 @@
                     }
                 });
             });
-            $(document).on('submit', '#history_neraca', function(event) {
+            $(document).on('submit', '#history_cashflow', function(event) {
                 event.preventDefault(); // Prevent the default form submission
-
-                var bulan = $("#bulan").val();
                 var tahun = $("#tahun").val();
-
-
-
-                load_neraca(bulan, tahun);
-
+                load_cashflow(tahun);
             });
-
-
-
 
             $(document).on('submit', '#save_akun_profit', function(e) {
                 e.preventDefault()

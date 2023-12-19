@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/detail_buku_besar', 'detail_buku_besar')->name('detail_buku_besar');
+            Route::get('/export_detail', 'export_detail')->name('export_detail');
         });
     Route::controller(SaldoAwalController::class)
         ->prefix('saldoawal')
@@ -68,6 +69,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/saveSaldo', 'saveSaldo')->name('saveSaldo');
+            Route::get('/export_saldo', 'export_saldo')->name('export_saldo');
         });
     Route::controller(PenutupController::class)
         ->prefix('penutup')

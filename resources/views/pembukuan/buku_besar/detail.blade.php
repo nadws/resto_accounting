@@ -6,7 +6,8 @@
                     ({{ tanggal($tgl1) }}~{{ tanggal($tgl2) }})</h6>
             </div>
             <div class="col-lg-6">
-                <a href="#" class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
+                <a href="{{ route('bukubesar.export_detail', ['id_akun' => $id_akun, 'id_klasifikasi' => $id_klasifikasi, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}"
+                    class="float-end btn   btn-success me-2"><i class="fas fa-file-excel"></i> Export</a>
             </div>
         </div>
     </x-slot>

@@ -1,6 +1,6 @@
 <div class="card">
     <div class="card-header">
-        <form id="history_neraca">
+        <form id="history_cashflow">
             <div class="row">
                 <div class="col-lg-6">
                     <h6 class="text-success"> Cashflow </h6>

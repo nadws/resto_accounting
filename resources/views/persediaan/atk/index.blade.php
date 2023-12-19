@@ -9,7 +9,7 @@
                 <hr>
             </div>
         </div>
-        <h6 class="float-start">ATK</h6>
+        <h6 class="float-start">{{ $title }}</h6>
         <div class="row justify-content-end">
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="tambah" href="#" icon="fa-plus" addClass="float-end"

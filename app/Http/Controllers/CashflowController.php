@@ -19,10 +19,10 @@ class CashflowController extends Controller
         $id_klasifikasi = ['5', '6', '7'];
         $pendapatan = CashflowModel::cashflow_uangmasuk_setahun('1', $id_klasifikasi, $tahun);
 
-        $id_klasifikasi2 = ['18'];
+        $id_klasifikasi2 = ['5'];
         $hutang = CashflowModel::cashflow_uangmasuk_setahun('4', $id_klasifikasi2, $tahun);
 
-        $id_klasifikasi3 = ['18'];
+        $id_klasifikasi3 = ['5'];
         $bayarhutang = CashflowModel::cashflow_uangkeluar_setahun('4', $id_klasifikasi3, $tahun);
 
         $id_klasifikasi4 = ['2'];

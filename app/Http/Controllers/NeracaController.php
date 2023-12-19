@@ -10,26 +10,13 @@ class NeracaController extends Controller
 {
     function index(Request $r)
     {
-        $tgl1 =  '2020-01-01';
+        $tahun =  $r->tahun ?? date('Y');
 
-        if (empty($r->bulan)) {
-            $tgl2 = date('Y-m-t');
-        } else {
-            $bln = $r->tahun . '-' . $r->bulan . '-' . '01';
-            $tgl2 = date('Y-m-t', strtotime($bln));
-        }
-        $bulin = date('m', strtotime($tgl2));
         $data = [
-            'kas' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['1']),
-            'bank' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['2']),
-            'piutang' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['3']),
-            'persediaan' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['4']),
-            'hutang' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['5']),
-            'aktiva_tetap' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['6', '7']),
-            'akumlasi_aktiva' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['8']),
-            'ekuitas' => NeracaModel::Getaktiva_tetap($tgl1, $tgl2, ['9']),
-            'bulan' => DB::table('bulan')->get(),
-            'bulan_values' => $bulin
+            'title' => 'Laporan Neraca',
+            'tahun' => DB::select("SELECT YEAR(a.tgl) as tahun FROM jurnal as a where YEAR(a.tgl) != 0 group by YEAR(a.tgl);"),
+            'thn' => $tahun,
+            'bulans' => DB::table('bulan')->get(),
 
         ];
         return view('neraca.index', $data);
