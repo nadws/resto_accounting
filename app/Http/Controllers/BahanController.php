@@ -70,10 +70,9 @@ class BahanController extends Controller
         } else {
             $invoice = $invo->urutan + 1;
         }
-
         for ($i = 0; $i < count($r->id_bahan); $i++) {
-            $stok_program = str()->remove(',', $r->stok_program[$i]);
-            $stok_aktual = str()->remove(',', $r->stok_aktual[$i]);
+            $stok_program = $r->stok_program[$i];
+            $stok_aktual = $r->stok_aktual[$i];
             $total = $stok_program - $stok_aktual;
             if($total == 0) {
                 continue;
@@ -138,6 +137,5 @@ class BahanController extends Controller
         DB::table('tb_list_bahan')->where('id_list_bahan' , $id)->delete();
         DB::table('stok_bahan')->where('id_bahan' , $id)->delete();
         return redirect()->route('bahan.index')->with('sukses', 'Data Berhasil dihapus');
-
     }
 }

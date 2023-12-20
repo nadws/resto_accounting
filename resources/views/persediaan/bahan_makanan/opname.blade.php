@@ -53,7 +53,7 @@
 
                                     <td>
                                         <input type="hidden" name="stok_program[]" value="{{ $d->stok }}">
-                                        <input x-mask:dynamic="$money($input)" value="{{ $d->stok }}"
+                                        <input value="{{ $d->stok }}"
                                             type="text" name="stok_aktual[]" class="form-control text-end inputStok">
                                     </td>
                                     <td>{{ $d->nm_kategori }}</td>
