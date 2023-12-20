@@ -1,10 +1,11 @@
 <div>
     <div x-data="{
-        rows: []
+        rows: ['1'],
     }">
         <template x-for="(row, index) in rows" :key="index">
             <div class="row mt-2">
                 {{ $slot }}
+
                 <div class="col-lg-2">
                     <div class="form-group">
                         <label for="">Aksi</label><br>
@@ -17,3 +18,4 @@
         <button type="button" @click="rows.push({ value: '' })" class="btn btn-primary btn-sm mt-2">Tbh Baris</button>
     </div>
 </div>
+

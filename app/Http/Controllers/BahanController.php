@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\BahanImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BahanController extends Controller
 {
@@ -34,6 +36,7 @@ class BahanController extends Controller
 
     public function save(Request $r)
     {
+        
         DB::table('tb_list_bahan')->insert([
             'nm_bahan' => $r->nm_bahan,
             'id_satuan' => $r->satuan_id,
@@ -98,5 +101,43 @@ class BahanController extends Controller
             }
         }
         return redirect()->route('bahan.opname')->with('sukses', 'Data Berhasil diopname');
+    }
+
+    public function template()
+    {
+        return 'minta ke it';
+    }
+    public function import(Request $r)
+    {
+        Excel::import(new BahanImport, $r->file('file'));
+        return redirect()->route('bahan.index')->with('sukses', 'Data berhasil import');
+    }
+
+    public function load_edit(Request $r)
+    {
+        $data = [
+            'satuan' => DB::table('tb_satuan')->get(),
+            'kategori' => DB::table('tb_kategori_bahan')->get(),
+            'bahan' => DB::table('tb_list_bahan')->where('id_list_bahan', $r->id_bahan)->first()
+        ];
+        return view('persediaan.bahan_makanan.edit',$data);
+    }
+
+    public function update(Request $r)
+    {
+        DB::table('tb_list_bahan')->where('id_list_bahan' , $r->id_bahan)->update([
+            'nm_bahan' => $r->nm_bahan,
+            'id_satuan' => $r->satuan_id,
+            'id_kategori' => $r->kategori_id,
+        ]);
+        return redirect()->route('bahan.index')->with('sukses', 'Data Berhasil ditambahkan');
+    }
+
+    public function delete($id)
+    {
+        DB::table('tb_list_bahan')->where('id_list_bahan' , $id)->delete();
+        DB::table('stok_bahan')->where('id_bahan' , $id)->delete();
+        return redirect()->route('bahan.index')->with('sukses', 'Data Berhasil dihapus');
+
     }
 }

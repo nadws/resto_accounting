@@ -112,7 +112,12 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::post('/save', 'save')->name('save');
             Route::get('/opname', 'opname')->name('opname');
+            Route::get('/template', 'template')->name('template');
+            Route::get('/load_edit', 'load_edit')->name('load_edit');
+            Route::get('/delete/{id}', 'delete')->name('delete');
             Route::post('/save_opname', 'save_opname')->name('save_opname');
+            Route::post('/update', 'update')->name('update');
+            Route::post('/import', 'import')->name('import');
         });
 });
 
