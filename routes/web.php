@@ -111,6 +111,9 @@ Route::middleware('auth')->group(function () {
         ->name('bahan.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::post('/save', 'save')->name('save');
+            Route::get('/opname', 'opname')->name('opname');
+            Route::post('/save_opname', 'save_opname')->name('save_opname');
         });
     Route::controller(MenuController::class)
         ->prefix('menu')
