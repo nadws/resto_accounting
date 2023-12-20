@@ -96,12 +96,12 @@ class NavbarController extends Controller
         $title = 'Data Master';
         return view('navbar.data_master', compact(['data', 'title']));
     }
-    public function menu()
+    public function datamenu()
     {
         $data = [
             [
                 'judul' => 'Data Menu',
-                'route' => 'aktiva.index',
+                'route' => 'menu.index',
                 'img' => 'menu.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],

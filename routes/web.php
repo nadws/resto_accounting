@@ -4,6 +4,7 @@ use App\Http\Controllers\BahanController;
 use App\Http\Controllers\CashflowController;
 use App\Http\Controllers\JurnalAktivaController;
 use App\Http\Controllers\JurnalController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\ProfileController;
@@ -45,7 +46,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
         Route::get('/pembukuan', 'pembukuan')->name('pembukuan');
         Route::get('/persediaan', 'persediaan')->name('persediaan');
-        Route::get('/menu', 'menu')->name('menu');
+        Route::get('/datamenu', 'datamenu')->name('datamenu');
     });
     Route::controller(UserController::class)
         ->prefix('user')
@@ -118,6 +119,15 @@ Route::middleware('auth')->group(function () {
             Route::post('/save_opname', 'save_opname')->name('save_opname');
             Route::post('/update', 'update')->name('update');
             Route::post('/import', 'import')->name('import');
+        });
+    Route::controller(MenuController::class)
+        ->prefix('menu')
+        ->name('menu.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/get_menu', 'get_menu')->name('get_menu');
+            Route::get('/addresep', 'addresep')->name('addresep');
+            Route::get('/aktif', 'aktif')->name('aktif');
         });
 });
 
