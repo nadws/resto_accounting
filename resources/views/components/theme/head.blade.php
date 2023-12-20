@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/toastify-js/src/toastify.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/css/widgets/todo.css">
     <link rel="stylesheet" href="{{ asset('theme') }}/assets/extensions/dragula/dragula.min.css">
+    <link rel="stylesheet" href="{{ asset('assets') }}/dropify/dist/css/dropify.min.css">
 
 
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
