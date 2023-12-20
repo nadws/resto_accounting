@@ -223,8 +223,7 @@ class JurnalController extends Controller
 
     public function delete(Request $r)
     {
-        dd($r->all());
-        $nomer = substr($r->no_nota, 3);
+            $nomer = substr($r->no_nota, 3);
         DB::table('notas')->where('nomor_nota', $nomer)->delete();
         DB::table('jurnal')->where('no_nota', $r->no_nota)->delete();
 
