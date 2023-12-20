@@ -193,7 +193,7 @@
                             <div class="row">
                                 <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
                                 <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
-                                <input type="hidden" class="no_nota" name="no_nota">
+                                <input type="text" id="no_nota_delete" name="no_nota">
                                 <input type="hidden" name="tgl1" value="{{ $tgl1 }}">
                                 <input type="hidden" name="tgl2" value="{{ $tgl2 }}">
                                 <input type="hidden" name="id_buku" value="{{ $id_buku }}">
@@ -231,7 +231,7 @@
 
                     $(document).on('click', '.delete_nota', function() {
                         var no_nota = $(this).attr('no_nota');
-                        $('.no_nota').val(no_nota);
+                        $('#no_nota_delete').val(no_nota);
                     })
 
 

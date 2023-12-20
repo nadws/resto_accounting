@@ -23,14 +23,12 @@
     <x-slot name="cardBody">
         <form action="{{ route('bahan.save_opname') }}" method="post">
             @csrf
-
             <section class="row">
                 <div class="col-lg-12">
                     <button type="submit" class="mb-2 btn btn-sm btn-primary btnSave float-end"><i
                         class="fas fa-save"></i>Opname</button>
                 </div>
                 <div class="col-lg-12">
-
                     <table class="table" id="tbScroll" x-data="{}">
                         <thead>
                             <tr>
