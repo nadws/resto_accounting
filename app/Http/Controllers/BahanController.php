@@ -71,8 +71,8 @@ class BahanController extends Controller
             $invoice = $invo->urutan + 1;
         }
         for ($i = 0; $i < count($r->id_bahan); $i++) {
-            $stok_program = $r->stok_program[$i];
-            $stok_aktual = $r->stok_aktual[$i];
+            $stok_program = (int) str()->remove(',',$r->stok_program[$i]);
+            $stok_aktual = (int) str()->remove(',',$r->stok_aktual[$i]);
             $total = $stok_program - $stok_aktual;
             if($total == 0) {
                 continue;

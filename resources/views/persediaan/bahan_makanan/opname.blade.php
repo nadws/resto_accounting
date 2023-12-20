@@ -23,12 +23,14 @@
     <x-slot name="cardBody">
         <form action="{{ route('bahan.save_opname') }}" method="post">
             @csrf
+
             <section class="row">
                 <div class="col-lg-12">
                     <button type="submit" class="mb-2 btn btn-sm btn-primary btnSave float-end"><i
                         class="fas fa-save"></i>Opname</button>
                 </div>
                 <div class="col-lg-12">
+
                     <table class="table" id="tbScroll" x-data="{}">
                         <thead>
                             <tr>
@@ -51,7 +53,7 @@
 
                                     <td>
                                         <input type="hidden" name="stok_program[]" value="{{ $d->stok }}">
-                                        <input value="{{ $d->stok }}"
+                                        <input x-mask:dynamic="$money($input)" value="{{ $d->stok }}"
                                             type="text" name="stok_aktual[]" class="form-control text-end inputStok">
                                     </td>
                                     <td>{{ $d->nm_kategori }}</td>
