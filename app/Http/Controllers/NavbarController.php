@@ -100,7 +100,7 @@ class NavbarController extends Controller
     {
         $data = [
             [
-                'judul' => 'Aktiva',
+                'judul' => 'Data Menu',
                 'route' => 'aktiva.index',
                 'img' => 'menu.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
