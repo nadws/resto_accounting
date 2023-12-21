@@ -126,8 +126,9 @@
                         <img src="{{ app('gambarLogo') }}" alt="" width="80px">
                     </center>
                     @csrf
+                    {{app('gambarLogo')}}
                     <span class="login100-form-title p-b-43">
-                        Form Login {{request()->getHost() . ' - ' . app('gambarLogo')}} <br>
+                        Form Login  <br>
                     </span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
