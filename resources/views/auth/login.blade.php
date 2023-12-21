@@ -123,7 +123,7 @@
 
                 <form class="login100-form validate-form" action="{{ route('login') }}" method="post">
                     <center>
-                        <img src="{{ asset('img/takemori_3.jpg') }}" alt="" width="80px">
+                        <img src="{{ app('gambarLogo') }}" alt="" width="80px">
                     </center>
                     @csrf
                     <span class="login100-form-title p-b-43">
