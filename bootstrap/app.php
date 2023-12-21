@@ -41,6 +41,12 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+if ($_SERVER['HTTP_HOST'] == "https://tkmr-akunting.ptagafood.com/") {
+    $app->loadEnvironmentFrom('.env');
+} else if ($_SERVER['HTTP_HOST'] == "https://sdb-akunting.ptagafood.com/") {
+    $app->loadEnvironmentFrom('.env.sdb');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
