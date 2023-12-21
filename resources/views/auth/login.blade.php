@@ -126,7 +126,6 @@
                         <img src="{{ app('gambarLogo') }}" alt="" width="80px">
                     </center>
                     @csrf
-                    {{app('gambarLogo')}}
                     <span class="login100-form-title p-b-43">
                         Form Login  <br>
                     </span>
