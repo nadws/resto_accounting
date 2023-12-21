@@ -26,6 +26,7 @@ $app = new Illuminate\Foundation\Application(
 |
 */
 
+
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     App\Http\Kernel::class
@@ -40,12 +41,6 @@ $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
-
-if ($_SERVER['HTTP_HOST'] == "https://tkmr-akunting.ptagafood.com/") {
-    $app->loadEnvironmentFrom('.env');
-} else if ($_SERVER['HTTP_HOST'] == "https://sdb-akunting.ptagafood.com/") {
-    $app->loadEnvironmentFrom('.env.sdb');
-}
 
 /*
 |--------------------------------------------------------------------------

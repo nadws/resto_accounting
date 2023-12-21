@@ -1,7 +1,7 @@
 <div class="header-top">
     <div class="container">
         <div class="logo text-center">
-            <a href="dashboard"><img src="{{ asset('img/takemori_3.jpg') }}" alt="Logo"></a>
+            <a href="dashboard"><img src="{{ app('gambarLogo') }}" alt="Logo"></a>
             {{-- <h5>Cashflow</h5> --}}
         </div>
         <div class="header-top-right">
