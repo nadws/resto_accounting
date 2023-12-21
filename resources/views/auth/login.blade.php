@@ -127,7 +127,7 @@
                     </center>
                     @csrf
                     <span class="login100-form-title p-b-43">
-                        Form Login  <br>
+                        Form Login diubah <br>
                     </span>
 
                     <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">

@@ -69,7 +69,7 @@
             <h1 class="judul">PILIH RESTORAN</h1>
             <div class="col-lg-2"></div>
             <div class="col-lg-4">
-                <a href="{{ $link1 }}/login">
+                <a href="{{ app('link1') }}/login">
                     <div class="card mt-5 shadow-lg">
                         <div class="card-body">
                             <center>
@@ -82,7 +82,7 @@
             </div>
 
             <div class="col-lg-4">
-                <a href="{{ $link2 }}/login">
+                <a href="{{ app('link2') }}/login">
                     <div class="card mt-5 shadow-lg">
                         <div class="card-body">
                             <center>
