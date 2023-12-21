@@ -128,6 +128,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/get_menu', 'get_menu')->name('get_menu');
             Route::get('/addresep', 'addresep')->name('addresep');
             Route::get('/aktif', 'aktif')->name('aktif');
+            Route::get('/tambah_baris_resep', 'tambah_baris_resep')->name('tambah_baris_resep');
+            Route::get('/get_satuan_resep', 'get_satuan_resep')->name('get_satuan_resep');
+            Route::post('/save_menu', 'save_menu')->name('save_menu');
+            Route::post('/delete_menu', 'delete_menu')->name('delete_menu');
+            Route::get('/get_edit', 'get_edit')->name('get_edit');
+            Route::post('/edit', 'edit')->name('edit');
+            Route::get('/get_resep', 'get_resep')->name('get_resep');
+            Route::post('/save_resep', 'save_resep')->name('save_resep');
+            Route::get('/export_menu', 'export_menu')->name('export_menu');
+            Route::post('/importMenuLevel', 'importMenuLevel')->name('importMenuLevel');
+            Route::get('/export_resep', 'export_resep')->name('export_resep');
+            Route::post('/import_resep', 'import_resep')->name('import_resep');
         });
 });
 

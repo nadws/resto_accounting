@@ -8,6 +8,10 @@
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="tambah" href="#" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
+                <x-theme.button modal="Y" idModal="exportmenu" href="#" icon="fa-file-excel"
+                    addClass="float-end" teks="Import/Export Menu" />
+                <x-theme.button modal="Y" idModal="resepexport" href="#" icon="fa-file-excel"
+                    addClass="float-end" teks="Import/Export Resep" />
             </div>
 
         </div>
@@ -16,7 +20,15 @@
 
     <x-slot name="cardBody">
         <section class="row">
-            <div class="col-lg-10">
+            <div class="col-lg-1">
+                <select name="" id="perpage" class="perpage form-control">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </div>
+            <div class="col-lg-9">
 
             </div>
             <div class="col-lg-2">
@@ -24,185 +36,276 @@
             </div>
             <input type="hidden" class="halaman" value="1">
             <div id="load_menu"></div>
+            <form id="save_menu">
+                <x-theme.modal title="Tambah Menu" idModal="tambah" size="modal-lg-max">
+                    <div class="row">
+                        <div class="col-sm-4 ol-md-6 col-xs-12 mb-2">
+                            <label for="">Masukkan Gambar</label>
+                            <input type="file" class="dropify" data-height="150" name="image" placeholder="Image">
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-6 mb-2">
+                                    <label for="">
+                                        <dt>Kategori</dt>
+                                    </label>
+                                    <select name="id_kategori" id="" class="form-control select2">
+                                        <option value="">-Pilih Kategori-</option>
+                                        @foreach ($kategori as $m)
+                                            <option value="{{ $m->kd_kategori }}">{{ $m->kategori }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3">
+                                    <label for="">
+                                        <dt>Level Point</dt>
+                                    </label>
+                                    <select name="id_handicap" id="" class="form-control select2">
+                                        <option value="">-Pilih Level-</option>
+                                        @foreach ($handicap as $m)
+                                            <option value="{{ $m->id_handicap }}">{{ $m->handicap }}
+                                                ({{ $m->point }} Point)
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-lg-3 mb-2">
+                                    <label for="">
+                                        <dt>Kode Menu</dt>
+                                    </label>
+                                    <input readonly type="text" name="kd_menu" class="form-control"
+                                        placeholder="Kode Menu" value="{{ $menu->kd_menu + 1 }}">
+                                </div>
+                                <div class="col-lg-6 mb-2">
+                                    <label for="">
+                                        <dt>Nama Menu</dt>
+                                    </label>
+                                    <input type="text" name="nm_menu" class="form-control" placeholder="Nama Menu">
+                                </div>
+                                <div class="col-lg-2 mb-2">
+                                    <label for="">
+                                        <dt>Tipe</dt>
+                                    </label>
+                                    <Select class="form-control select2" name="tipe">
+                                        <option value="">-Pilih tipe-</option>
+                                        <option value="food">Food</option>
+                                        <option value="drink">Drink</option>
+                                    </Select>
+                                </div>
+                                <div class="col-lg-4 mb-2">
+                                    <label for="">
+                                        <dt>Station</dt>
+                                    </label>
+                                    <Select class="form-control select2" name="id_station">
+                                        <option value="">-Pilih station-</option>
+                                        @foreach ($st as $s)
+                                            <option value="{{ $s->id_station }}">{{ $s->nm_station }}</option>
+                                        @endforeach
+                                    </Select>
+                                </div>
 
-            <x-theme.modal title="Tambah Menu" idModal="tambah" size="modal-lg-max">
-                <div class="row">
-                    <div class="col-sm-4 ol-md-6 col-xs-12 mb-2">
-                        <label for="">Masukkan Gambar</label>
-                        <input type="file" class="dropify" data-height="150" name="image" placeholder="Image">
-                    </div>
-                    <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-lg-6 mb-2">
-                                <label for="">
-                                    <dt>Kategori</dt>
-                                </label>
-                                <select name="id_kategori" id="" class="form-control select">
-                                    <option value="">-Pilih Kategori-</option>
-                                    @foreach ($kategori as $m)
-                                        <option value="{{ $m->kd_kategori }}">{{ $m->kategori }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-3">
-                                <label for="">
-                                    <dt>Level Point</dt>
-                                </label>
-                                <select name="id_handicap" id="" class="form-control select">
-                                    <option value="">-Pilih Level-</option>
-                                    @foreach ($handicap as $m)
-                                        <option value="{{ $m->id_handicap }}">{{ $m->handicap }}
-                                            ({{ $m->point }} Point)
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-lg-3 mb-2">
-                                <label for="">
-                                    <dt>Kode Menu</dt>
-                                </label>
-                                <input readonly type="text" name="kd_menu" class="form-control"
-                                    placeholder="Kode Menu" value="{{ $menu->kd_menu + 1 }}">
-                            </div>
-                            <div class="col-lg-6 mb-2">
-                                <label for="">
-                                    <dt>Nama Menu</dt>
-                                </label>
-                                <input type="text" name="nm_menu" class="form-control" placeholder="Nama Menu">
-                            </div>
-                            <div class="col-lg-2 mb-2">
-                                <label for="">
-                                    <dt>Tipe</dt>
-                                </label>
-                                <Select class="form-control select" name="tipe">
-                                    <option value="">-Pilih tipe-</option>
-                                    <option value="food">Food</option>
-                                    <option value="drink">Drink</option>
-                                </Select>
-                            </div>
-                            <div class="col-lg-4 mb-2">
-                                <label for="">
-                                    <dt>Station</dt>
-                                </label>
-                                <Select class="form-control select" name="id_station">
-                                    <option value="">-Pilih station-</option>
-                                    @foreach ($st as $s)
-                                        <option value="{{ $s->id_station }}">{{ $s->nm_station }}</option>
-                                    @endforeach
-                                </Select>
-                            </div>
-
-                            <div class="col-lg-5 mb-2">
-                                <label for="">
-                                    <dt>Distribusi</dt>
-                                </label>
-                                <select name="id_distribusi[]" id="" class="form-control select">
-                                    <option value="">-Pilih distribusi-</option>
-                                    <option value="1">DINE-IN / TAKEWAY</option>
-                                    <option value="2">GOJEK</option>
-                                    <option value="3">DELIVERY</option>
-                                </select>
-                            </div>
-                            <div class="col-lg-5 mb-2">
-                                <label for="">
-                                    <dt>Harga</dt>
-                                </label>
-                                <input type="text" name="harga[]" class="form-control" placeholder="Harga">
-                            </div>
-
-                            <div class="col-lg-2 mb-2">
-                                <label for="">
-                                    <dt>Aksi</dt>
-                                </label> <br>
-                                <button href="" id="tambah_distribusi" type="button"
-                                    class="btn btn-sm btn-info "><i class="fas fa-plus"></i></button>
+                                <div class="col-lg-5 mb-2">
+                                    <label for="">
+                                        <dt>Distribusi</dt>
+                                    </label>
+                                    <input type="hidden" name="id_distribusi[]" value="1">
+                                    <input type="text" class="form-control" value="DINE-IN / TAKEWAY" readonly>
+                                </div>
+                                <div class="col-lg-5 mb-2">
+                                    <label for="">
+                                        <dt>Harga</dt>
+                                    </label>
+                                    <input type="text" name="harga[]" class="form-control" placeholder="Harga">
+                                </div>
+                                <div class="col-lg-5 mb-2">
+                                    <input type="hidden" name="id_distribusi[]" value="2">
+                                    <input type="text" class="form-control" value="GOJEK" readonly>
+                                </div>
+                                <div class="col-lg-5 mb-2">
+                                    <input type="text" name="harga[]" class="form-control" placeholder="Harga">
+                                </div>
                             </div>
 
                         </div>
-                        <div id="p_pakan">
+                        <div class="col-lg-12">
+                            <hr>
+                        </div>
+                        <div class="col-lg-6">
+                            <h6>Resep</h6>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="50">Bahan</th>
+                                        <th width="10">Qty</th>
+                                        <th width="10">Satuan</th>
+                                        <th width="5">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="baris1">
+                                        <td>
+                                            <select name="id_bahan[]" id="" class="select2 id_bahan"
+                                                count="1">
+                                                <option value="">Pilih Bahan</option>
+                                                @foreach ($bahan as $b)
+                                                    <option value="{{ $b->id_list_bahan }}">{{ $b->nm_bahan }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td><input type="text" class="form-control" name="qty[]"
+                                                value="0">
+                                        </td>
+                                        <td><input type="text" class="form-control nm_bahan1" value=""
+                                                readonly>
+                                        </td>
+                                        <td class="text-center"><a href="#"
+                                                class="btn btn-rounded remove_baris" count="1"><i
+                                                    class="fas fa-trash text-danger"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                <tbody class="load_tambah_resep"></tbody>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="4"><button type="button"
+                                                class="btn btn-primary btn-block tambah_baris_resep">Tambah
+                                                Baris</button>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </x-theme.modal>
+            </form>
 
+            <form id="delete_menu">
+                <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <h5 class="text-danger ms-4 mt-4"><i class="fas fa-trash"></i> Hapus Data</h5>
+                                    <p class=" ms-4 mt-4">Apa anda yakin ingin menghapus ?</p>
+                                    <input type="hidden" class="id_menu" name="id_menu">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-danger"
+                                    data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-danger">Hapus</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </x-theme.modal>
+            </form>
+
+            <form id="edit_menu">
+                <x-theme.modal title="Edit Menu" idModal="edit" size="modal-lg-max">
+                    <div id="load_edit"></div>
+                </x-theme.modal>
+            </form>
+            <form id="edit_resep">
+                <x-theme.modal title="Resep" idModal="resep" size="modal-lg">
+                    <div id="load_resep"></div>
+                </x-theme.modal>
+            </form>
+
+            <form action="{{ route('menu.importMenuLevel') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <x-theme.modal title="Menu" idModal="exportmenu" size="modal-lg">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table>
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('img') }}/1.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
+                                        File ini memiliki kolom header dan isi yang sesuai dengan data menu
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route('menu.export_menu') }}" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-download"></i>
+                                            DOWNLOAD TEMPLATE
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('img') }}/2.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>
+                                        Setelah mengubah, silahkan upload file.
+                                    </td>
+                                    <td>
+                                        <input type="file" name="file" class="form-control">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </x-theme.modal>
+            </form>
+
+            <form action="{{ route('menu.import_resep') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <x-theme.modal title="Export dan import resep" idModal="resepexport" size="modal-lg">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table>
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('img') }}/1.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Download Excel template</b></span><br>
+                                        File ini memiliki kolom header dan isi yang sesuai dengan data menu
+                                    </td>
+                                    <td class="text-center">
+                                        <a href="{{ route('menu.export_resep') }}" class="btn btn-primary btn-sm"><i
+                                                class="fa fa-download"></i>
+                                            DOWNLOAD TEMPLATE
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <hr>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100" class="pl-2">
+                                        <img width="80px" src="{{ asset('img') }}/2.png" alt="">
+                                    </td>
+                                    <td>
+                                        <span style="font-size: 20px;"><b> Upload Excel template</b></span><br>
+                                        Setelah mengubah, silahkan upload file.
+                                    </td>
+                                    <td>
+                                        <input type="file" name="file" class="form-control">
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </x-theme.modal>
+            </form>
 
         </section>
         @section('scripts')
-            <script>
-                function toast(pesan) {
-                    Toastify({
-                        text: pesan,
-                        duration: 3000,
-                        position: 'center',
-                        style: {
-                            background: "#EAF7EE",
-                            color: "#7F8B8B"
-                        },
-                        close: true,
-                        avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
-                    }).showToast();
-                }
-
-
-                var hal = $('.halaman').val()
-                var search = $('.search').val()
-                load_menu(hal, search);
-
-                function load_menu(page, search) {
-                    $.ajax({
-                        type: "get",
-                        url: "{{ route('menu.get_menu') }}",
-                        data: {
-                            page: page,
-                            search: search
-                        },
-                        success: function(response) {
-                            $("#load_menu").html(response);
-                        },
-                        error: function(error) {
-                            console.error('Error fetching menu:', error);
-                        }
-                    });
-                }
-                $('body').on('click', '.pagination a', function(e) {
-                    e.preventDefault();
-
-                    var page = $(this).attr('href').split('page=')[1];
-                    var search = $('.search').val();
-                    var halaman = $('.halaman').val(page)
-
-                    load_menu(page, search);
-                });
-
-                $(document).on('keyup', '.search', function() {
-                    search = $(this).val();
-                    var hal = $('.halaman').val()
-                    load_menu(hal, search)
-                });
-
-
-
-                $(document).on('change', '.chekstatus', function() {
-                    var isChecked = $(this).prop('checked');
-                    var id_menu = $(this).attr('id_menu');
-
-                    // Kirim permintaan AJAX
-                    $.ajax({
-                        url: "{{ route('menu.aktif') }}", // Ganti dengan URL yang sesuai
-                        type: 'GET',
-                        data: {
-                            status: isChecked ? 'on' : 'off',
-                            id_menu: id_menu
-                        },
-                        success: function(response) {
-                            toast('Menu berhasil di update')
-                        },
-                        error: function(error) {
-                            console.error(error);
-                        }
-                    });
-                });
-            </script>
+            <script src="{{ asset('js') }}/menu.js"></script>
         @endsection
     </x-slot>
 

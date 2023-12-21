@@ -11,6 +11,7 @@
                     <th class="dhead">Tipe</th>
                     <th class="dhead">Station</th>
                     <th class="dhead text-center">Aktif</th>
+                    <th class="dhead text-center">Resep</th>
                     <th class="dhead text-center">Aksi</th>
                 </tr>
             </thead>
@@ -32,10 +33,17 @@
                             </div>
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('menu.addresep', ['id_menu' => $m->id_menu]) }}"
-                                class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
-                            <a href="{{ route('menu.addresep', ['id_menu' => $m->id_menu]) }}"
-                                class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                            <a href="#" class="btn btn-sm btn-primary resep" id_menu="{{ $m->id_menu }}"
+                                data-bs-toggle="modal" data-bs-target="#resep"><i class="fas fa-clipboard"></i></a>
+                        </td>
+                        <td class="text-center">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#edit"
+                                class="btn btn-sm btn-warning edit_menu" id_menu="{{ $m->id_menu }}"><i
+                                    class="fas fa-edit"></i></a>
+
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#delete"
+                                id_menu="{{ $m->id_menu }}" class="btn btn-sm btn-danger delete_menu"><i
+                                    class="fas fa-trash-alt"></i></a>
                         </td>
                     </tr>
                 @endforeach
