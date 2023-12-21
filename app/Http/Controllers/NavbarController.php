@@ -24,6 +24,12 @@ class NavbarController extends Controller
     {
         $data = [
             [
+                'judul' => 'Daftar Akun',
+                'route' => 'akun.index',
+                'img' => 'invoice.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
                 'judul' => 'Saldo Awal',
                 'route' => 'saldoawal.index',
                 'img' => 'report.png',

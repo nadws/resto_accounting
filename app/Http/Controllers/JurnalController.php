@@ -174,7 +174,7 @@ class JurnalController extends Controller
         $id_akun2 = $r->id_akun2;
         $keterangan = $r->keterangan;
         $debit = $r->debit;
-        $kredit = $r->kredit;   
+        $kredit = $r->kredit;
         $id_proyek = $r->id_proyek;
         $no_urut = $r->no_urut;
         $nota_t = $r->no_nota;
@@ -223,7 +223,7 @@ class JurnalController extends Controller
 
     public function delete(Request $r)
     {
-            $nomer = substr($r->no_nota, 3);
+        $nomer = substr($r->no_nota, 3);
         DB::table('notas')->where('nomor_nota', $nomer)->delete();
         DB::table('jurnal')->where('no_nota', $r->no_nota)->delete();
 
