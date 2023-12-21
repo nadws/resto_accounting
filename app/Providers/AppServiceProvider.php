@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
 
         $logoTkmr = asset('assets/login/img/takemori_3.jpg');
         $logoSdb = asset('assets/login/img/sdb_logo.png');
-
+        dd(request()->getHost() === $link2);
         $gambarLogo = request()->getHost() === $link2 ? $logoSdb : $logoTkmr;
 
         app()->singleton('link1', function () use ($link1) {
