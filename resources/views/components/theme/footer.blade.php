@@ -157,6 +157,7 @@
             Toastify({
                 text: "{{ session()->get('error') }}",
                 duration: 3000,
+                position: 'center',
                 style: {
                     background: "#FCEDE9",
                     color: "#7F8B8B"
