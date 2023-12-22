@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Imports\BahanImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BahanController extends Controller
 {
     protected $bahan;
+    
     public function __construct()
     {
         $this->bahan = DB::select("SELECT a.*, b.nm_satuan, c.nm_kategori,(d.debit - d.kredit) as stok
@@ -22,6 +24,17 @@ class BahanController extends Controller
                             group by b.id_bahan
                         ) as d on d.id_bahan = a.id_list_bahan
                     ");
+    }
+    public function singkron()
+    {
+        $id_lokasi = app('id_lokasi');
+        $tgl = date('Y-m-d', strtotime('- 1 days'));
+        $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
+            $invoice = $response['data']['menu'] ?? null;
+            dd($invoice);
+        //     $invo = json_decode(json_encode($invoice));
+        //     foreach ($invo as $i) {
+        // return app('id_lokasi');
     }
     public function index()
     {

@@ -121,10 +121,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/stok_tbh_baris', 'stok_tbh_baris')->name('stok_tbh_baris');
             Route::post('/save_stk_masuk', 'save_stk_masuk')->name('save_stk_masuk');
             Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
+            Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
             Route::get('/delete/{id}', 'delete')->name('delete');
             Route::post('/save_opname', 'save_opname')->name('save_opname');
             Route::post('/update', 'update')->name('update');
             Route::post('/import', 'import')->name('import');
+
+
+            Route::get('/singkron', 'singkron')->name('singkron');
         });
     Route::controller(MenuController::class)
         ->prefix('menu')

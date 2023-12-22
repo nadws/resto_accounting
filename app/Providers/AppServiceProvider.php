@@ -32,6 +32,9 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('gambarLogo', function () use ($gambarLogo) {
             return $gambarLogo;
         });
+        app()->singleton('id_lokasi', function () use ($id_lokasi) {
+            return $id_lokasi;
+        });
 
     }
 
