@@ -84,7 +84,7 @@ class AtkController extends Controller
 
             'invoice' => DB::select("SELECT a.tgl, a.invoice, sum(a.debit) as stok, a.admin
             FROM stok_atk as a 
-            where a.debit != 0
+            where a.debit != 0 and a.invoice LIKE '%STKM%'
             group by a.invoice
             "),
             'atk' => DB::table('atk')->get()
@@ -95,7 +95,7 @@ class AtkController extends Controller
     function tmbh_stok(Request $r)
     {
         $invo = DB::selectOne("SELECT max(a.urutan) as urutan
-        FROM stok_atk as a 
+        FROM stok_atk as a where a.invoice LIKE '%STKM%'
         ");
 
         if (empty($invo->urutan)) {

@@ -62,7 +62,7 @@ class BahanController extends Controller
     public function save_opname(Request $r)
     {
         $invo = DB::selectOne("SELECT max(a.urutan) as urutan
-        FROM stok_bahan as a  WHERE a.urutan LIKE '%BHNOPN%'
+        FROM stok_bahan as a  WHERE a.invoice LIKE '%BHNOPN%'
         ");
 
         if (empty($invo->urutan)) {
@@ -142,7 +142,12 @@ class BahanController extends Controller
     public function stok()
     {
         $data = [
-            'title' => 'Stok Masuk'
+            'title' => 'Stok Masuk',
+            'invoice' => DB::select("SELECT a.tgl, a.invoice, sum(a.debit) as stok, a.admin
+            FROM stok_bahan as a 
+            where a.debit != 0 AND a.invoice LIKE '%BHNMSK%'
+            group by a.invoice
+            "),
         ];
         return view('persediaan.bahan_makanan.stok', $data);
     }
@@ -150,7 +155,7 @@ class BahanController extends Controller
     public function stok_add()
     {
         $invo = DB::selectOne("SELECT max(a.urutan) as urutan
-        FROM stok_bahan as a WHERE a.urutan LIKE '%BHNMSK%'
+        FROM stok_bahan as a WHERE a.invoice LIKE '%BHNMSK%'
         ");
 
         if (empty($invo->urutan)) {
@@ -175,9 +180,23 @@ class BahanController extends Controller
         return view('persediaan.bahan_makanan.stok_tbh_baris',$data);
     }
 
+    public function load_produk_stok()
+    {
+        $atk = $this->bahan;
+
+        $html = "<select name='id_bahan[]' class='select2_add pilihProduk'>";
+        $html .= "<option value=''>Pilih Produk</option>";
+
+        foreach ($atk as $a) {
+            $html .= "<option value='{$a->id_list_bahan}'>{$a->nm_bahan} ({$a->nm_satuan})</option>";
+        }
+
+        $html .= "<option value='tambah'>+ tambah baru</option></select>";
+        return $html;
+    }
+
     public function save_stk_masuk(Request $r)
     {
-        dd($r->all());
         for ($i=0; $i < count($r->id_bahan); $i++) { 
             $debit = (int) str()->remove(',', $r->debit[$i]);
             $total_rp = (int) str()->remove(',', $r->total_rp[$i]);
@@ -197,18 +216,5 @@ class BahanController extends Controller
         return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil ditambahkan');
     }
 
-    public function load_produk_stok()
-    {
-        $atk = $this->bahan;
-
-        $html = "<select name='id_bahan[]' class='select2_add pilihProduk'>";
-        $html .= "<option value=''>Pilih Produk</option>";
-
-        foreach ($atk as $a) {
-            $html .= "<option value='{$a->id_list_bahan}'>{$a->nm_bahan} ({$a->nm_satuan})</option>";
-        }
-
-        $html .= "<option value='tambah'>+ tambah baru</option></select>";
-        return $html;
-    }
+    
 }
