@@ -36,7 +36,7 @@ class BahanController extends Controller
 
     public function save(Request $r)
     {
-        
+
         DB::table('tb_list_bahan')->insert([
             'nm_bahan' => $r->nm_bahan,
             'id_satuan' => $r->satuan_id,
@@ -49,7 +49,7 @@ class BahanController extends Controller
 
     public function opname(Request $r)
     {
- 
+
         $data = [
             'title' => 'Opname Bahan dan Barang Makanan',
             'satuan' => DB::table('tb_satuan')->get(),
@@ -62,7 +62,7 @@ class BahanController extends Controller
     public function save_opname(Request $r)
     {
         $invo = DB::selectOne("SELECT max(a.urutan) as urutan
-        FROM stok_bahan as a 
+        FROM stok_bahan as a  WHERE a.urutan LIKE '%BHNOPN%'
         ");
 
         if (empty($invo->urutan)) {
@@ -71,16 +71,16 @@ class BahanController extends Controller
             $invoice = $invo->urutan + 1;
         }
         for ($i = 0; $i < count($r->id_bahan); $i++) {
-            $stok_program = (int) str()->remove(',',$r->stok_program[$i]);
-            $stok_aktual = (int) str()->remove(',',$r->stok_aktual[$i]);
+            $stok_program = (int) str()->remove(',', $r->stok_program[$i]);
+            $stok_aktual = (int) str()->remove(',', $r->stok_aktual[$i]);
             $total = $stok_program - $stok_aktual;
-            if($total == 0) {
+            if ($total == 0) {
                 continue;
             }
-            if($total < 0) {
+            if ($total < 0) {
                 DB::table('stok_bahan')->insert([
                     'id_bahan' => $r->id_bahan[$i],
-                    'invoice' => "BHN-$invoice",
+                    'invoice' => "BHNOPN-$invoice",
                     'urutan' => $invoice,
                     'tgl' => date('Y-m-d'),
                     'debit' => $total * -1,
@@ -90,7 +90,7 @@ class BahanController extends Controller
             } else {
                 DB::table('stok_bahan')->insert([
                     'id_bahan' => $r->id_bahan[$i],
-                    'invoice' => "BHN-$invoice",
+                    'invoice' => "BHNOPN-$invoice",
                     'urutan' => $invoice,
                     'tgl' => date('Y-m-d'),
                     'kredit' => $total,
@@ -119,12 +119,12 @@ class BahanController extends Controller
             'kategori' => DB::table('tb_kategori_bahan')->get(),
             'bahan' => DB::table('tb_list_bahan')->where('id_list_bahan', $r->id_bahan)->first()
         ];
-        return view('persediaan.bahan_makanan.edit',$data);
+        return view('persediaan.bahan_makanan.edit', $data);
     }
 
     public function update(Request $r)
     {
-        DB::table('tb_list_bahan')->where('id_list_bahan' , $r->id_bahan)->update([
+        DB::table('tb_list_bahan')->where('id_list_bahan', $r->id_bahan)->update([
             'nm_bahan' => $r->nm_bahan,
             'id_satuan' => $r->satuan_id,
             'id_kategori' => $r->kategori_id,
@@ -134,8 +134,81 @@ class BahanController extends Controller
 
     public function delete($id)
     {
-        DB::table('tb_list_bahan')->where('id_list_bahan' , $id)->delete();
-        DB::table('stok_bahan')->where('id_bahan' , $id)->delete();
+        DB::table('tb_list_bahan')->where('id_list_bahan', $id)->delete();
+        DB::table('stok_bahan')->where('id_bahan', $id)->delete();
         return redirect()->route('bahan.index')->with('sukses', 'Data Berhasil dihapus');
+    }
+
+    public function stok()
+    {
+        $data = [
+            'title' => 'Stok Masuk'
+        ];
+        return view('persediaan.bahan_makanan.stok', $data);
+    }
+
+    public function stok_add()
+    {
+        $invo = DB::selectOne("SELECT max(a.urutan) as urutan
+        FROM stok_bahan as a WHERE a.urutan LIKE '%BHNMSK%'
+        ");
+
+        if (empty($invo->urutan)) {
+            $invoice = '1001';
+        } else {
+            $invoice = $invo->urutan + 1;
+        }
+        $data = [
+            'title' => 'Stok Masuk',
+            'invoice' => $invoice,
+            'satuan' => DB::table('tb_satuan')->get(),
+            'kategori' => DB::table('tb_kategori_bahan')->get(),
+        ];
+        return view('persediaan.bahan_makanan.stok_add', $data);
+    }
+
+    public function stok_tbh_baris(Request $r)
+    {
+        $data = [
+            'count' => $r->count,
+        ];
+        return view('persediaan.bahan_makanan.stok_tbh_baris',$data);
+    }
+
+    public function save_stk_masuk(Request $r)
+    {
+        dd($r->all());
+        for ($i=0; $i < count($r->id_bahan); $i++) { 
+            $debit = (int) str()->remove(',', $r->debit[$i]);
+            $total_rp = (int) str()->remove(',', $r->total_rp[$i]);
+
+            DB::table('stok_bahan')->insert([
+                'id_bahan' => $r->id_bahan[$i],
+                'invoice' => "BHNMSK-$r->invoice",
+                'urutan' => $r->invoice,
+                'tgl' => date('Y-m-d'),
+                'kredit' => 0,
+                'debit' => $debit,
+                'rupiah' => $total_rp,
+                'admin' => auth()->user()->name,
+            ]);
+        }
+
+        return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil ditambahkan');
+    }
+
+    public function load_produk_stok()
+    {
+        $atk = $this->bahan;
+
+        $html = "<select name='id_bahan[]' class='select2_add pilihProduk'>";
+        $html .= "<option value=''>Pilih Produk</option>";
+
+        foreach ($atk as $a) {
+            $html .= "<option value='{$a->id_list_bahan}'>{$a->nm_bahan} ({$a->nm_satuan})</option>";
+        }
+
+        $html .= "<option value='tambah'>+ tambah baru</option></select>";
+        return $html;
     }
 }

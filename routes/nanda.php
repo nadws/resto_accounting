@@ -38,6 +38,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/load', 'load')->name('load');
             Route::get('/post_center', 'post_center')->name('post_center');
+            Route::get('/edit_load', 'edit_load')->name('edit_load');
+            Route::get('/update', 'update')->name('update');
+            Route::get('/hapus', 'hapus')->name('hapus');
             Route::get('/create_post_center', 'create_post_center')->name('create_post_center');
             Route::get('/update_post_center', 'update_post_center')->name('update_post_center');
             Route::get('/delete_post_center', 'delete_post_center')->name('delete_post_center');
