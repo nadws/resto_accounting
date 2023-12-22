@@ -9,6 +9,7 @@ use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
+use App\Http\Controllers\SinkronController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -146,6 +147,13 @@ Route::middleware('auth')->group(function () {
             Route::get('/export_resep', 'export_resep')->name('export_resep');
             Route::post('/import_resep', 'import_resep')->name('import_resep');
             Route::get('/station', 'station')->name('station');
+        });
+
+    Route::controller(SinkronController::class)
+        ->prefix('sinkron')
+        ->name('sinkron.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
         });
 });
 
