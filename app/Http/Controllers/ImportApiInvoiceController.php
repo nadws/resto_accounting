@@ -148,8 +148,5 @@ class ImportApiInvoiceController extends Controller
                 DB::table('jurnal')->insert($data);
             }
         }
-
-
-        return view('tarik');
     }
 }

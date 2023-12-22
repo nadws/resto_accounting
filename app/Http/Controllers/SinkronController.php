@@ -9,7 +9,8 @@ class SinkronController extends Controller
     function index(Request $r)
     {
         $data = [
-            'title' => 'Data sinkron'
+            'title' => 'Data sinkron',
+            ''
         ];
         return view("sinkron.index", $data);
     }
