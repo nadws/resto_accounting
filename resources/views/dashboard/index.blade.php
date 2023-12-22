@@ -111,21 +111,21 @@
                 });
             }
 
-            function load_neraca(bulan, tahun) {
+            function load_neraca(tahun) {
                 $.ajax({
                     type: "get",
                     url: "{{ route('neraca.index') }}",
                     data: {
-                        bulan: bulan,
                         tahun: tahun,
                     },
                     success: function(response) {
                         $("#load_neraca").html(response);
+                        $('#show_neraca').hide();
                         setTimeout(function() {
-                            $('#loading2').hide();
-                            $('#show2').show();
+                            $('#loading_neraca').hide();
+                            $('#show_neraca').show();
                         }, 1000);
-                        $('.select').select2({
+                        $('.select_neraca').select2({
                             language: {
                                 searching: function() {
                                     $('.select2-search__field').focus();
@@ -220,6 +220,11 @@
                 event.preventDefault(); // Prevent the default form submission
                 var tahun = $("#tahun").val();
                 load_cashflow(tahun);
+            });
+            $(document).on('submit', '#history_neraca', function(event) {
+                event.preventDefault(); // Prevent the default form submission
+                var tahun = $(".select_neraca").val();
+                load_neraca(tahun);
             });
 
             $(document).on('submit', '#save_akun_profit', function(e) {

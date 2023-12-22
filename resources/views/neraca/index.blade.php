@@ -9,7 +9,7 @@
 
                 </div>
                 <div class="col-lg-2">
-                    <select name="" class="select_cashflow">
+                    <select name="" class="select_neraca">
                         <option value="2023">2023</option>
                     </select>
                 </div>
@@ -20,16 +20,16 @@
         </form>
     </div>
     <div class="card-body">
-        {{-- <div class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <div id="loading_cashflow" class="spinner-border text-center text-success "
+                    <div id="loading_neraca" class="spinner-border text-center text-success "
                         style="width: 6rem; height: 6rem;" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
         <div class="row" id="show_neraca">
             {{-- ini koding sum kalsifikasi --}}
             @php
@@ -113,7 +113,7 @@
                         <th class="ps-4">
                             <div style="cursor: pointer" @click="open1 = ! open1">
                                 KAS
-                                <i class=" fas fa-caret-down float-end"></i>
+                                <span class="badge bg-primary float-end"><i class=" fas fa-caret-down "></i></span>
                             </div>
                         </th>
                         @foreach ($bulans as $d)
@@ -149,7 +149,7 @@
                         <th class="ps-4">
                             <div style="cursor: pointer" @click="open2 = ! open2">
                                 BANK
-                                <i class=" fas fa-caret-down float-end"></i>
+                                <span class="badge bg-primary float-end"><i class=" fas fa-caret-down"></i></span>
 
                             </div>
                         </th>
@@ -182,7 +182,7 @@
                         <th class="ps-4">
                             <div style="cursor: pointer" @click="open4 = ! open4">
                                 PERSEDIAAN
-                                <i class=" fas fa-caret-down float-end"></i>
+                                <span class="badge bg-primary float-end"><i class=" fas fa-caret-down"></i></span>
                             </div>
                         </th>
                         @foreach ($bulans as $d)
