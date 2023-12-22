@@ -7,8 +7,7 @@
             </div>
             <div class="col-lg-12"></div>
             <div class="col-lg-3">
-                <a href="#">
-
+                <a href="{{ route('importapi.invoice') }}">
                     <div class="card" style="cursor:pointer;background-color: #3caba9">
                         <div class="card-body">
                             <h4 class=" text-white text-center"><img src="/img/cloud-computing.png" width="128"
