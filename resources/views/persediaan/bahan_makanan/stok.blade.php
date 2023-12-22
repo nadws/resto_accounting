@@ -33,7 +33,22 @@
                         <th>Status</th>
                     </tr>
                 </thead>
+                <tbody>
+                    @foreach ($invoice as $no => $d)
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td align="center">{{ tanggal($d->tgl) }}</td>
+                            <td>{{ $d->invoice }}</td>
+                            <td align="center">{{ $d->stok }}</td>
+                            <td>
+                                <div class="btn btn-sm btn-success">
+                                    Selesai
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
 
+                </tbody>
                
             </table>
 
