@@ -69,6 +69,7 @@
                     $totalPerBulan[$bulan] += $nilai['kas'] + $nilai['bank'] + $nilai['persediaan'];
                 }
                 $totalSemuaLancar = $ttlKas + $ttlBank + $ttlPersediaan;
+
             @endphp
 
             {{-- ini koding per akun nya --}}
@@ -130,6 +131,7 @@
                             @foreach ($bulans as $b)
                                 <td class="ps-4 text-end">
                                     @php
+
                                         $duit = $totalPerAkun[$b->bulan]['kas'][$d];
                                         $total += $duit;
                                     @endphp
@@ -235,8 +237,10 @@
                                 $kas = \App\Models\Neracamodel::Getakumulasi($tgl1, $tgl2, $k);
                                 $debit_kas = $kas->debit ?? 0;
                                 $kredit_kas = $kas->kredit ?? 0;
+                                $debit_kas_saldo = $kas->debit_saldo ?? 0;
+                                $kredit_kas_saldo = $kas->kredit_saldo ?? 0;
 
-                                $total_per_bulan[$bln][$i] = $debit_kas - $kredit_kas;
+                                $total_per_bulan[$bln][$i] = $debit_kas + $debit_kas_saldo - $kredit_kas - $kredit_kas_saldo;
                             }
                         }
 
@@ -383,7 +387,7 @@
 
                             $akun = \App\Models\NeracaModel::GetKas2($tgl1, $tgl2);
                             foreach ($akun as $a) {
-                                $totalPerAkun[$bln][$i][$a->nm_akun] = $a->kredit - $a->debit;
+                                $totalPerAkun[$bln][$i][$a->nm_akun] = $a->kredit + $a->kredit_saldo - $a->debit - $a->debit_saldo;
                             }
                         }
 

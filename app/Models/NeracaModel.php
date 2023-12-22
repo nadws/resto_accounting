@@ -14,7 +14,7 @@ class NeracaModel extends Model
     {
         $result = DB::selectOne("SELECT 
         SUM(COALESCE(b.debit, 0) + COALESCE(c.debit, 0)) as debit,
-        SUM(COALESCE(b.kredit, 0) - COALESCE(c.kredit, 0)) as kredit
+        SUM(COALESCE(b.kredit, 0) + COALESCE(c.kredit, 0)) as kredit
             FROM akun as a
             LEFT JOIN (
                 SELECT b.id_akun, SUM(b.debit) as debit, SUM(b.kredit) as kredit
@@ -44,7 +44,7 @@ class NeracaModel extends Model
             LEFT JOIN (
                 SELECT b.id_akun, SUM(b.debit) as debit, SUM(b.kredit) as kredit
                 FROM jurnal as b
-                WHERE b.id_buku NOT IN (5, 13) AND b.tgl BETWEEN ? AND ? AND b.penutup = 'T'
+                WHERE b.id_buku NOT IN (8) AND b.tgl BETWEEN ? AND ? AND b.penutup = 'T'
                 GROUP BY b.id_akun
             ) as b ON b.id_akun = a.id_akun
             LEFT JOIN (
@@ -91,7 +91,7 @@ class NeracaModel extends Model
             where b.tgl BETWEEN ? and ? and b.id_buku not in('8') 
             GROUP by b.id_akun
         ) as b on b.id_akun = a.id_akun
-        where a.iktisar ='Y' and a.id_klasifikasi in (2,3);
+        where a.iktisar ='Y' and a.id_klasifikasi in (2,3,13);
         ", [$tgl1, $tgl2]);
 
         return $result;
