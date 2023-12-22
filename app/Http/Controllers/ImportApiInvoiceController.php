@@ -148,5 +148,7 @@ class ImportApiInvoiceController extends Controller
                 DB::table('jurnal')->insert($data);
             }
         }
+
+        return redirect()->route('sinkron.index')->with('sukses', 'Data berhasil ditambahkan');
     }
 }
