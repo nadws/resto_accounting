@@ -9,7 +9,7 @@
 
                 </div>
                 <div class="col-lg-2">
-                    <select name="" class="select_cashflow">
+                    <select name="" class="select_neraca">
                         <option value="2023">2023</option>
                     </select>
                 </div>
@@ -20,16 +20,16 @@
         </form>
     </div>
     <div class="card-body">
-        {{-- <div class="row">
+        <div class="row">
             <div class="col-lg-12">
                 <div class="text-center">
-                    <div id="loading_cashflow" class="spinner-border text-center text-success "
+                    <div id="loading_neraca" class="spinner-border text-center text-success "
                         style="width: 6rem; height: 6rem;" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
             </div>
-        </div> --}}
+        </div>
         <div class="row" id="show_neraca">
             {{-- ini koding sum kalsifikasi --}}
             @php
@@ -69,6 +69,7 @@
                     $totalPerBulan[$bulan] += $nilai['kas'] + $nilai['bank'] + $nilai['persediaan'];
                 }
                 $totalSemuaLancar = $ttlKas + $ttlBank + $ttlPersediaan;
+
             @endphp
 
             {{-- ini koding per akun nya --}}
@@ -112,7 +113,7 @@
                         <th class="ps-4">
                             <div style="cursor: pointer" @click="open1 = ! open1">
                                 KAS
-                                <i class=" fas fa-caret-down float-end"></i>
+                                <span class="badge bg-primary float-end"><i class=" fas fa-caret-down "></i></span>
                             </div>
                         </th>
                         @foreach ($bulans as $d)
@@ -130,6 +131,7 @@
                             @foreach ($bulans as $b)
                                 <td class="ps-4 text-end">
                                     @php
+
                                         $duit = $totalPerAkun[$b->bulan]['kas'][$d];
                                         $total += $duit;
                                     @endphp
@@ -147,7 +149,7 @@
                         <th class="ps-4">
                             <div style="cursor: pointer" @click="open2 = ! open2">
                                 BANK
-                                <i class=" fas fa-caret-down float-end"></i>
+                                <span class="badge bg-primary float-end"><i class=" fas fa-caret-down"></i></span>
 
                             </div>
                         </th>
@@ -180,7 +182,7 @@
                         <th class="ps-4">
                             <div style="cursor: pointer" @click="open4 = ! open4">
                                 PERSEDIAAN
-                                <i class=" fas fa-caret-down float-end"></i>
+                                <span class="badge bg-primary float-end"><i class=" fas fa-caret-down"></i></span>
                             </div>
                         </th>
                         @foreach ($bulans as $d)
@@ -235,8 +237,10 @@
                                 $kas = \App\Models\Neracamodel::Getakumulasi($tgl1, $tgl2, $k);
                                 $debit_kas = $kas->debit ?? 0;
                                 $kredit_kas = $kas->kredit ?? 0;
+                                $debit_kas_saldo = $kas->debit_saldo ?? 0;
+                                $kredit_kas_saldo = $kas->kredit_saldo ?? 0;
 
-                                $total_per_bulan[$bln][$i] = $debit_kas - $kredit_kas;
+                                $total_per_bulan[$bln][$i] = $debit_kas + $debit_kas_saldo - $kredit_kas - $kredit_kas_saldo;
                             }
                         }
 
@@ -383,7 +387,7 @@
 
                             $akun = \App\Models\NeracaModel::GetKas2($tgl1, $tgl2);
                             foreach ($akun as $a) {
-                                $totalPerAkun[$bln][$i][$a->nm_akun] = $a->kredit - $a->debit;
+                                $totalPerAkun[$bln][$i][$a->nm_akun] = $a->kredit + $a->kredit_saldo - $a->debit - $a->debit_saldo;
                             }
                         }
 

@@ -42,6 +42,7 @@ class JurnalController extends Controller
             4 => 'Hutang',
             5 => 'pengeluaran aktiva gantung',
             6 => 'pembalikan aktiva gantung',
+            10 => 'kas dan bank'
         ];
         $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
 
@@ -80,9 +81,10 @@ class JurnalController extends Controller
 
     public function load_menu(Request $r)
     {
+        $akun = $r->id_buku == 10 ? DB::table('akun')->get() : DB::table('akun')->whereNotBetween('id_akun', [1, 21])->get();
         $data =  [
             'title' => 'Jurnal Umum',
-            'akun' => DB::table('akun')->whereBetween('id_akun', [39,54])->get(),
+            'akun' => $akun,
             'satuan' => DB::table('tb_satuan')->get(),
             'id_akun' => $r->id_akun,
             'id_buku' => $r->id_buku

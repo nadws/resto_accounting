@@ -6,8 +6,21 @@
         <h6 class="float-start">{{ $title }}</h6>
         <div class="row justify-content-end">
             <div class="col-lg-6">
-                <x-theme.button modal="Y" idModal="tambah" href="#" icon="fa-plus" addClass="float-end"
-                    teks="Buat Baru" />
+                <div class="dropdown float-end">
+                    <button class="btn btn-primary dropdown-toggle me-1 btn-sm" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-plus"></i> Tambah Data
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tambah" href="#">Menu</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tbhKategori"
+                            href="#">Kategori</a>
+                        <a class="dropdown-item" id="stationC" data-bs-toggle="modal" data-bs-target="#station"
+                            href="#">Station</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#tbhHandicap"
+                            href="#">Level Point</a>
+                    </div>
+                </div>
                 <x-theme.button modal="Y" idModal="exportmenu" href="#" icon="fa-file-excel"
                     addClass="float-end" teks="Import/Export Menu" />
                 <x-theme.button modal="Y" idModal="resepexport" href="#" icon="fa-file-excel"
@@ -80,7 +93,8 @@
                                     <label for="">
                                         <dt>Nama Menu</dt>
                                     </label>
-                                    <input type="text" name="nm_menu" class="form-control" placeholder="Nama Menu">
+                                    <input type="text" name="nm_menu" class="form-control"
+                                        placeholder="Nama Menu">
                                 </div>
                                 <div class="col-lg-2 mb-2">
                                     <label for="">
@@ -303,9 +317,109 @@
                 </x-theme.modal>
             </form>
 
+
+            <form action="{{ route('menu.import_resep') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <x-theme.modal title="Tambah Kategori" idModal="tbhKategori">
+                    <div class="row">
+                        @php
+                            $kategoriKd = DB::table('tb_kategori')
+                                ->orderBy('kd_kategori', 'desc')
+                                ->where('lokasi', 'TAKEMORI')
+                                ->first();
+                        @endphp
+                        <div class="col-lg-3">
+                            <label>Kode</label>
+                            <input type="number" readonly class="form-control"
+                                value="{{ $kategoriKd->kd_kategori + 1 }}" name="kd_kategori">
+                        </div>
+                        <div class="col-lg-9">
+                            <label>Kategori</label>
+                            <input type="text" required class="form-control" name="nm_kategori">
+                        </div>
+                    </div>
+                </x-theme.modal>
+            </form>
+            <form action="{{ route('menu.import_resep') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <x-theme.modal title="Tambah Station" idModal="station">
+                    <div class="row">
+                        <div class="col-lg-12 mb-4">
+                            <label for="">Nama Station</label>
+                            <input autofocus type="text" id="nm_station" name="nm_station" class="form-control">
+                        </div>
+
+                        <div id="stationK"></div>
+                    </div>
+                </x-theme.modal>
+            </form>
+            <form action="{{ route('menu.import_resep') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <x-theme.modal title="Tambah Handicap" idModal="tbhHandicap" size="modal-lg">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label for="">Level</label>
+                            <input type="text" class="form-control" name="handicap">
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">Keterangan</label>
+                            <input type="text" class="form-control" name="ket">
+
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="">Point</label>
+                            <input required type="number" name="point" class="form-control">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <table id="table1" class="table table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <td>#</td>
+                                        <td>Level</td>
+                                        <td>Keterangan</td>
+                                        <td>Point</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php
+                                        $no = 1;
+                                    @endphp
+                                    @foreach ($handicap as $h)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $h->handicap }}</td>
+                                            <td>{{ $h->ket }}</td>
+                                            <td>{{ $h->point }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </x-theme.modal>
+            </form>
+
         </section>
         @section('scripts')
             <script src="{{ asset('js') }}/menu.js"></script>
+            <script>
+                function station() {
+                    $.ajax({
+                        method: "GET",
+                        url: "{{ route('menu.station') }}",
+                        success: function(data) {
+                            $("#stationK").html(data)
+                        }
+                    });
+                }
+                $("#stationC").click(function(e) {
+                    station()
+                });
+            </script>
         @endsection
     </x-slot>
 

@@ -6,6 +6,7 @@
             4 => 'hutang',
             5 => 'pengeluaran aktiva gantung',
             6 => 'pembalikan aktiva gantung',
+            10 => 'Kas Bank',
         ];
     @endphp
     @foreach ($kategori as $i => $d)

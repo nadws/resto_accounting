@@ -54,7 +54,7 @@ class BukubesarController extends Controller
         $tgl1 =  $this->tgl1;
         $tgl2 =  $this->tgl2;
 
-        $buku = DB::select("SELECT a.id_akun, a.kode_akun , a.nm_akun, b.debit , b.kredit
+        $buku = DB::select("SELECT a.id_akun, a.kode_akun , a.nm_akun, b.debit , b.kredit, c.debit as debit_saldo , c.kredit as kredit_saldo
         FROM akun as a
         left JOIN(
             SELECT b.id_akun , sum(b.debit) as debit, sum(b.kredit) as kredit
@@ -63,12 +63,12 @@ class BukubesarController extends Controller
             group by b.id_akun
         ) as b on b.id_akun = a.id_akun
 
-        -- left JOIN (
-        --     SELECT c.id_akun , sum(c.debit) as debit, sum(c.kredit) as kredit
-        --     FROM jurnal_saldo as c 
-        --     where  c.tgl BETWEEN '$tgl1' and '$tgl2'
-        --     group by c.id_akun
-        -- ) as c on c.id_akun = a.id_akun
+        left JOIN (
+            SELECT c.id_akun , sum(c.debit) as debit, sum(c.kredit) as kredit
+            FROM jurnal_saldo as c 
+            where  c.tgl BETWEEN '$tgl1' and '$tgl2'
+            group by c.id_akun
+        ) as c on c.id_akun = a.id_akun
         group by a.id_akun
         ORDER by a.kode_akun ASC;
         ");
