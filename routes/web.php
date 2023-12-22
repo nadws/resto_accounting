@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/importMenuLevel', 'importMenuLevel')->name('importMenuLevel');
             Route::get('/export_resep', 'export_resep')->name('export_resep');
             Route::post('/import_resep', 'import_resep')->name('import_resep');
+            Route::get('/station', 'station')->name('station');
         });
 });
 

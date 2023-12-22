@@ -724,4 +724,13 @@ class MenuController extends Controller
             return redirect()->route('menu.index')->with('error', 'File yang diunggah bukan file Excel yang valid');
         }
     }
+
+    public function station(Request $r)
+    {
+        $data = [
+            'id_lokasi' => $r->id_lokasi
+        ];
+
+        return view('datamenu.menu.station', $data);
+    }
 }
