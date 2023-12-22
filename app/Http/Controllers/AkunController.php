@@ -7,7 +7,21 @@ use Illuminate\Support\Facades\DB;
 
 class AkunController extends Controller
 {
-    function index(Request $r)
+    public function index()
+    {
+        $data = [
+            'title' => 'Daftar Akun',
+            'akun' => DB::table('akun as a')
+                ->join('subklasifikasi_akun as b', 'a.id_klasifikasi', 'b.id_subklasifikasi_akun')
+                ->where('is_active', 'Y')
+                ->orderBy('id_akun', 'DESC')
+                ->get(),
+            'kategori_akun' => DB::table('subklasifikasi_akun')->get()
+
+        ];
+        return view('akun.home',$data);
+    }
+    function load()
     {
         $data = [
             'akun' => DB::table('akun as a')

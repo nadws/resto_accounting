@@ -11,7 +11,7 @@ class NavbarController extends Controller
         $data = [
             [
                 'judul' => 'Daftar Akun',
-                'route' => 'user.index',
+                'route' => 'akun.index',
                 'img' => 'invoice.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
@@ -23,12 +23,7 @@ class NavbarController extends Controller
     public function pembukuan()
     {
         $data = [
-            [
-                'judul' => 'Daftar Akun',
-                'route' => 'akun.index',
-                'img' => 'invoice.png',
-                'deskripsi' => 'membuat dan menyunting data rekening',
-            ],
+           
             [
                 'judul' => 'Saldo Awal',
                 'route' => 'saldoawal.index',

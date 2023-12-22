@@ -82,7 +82,7 @@ class JurnalController extends Controller
     {
         $data =  [
             'title' => 'Jurnal Umum',
-            'akun' => DB::table('akun')->get(),
+            'akun' => DB::table('akun')->whereBetween('id_akun', [39,54])->get(),
             'satuan' => DB::table('tb_satuan')->get(),
             'id_akun' => $r->id_akun,
             'id_buku' => $r->id_buku

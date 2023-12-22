@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
         ->name('akun.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/load', 'load')->name('load');
             Route::get('/post_center', 'post_center')->name('post_center');
             Route::get('/create_post_center', 'create_post_center')->name('create_post_center');
             Route::get('/update_post_center', 'update_post_center')->name('update_post_center');
