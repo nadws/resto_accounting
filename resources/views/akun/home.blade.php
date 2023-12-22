@@ -8,20 +8,24 @@
     <x-slot name="cardBody">
         <section class="row">
             <div id="load_akun"></div>
-          
+
         </section>
         <form id="save_akun">
-            <x-theme.modal title="Tambah Akun" idModal="tambah">
+            <x-theme.modal title="Tambah Akun" size="modal-lg" idModal="tambah">
                 <div class="row">
                     <div class="col-lg-4">
                         <label for="">Nama akun</label>
                         <input type="text" class="form-control" name="nm_akun" required>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
+                        <label for="">Inisial</label>
+                        <input type="text" class="form-control" name="inisial" required>
+                    </div>
+                    <div class="col-lg-2">
                         <label for="">Nomer akun</label>
                         <input type="text" class="form-control" name="kode_akun" required>
                     </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-3">
                         <label for="">Kategori</label>
                         <select name="id_klasifikasi" id="" class="select2" required>
                             <option value="">Pilih Kategori</option>
@@ -33,22 +37,40 @@
                 </div>
             </x-theme.modal>
         </form>
+        <form id="formEditAkun">
+            <x-theme.modal title="Edit Akun" size="modal-lg" idModal="edit_akun">
+                <div id="load_edit_akun"></div>
+            </x-theme.modal>
+        </form>
         <form id="formTmbhPostCenter">
-
-            <x-theme.modal title="Post Center" idModal="post_center">
+            <x-theme.modal title="Post Center" btnSave="T" idModal="post_center">
                 <div id="load_post_center"></div>
             </x-theme.modal>
         </form>
+
         <form id="form_edit_post">
             <x-theme.modal title="Edit Post Center" idModal="edit_post">
                 <div id="load_edit_post_center"></div>
-
             </x-theme.modal>
         </form>
         @section('scripts')
             <script>
                 $(document).ready(function() {
+                    function toast(pesan) {
+                        Toastify({
+                            text: pesan,
+                            duration: 3000,
+                            position: 'center',
+                            style: {
+                                background: "#EAF7EE",
+                                color: "#7F8B8B"
+                            },
+                            close: true,
+                            avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
+                        }).showToast();
+                    }
                     load_akun()
+
                     function load_akun() {
                         $.ajax({
                             type: "get",
@@ -63,13 +85,29 @@
                                     "stateSave": true,
                                     "searching": true,
                                 });
-                                setTimeout(function() {
-                                    $('#loading').hide();
-                                    $('#show').show();
-                                }, 1000);
                             }
                         });
                     }
+
+                    $(document).on('click', '.edit_akun', function() {
+                        var id_akun = $(this).attr('id_akun')
+                        $("#edit_akun").modal('show')
+
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ route('akun.edit_load') }}",
+                            data: {
+                                id_akun: id_akun
+                            },
+                            success: function(response) {
+                                $('#load_edit_akun').html(response);
+
+                                $('.select-edit').select2({
+                                    dropdownParent: $('#edit_akun .modal-content')
+                                })
+                            }
+                        });
+                    })
 
                     $(document).on('submit', '#save_akun', function(event) {
                         event.preventDefault(); // Prevent the default form submission
@@ -78,25 +116,13 @@
                         var formData = $(this).serialize();
                         formData += "&_token=" + csrfToken;
 
-                        $('#loading').show();
-                        $('#show').hide();
-                        $('#loading2').show();
-                        $('#show2').hide();
-
                         $.ajax({
                             url: "{{ route('akun.save') }}", // Replace with your Laravel route
                             method: "POST",
                             data: formData,
                             success: function(response) {
                                 toast('Akun berhasil di simpan')
-                                load_neraca();
                                 load_akun();
-                                setTimeout(function() {
-                                    $('#loading').hide();
-                                    $('#show').show();
-                                    $('#loading2').hide();
-                                    $('#show2').show();
-                                }, 1000);
                                 $("#tambah").modal('hide');
                             },
                             error: function(xhr) {
@@ -106,95 +132,33 @@
                         });
                     });
 
-                    $(document).on('submit', '#save_akun_profit', function(e) {
-                        e.preventDefault()
-                        var formData = $(this).serialize();
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ route('profit.createAkun') }}",
-                            data: formData,
-                            success: function(response) {
-                                toast('Akun berhasil di simpan')
-                                load_neraca();
-                                load_akun();
-                                load_profit()
-                                $("#tbhBiaya, #tbhPendapatan, #tbhBiayaPenyesuaian, #tbhBiayaDisusutkan")
-                                    .modal(
-                                        'hide');
-                            }
-                        });
-                    })
-
-
-                    function loadProfitAkun() {
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ route('profit.loadListAkunProfit') }}",
-                            success: function(r) {
-                                $("#loadListAkunProfit").html(r);
-                                $('#tblProfit').DataTable({
-                                    "paging": true,
-                                    "pageLength": 10,
-                                    "lengthChange": true,
-                                    "searching": true,
-                                });
-                            }
-                        });
-                    }
-                    $(document).on('click', '.btnListAkunProfit', function(e) {
-                        e.preventDefault()
-                        $("#listAkunProfit").modal('show')
-                        loadProfitAkun()
-                    })
-
-                    $(document).on('click', '.edit', function(e) {
-                        e.preventDefault()
-                        var id_akun = $(this).attr('id_akun')
-
-                        $("#editAkunProfit").modal('show')
-                        $.ajax({
-                            type: "GET",
-                            url: "{{ route('profit.loadEdit') }}?id_akun=" + id_akun,
-                            success: function(r) {
-                                $("#loadEditAkunProfit").html(r);
-                            }
-                        });
-
-                    })
-
-                    $(document).on('submit', '#formEditAkunProfit', function(e) {
+                    $(document).on('submit', '#formEditAkun', function(e) {
                         e.preventDefault()
                         var datas = $(this).serialize()
                         $.ajax({
                             type: "GET",
-                            url: "{{ route('profit.updateAkun') }}",
+                            url: "{{route('akun.update')}}",
                             data: datas,
-                            success: function(r) {
-                                $("#editAkunProfit").modal('hide')
-                                toast('Berhasil edit')
-                                loadProfitAkun()
+                            success: function (response) {
+                                load_akun()
+                                $("#edit_akun").modal('hide')
+                                toast('berhasil edit')
 
                             }
                         });
                     })
-                    $(document).on('hidden.bs.modal', '#listAkunProfit', function() {
-                        load_profit()
-                    })
 
-                    $(document).on('click', '.hapus', function(e) {
+                    $(document).on('click', '.hapus_akun', function(e){
                         e.preventDefault()
                         var id_akun = $(this).attr('id_akun')
-                        if (confirm('Yakin ingin dihapus ? ')) {
-                            $.ajax({
-                                type: "GET",
-                                url: "{{ route('profit.hapusAkun') }}?id_akun=" + id_akun,
-                                success: function(r) {
-                                    toast(r)
-                                    loadProfitAkun()
-
-                                }
-                            });
-                        }
+                        $.ajax({
+                            type: "GET",
+                            url: "{{route('akun.hapus')}}?id_akun="+id_akun,
+                            success: function (r) {
+                                load_akun()
+                                toast(r)
+                            }
+                        });
                     })
 
                     function load_post_center(id_akun) {

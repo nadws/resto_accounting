@@ -3,6 +3,7 @@
         <tr>
             <th>#</th>
             <th>Kode Akun</th>
+            <th>Inisial</th>
             <th>Nama Akun</th>
             <th>Klasifikasi</th>
             <th>Aksi</th>
@@ -13,6 +14,7 @@
             <tr>
                 <td>{{ $no + 1 }}</td>
                 <td>{{ $a->kode_akun }}</td>
+                <td>{{ $a->inisial }}</td>
                 <td>{{ $a->nm_akun }}</td>
                 <td>{{ $a->nm_subklasifikasi }}</td>
                 <td>
@@ -22,7 +24,7 @@
                     <a href="#"
                         class="btn btn-sm btn-primary edit_akun" id_akun="{{ $a->id_akun }}"><i
                             class="fas fa-pen"></i></a>
-                    <a href="" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                    <a href="" class="btn btn-sm btn-danger hapus_akun" id_akun="{{ $a->id_akun }}"><i class="fas fa-trash-alt"></i></a>
                 </td>
             </tr>
         @endforeach

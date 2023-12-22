@@ -115,6 +115,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/opname', 'opname')->name('opname');
             Route::get('/template', 'template')->name('template');
             Route::get('/load_edit', 'load_edit')->name('load_edit');
+            Route::get('/stok', 'stok')->name('stok');
+            Route::get('/stok_add', 'stok_add')->name('stok_add');
+            Route::get('/stok_tbh_baris', 'stok_tbh_baris')->name('stok_tbh_baris');
+            Route::post('/save_stk_masuk', 'save_stk_masuk')->name('save_stk_masuk');
+            Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
             Route::get('/delete/{id}', 'delete')->name('delete');
             Route::post('/save_opname', 'save_opname')->name('save_opname');
             Route::post('/update', 'update')->name('update');

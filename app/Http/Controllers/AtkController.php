@@ -127,7 +127,6 @@ class AtkController extends Controller
 
         $html .= "<option value='tambah'>+ tambah baru</option></select>";
         return $html;
-        return $html;
     }
 
     function save_stk_masuk(Request $r)
