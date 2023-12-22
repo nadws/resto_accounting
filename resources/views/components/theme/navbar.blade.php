@@ -47,6 +47,14 @@
                         </a>
                     </li>
                 @endforeach
+                <li class="menu-item ">
+                    <a href="{{ route('sinkron.index') }}"
+                        class='menu-link {{ request()->route()->getName() == 'sinkron.index'
+                            ? 'active_navbar_new'
+                            : '' }}'>
+                        <span>Sinkron</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>

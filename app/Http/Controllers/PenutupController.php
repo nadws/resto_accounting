@@ -47,7 +47,6 @@ class PenutupController extends Controller
             'tgl1Tutup' => $tgl1Tutup,
             'tgl2Tutup' => $tgl2Tutup,
             'total' => DB::selectOne("SELECT count(a.id_akun) as total FROM akun as a where  a.iktisar='T'"),
-
             'aktiva' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 26 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
             'peralatan' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 28 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),
             'atk' => DB::selectOne("SELECT a.id_akun FROM jurnal as a where a.id_akun = 30 and a.tgl between '$tgl1Tutup' and '$tgl2Tutup' and a.id_buku = '7' "),

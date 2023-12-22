@@ -23,7 +23,7 @@ class NavbarController extends Controller
     public function pembukuan()
     {
         $data = [
-           
+
             [
                 'judul' => 'Saldo Awal',
                 'route' => 'saldoawal.index',
