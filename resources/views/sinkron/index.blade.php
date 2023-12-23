@@ -31,11 +31,12 @@
 
             </div>
             <div class="col-lg-3">
-                <a href="#">
+                <a href="{{route('bahan.singkron')}}">
 
                     <div class="card" style="cursor:pointer;background-color: #3caba9">
                         <div class="card-body">
-                            <h4 class=" text-white text-center"><img src="/img/cloud-computing.png" width="128"
+                            <h4 class=" text-white text-center"><img src="/img/sand-clock.png" width="128"
+                            {{-- <h4 class=" text-white text-center"><img src="/img/cloud-computing.png" width="128" --}}
                                     alt=""><br><br> Sikron Stok Bahan
                             </h4>
                         </div>

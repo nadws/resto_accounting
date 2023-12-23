@@ -14,6 +14,7 @@
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="tambah" href="#" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
+                <x-theme.button href="#" icon="fa-history" addClass="float-end history" teks="History" />
                 <x-theme.button modal="Y" idModal="import" href="#" icon="fa-upload" addClass="float-end"
                     teks="Import" />
             </div>
@@ -48,7 +49,9 @@
                             <td align="center">
                                 <a href="#" id_bahan="{{ $d->id_list_bahan }}"
                                     class="btn btn-primary btn-sm edit"><i class="fas fa-pen"></i></a>
-                                <a onclick="return confirm('JIKA DIHAPUS STOK JUGA HILANG. Yakin dihapus ?')" href="{{ route('bahan.delete', $d->id_list_bahan) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                <a onclick="return confirm('JIKA DIHAPUS STOK JUGA HILANG. Yakin dihapus ?')"
+                                    href="{{ route('bahan.delete', $d->id_list_bahan) }}"
+                                    class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -137,6 +140,10 @@
                 </x-theme.modal>
             </form>
 
+
+            <x-theme.modal title="History Bahan" idModal="history" size="modal-lg">
+                <div id="load_history"></div>
+            </x-theme.modal>
     </x-slot>
     @section('scripts')
         <script>
@@ -152,6 +159,31 @@
                         $('.select2edit').select2({
                             dropdownParent: $('#edit .modal-content')
                         });
+                    }
+                });
+            })
+
+            $(document).on('click', '.history', function(e) {
+                e.preventDefault()
+                $('#history').modal('show')
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('bahan.history') }}",
+                    success: function(r) {
+                        $("#load_history").html(r);
+                        const tbl = [
+                            'Masuk', 'Keluar', 'Opname'
+                        ]
+                        tbl.forEach(item => {
+                            $('#tbl'+item).DataTable({
+                                "paging": true,
+                                "pageLength": 10,
+                                "lengthChange": true,
+                                "stateSave": true,
+                                "searching": true,
+                            });
+                        })
+                        
                     }
                 });
             })
