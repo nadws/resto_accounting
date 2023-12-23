@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 class BahanController extends Controller
 {
     protected $bahan;
-    
+
     public function __construct()
     {
         $this->bahan = DB::select("SELECT a.*, b.nm_satuan, c.nm_kategori,(d.debit - d.kredit) as stok
@@ -27,14 +27,48 @@ class BahanController extends Controller
     }
     public function singkron()
     {
-        $id_lokasi = app('id_lokasi');
-        $tgl = date('Y-m-d', strtotime('- 1 days'));
-        $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
+        DB::beginTransaction();
+        try {
+            $id_lokasi = app('id_lokasi');
+            $tgl = date('Y-m-d', strtotime('- 1 days'));
+            $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
             $invoice = $response['data']['menu'] ?? null;
-            dd($invoice);
-        //     $invo = json_decode(json_encode($invoice));
-        //     foreach ($invo as $i) {
-        // return app('id_lokasi');
+            $invo = json_decode(json_encode($invoice));
+            $kode = "BHNKLR";
+            foreach ($invo as $i) {
+                $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
+
+                $invo = DB::selectOne("SELECT max(a.urutan) as urutan
+                FROM stok_bahan as a WHERE a.invoice LIKE '%$kode%'
+                ");
+
+                $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
+                $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl],['invoice', 'LIKE', "%$kode%"]])->first();
+                if(!$cekSudahImport){
+                    foreach ($resep as $r) {
+                        DB::table('stok_bahan')->insert([
+                            'id_bahan' => $r->id_bahan,
+                            'invoice' => "$kode-$invoice",
+                            'urutan' => $invoice,
+                            'tgl' => $tgl,
+                            'debit' => 0,
+                            'kredit' => $r->qty * $i->qty,
+                            'admin' => auth()->user()->name,
+                        ]);
+                    }
+                } else {
+            return redirect()->route('bahan.stok')->with('error', 'Data SUDAH DIMPORT');
+
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil diimport');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('bahan.stok')->with('error', 'Data GAGAL');
+        }
+
     }
     public function index()
     {
@@ -190,7 +224,7 @@ class BahanController extends Controller
         $data = [
             'count' => $r->count,
         ];
-        return view('persediaan.bahan_makanan.stok_tbh_baris',$data);
+        return view('persediaan.bahan_makanan.stok_tbh_baris', $data);
     }
 
     public function load_produk_stok()
@@ -210,7 +244,7 @@ class BahanController extends Controller
 
     public function save_stk_masuk(Request $r)
     {
-        for ($i=0; $i < count($r->id_bahan); $i++) { 
+        for ($i = 0; $i < count($r->id_bahan); $i++) {
             $debit = (int) str()->remove(',', $r->debit[$i]);
             $total_rp = (int) str()->remove(',', $r->total_rp[$i]);
 
@@ -228,6 +262,4 @@ class BahanController extends Controller
 
         return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil ditambahkan');
     }
-
-    
 }
