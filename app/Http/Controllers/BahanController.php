@@ -43,8 +43,8 @@ class BahanController extends Controller
                 ");
 
                 $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
-                $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl],['invoice', 'LIKE', "%$kode%"]])->first();
-                if(!$cekSudahImport){
+                $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl], ['invoice', 'LIKE', "%$kode%"]])->first();
+                if (!$cekSudahImport) {
                     foreach ($resep as $r) {
                         DB::table('stok_bahan')->insert([
                             'id_bahan' => $r->id_bahan,
@@ -56,19 +56,15 @@ class BahanController extends Controller
                             'admin' => auth()->user()->name,
                         ]);
                     }
-                } else {
-            return redirect()->route('bahan.stok')->with('error', 'Data SUDAH DIMPORT');
-
                 }
             }
 
             DB::commit();
-            return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil diimport');
+            return redirect()->route('sinkron.index')->with('sukses', 'Data Berhasil diimport');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('bahan.stok')->with('error', 'Data GAGAL');
+            return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e );
         }
-
     }
     public function index()
     {
