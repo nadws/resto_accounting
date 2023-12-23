@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/save', 'save')->name('save');
             Route::get('/opname', 'opname')->name('opname');
             Route::get('/template', 'template')->name('template');
+            Route::get('/history', 'history')->name('history');
             Route::get('/load_edit', 'load_edit')->name('load_edit');
             Route::get('/stok', 'stok')->name('stok');
             Route::get('/stok_add', 'stok_add')->name('stok_add');

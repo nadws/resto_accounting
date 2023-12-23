@@ -63,7 +63,7 @@ class BahanController extends Controller
             return redirect()->route('sinkron.index')->with('sukses', 'Data Berhasil diimport');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e );
+            return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e);
         }
     }
     public function index()
@@ -127,6 +127,7 @@ class BahanController extends Controller
                     'urutan' => $invoice,
                     'tgl' => date('Y-m-d'),
                     'debit' => $total * -1,
+                    'program' => $stok_program,
                     'kredit' => 0,
                     'admin' => auth()->user()->name,
                 ]);
@@ -137,6 +138,8 @@ class BahanController extends Controller
                     'urutan' => $invoice,
                     'tgl' => date('Y-m-d'),
                     'kredit' => $total,
+                    'program' => $stok_program,
+
                     'debit' => 0,
                     'admin' => auth()->user()->name,
                 ]);
@@ -257,5 +260,36 @@ class BahanController extends Controller
         }
 
         return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil ditambahkan');
+    }
+
+    public function history()
+    {
+        $stokMasuk = DB::select("SELECT 
+        a.invoice,
+        a.debit,
+        a.kredit,
+        b.nm_bahan,
+        a.tgl
+        FROM `stok_bahan` as a
+        JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
+        where a.invoice NOT LIKE '%BHNOPN%';");
+
+
+        $stokOpname = DB::select("SELECT 
+                a.invoice,
+                a.debit,
+                a.kredit,
+                a.program,
+                b.nm_bahan,
+                a.tgl
+                FROM `stok_bahan` as a
+                JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
+                where a.invoice LIKE '%BHNOPN%';");
+        $data = [
+            'title' =>  'aldi',
+            'stokMasuk' => $stokMasuk,
+            'stokOpname' => $stokOpname,
+        ];
+        return view('persediaan.bahan_makanan.history', $data);
     }
 }
