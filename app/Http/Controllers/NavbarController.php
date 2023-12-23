@@ -24,13 +24,13 @@ class NavbarController extends Controller
 
             [
                 'judul' => 'Data Satuan',
-                'route' => 'akun.index',
+                'route' => 'satuan.index',
                 'img' => 'measure-cup.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
             [
                 'judul' => 'Data Suplier',
-                'route' => 'akun.index',
+                'route' => 'suplier.index',
                 'img' => 'suplier.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],

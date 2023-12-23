@@ -14,6 +14,8 @@ use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\PersediaanController;
 use App\Http\Controllers\SaldoAwalController;
 use App\Http\Controllers\SaldoPenutupController;
+use App\Http\Controllers\SatuanController;
+use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -128,11 +130,28 @@ Route::middleware('auth')->group(function () {
             Route::post('/save_peralatan', 'save_peralatan')->name('save_peralatan');
             Route::get('/atk', 'atk')->name('atk');
             Route::post('/save_atk', 'save_atk')->name('save_atk');
+            Route::get('/save_cancel_penyesuaian', 'save_cancel_penyesuaian')->name('save_cancel_penyesuaian');
+            Route::get('/load_data_cancel', 'load_data_cancel')->name('load_data_cancel');
         });
     Route::controller(SaldoPenutupController::class)
         ->prefix('saldopenutup')
         ->name('saldopenutup.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+        });
+    Route::controller(SatuanController::class)
+        ->prefix('satuan')
+        ->name('satuan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+    Route::controller(SuplierController::class)
+        ->prefix('suplier')
+        ->name('suplier.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/delete', 'delete')->name('delete');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/update', 'update')->name('update');
         });
 });

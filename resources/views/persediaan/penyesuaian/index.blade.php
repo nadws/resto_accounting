@@ -134,17 +134,18 @@
             </div>
 
         </x-theme.modal>
+        --}}
 
-        <form action="{{ route('penyesuaian.save_cancel_penyesuaian') }}" method="post">
+        <form action="{{ route('jurnalpenyesuaian.save_cancel_penyesuaian') }}" method="post">
             @csrf
             <x-theme.modal title="Cancel Jurnal Penyesuaian" size="modal-sm" idModal="cancel">
                 <div class="row">
                     <div class="col-lg-12">
                         <select name="id_akun_penyesuaian" id="id_akun_penyesuaian" class="form-control ">
                             <option value="">Pilih </option>
-                            <option value="51">Aktiva</option>
-                            <option value="58">Peralatan</option>
-                            <option value="91">Atk</option>
+                            <option value="27">Aktiva</option>
+                            <option value="29">Peralatan</option>
+                            <option value="30">Atk</option>
                         </select>
                         <br>
                     </div>
@@ -154,7 +155,7 @@
                 </div>
 
             </x-theme.modal>
-        </form> --}}
+        </form>
 
 
 
@@ -213,6 +214,22 @@
                         $('.costume_muncul').hide();
                         $('.tgl').prop('disabled', true);
                     }
+                });
+
+
+                $(document).on("change", "#id_akun_penyesuaian", function() {
+
+                    var id_akun = $(this).val();
+                    $.ajax({
+                        type: "get",
+                        url: "{{ route('jurnalpenyesuaian.load_data_cancel') }}",
+                        data: {
+                            id_akun: id_akun
+                        },
+                        success: function(r) {
+                            $('#load_cancel').html(r);
+                        }
+                    });
                 });
 
 

@@ -368,4 +368,20 @@ class JurnalPenyesuaianController extends Controller
         }
         return redirect()->route('jurnalpenyesuaian.index')->with('sukses', 'Berhasil Penyesuaian Opname');
     }
+
+    function load_data_cancel(Request $r)
+    {
+        $cancel_jurnal = DB::select("SELECT a.tgl
+        FROM jurnal as a 
+        where a.id_akun = $r->id_akun and a.id_buku = '7'
+        group by a.tgl
+        order by a.tgl ASC");
+
+        $data = [
+            'cancel_jurnal' => $cancel_jurnal,
+            'id_akun' => $r->id_akun
+        ];
+
+        return view('persediaan.penyesuaian.load_penyesuaian', $data);
+    }
 }
