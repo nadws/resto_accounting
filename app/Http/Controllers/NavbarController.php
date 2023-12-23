@@ -10,9 +10,28 @@ class NavbarController extends Controller
     {
         $data = [
             [
+                'judul' => 'Data User',
+                'route' => 'user.index',
+                'img' => 'team.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
                 'judul' => 'Daftar Akun',
                 'route' => 'akun.index',
                 'img' => 'invoice.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+
+            [
+                'judul' => 'Data Satuan',
+                'route' => 'akun.index',
+                'img' => 'measure-cup.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
+                'judul' => 'Data Suplier',
+                'route' => 'akun.index',
+                'img' => 'suplier.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
 

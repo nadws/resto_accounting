@@ -11,9 +11,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        if(auth()->user()->name != 'Aldi') {
-            return redirect()->back();
-        }
+
         $data = [
             'title' => 'Data User',
             'user' => User::with('posisi')->get(),
@@ -36,7 +34,7 @@ class UserController extends Controller
 
         return redirect()->route($r->jenis == 'register' ? 'login' : 'user.index')->with('sukses', 'Data Berhasil Dibuat');
     }
-    
+
     public function delete(Request $r)
     {
         User::find($r->id_user)->delete();
