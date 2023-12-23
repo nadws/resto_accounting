@@ -141,7 +141,7 @@
             </form>
 
 
-            <x-theme.modal title="History Bahan" idModal="history" size="modal-lg">
+            <x-theme.modal title="History Bahan" btnSave="T" idModal="history" size="modal-lg">
                 <div id="load_history"></div>
             </x-theme.modal>
     </x-slot>

@@ -29,6 +29,12 @@ class NavbarController extends Controller
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
             [
+                'judul' => 'Data Kategori Bahan',
+                'route' => 'bahan.kategori',
+                'img' => 'measure-cup.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
+            [
                 'judul' => 'Data Suplier',
                 'route' => 'suplier.index',
                 'img' => 'suplier.png',

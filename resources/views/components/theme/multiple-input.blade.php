@@ -15,7 +15,11 @@
                 </div>
             </div>
         </template>
-        <button type="button" @click="rows.push({ value: '' })" class="btn btn-primary btn-sm mt-2">Tbh Baris</button>
+        <button @click="rows.push({ value: '' })"  type="button" class="btn btn-block btn-lg"
+                    style="background-color: #F4F7F9; color: #8FA8BD; font-size: 14px; padding: 13px;">
+                    <i class="fas fa-plus"></i> Tambah Baris Baru
+
+                </button>
     </div>
 </div>
 
