@@ -285,11 +285,37 @@ class BahanController extends Controller
                 FROM `stok_bahan` as a
                 JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
                 where a.invoice LIKE '%BHNOPN%';");
+
         $data = [
             'title' =>  'aldi',
             'stokMasuk' => $stokMasuk,
             'stokOpname' => $stokOpname,
         ];
         return view('persediaan.bahan_makanan.history', $data);
+    }
+
+    public function kategori()
+    {
+        $data = [
+            'title' => 'Kategori Bahan Makanan',
+            'kategori' => DB::table('tb_kategori_bahan')->orderBy('id_kategori_bahan', 'DESC')->get()
+        ];
+        return view('persediaan.bahan_makanan.kategori', $data);
+
+    }
+    public function kategori_create(Request $r)
+    {
+        for ($i=0; $i < count($r->nm_kategori); $i++) { 
+            DB::table('tb_kategori_bahan')->insert([
+                'nm_kategori' => $r->nm_kategori[$i]
+            ]);
+        }
+        return redirect()->route('bahan.kategori')->with('sukses', 'Data Berhasil ditambahkan');
+    }
+
+    public function kategori_hapus($id)
+    {
+        DB::table('tb_kategori_bahan')->where('id_kategori_bahan', $id)->delete();
+        return redirect()->route('bahan.kategori')->with('sukses', 'Data Berhasil ditambahkan');
     }
 }
