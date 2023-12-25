@@ -18,11 +18,13 @@ class ImportApiInvoiceController extends Controller
 
         // $firstDayOfMonth = "$selectedYear-$selectedMonth-01";
         // $lastDayOfMonth = date("Y-m-t", strtotime($firstDayOfMonth));
+
         $tgl1 = $r->tgl1;
         $tgl2 = $r->tgl2;
         DB::beginTransaction();
         try {
-            if (!empty($r->id_lokasi)) {
+
+            if (!empty($id_lokasi)) {
                 $response = Http::get("https://ptagafood.com/api/invoice_nanda?id_lokasi=$id_lokasi&id_distribusi=$id_distribusi&tgl1=$tgl1&tgl2=$tgl2");
                 $invoice = $response['data']['invoice'] ?? null;
                 $invo = json_decode(json_encode($invoice));
@@ -43,8 +45,6 @@ class ImportApiInvoiceController extends Controller
                         'urutan' => $urutan,
                     ];
                     DB::table('jurnal')->insert($data);
-
-
                     if ($i->rounding != 0) {
                         $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', 19)->first();
                         $akun = DB::table('akun')->where('id_akun', 19)->first();
@@ -148,8 +148,10 @@ class ImportApiInvoiceController extends Controller
                     DB::table('jurnal')->insert($data);
                 }
             }
+            DB::commit();
             return redirect()->route('sinkron.index')->with('sukses', 'Data berhasil ditambahkan');
         } catch (\Exception $e) {
+
             DB::rollback();
             return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e);
         }
