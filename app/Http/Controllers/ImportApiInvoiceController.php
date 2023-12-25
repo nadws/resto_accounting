@@ -18,9 +18,6 @@ class ImportApiInvoiceController extends Controller
 
         // $firstDayOfMonth = "$selectedYear-$selectedMonth-01";
         // $lastDayOfMonth = date("Y-m-t", strtotime($firstDayOfMonth));
-
-        dd($id_lokasi);
-
         $tgl1 = $r->tgl1;
         $tgl2 = $r->tgl2;
         DB::beginTransaction();
