@@ -10,6 +10,8 @@
                     <th class="dhead">Nama Menu</th>
                     <th class="dhead">Tipe</th>
                     <th class="dhead">Station</th>
+                    <th class="dhead">Distribusi</th>
+                    <th class="dhead"></th>
                     <th class="dhead text-center">Aktif</th>
                     <th class="dhead text-center">Resep</th>
                     <th class="dhead text-center">Aksi</th>
@@ -17,6 +19,13 @@
             </thead>
             <tbody>
                 @foreach ($menu as $no => $m)
+                    @php
+                        $harga = DB::table('tb_harga')
+                            ->select('tb_harga.*', 'tb_distribusi.*')
+                            ->join('tb_distribusi', 'tb_harga.id_distribusi', '=', 'tb_distribusi.id_distribusi')
+                            ->where('id_menu', $m->id_menu)
+                            ->get();
+                    @endphp
                     <tr>
                         <td>{{ $no + $menu->firstItem() }}</td>
                         <td>{{ $m->kategori }}</td>
@@ -25,6 +34,17 @@
                         <td>{{ $m->nm_menu }}</td>
                         <td>{{ $m->tipe }}</td>
                         <td>{{ $m->nm_station }}</td>
+                        <td style="white-space: nowrap;">
+                            @foreach ($harga as $h)
+                                {{ $h->nm_distribusi }} <br>
+                            @endforeach
+                        </td>
+
+                        <td>
+                            @foreach ($harga as $h)
+                                :{{ number_format($h->harga, 0) }} <br>
+                            @endforeach
+                        </td>
                         <td>
                             <div class="form-check form-switch">
                                 <input class="form-check-input chekstatus" type="checkbox" id="flexSwitchCheckDefault"
