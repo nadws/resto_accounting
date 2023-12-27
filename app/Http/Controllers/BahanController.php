@@ -75,7 +75,7 @@ class BahanController extends Controller
                                 'urutan' => $invoice,
                                 'tgl' => $tgl,
                                 'debit' => 0,
-                                'kredit' => $i->qty,
+                                'kredit' => $r->qty * $i->qty,
                                 'admin' => auth()->user()->name,
                             ]);
                         }
