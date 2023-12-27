@@ -2,7 +2,7 @@
     <x-slot name="cardHeader">
         <div class="row">
             <div class="col-lg-12">
-                @include('persediaan.bahan_makanan.nav')
+                {{-- @include('persediaan.bahan_makanan.nav') --}}
             </div>
             <div class="col-lg-12">
                 <hr>
