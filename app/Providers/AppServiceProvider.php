@@ -19,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
         $logoTkmr = asset('assets/login/img/takemori_3.jpg');
         $logoSdb = asset('assets/login/img/sdb_logo.png');
         $id_lokasi = "https://".request()->getHost() === $link2 ? 2 : 1;
+        $nm_lokasi = "https://".request()->getHost() === $link2 ? 'Soondobu' : 'Takemori';
         $gambarLogo = "https://".request()->getHost() === $link2 ? $logoSdb : $logoTkmr;
 
         app()->singleton('link1', function () use ($link1) {
@@ -34,6 +35,9 @@ class AppServiceProvider extends ServiceProvider
         });
         app()->singleton('id_lokasi', function () use ($id_lokasi) {
             return $id_lokasi;
+        });
+        app()->singleton('nm_lokasi', function () use ($nm_lokasi) {
+            return $nm_lokasi;
         });
 
     }

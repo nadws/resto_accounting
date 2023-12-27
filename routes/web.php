@@ -6,6 +6,7 @@ use App\Http\Controllers\JurnalAktivaController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PeralatanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
@@ -115,6 +116,13 @@ Route::middleware('auth')->group(function () {
         ->name('sinkron.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+        });
+    Route::controller(PenjualanController::class)
+        ->prefix('penjualan')
+        ->name('penjualan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/history', 'history')->name('history');
         });
 });
 Route::controller(BahanController::class)
