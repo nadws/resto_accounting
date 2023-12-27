@@ -51,17 +51,16 @@ class BahanController extends Controller
                 $cekSudahImportItem = DB::table('penjualan_peritem')->where('tgl', $tgl)->exists();
 
                 // Jika belum diimport, lakukan import
-                if (!$cekSudahImport && $cekSudahImportItem) {
+                if (!$cekSudahImport) {
                     $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
                     $invoice = $response['data']['menu'] ?? null;
                     $invos = json_decode(json_encode($invoice));
 
                     $invo = DB::selectOne("SELECT max(a.urutan) as urutan FROM stok_bahan as a WHERE a.invoice LIKE '%$kode%'");
-
+                    DB::table('penjualan_peritem')->where('tgl',$tgl)->truncate();
                     $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
                     foreach ($invos as $i) {
                         $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
-                        DB::table('penjualan_peritem')->where('tgl',$tgl)->truncate();
                         DB::table('penjualan_peritem')->insert([
                             'id_menu' => $i->id_menu,
                             'qty' => $i->qty,
