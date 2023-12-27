@@ -221,7 +221,7 @@ class MenuController extends Controller
                     DB::table('tb_harga')->insert($data2);
                 }
             }
-            if(!empty($r->id_bahan)) {
+            if (!empty($r->id_bahan)) {
                 for ($i = 0; $i < count($r->id_bahan); $i++) {
                     if (!empty($r->id_bahan[$i])) {
                         $data = [
@@ -232,7 +232,6 @@ class MenuController extends Controller
                         DB::table('resep')->insert($data);
                     }
                 }
-
             }
 
             DB::commit(); // If all steps are successful, commit the transaction
