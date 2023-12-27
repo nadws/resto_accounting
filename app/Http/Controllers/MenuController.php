@@ -22,7 +22,6 @@ class MenuController extends Controller
                 ->get(),
             'menu' => DB::table('tb_menu')
                 ->orderBy('kd_menu', 'desc')
-                ->where('lokasi', '1')
                 ->first(),
             'kategori' => DB::table('tb_kategori')->where('lokasi', 'TAKEMORI')->get(),
             'handicap' => DB::table('tb_handicap')->where('id_lokasi', '1')->get(),
