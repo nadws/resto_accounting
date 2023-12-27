@@ -264,16 +264,22 @@ class MenuController extends Controller
 
         try {
             DB::table('resep')->where('id_menu', $r->id_menu)->delete();
-            for ($i = 0; $i < count($r->id_bahan); $i++) {
-                if (!empty($r->id_bahan[$i])) {
-                    $data = [
-                        'id_menu' => $r->id_menu,
-                        'id_bahan' => $r->id_bahan[$i],
-                        'qty' => $r->qty[$i],
-                    ];
-                    DB::table('resep')->insert($data);
+            if (!empty($r->id_bahan)) {
+                for ($i = 0; $i < count($r->id_bahan); $i++) {
+                    if (!empty($r->id_bahan[$i])) {
+                        $data = [
+                            'id_menu' => $r->id_menu,
+                            'id_bahan' => $r->id_bahan[$i],
+                            'qty' => $r->qty[$i],
+                        ];
+                        DB::table('resep')->insert($data);
+                    }
                 }
+            } else {
+                # code...
             }
+
+
 
             DB::commit(); // If all steps are successful, commit the transaction
         } catch (\Exception $e) {
