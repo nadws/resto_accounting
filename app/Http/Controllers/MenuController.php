@@ -280,7 +280,7 @@ class MenuController extends Controller
 
     function export_menu(Request $r)
     {
-        $id_lokasi = 1;
+        $id_lokasi = app('id_lokasi');
         $lokasiTs = $id_lokasi == 1 ? 'TAKEMORI' : 'SOONDOBU';
 
         $spreadsheet = new Spreadsheet();
