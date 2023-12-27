@@ -33,7 +33,8 @@ class BahanController extends Controller
         DB::beginTransaction();
         try {
             $id_lokasi = app('id_lokasi');
-            $tgl = date('Y-m-d', strtotime('- 1 days'));
+            $tgl = "2023-12-20";
+            // $tgl = date('Y-m-d', strtotime('- 1 days'));
             $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
             $invoice = $response['data']['menu'] ?? null;
             $invo = json_decode(json_encode($invoice));
