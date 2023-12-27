@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
         ->prefix('importapi')
         ->name('importapi.')
         ->group(function () {
-            Route::get('/invoice', 'invoice')->name('invoice');
+            Route::get('/invoice', 'saveimport')->name('invoice');
         });
     Route::controller(BukubesarController::class)
         ->prefix('bukubesar')
