@@ -473,7 +473,7 @@
                                 {{ number_format($totalPerAkunEkuitas2[$b->bulan]['total'] + $totalPerBulanEkuitas[$b->bulan], 0) }}
                             </th>
                         @endforeach
-                        <th class="text-end dhead">{{ number_format($totalSemuaEkuitas - -100000, 0) }}</th>
+                        <th class="text-end dhead">{{ number_format($totalSemuaEkuitas, 0) }}</th>
                     </tr>
 
                     <tr>

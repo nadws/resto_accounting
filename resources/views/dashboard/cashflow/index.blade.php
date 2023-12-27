@@ -151,7 +151,8 @@
                                             $tgl1 = $thn . '-' . $loop->iteration . '-01';
                                             $tgl2 = date('Y-m-t', strtotime($tgl1));
                                         @endphp
-                                        <a target="_blank" href="#">{{ number_format($nominal, 0) }}</a>
+                                        <a target="_blank"
+                                            href="{{ route('bukubesar.detail_buku_besar', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a>
                                     </td>
                                     @php
                                         $totalPerAkun += $nominal;
@@ -191,7 +192,8 @@
                                             $tgl1 = $thn . '-' . $loop->iteration . '-01';
                                             $tgl2 = date('Y-m-t', strtotime($tgl1));
                                         @endphp
-                                        <a target="_blank" href="#">{{ number_format($nominal, 0) }}</a>
+                                        <a target="_blank"
+                                            href="{{ route('bukubesar.detail_buku_besar', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a>
                                     </td>
                                     @php
                                         $totalPerAkun2 += $nominal;
@@ -238,7 +240,8 @@
                                             $tgl1 = $thn . '-' . $loop->iteration . '-01';
                                             $tgl2 = date('Y-m-t', strtotime($tgl1));
                                         @endphp
-                                        <a target="_blank" href="#">{{ number_format($nominal, 0) }}</a>
+                                        <a target="_blank"
+                                            href="{{ route('bukubesar.detail_buku_besar', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a>
                                     </td>
                                     @php
                                         $totalPerAkun3 += $nominal;
@@ -276,7 +279,8 @@
                                             $tgl1 = $thn . '-' . $loop->iteration . '-01';
                                             $tgl2 = date('Y-m-t', strtotime($tgl1));
                                         @endphp
-                                        <a target="_blank" href="#">{{ number_format($nominal, 0) }}</a>
+                                        <a target="_blank"
+                                            href="{{ route('bukubesar.detail_buku_besar', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a>
                                     </td>
                                     @php
                                         $totalPerAkun4 += $nominal;
@@ -314,7 +318,8 @@
                                             $tgl1 = $thn . '-' . $loop->iteration . '-01';
                                             $tgl2 = date('Y-m-t', strtotime($tgl1));
                                         @endphp
-                                        <a target="_blank" href="#">{{ number_format($nominal, 0) }}</a>
+                                        <a target="_blank"
+                                            href="{{ route('bukubesar.detail_buku_besar', ['id_akun' => $akun, 'tgl1' => $tgl1, 'tgl2' => $tgl2]) }}">{{ number_format($nominal, 0) }}</a>
                                     </td>
                                     @php
                                         $totalPerAkun5 += $nominal;
