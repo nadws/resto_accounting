@@ -48,9 +48,10 @@ class BahanController extends Controller
 
                 // Cek apakah stok untuk tanggal ini sudah diimport
                 $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl],['invoice', 'like', "%$kode%"]])->exists();
+                $cekSudahImportItem = DB::table('penjualan_peritem')->where('tgl', $tgl)->exists();
 
                 // Jika belum diimport, lakukan import
-                if (!$cekSudahImport) {
+                if (!$cekSudahImport && $cekSudahImportItem) {
                     $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
                     $invoice = $response['data']['menu'] ?? null;
                     $invos = json_decode(json_encode($invoice));
