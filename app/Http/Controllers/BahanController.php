@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class BahanController extends Controller
 {
@@ -23,6 +25,7 @@ class BahanController extends Controller
                             FROM stok_bahan as b 
                             group by b.id_bahan
                         ) as d on d.id_bahan = a.id_list_bahan
+                        ORDER BY a.id_list_bahan DESC
                     ");
     }
     public function singkron()
@@ -35,16 +38,17 @@ class BahanController extends Controller
             $invoice = $response['data']['menu'] ?? null;
             $invo = json_decode(json_encode($invoice));
             $kode = "BHNKLR";
-            foreach ($invo as $i) {
-                $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
+            $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl]])->first();
+            if (empty($cekSudahImport)) {
+                foreach ($invo as $i) {
+                    $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
 
-                $invo = DB::selectOne("SELECT max(a.urutan) as urutan
-                FROM stok_bahan as a WHERE a.invoice LIKE '%$kode%'
-                ");
+                    $invo = DB::selectOne("SELECT max(a.urutan) as urutan
+                    FROM stok_bahan as a WHERE a.invoice LIKE '%$kode%'
+                    ");
 
-                $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
-                $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl], ['invoice', 'LIKE', "%$kode%"]])->first();
-                if (!$cekSudahImport) {
+                    $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
+
                     foreach ($resep as $r) {
                         DB::table('stok_bahan')->insert([
                             'id_bahan' => $r->id_bahan,
@@ -58,7 +62,6 @@ class BahanController extends Controller
                     }
                 }
             }
-
             DB::commit();
             return redirect()->route('sinkron.index')->with('sukses', 'Data Berhasil diimport');
         } catch (\Exception $e) {
@@ -80,13 +83,34 @@ class BahanController extends Controller
     public function save(Request $r)
     {
 
-        DB::table('tb_list_bahan')->insert([
+        $id = DB::table('tb_list_bahan')->insertGetId([
             'nm_bahan' => $r->nm_bahan,
             'id_satuan' => $r->satuan_id,
             'id_kategori' => $r->kategori_id,
             'admin' => auth()->user()->name,
             'tgl' => date('Y-m-d')
         ]);
+
+        $stok = (int) str()->remove(',', $r->stok);
+        $ttl_rp = (int) str()->remove(',', $r->ttl_rp);
+        if ($stok > 0) {
+            $invo = DB::selectOne("SELECT max(a.urutan) as urutan
+            FROM stok_bahan as a  WHERE a.invoice LIKE '%BHNMSK%'
+            ");
+
+
+            $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
+            DB::table('stok_bahan')->insert([
+                'id_bahan' => $id,
+                'invoice' => "BHNMSK-$invoice",
+                'urutan' => $invoice,
+                'tgl' => date('Y-m-d'),
+                'kredit' => 0,
+                'debit' => $stok,
+                'rupiah' => $ttl_rp,
+                'admin' => auth()->user()->name,
+            ]);
+        }
         return redirect()->route('bahan.index')->with('sukses', 'Data Berhasil ditambahkan');
     }
 
@@ -150,7 +174,62 @@ class BahanController extends Controller
 
     public function template()
     {
-        return 'minta ke it';
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->getStyle('A1:D4')
+            ->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP);
+        $style = [
+            'borders' => [
+                'alignment' => [
+                    'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                    'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+                ],
+                'allBorders' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN
+                ],
+            ],
+        ];
+        $sheet
+            ->setCellValue('A1', 'nm_bahan')
+            ->setCellValue('B1', 'satuan_id')
+            ->setCellValue('C1', 'kategori_id');
+
+        $sheet
+            ->setCellValue('F1', 'id satuan')
+            ->setCellValue('G1', 'nama satuan');
+        $row = 2;
+        $tbSatuan = DB::table('tb_satuan')->get();
+        foreach ($tbSatuan as $d) {
+            $sheet
+                ->setCellValue("F$row", $d->id_satuan)
+                ->setCellValue("G$row", $d->nm_satuan);
+            $row++;
+        }
+        $sheet->getStyle('F1:G' . $row - 1)->applyFromArray($style);
+        $sheet
+            ->setCellValue('J1', 'id kategori')
+            ->setCellValue('K1', 'nama kategori');
+        $row = 2;
+        $tbKategori = DB::table('tb_kategori_bahan')->get();
+        foreach ($tbKategori as $d) {
+            $sheet
+                ->setCellValue("J$row", $d->id_kategori_bahan)
+                ->setCellValue("K$row", $d->nm_kategori);
+            $row++;
+        }
+        $sheet->getStyle('J1:K' . $row - 1)->applyFromArray($style);
+
+        $writer = new Xlsx($spreadsheet);
+
+
+        $lokasi = app('id_lokasi') == 1 ? 'Takemori' : 'Soondobu';
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="Data Bahan ' . strtoupper($lokasi) . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit();
     }
     public function import(Request $r)
     {
@@ -237,7 +316,7 @@ class BahanController extends Controller
             $html .= "<option value='{$a->id_list_bahan}'>{$a->nm_bahan} ({$a->nm_satuan})</option>";
         }
 
-        $html .= "<option value='tambah'>+ tambah baru</option></select>";
+        // $html .= "<option value='tambah'>+ tambah baru</option></select>";
         return $html;
     }
 
@@ -301,11 +380,10 @@ class BahanController extends Controller
             'kategori' => DB::table('tb_kategori_bahan')->orderBy('id_kategori_bahan', 'DESC')->get()
         ];
         return view('persediaan.bahan_makanan.kategori', $data);
-
     }
     public function kategori_create(Request $r)
     {
-        for ($i=0; $i < count($r->nm_kategori); $i++) { 
+        for ($i = 0; $i < count($r->nm_kategori); $i++) {
             DB::table('tb_kategori_bahan')->insert([
                 'nm_kategori' => $r->nm_kategori[$i]
             ]);

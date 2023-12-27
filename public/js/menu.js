@@ -141,16 +141,17 @@ $(document).on("submit", "#save_menu", function (e) {
             load_menu(1, search, perpage);
         },
         error: function (error) {
-            Toastify({
-                text: "Data gagal disimpan",
-                duration: 3000,
-                style: {
-                    background: "#FCEDE9",
-                    color: "#7F8B8B",
-                },
-                close: true,
-                avatar: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
-            }).showToast();
+            console.log(error)
+            // Toastify({
+            //     text: "Data gagal disimpan" +,
+            //     duration: 3000,
+            //     style: {
+            //         background: "#FCEDE9",
+            //         color: "#7F8B8B",
+            //     },
+            //     close: true,
+            //     avatar: "https://cdn-icons-png.flaticon.com/512/564/564619.png",
+            // }).showToast();
         },
     });
 });
@@ -195,7 +196,9 @@ $(document).on("click", ".edit_menu", function () {
         },
         success: function (response) {
             $("#load_edit").html(response);
-            $(".select_edit_menu").select2();
+            $('.selectedit').select2({
+                dropdownParent: $('#edit .modal-content')
+            });
             $(".dropify").dropify({
                 messages: {
                     default: "Drag",
@@ -275,7 +278,7 @@ $(document).on("submit", "#edit_resep", function (e) {
     // Menggunakan AJAX untuk mengirim data ke server
     $.ajax({
         type: "POST",
-        url: "{{ route('menu.save_resep') }}", // Sesuaikan dengan URL yang sesuai
+        url: "/menu/save_resep", // Sesuaikan dengan URL yang sesuai
         data: formData,
         contentType: false,
         processData: false,

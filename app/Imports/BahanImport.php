@@ -18,12 +18,15 @@ class BahanImport implements ToModel, WithHeadingRow
             // Jika semua elemen kosong, lewati ke iterasi berikutnya
             return null;
         }
-        DB::table('tb_list_bahan')->insert([
-            'nm_bahan' =>$row['nm_bahan'],
-            'id_satuan' => $row['satuan_id'],
-            'id_kategori' => $row['kategori_id'],
-            'admin' => auth()->user()->name,
-            'tgl' => date('Y-m-d')
-        ]);
+        if($row['nm_bahan'] != '') {
+
+            DB::table('tb_list_bahan')->insert([
+                'nm_bahan' =>$row['nm_bahan'],
+                'id_satuan' => $row['satuan_id'],
+                'id_kategori' => $row['kategori_id'],
+                'admin' => auth()->user()->name,
+                'tgl' => date('Y-m-d')
+            ]);
+        }
     }
 }

@@ -58,7 +58,8 @@
                 </tbody>
             </table>
 
-            <form action="{{ route('bahan.save') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('bahan.save') }}" method="post" enctype="multipart/form-data"
+                x-data="{}">
                 @csrf
                 <x-theme.modal title="Tambah Bahan" idModal="tambah" size="modal-lg">
                     <div class="row">
@@ -66,7 +67,7 @@
                             <label for="">Nama Bahan</label>
                             <input type="text" class="form-control" name="nm_bahan">
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-2">
                             <label for="">Kategori</label>
                             <select name="kategori_id" id="" class="select2">
                                 <option value="">Pilih Kategori</option>
@@ -84,6 +85,20 @@
                                     <option value="{{ $s->id_satuan }}">{{ strtoupper($s->nm_satuan) }}</option>
                                 @endforeach
                             </select>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="">Stok</label>
+                                <input x-mask:dynamic="$money($input)" type="text" name="stok"
+                                    class="text-end form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label for="">Ttl Rp</label>
+                                <input x-mask:dynamic="$money($input)" type="text" name="ttl_rp"
+                                    class="text-end form-control">
+                            </div>
                         </div>
 
                     </div>
@@ -144,6 +159,7 @@
             <x-theme.modal title="History Bahan" btnSave="T" idModal="history" size="modal-lg">
                 <div id="load_history"></div>
             </x-theme.modal>
+        </section>
     </x-slot>
     @section('scripts')
         <script>
@@ -175,7 +191,7 @@
                             'Masuk', 'Keluar', 'Opname'
                         ]
                         tbl.forEach(item => {
-                            $('#tbl'+item).DataTable({
+                            $('#tbl' + item).DataTable({
                                 "paging": true,
                                 "pageLength": 10,
                                 "lengthChange": true,
@@ -183,7 +199,7 @@
                                 "searching": true,
                             });
                         })
-                        
+
                     }
                 });
             })

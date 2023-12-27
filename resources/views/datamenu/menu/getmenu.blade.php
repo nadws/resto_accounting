@@ -50,6 +50,9 @@
 
             </tbody>
         </table>
+        <div class="float-start">
+            <span>Total data : {{ $menu->total() }} Baris</span>
+        </div>
         <div class="float-end mt-2">
             {!! $menu->links() !!}
         </div>
