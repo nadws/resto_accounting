@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\BahanImport;
+use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,21 +32,74 @@ class BahanController extends Controller
     }
     public function singkron()
     {
+
+        try {
+            DB::beginTransaction();
+            $tglAwal = "2023-12-20";
+            $tglAkhir = now()->subDay()->format('Y-m-d');
+            $id_lokasi = app('id_lokasi'); // Ganti dengan id lokasi yang sesuai
+            $kode = "BHNKLR";
+
+            $currentDate = Carbon::parse($tglAwal);
+            $endDate = Carbon::parse($tglAkhir);
+            // Cek apakah stok untuk tanggal kemarin sudah diimport
+            while ($currentDate <= $endDate) {
+                $tgl = $currentDate->format('Y-m-d');
+
+                // Cek apakah stok untuk tanggal ini sudah diimport
+                $cekSudahImport = DB::table('stok_bahan')->where([['tgl', $tgl],['invoice', 'like', "%$kode%"]])->exists();
+                $cekSudahImportItem = DB::table('penjualan_peritem')->where('tgl', $tgl)->exists();
+
+                // Jika belum diimport, lakukan import
+                if (!$cekSudahImport) {
+                    $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
+                    $invoice = $response['data']['menu'] ?? null;
+                    $invos = json_decode(json_encode($invoice));
+
+                    $invo = DB::selectOne("SELECT max(a.urutan) as urutan FROM stok_bahan as a WHERE a.invoice LIKE '%$kode%'");
+                    DB::table('penjualan_peritem')->where('tgl',$tgl)->delete();
+                    $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
+                    foreach ($invos as $i) {
+                        $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
+                        DB::table('penjualan_peritem')->insert([
+                            'id_menu' => $i->id_menu,
+                            'qty' => $i->qty,
+                            'tgl' => $tgl,
+                        ]);
+                        
+
+                        foreach ($resep as $r) {
+                            DB::table('stok_bahan')->insert([
+                                'id_bahan' => $r->id_bahan,
+                                'invoice' => "$kode-$invoice",
+                                'urutan' => $invoice,
+                                'tgl' => $tgl,
+                                'debit' => 0,
+                                'kredit' => $r->qty * $i->qty,
+                                'admin' => auth()->user()->name,
+                            ]);
+                        }
+                    }
+
+                }
+
+                // Tambah satu hari ke tanggal saat ini
+                $currentDate->addDay();
+            }
+            DB::commit();
+            return redirect()->route('sinkron.index')->with('sukses', 'Data Berhasil diimport');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e);
+        }
+    }
+    public function singkronPalsu()
+    {
+
         DB::beginTransaction();
         try {
             $id_lokasi = app('id_lokasi');
-            $tglAwal = "2023-12-20";
             $tgl = date('Y-m-d', strtotime('- 1 days'));
-
-            $cekStok = DB::table('stok_bahan')->where('invoice', 'LIKE', '%KLR%')->whereBetween('tgl', [$tglAwal, $tgl])->distinct()
-                ->pluck('tgl')
-                ->toArray();
-                $tanggalLengkap = collect(CarbonPeriod::create($tglAwal, $tgl))
-                ->map(function ($date) {
-                    return $date->format('Y-m-d');
-                })
-                ->toArray();
-                $hariTidakAda = count(array_diff($tanggalLengkap, $cekStok));
 
 
             // $tgl = date('Y-m-d', strtotime('- 1 days'));

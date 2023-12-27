@@ -25,8 +25,8 @@ class SinkronController extends Controller
             ->toArray();
 
         // Hitung jumlah hari yang tidak ada di database
-        $hariTidakAda = count(array_diff($tanggalLengkap, $cekStok));
-        
+        $hariTidakAda = array_diff($tanggalLengkap, $cekStok);
+        $tglTidakAda = array_fill_keys($hariTidakAda, null);
         $data = [
             'title' => 'Data sinkron',
             'menu' => DB::selectOne("SELECT count(a.tgl) as ttl
@@ -34,7 +34,8 @@ class SinkronController extends Controller
             where a.id_buku = '3' and a.tgl = '$tgl'"),
             'tgl' => $tgl,
             'cekStok' => $cekStok,
-            'countBelumExport' => $hariTidakAda
+            'countBelumExport' => count($hariTidakAda),
+            'tglTidakAda' => $tglTidakAda
 
         ];
         return view("sinkron.index", $data);
