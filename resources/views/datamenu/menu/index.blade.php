@@ -32,9 +32,11 @@
                         <i class="fas fa-file-excel"></i> Import/Export
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportmenu" href="#">Menu</a>
-                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#resepexport" href="#">Resep</a>
-                   
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportmenu"
+                            href="#">Menu</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#resepexport"
+                            href="#">Resep</a>
+
                     </div>
                 </div>
 

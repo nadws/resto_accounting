@@ -141,7 +141,7 @@ $(document).on("submit", "#save_menu", function (e) {
             load_menu(1, search, perpage);
         },
         error: function (error) {
-            console.log(error)
+            console.log(error);
             // Toastify({
             //     text: "Data gagal disimpan" +,
             //     duration: 3000,
@@ -196,8 +196,8 @@ $(document).on("click", ".edit_menu", function () {
         },
         success: function (response) {
             $("#load_edit").html(response);
-            $('.selectedit').select2({
-                dropdownParent: $('#edit .modal-content')
+            $(".selectedit").select2({
+                dropdownParent: $("#edit .modal-content"),
             });
             $(".dropify").dropify({
                 messages: {
@@ -232,8 +232,8 @@ $(document).on("submit", "#edit_menu", function (e) {
             toast("Menu berhasil di update");
             $("#edit").modal("hide");
             $("#edit_menu")[0].reset();
-
-            load_menu(hal, search, perpage);
+            var halaman = $(".halaman").val();
+            load_menu(halaman, search, perpage);
         },
         error: function (error) {
             Toastify({
