@@ -211,7 +211,7 @@ class MenuController extends Controller
             $harga = $r->harga;
 
             for ($i = 0; $i < count($r->id_distribusi); $i++) {
-                if ($harga[$i] != 0 && !empty($harga[$i])) {
+                if (!empty($harga[$i])) {
                     $data2 = [
                         'id_menu' => $r->id_menu,
                         'id_distribusi' => $id_distribusi[$i],
