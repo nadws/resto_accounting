@@ -107,7 +107,17 @@ Route::middleware('auth')->group(function () {
             Route::get('/updateAkun', 'updateAkun')->name('updateAkun');
             Route::get('/hapusAkun', 'hapusAkun')->name('hapusAkun');
         });
-    Route::controller(BahanController::class)
+    
+    
+
+    Route::controller(SinkronController::class)
+        ->prefix('sinkron')
+        ->name('sinkron.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+});
+Route::controller(BahanController::class)
         ->prefix('bahan')
         ->name('bahan.')
         ->group(function () {
@@ -134,15 +144,6 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/singkron', 'singkron')->name('singkron');
         });
-    
-
-    Route::controller(SinkronController::class)
-        ->prefix('sinkron')
-        ->name('sinkron.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-        });
-});
 Route::controller(MenuController::class)
         ->prefix('menu')
         ->name('menu.')

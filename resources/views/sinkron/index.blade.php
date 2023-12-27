@@ -30,7 +30,7 @@
 
             </div> --}}
             <div class="col-lg-3">
-                <a href="@empty($cekStok){{route('bahan.singkron')}}@endempty">
+                <a href="{{route('bahan.singkron')}}">
 
                     <div class="card" style="cursor:pointer;background-color: #3caba9">
                         <div class="card-body">
