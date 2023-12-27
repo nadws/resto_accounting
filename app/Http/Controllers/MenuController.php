@@ -155,6 +155,8 @@ class MenuController extends Controller
 
     function get_edit(Request $r)
     {
+        $id_lokasi = app('id_lokasi');
+        $nm_lokasi = $id_lokasi == '1' ? 'TAKEMORI' : 'SOONDOBU';
 
         $data = [
             'menu' => DB::table('tb_menu')->where('id_menu', $r->id_menu)->first(),
@@ -167,11 +169,11 @@ class MenuController extends Controller
 
 
             'st' => DB::table('tb_station')
-                ->where('id_lokasi', '1')
+                ->where('id_lokasi', $id_lokasi)
                 ->orderBy('id_station', 'ASC')
                 ->get(),
-            'kategori' => DB::table('tb_kategori')->where('lokasi', 'TAKEMORI')->get(),
-            'handicap' => DB::table('tb_handicap')->where('id_lokasi', '1')->get(),
+            'kategori' => DB::table('tb_kategori')->where('lokasi', $nm_lokasi)->get(),
+            'handicap' => DB::table('tb_handicap')->where('id_lokasi', $id_lokasi)->get(),
             'bahan' => DB::table('tb_list_bahan')->get()
         ];
 
