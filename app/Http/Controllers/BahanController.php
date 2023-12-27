@@ -60,6 +60,7 @@ class BahanController extends Controller
                     $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
                     foreach ($invos as $i) {
                         $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
+                        DB::table('penjualan_peritem')->where('tgl',$tgl)->truncate();
                         DB::table('penjualan_peritem')->insert([
                             'id_menu' => $i->id_menu,
                             'qty' => $i->qty,
@@ -74,7 +75,7 @@ class BahanController extends Controller
                                 'urutan' => $invoice,
                                 'tgl' => $tgl,
                                 'debit' => 0,
-                                'kredit' => $r->qty * $i->qty,
+                                'kredit' => $i->qty,
                                 'admin' => auth()->user()->name,
                             ]);
                         }
