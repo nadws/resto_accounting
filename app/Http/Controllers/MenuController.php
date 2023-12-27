@@ -22,7 +22,6 @@ class MenuController extends Controller
                 ->get(),
             'menu' => DB::table('tb_menu')
                 ->orderBy('kd_menu', 'desc')
-                ->where('lokasi', '1')
                 ->first(),
             'kategori' => DB::table('tb_kategori')->where('lokasi', 'TAKEMORI')->get(),
             'handicap' => DB::table('tb_handicap')->where('id_lokasi', '1')->get(),
@@ -117,7 +116,7 @@ class MenuController extends Controller
             $harga = $r->harga;
 
             for ($i = 0; $i < count($r->id_distribusi); $i++) {
-                if ($harga[$i] != 0 && !empty($harga[$i])) {
+                if (!empty($harga[$i])) {
                     $data2 = [
                         'id_menu' => $id_menu,
                         'id_distribusi' => $id_distribusi[$i],
@@ -212,7 +211,7 @@ class MenuController extends Controller
             $harga = $r->harga;
 
             for ($i = 0; $i < count($r->id_distribusi); $i++) {
-                if ($harga[$i] != 0 && !empty($harga[$i])) {
+                if (!empty($harga[$i])) {
                     $data2 = [
                         'id_menu' => $r->id_menu,
                         'id_distribusi' => $id_distribusi[$i],
@@ -221,7 +220,7 @@ class MenuController extends Controller
                     DB::table('tb_harga')->insert($data2);
                 }
             }
-            if(!empty($r->id_bahan)) {
+            if (!empty($r->id_bahan)) {
                 for ($i = 0; $i < count($r->id_bahan); $i++) {
                     if (!empty($r->id_bahan[$i])) {
                         $data = [
@@ -232,7 +231,6 @@ class MenuController extends Controller
                         DB::table('resep')->insert($data);
                     }
                 }
-
             }
 
             DB::commit(); // If all steps are successful, commit the transaction
