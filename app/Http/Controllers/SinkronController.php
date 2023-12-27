@@ -13,19 +13,20 @@ class SinkronController extends Controller
         $tglAwal = "2023-12-20";
         $tgl = date('Y-m-d', strtotime('- 1 days'));
 
-        $cekStok = DB::table('stok_bahan')->where('invoice', 'LIKE', '%KLR%')->whereBetween('tgl', [$tglAwal,$tgl])->distinct()
-        ->pluck('tgl')
-        ->toArray();
+        $cekStok = DB::table('stok_bahan')->where('invoice', 'LIKE', '%KLR%')->whereBetween('tgl', [$tglAwal, $tgl])->distinct()
+            ->pluck('tgl')
+            ->toArray();
 
         // Tentukan seluruh tanggal antara dua tanggal
-$tanggalLengkap = collect(CarbonPeriod::create($tglAwal, $tgl))
-->map(function ($date) {
-    return $date->format('Y-m-d');
-})
-->toArray();
+        $tanggalLengkap = collect(CarbonPeriod::create($tglAwal, $tgl))
+            ->map(function ($date) {
+                return $date->format('Y-m-d');
+            })
+            ->toArray();
 
-// Hitung jumlah hari yang tidak ada di database
-$hariTidakAda = count(array_diff($tanggalLengkap, $cekStok));
+        // Hitung jumlah hari yang tidak ada di database
+        $hariTidakAda = count(array_diff($tanggalLengkap, $cekStok));
+        
         $data = [
             'title' => 'Data sinkron',
             'menu' => DB::selectOne("SELECT count(a.tgl) as ttl

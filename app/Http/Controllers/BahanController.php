@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Imports\BahanImport;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -33,7 +34,20 @@ class BahanController extends Controller
         DB::beginTransaction();
         try {
             $id_lokasi = app('id_lokasi');
-            $tgl = "2023-12-20";
+            $tglAwal = "2023-12-20";
+            $tgl = date('Y-m-d', strtotime('- 1 days'));
+
+            $cekStok = DB::table('stok_bahan')->where('invoice', 'LIKE', '%KLR%')->whereBetween('tgl', [$tglAwal, $tgl])->distinct()
+                ->pluck('tgl')
+                ->toArray();
+                $tanggalLengkap = collect(CarbonPeriod::create($tglAwal, $tgl))
+                ->map(function ($date) {
+                    return $date->format('Y-m-d');
+                })
+                ->toArray();
+                $hariTidakAda = count(array_diff($tanggalLengkap, $cekStok));
+
+
             // $tgl = date('Y-m-d', strtotime('- 1 days'));
             $response = Http::get("https://ptagafood.com/api/menu?id_lokasi=$id_lokasi&tgl1=$tgl&tgl2=$tgl");
             $invoice = $response['data']['menu'] ?? null;
