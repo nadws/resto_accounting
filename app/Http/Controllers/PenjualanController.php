@@ -16,8 +16,8 @@ class PenjualanController extends Controller
     {
         $id_lokasi = app('id_lokasi');
         $tglKemarin = now()->subDay()->format('Y-m-d');
-        $tgl1 = $tglKemarin ?? $r->tgl1;
-        $tgl2 = $tglKemarin ?? $r->tgl2;
+        $tgl1 = $r->tgl1 ?? $tglKemarin;
+        $tgl2 = $r->tgl2 ?? $tglKemarin;
         $datas = DB::table('penjualan_peritem as a')
             ->join('tb_menu as b', 'a.id_menu', 'b.id_menu')
             ->join('tb_station as c', 'c.id_station', 'b.id_station')
@@ -34,9 +34,8 @@ class PenjualanController extends Controller
     public function history(Request $r)
     {
         $tglKemarin = now()->subDay()->format('Y-m-d');
-        $tgl1 = $tglKemarin ?? $r->tgl1;
-        $tgl2 = $tglKemarin ?? $r->tgl2;
-
+        $tgl1 = $r->tgl1 ?? $tglKemarin;
+        $tgl2 = $r->tgl2 ?? $tglKemarin;
         $data = [
             'title' => 'History bahan keluar',
             'history' => DB::select("SELECT 
