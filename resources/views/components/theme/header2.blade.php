@@ -1,3 +1,4 @@
+@auth
 <div class="header-top">
     <div class="container">
         <div class="logo text-center">
@@ -45,3 +46,4 @@
         </div>
     </div>
 </div>
+@endauth

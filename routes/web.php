@@ -134,7 +134,16 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/singkron', 'singkron')->name('singkron');
         });
-    Route::controller(MenuController::class)
+    
+
+    Route::controller(SinkronController::class)
+        ->prefix('sinkron')
+        ->name('sinkron.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+        });
+});
+Route::controller(MenuController::class)
         ->prefix('menu')
         ->name('menu.')
         ->group(function () {
@@ -156,14 +165,5 @@ Route::middleware('auth')->group(function () {
             Route::post('/import_resep', 'import_resep')->name('import_resep');
             Route::get('/station', 'station')->name('station');
         });
-
-    Route::controller(SinkronController::class)
-        ->prefix('sinkron')
-        ->name('sinkron.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-        });
-});
-
 require __DIR__ . '/auth.php';
 require __DIR__ . '/nanda.php';

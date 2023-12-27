@@ -1,11 +1,16 @@
 <x-theme.app title="{{ $title }}" table="Y" sizeCard="12">
     <x-slot name="cardHeader">
         <div class="row">
-
+            <div class="col-lg-12">
+                {{-- @include('persediaan.bahan_makanan.nav') --}}
+            </div>
+            <div class="col-lg-12">
+                <hr>
+            </div>
         </div>
         <h6 class="float-start">{{ $title }}</h6>
         <div class="row justify-content-end">
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <div class="dropdown float-end">
                     <button class="btn btn-primary dropdown-toggle me-1 btn-sm" type="button" id="dropdownMenuButton"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -21,10 +26,19 @@
                             href="#">Level Point</a>
                     </div>
                 </div>
-                <x-theme.button modal="Y" idModal="exportmenu" href="#" icon="fa-file-excel"
-                    addClass="float-end" teks="Import/Export Menu" />
-                <x-theme.button modal="Y" idModal="resepexport" href="#" icon="fa-file-excel"
-                    addClass="float-end" teks="Import/Export Resep" />
+                <div class="dropdown float-end">
+                    <button class="btn btn-primary dropdown-toggle me-1 btn-sm" type="button" id="dropdownMenuButton"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-file-excel"></i> Import/Export
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exportmenu" href="#">Menu</a>
+                        <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#resepexport" href="#">Resep</a>
+                   
+                    </div>
+                </div>
+
+
             </div>
 
         </div>

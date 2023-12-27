@@ -27,7 +27,7 @@
                 </td>
                 <td><input type="text" class="form-control nm_bahan1" value="{{ $r->nm_satuan }}" readonly>
                 </td>
-                <td class="text-center"><button type="button" class="btn btn-rounded remove_baris" count="1"><i
+                <td class="text-center"><button type="button" class="btn btn-rounded remove_baris" count="{{ $no + 1 }}"><i
                             class="fas fa-trash text-danger"></i></button>
                 </td>
             </tr>

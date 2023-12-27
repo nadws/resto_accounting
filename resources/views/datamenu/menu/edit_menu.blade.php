@@ -10,7 +10,7 @@
                     <dt>Kategori</dt>
                 </label>
                 <input type="hidden" name="id_menu" value="{{ $menu->id_menu }}">
-                <select name="id_kategori" id="" class="form-control select_edit_menu">
+                <select name="id_kategori" id="" class="form-control selectedit">
                     <option value="">-Pilih Kategori-</option>
                     @foreach ($kategori as $m)
                         <option value="{{ $m->kd_kategori }}"
@@ -23,7 +23,7 @@
                 <label for="">
                     <dt>Level Point</dt>
                 </label>
-                <select name="id_handicap" id="" class="form-control select_edit_menu">
+                <select name="id_handicap" id="" class="form-control selectedit">
                     <option value="">-Pilih Level-</option>
                     @foreach ($handicap as $m)
                         <option value="{{ $m->id_handicap }}"
@@ -51,7 +51,7 @@
                 <label for="">
                     <dt>Tipe</dt>
                 </label>
-                <Select class="form-control select_edit_menu" name="tipe">
+                <Select class="form-control selectedit" name="tipe">
                     <option value="">-Pilih tipe-</option>
                     <option value="food" {{ $menu->tipe == 'food' ? 'Selected' : '' }}>Food</option>
                     <option value="drink" {{ $menu->tipe == 'drink' ? 'Selected' : '' }}>Drink</option>
@@ -61,7 +61,7 @@
                 <label for="">
                     <dt>Station</dt>
                 </label>
-                <Select class="form-control select_edit_menu" name="id_station">
+                <Select class="form-control selectedit" name="id_station">
                     <option value="">-Pilih station-</option>
                     @foreach ($st as $s)
                         <option value="{{ $s->id_station }}"
@@ -115,7 +115,7 @@
                 @foreach ($resep as $no => $r)
                     <tr class="baris{{ $no + 1 }}">
                         <td>
-                            <select name="id_bahan[]" id="" class="select_edit_menu id_bahan" count="1">
+                            <select name="id_bahan[]" id="" class="selectedit id_bahan" count="1">
                                 <option value="">Pilih Bahan</option>
                                 @foreach ($bahan as $b)
                                     <option value="{{ $b->id_list_bahan }}"

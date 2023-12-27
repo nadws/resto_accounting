@@ -20,9 +20,11 @@
                             <td>{{ $no + 1 }}</td>
                             <td>{{ ucwords($d->nm_kategori) }}</td>
                             <td align="center">
-                                <a href="#" id_atk="{{ $d->id_kategori_bahan }}" class="btn btn-primary btn-sm edit"><i
-                                        class="fas fa-pen"></i></a>
-                                <a onclick="return confirm('Yakin dihapus ?')" href="{{ route('bahan.kategori_hapus',$d->id_kategori_bahan) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
+                                <a href="#" id_atk="{{ $d->id_kategori_bahan }}"
+                                    class="btn btn-primary btn-sm edit"><i class="fas fa-pen"></i></a>
+                                <a onclick="return confirm('Yakin dihapus ?')"
+                                    href="{{ route('bahan.kategori_hapus', $d->id_kategori_bahan) }}"
+                                    class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></a>
                             </td>
                         </tr>
                     @endforeach
@@ -35,13 +37,13 @@
             @csrf
             <x-theme.modal title="Tambah Kategori" idModal="tambah">
                 <x-theme.multiple-input>
-                        <div class="col-lg-10">
-                            <div class="form-group">
-                                <label for="">Kategori</label>
-                                <input type="text" name="nm_kategori[]" class="form-control">
-                            </div>
+                    <div class="col-lg-10">
+                        <div class="form-group">
+                            <label for="">Kategori</label>
+                            <input type="text" name="nm_kategori[]" class="form-control">
                         </div>
-                    </x-theme.multiple-input>
+                    </div>
+                </x-theme.multiple-input>
             </x-theme.modal>
         </form>
 

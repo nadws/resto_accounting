@@ -39,7 +39,6 @@ class MenuController extends Controller
         $query = MenuModel::tbmenu();
 
         // Filter data sesuai kriteria pencarian
-
         $query
             ->where(function ($query) use ($search) {
                 $query->where('d.kategori', 'like', '%' . $search . '%')
@@ -50,7 +49,6 @@ class MenuController extends Controller
             });
 
         $menu = $query->orderBy('a.id_menu', 'DESC')->paginate($perPage);
-
         $data = [
             'menu' => $menu,
         ];
@@ -223,16 +221,18 @@ class MenuController extends Controller
                     DB::table('tb_harga')->insert($data2);
                 }
             }
-
-            for ($i = 0; $i < count($r->id_bahan); $i++) {
-                if (!empty($r->id_bahan[$i])) {
-                    $data = [
-                        'id_menu' => $r->id_menu,
-                        'id_bahan' => $r->id_bahan[$i],
-                        'qty' => $r->qty[$i],
-                    ];
-                    DB::table('resep')->insert($data);
+            if(!empty($r->id_bahan)) {
+                for ($i = 0; $i < count($r->id_bahan); $i++) {
+                    if (!empty($r->id_bahan[$i])) {
+                        $data = [
+                            'id_menu' => $r->id_menu,
+                            'id_bahan' => $r->id_bahan[$i],
+                            'qty' => $r->qty[$i],
+                        ];
+                        DB::table('resep')->insert($data);
+                    }
                 }
+
             }
 
             DB::commit(); // If all steps are successful, commit the transaction
