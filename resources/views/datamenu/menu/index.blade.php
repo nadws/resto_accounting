@@ -421,7 +421,7 @@
 
         </section>
         @section('scripts')
-            <script src="{{ asset('js') }}/menu2.js"></script>
+            <script src="{{ asset('js') }}/menu.js"></script>
             <script>
                 function station() {
                     $.ajax({
