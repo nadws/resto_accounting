@@ -17,7 +17,7 @@ class MenuController extends Controller
         $id_lokasi = app('id_lokasi');
         $lokasi = $id_lokasi == 1 ? 'TAKEMORI' : 'SOONDOBU';
         $data = [
-            'title' => 'Data Menu ' . $lokasi,
+            'title' => 'Data Menu: ' . $lokasi,
             'st' => DB::table('tb_station')
                 ->where('id_lokasi', '1')
                 ->orderBy('id_station', 'ASC')
