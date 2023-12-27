@@ -57,7 +57,7 @@ class BahanController extends Controller
                     $invos = json_decode(json_encode($invoice));
 
                     $invo = DB::selectOne("SELECT max(a.urutan) as urutan FROM stok_bahan as a WHERE a.invoice LIKE '%$kode%'");
-                    DB::table('penjualan_peritem')->where('tgl',$tgl)->truncate();
+                    DB::table('penjualan_peritem')->where('tgl',$tgl)->delete();
                     $invoice = empty($invo->urutan) ? 1001 : $invo->urutan + 1;
                     foreach ($invos as $i) {
                         $resep = DB::table('resep')->where('id_menu', $i->id_menu)->get();
