@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MenuModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -740,5 +741,116 @@ class MenuController extends Controller
         ];
 
         return view('datamenu.menu.station', $data);
+    }
+
+    public function tarikLokal()
+    {
+        $menu = Http::get("https://tkmr-akunting.ptagafood.com/api/menu_tb");
+        $dt_menu = json_decode($menu, TRUE);
+        dd($dt_menu);
+        // Menu::truncate();
+        // Harga::truncate();
+        // DB::table('tb_station')->truncate();
+        // Kategori::truncate();
+        // Handicap::truncate();
+        // DB::table('tb_produk')->truncate();
+        // DB::table('tb_kategori_majo')->truncate();
+        // DB::table('tb_satuan_majo')->truncate();
+        
+        foreach ($dt_menu['menu'] as $v) {
+            $data = [
+                'id_menu' => $v['id_menu'],
+                'id_kategori' => $v['id_kategori'],
+                'id_handicap' => $v['id_handicap'],
+                'kd_menu' => $v['kd_menu'],
+                'nm_menu' => $v['nm_menu'],
+                'tipe' => $v['tipe'],
+                'id_station' => $v['id_station'],
+                'image' => $v['image'],
+                'jenis' => $v['jenis'],
+                'lokasi' => $v['lokasi'],
+                'aktif' => $v['aktif'],
+                'tgl_sold' => $v['tgl_sold'],
+                'id_handicap' => $v['id_handicap']
+            ];
+            Menu::create($data);
+        }
+
+        foreach ($dt_menu['harga'] as $v) {
+            $data = [
+                'id_harga' => $v['id_harga'],
+                'id_menu' => $v['id_menu'],
+                'id_distribusi' => $v['id_distribusi'],
+                'harga' => $v['harga'],
+            ];
+            Harga::create($data);
+        }
+
+        foreach ($dt_menu['handicap'] as $v) {
+            $data = [
+                'id_handicap' => $v['id_handicap'],
+                'handicap' => $v['handicap'],
+                'point' => $v['point'],
+                'ket' => $v['ket'],
+                'id_lokasi' => $v['id_lokasi'],
+            ];
+            Handicap::create($data);
+        }
+
+        foreach ($dt_menu['kategori_menu'] as $v) {
+            $data = [
+                'kd_kategori' => $v['kd_kategori'],
+                'kategori' => $v['kategori'],
+                'lokasi' => $v['lokasi'],
+            ];
+            Kategori::create($data);
+        }
+
+        foreach ($dt_menu['station'] as $v) {
+            $data = [
+                'id_station' => $v['id_station'],
+                'nm_station' => $v['nm_station'],
+                'id_lokasi' => $v['id_lokasi'],
+            ];
+            DB::table('tb_station')->insert($data);
+        }
+        
+        $menu = Http::get("https://ptagafood.com/api/menu_tb");
+        $dt_menu = json_decode($menu, TRUE);
+
+        foreach ($dt_menu['produk_majo_tkm'] as $v) {
+            $data = [
+                'id_produk' => $v['id_produk'],
+                'id_kategori' => $v['id_kategori'],
+                'id_satuan' => $v['id_satuan'],
+                'sku' => $v['sku'],
+                'nm_produk' => $v['nm_produk'],
+                'harga_modal' => $v['harga_modal'],
+                'harga' => $v['harga'],
+                'stok' => $v['stok'],
+                'terjual' => $v['terjual'],
+                'foto' => $v['foto'],
+                'diskon' => $v['diskon'],
+                'komisi' => $v['komisi'],
+                'monitoring' => $v['monitoring'],
+                'id_lokasi' => $v['id_lokasi'],
+            ];
+            DB::table('tb_produk')->insert($data);
+        }
+
+        foreach($dt_menu['kategori_majo'] as $v) {
+            $data = [
+                'id_kategori' => $v['id_kategori'],
+                'nm_kategori' => $v['nm_kategori'],
+            ];
+            DB::table('tb_kategori_majo')->insert($data);
+        }
+        foreach($dt_menu['satuan_majo'] as $v) {
+            $data = [
+                'id_satuan' => $v['id_satuan'],
+                'satuan' => $v['satuan'],
+            ];
+            DB::table('tb_satuan_majo')->insert($data);
+        }
     }
 }

@@ -157,6 +157,7 @@ Route::controller(MenuController::class)
         ->name('menu.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/tarik', 'tarikLokal');
             Route::get('/get_menu', 'get_menu')->name('get_menu');
             Route::get('/addresep', 'addresep')->name('addresep');
             Route::get('/aktif', 'aktif')->name('aktif');
