@@ -156,7 +156,7 @@ class BahanController extends Controller
             'nm_bahan' => $r->nm_bahan,
             'id_satuan' => $r->satuan_id,
             'id_kategori' => $r->kategori_id,
-            'admin' => auth()->user()->name,
+            'admin' => auth()->user()->name ?? 'tamu',
             'tgl' => date('Y-m-d')
         ]);
 
@@ -177,7 +177,7 @@ class BahanController extends Controller
                 'kredit' => 0,
                 'debit' => $stok,
                 'rupiah' => $ttl_rp,
-                'admin' => auth()->user()->name,
+                'admin' => auth()->user()->name ?? 'tamu',
             ]);
         }
         return redirect()->route('bahan.index')->with('sukses', 'Data Berhasil ditambahkan');
