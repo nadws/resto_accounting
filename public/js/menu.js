@@ -260,7 +260,9 @@ $(document).on("click", ".resep", function () {
         },
         success: function (response) {
             $("#load_resep").html(response);
-            $(".select_edit_resep").select2();
+            $(".select_edit_resep").select2({
+                dropdownParent: $('#resep .modal-content')
+            });
         },
     });
 });
