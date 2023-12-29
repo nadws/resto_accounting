@@ -683,10 +683,10 @@ $(document).on("click", ".resep", function () {
             id_menu: id_menu,
         },
         success: function (response) {
-            $("#load_resep").html(response);
             $(".select_edit_resep").select2({
                 dropdownParent: $('#resep .modal-content')
             });
+            $("#load_resep").html(response);
         },
     });
 });
