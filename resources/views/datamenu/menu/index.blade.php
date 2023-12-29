@@ -517,7 +517,9 @@ $(document).on("click", ".tambah_baris_resep", function () {
         },
         success: function (response) {
             $(".load_tambah_resep").append(response);
-            $(".select_resep").select2();
+            $(".select_resep").select2({
+                dropdownParent: $('#resep .modal-content')
+            });
         },
     });
 });
@@ -683,10 +685,10 @@ $(document).on("click", ".resep", function () {
             id_menu: id_menu,
         },
         success: function (response) {
+            $("#load_resep").html(response);
             $(".select_edit_resep").select2({
                 dropdownParent: $('#resep .modal-content')
             });
-            $("#load_resep").html(response);
         },
     });
 });
