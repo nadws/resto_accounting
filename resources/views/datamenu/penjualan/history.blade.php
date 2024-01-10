@@ -46,6 +46,7 @@
                         <tr>
                             <th>#</th>
                             <th>Tanggal</th>
+                            <th>Nama Menu</th>
                             <th>Nama Bahan</th>
                             <th>Qty</th>
                         </tr>
@@ -55,6 +56,7 @@
                             <tr>
                                 <td>{{ $no + 1 }}</td>
                                 <td>{{ tanggal($d->tgl) }}</td>
+                                <td>{{ $d->nm_menu }}</td>
                                 <td>{{ $d->nm_bahan }}</td>
                                 <td>{{ $d->kredit }}</td>
                             </tr>
