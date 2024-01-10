@@ -123,6 +123,7 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/history', 'history')->name('history');
+            Route::get('/detail', 'detail')->name('detail');
         });
 });
 Route::controller(BahanController::class)

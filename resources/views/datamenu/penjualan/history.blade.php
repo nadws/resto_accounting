@@ -13,24 +13,26 @@
             <div class="col-lg-12">
                 <x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end"
                     teks="Filter" />
-                    <form action="" method="GET">
-                <x-theme.modal idModal="view" title="View">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">dari</label>
-                            <input type="date" name="tgl1" value="{{ date('Y-m-d', strtotime('-1 days')) }}" class="form-control">
+                <form action="" method="GET">
+                    <x-theme.modal idModal="view" title="View">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">dari</label>
+                                    <input type="date" name="tgl1"
+                                        value="{{ date('Y-m-d', strtotime('-1 days')) }}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Sampai</label>
+                                    <input type="date" name="tgl2"
+                                        value="{{ date('Y-m-d', strtotime('-1 days')) }}" class="form-control">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="form-group">
-                            <label for="">Sampai</label>
-                            <input type="date" name="tgl2" value="{{ date('Y-m-d', strtotime('-1 days')) }}" class="form-control">
-                        </div>
-                    </div>
-                </div>        
-                </x-theme.modal>
-            </form>
+                    </x-theme.modal>
+                </form>
 
             </div>
 
@@ -46,7 +48,6 @@
                         <tr>
                             <th>#</th>
                             <th>Tanggal</th>
-                            <th>Nama Menu</th>
                             <th>Nama Bahan</th>
                             <th>Qty</th>
                         </tr>
@@ -56,8 +57,11 @@
                             <tr>
                                 <td>{{ $no + 1 }}</td>
                                 <td>{{ tanggal($d->tgl) }}</td>
-                                <td>{{ $d->nm_menu }}</td>
-                                <td>{{ $d->nm_bahan }}</td>
+                                <td>
+                                    <a href="#" class="detail" id_bahan="{{ $d->id_bahan }}">
+                                        {{ $d->nm_bahan }}
+                                    </a>
+                                </td>
                                 <td>{{ $d->kredit }}</td>
                             </tr>
                         @endforeach
@@ -65,7 +69,32 @@
                 </table>
             </div>
         </section>
+
+
+        <x-theme.modal idModal="detail" title="Detail Bahan" btnSave="T">
+            <div id="load_detail"></div>
+        </x-theme.modal>
+
         @section('scripts')
+            <script>
+                $(document).on('click', '.detail', function(e){
+                    e.preventDefault();
+                    const id_bahan = $(this).attr('id_bahan')
+                    $('#detail').modal('show')
+                    $.ajax({
+                        type: "GET",
+                        url: "{{route('penjualan.detail')}}",
+                        data:{
+                            id_bahan:id_bahan,
+                            tgl1:"{{$tgl1}}",
+                            tgl2:"{{$tgl2}}",
+                        },
+                        success: function (r) {
+                            $("#load_detail").html(r);
+                        }
+                    });
+                })
+            </script>        
         @endsection
     </x-slot>
 
