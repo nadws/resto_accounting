@@ -124,6 +124,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/history', 'history')->name('history');
             Route::get('/detail', 'detail')->name('detail');
+            Route::get('/export', 'export')->name('export');
         });
 });
 Route::controller(BahanController::class)
