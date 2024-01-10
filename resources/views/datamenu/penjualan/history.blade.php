@@ -58,7 +58,7 @@
                                 <td>{{ $no + 1 }}</td>
                                 <td>{{ tanggal($d->tgl) }}</td>
                                 <td>
-                                    <a href="#" class="detail" id_bahan="{{ $d->id_bahan }}">
+                                    <a href="#" class="detail" tgl="{{$d->tgl}}" id_bahan="{{ $d->id_bahan }}">
                                         {{ $d->nm_bahan }}
                                     </a>
                                 </td>
@@ -80,14 +80,14 @@
                 $(document).on('click', '.detail', function(e){
                     e.preventDefault();
                     const id_bahan = $(this).attr('id_bahan')
+                    const tgl = $(this).attr('tgl')
                     $('#detail').modal('show')
                     $.ajax({
                         type: "GET",
                         url: "{{route('penjualan.detail')}}",
                         data:{
                             id_bahan:id_bahan,
-                            tgl1:"{{$tgl1}}",
-                            tgl2:"{{$tgl2}}",
+                            tgl:tgl,
                         },
                         success: function (r) {
                             $("#load_detail").html(r);

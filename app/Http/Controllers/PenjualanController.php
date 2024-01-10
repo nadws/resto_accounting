@@ -69,9 +69,9 @@ class PenjualanController extends Controller
         JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
         JOIN tb_menu as c on a.id_menu = c.id_menu
         JOIN (
-            select sum(kredit) as kredit,id_bahan from stok_bahan where invoice like '%KLR%'  AND tgl BETWEEN '$r->tgl1' AND '$r->tgl2' group by id_bahan,tgl
+            select sum(kredit) as kredit,id_bahan from stok_bahan where invoice like '%KLR%'  AND tgl = '$r->tgl' group by id_bahan,tgl
         ) sum on a.id_bahan = sum.id_bahan
-        where a.invoice LIKE '%KLR%' AND a.tgl BETWEEN '$r->tgl1' AND '$r->tgl2' AND a.id_bahan = '$r->id_bahan'");
+        where a.invoice LIKE '%KLR%' AND a.tgl = '$r->tgl' AND a.id_bahan = '$r->id_bahan'");
         $data = [
             'history' => $detail
         ];
