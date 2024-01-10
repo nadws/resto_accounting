@@ -49,9 +49,9 @@
                             <th>#</th>
                             <th>Tanggal</th>
                             <th>Nama Bahan</th>
-                            <th>Qty</th>
+                            <th class="text-center">Qty</th>
                         </tr>
-                    </thead>
+                    </thead>    
                     <tbody>
                         @foreach ($history as $no => $d)
                             <tr class="detail" tgl="{{ $d->tgl }}" id_bahan="{{ $d->id_bahan }}">
@@ -60,7 +60,7 @@
                                 <td>
                                     <a href="#">{{ $d->nm_bahan }}</a>
                                 </td>
-                                <td>{{ number_format($d->kredit, 0) }}</td>
+                                <td align="right">{{ number_format($d->kredit, 0) . ' ' . strtoupper($d->nm_satuan) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -45,11 +45,12 @@ class PenjualanController extends Controller
             b.nm_bahan,
             a.id_bahan,
             c.nm_menu,
+        e.nm_satuan,
             a.tgl
             FROM `stok_bahan` as a
             JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
             JOIN tb_menu as c on a.id_menu = c.id_menu
-            
+        JOIN tb_satuan as e on b.id_satuan = e.id_satuan
             where a.invoice LIKE '%KLR%' AND a.tgl BETWEEN '$tgl1' AND '$tgl2' group by a.id_bahan,a.tgl;")
         ];
         return view('datamenu.penjualan.history', $data);
@@ -64,6 +65,7 @@ class PenjualanController extends Controller
         a.id_bahan,
         c.id_menu,
         c.nm_menu,
+        e.nm_satuan,
         d.qty,
         terjual.terjual,
         a.tgl
@@ -71,6 +73,7 @@ class PenjualanController extends Controller
         JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
         JOIN tb_menu as c on a.id_menu = c.id_menu
         join resep as d on c.id_menu = d.id_menu AND d.id_bahan = b.id_list_bahan
+        JOIN tb_satuan as e on b.id_satuan = e.id_satuan
         JOIN (
             select sum(kredit) as kredit,id_bahan from stok_bahan where invoice like '%KLR%'  AND tgl = '$r->tgl' group by id_bahan,tgl
         ) sum on a.id_bahan = sum.id_bahan

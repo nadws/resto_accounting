@@ -1,23 +1,24 @@
 <div class="row">
     <div class="col-lg-12">
+        @php
+            $get = $history[0];
+            $nm_satuan = ' ' . strtoupper($get->nm_satuan);
+        @endphp
         <table class="table">
             <tr>
                 <th width="10">Tanggal</th>
                 <td width="10">:</td>
-                <th>{{ tanggal($history[0]->tgl) }}</th>
+                <th>{{ tanggal($get->tgl) }}</th>
             </tr>
             <tr>
                 <th width="10">Bahan</th>
                 <td width="10">:</td>
-                <th><h5>{{ ucwords($history[0]->nm_bahan) }}</h5></th>
+                <th><h5>{{ ucwords($get->nm_bahan) }}</h5></th>
             </tr>
-            @php
-                
-            @endphp
             <tr>
                 <th width="10">Total</th>
                 <td width="10">:</td>
-                <th><h6>{{ number_format($history[0]->ttl,0) }}</h6></th>
+                <th><h6>{{ number_format($get->ttl,0) . $nm_satuan }}</h6></th>
             </tr>
 
         </table>
@@ -41,8 +42,8 @@
                         <td>{{ $no + 1 }}</td>
                         <td>{{ $d->nm_menu }}</td>
                         <td align="right">{{ number_format($d->terjual,0) }}</td>
-                        <td align="right">{{ number_format($d->qty,0) }}</td>
-                        <td align="right">{{ number_format($d->kredit,0) }}</td>
+                        <td align="right">{{ number_format($d->qty,0) . $nm_satuan }}</td>
+                        <td align="right">{{ number_format($d->kredit,0) . $nm_satuan  }}</td>
                     </tr>
                 @endforeach
             </tbody>
