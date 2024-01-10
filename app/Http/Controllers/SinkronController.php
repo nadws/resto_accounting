@@ -10,7 +10,7 @@ class SinkronController extends Controller
 {
     function index(Request $r)
     {
-        $tglAwal = "2023-12-20";
+        $tglAwal = "2024-01-01";
         $tgl = date('Y-m-d', strtotime('- 1 days'));
 
         $cekStok = DB::table('stok_bahan')->where('invoice', 'LIKE', '%KLR%')->whereBetween('tgl', [$tglAwal, $tgl])->distinct()
