@@ -125,6 +125,12 @@
 
 
     }
+    $(document).keydown(function(e) {
+        if (e.key === "Escape") {
+            // Jalankan perintah atau fungsi yang diinginkan
+            $('.modal').modal('hide')
+        }
+    });
 
     function pencarian(inputId, tblId) {
         $(document).on('keyup', "#" + inputId, function() {
@@ -145,7 +151,7 @@
                 style: {
                     background: "#EAF7EE",
                     color: "#7F8B8B",
-                    fontSize:"18px"
+                    fontSize: "18px"
                 },
                 close: true,
                 avatar: "https://cdn-icons-png.flaticon.com/512/190/190411.png"
@@ -163,7 +169,7 @@
                 style: {
                     background: "#FCEDE9",
                     color: "#7F8B8B",
-                    fontSize:"18px"
+                    fontSize: "18px"
                 },
                 close: true,
                 avatar: "https://cdn-icons-png.flaticon.com/512/564/564619.png"

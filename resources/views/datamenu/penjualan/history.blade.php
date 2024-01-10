@@ -8,7 +8,7 @@
                 <hr>
             </div>
         </div>
-        <h6 class="float-start">{{ $title }} <br> {{ tanggalRange($tgl1, $tgl2)}}</h6>
+        <h6 class="float-start">{{ $title }} <br> {{ tanggalRange($tgl1, $tgl2) }}</h6>
         <h6></h6>
         <div class="row justify-content-end">
             <div class="col-lg-12">
@@ -34,7 +34,6 @@
                         </div>
                     </x-theme.modal>
                 </form>
-
             </div>
 
         </div>
@@ -55,14 +54,13 @@
                     </thead>
                     <tbody>
                         @foreach ($history as $no => $d)
-                            <tr class="detail" tgl="{{$d->tgl}}" id_bahan="{{ $d->id_bahan }}">
+                            <tr class="detail" tgl="{{ $d->tgl }}" id_bahan="{{ $d->id_bahan }}">
                                 <td>{{ $no + 1 }}</td>
                                 <td>{{ tanggal($d->tgl) }}</td>
                                 <td>
                                     <a href="#">{{ $d->nm_bahan }}</a>
-                                  
                                 </td>
-                                <td>{{ number_format($d->kredit,0) }}</td>
+                                <td>{{ number_format($d->kredit, 0) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -77,24 +75,25 @@
 
         @section('scripts')
             <script>
-                $(document).on('click', '.detail', function(e){
+                $(document).on('click', '.detail', function(e) {
                     e.preventDefault();
                     const id_bahan = $(this).attr('id_bahan')
                     const tgl = $(this).attr('tgl')
                     $('#detail').modal('show')
                     $.ajax({
                         type: "GET",
-                        url: "{{route('penjualan.detail')}}",
-                        data:{
-                            id_bahan:id_bahan,
-                            tgl:tgl,
+                        url: "{{ route('penjualan.detail') }}",
+                        data: {
+                            id_bahan: id_bahan,
+                            tgl: tgl,
                         },
-                        success: function (r) {
+                        success: function(r) {
                             $("#load_detail").html(r);
+                            
                         }
                     });
                 })
-            </script>        
+            </script>
         @endsection
     </x-slot>
 
