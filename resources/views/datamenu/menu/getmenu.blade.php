@@ -52,9 +52,10 @@
                                     id_menu="{{ $m->id_menu }}">
                             </div>
                         </td>
+
                         <td class="text-center">
                             <a href="#" class="btn btn-sm btn-primary resep" id_menu="{{ $m->id_menu }}"
-                                data-bs-toggle="modal" data-bs-target="#resep"><i class="fas fa-clipboard"></i></a>
+                                data-bs-toggle="modal" data-bs-target="#resep"><i class="fas fa-clipboard"></i> </a>
                         </td>
                         <td class="text-center">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#edit"

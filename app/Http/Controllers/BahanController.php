@@ -35,7 +35,7 @@ class BahanController extends Controller
 
         try {
             DB::beginTransaction();
-            $tglAwal = "2023-12-20";
+            $tglAwal = "2024-01-01";
             $tglAkhir = now()->subDay()->format('Y-m-d');
             $id_lokasi = app('id_lokasi'); // Ganti dengan id lokasi yang sesuai
             $kode = "BHNKLR";

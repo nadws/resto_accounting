@@ -701,8 +701,6 @@ class MenuController extends Controller
                 $data[] = $rowData;
             }
 
-
-
             DB::beginTransaction(); // Mulai transaksi database
 
             try {
@@ -756,7 +754,7 @@ class MenuController extends Controller
         // DB::table('tb_produk')->truncate();
         // DB::table('tb_kategori_majo')->truncate();
         // DB::table('tb_satuan_majo')->truncate();
-        
+
         foreach ($dt_menu['menu'] as $v) {
             $data = [
                 'id_menu' => $v['id_menu'],
@@ -814,7 +812,7 @@ class MenuController extends Controller
             ];
             DB::table('tb_station')->insert($data);
         }
-        
+
         $menu = Http::get("https://ptagafood.com/api/menu_tb");
         $dt_menu = json_decode($menu, TRUE);
 
@@ -838,14 +836,14 @@ class MenuController extends Controller
             DB::table('tb_produk')->insert($data);
         }
 
-        foreach($dt_menu['kategori_majo'] as $v) {
+        foreach ($dt_menu['kategori_majo'] as $v) {
             $data = [
                 'id_kategori' => $v['id_kategori'],
                 'nm_kategori' => $v['nm_kategori'],
             ];
             DB::table('tb_kategori_majo')->insert($data);
         }
-        foreach($dt_menu['satuan_majo'] as $v) {
+        foreach ($dt_menu['satuan_majo'] as $v) {
             $data = [
                 'id_satuan' => $v['id_satuan'],
                 'satuan' => $v['satuan'],
