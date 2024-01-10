@@ -43,7 +43,7 @@
     <x-slot name="cardBody">
         <section class="row">
             <div class="col-lg-12">
-                <table class="table table-striped" id="table1">
+                <table class="table table-striped table-hover" id="table1">
                     <thead>
                         <tr>
                             <th>#</th>
@@ -54,15 +54,14 @@
                     </thead>
                     <tbody>
                         @foreach ($history as $no => $d)
-                            <tr>
+                            <tr class="detail" tgl="{{$d->tgl}}" id_bahan="{{ $d->id_bahan }}">
                                 <td>{{ $no + 1 }}</td>
                                 <td>{{ tanggal($d->tgl) }}</td>
                                 <td>
-                                    <a href="#" class="detail" tgl="{{$d->tgl}}" id_bahan="{{ $d->id_bahan }}">
-                                        {{ $d->nm_bahan }}
-                                    </a>
+                                    <a href="#">{{ $d->nm_bahan }}</a>
+                                  
                                 </td>
-                                <td>{{ $d->kredit }}</td>
+                                <td>{{ number_format($d->kredit,0) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

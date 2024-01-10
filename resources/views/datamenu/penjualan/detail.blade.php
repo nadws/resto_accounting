@@ -2,22 +2,22 @@
     <div class="col-lg-12">
         <table class="table">
             <tr>
-                <td width="10">Tanggal</td>
+                <th width="10">Tanggal</th>
                 <td width="10">:</td>
                 <th>{{ tanggal($history[0]->tgl) }}</th>
             </tr>
             <tr>
-                <td width="10">Bahan</td>
+                <th width="10">Bahan</th>
                 <td width="10">:</td>
-                <th>{{ ucwords($history[0]->nm_bahan) }}</th>
+                <th><h5>{{ ucwords($history[0]->nm_bahan) }}</h5></th>
             </tr>
             @php
                 
             @endphp
             <tr>
-                <td width="10">Total</td>
+                <th width="10">Total</th>
                 <td width="10">:</td>
-                <th>{{ number_format($history[0]->ttl,0) }}</th>
+                <th><h6>{{ number_format($history[0]->ttl,0) }}</h6></th>
             </tr>
 
         </table>
@@ -25,12 +25,14 @@
     </div>
     <hr>
     <div class="col-lg-12">
-        <table class="table table-striped" id="table1">
+        <table class="table table-striped table-bordered" id="table1">
             <thead>
                 <tr>
                     <th class="dhead">#</th>
                     <th class="dhead">Nama Menu</th>
-                    <th class="dhead">Qty</th>
+                    <th class="dhead text-center">Terjual</th>
+                    <th class="dhead text-center">Qty <br> Resep</th>
+                    <th class="dhead text-center">Qty <br> Terpakai</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,8 +40,9 @@
                     <tr>
                         <td>{{ $no + 1 }}</td>
                         <td>{{ $d->nm_menu }}</td>
-
-                        <td>{{ $d->kredit }}</td>
+                        <td align="right">{{ number_format($d->terjual,0) }}</td>
+                        <td align="right">{{ number_format($d->qty,0) }}</td>
+                        <td align="right">{{ number_format($d->kredit,0) }}</td>
                     </tr>
                 @endforeach
             </tbody>
