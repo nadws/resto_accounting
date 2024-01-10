@@ -45,7 +45,14 @@ if (!function_exists('tanggalFilter')) {
         return $result;
     }
 }
-
+if (!function_exists('tanggalRange')) {
+    function tanggalRange($tgl1, $tgl2)
+    {
+        return date('d', strtotime($tgl1)) . ' ~ ' . date('d', strtotime($tgl2)) . ' ' .
+        date('M', strtotime($tgl2)) . ' ' .
+        date('Y', strtotime($tgl2)) ;
+    }
+}
 
 if (!function_exists('tanggal')) {
     function tanggal($tgl)

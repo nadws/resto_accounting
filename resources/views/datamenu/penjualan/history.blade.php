@@ -8,7 +8,8 @@
                 <hr>
             </div>
         </div>
-        <h6 class="float-start">{{ $title }}</h6>
+        <h6 class="float-start">{{ $title }} <br> {{ tanggalRange($tgl1, $tgl2)}}</h6>
+        <h6></h6>
         <div class="row justify-content-end">
             <div class="col-lg-12">
                 <x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end"
