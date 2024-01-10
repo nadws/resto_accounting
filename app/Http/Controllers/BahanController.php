@@ -71,6 +71,7 @@ class BahanController extends Controller
                         foreach ($resep as $r) {
                             DB::table('stok_bahan')->insert([
                                 'id_bahan' => $r->id_bahan,
+                                'id_menu' => $i->id_menu,
                                 'invoice' => "$kode-$invoice",
                                 'urutan' => $invoice,
                                 'tgl' => $tgl,
