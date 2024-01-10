@@ -46,7 +46,7 @@ class PenjualanController extends Controller
             a.tgl
             FROM `stok_bahan` as a
             JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
-            JOIN tb_menu as c on b.id_menu = c.id_menu
+            JOIN tb_menu as c on a.id_menu = c.id_menu
             where a.invoice LIKE '%KLR%' AND a.tgl BETWEEN '$tgl1' AND '$tgl2';")
         ];
         return view('datamenu.penjualan.history', $data);
