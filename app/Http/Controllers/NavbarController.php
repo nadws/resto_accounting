@@ -137,6 +137,12 @@ class NavbarController extends Controller
                 'img' => 'menu.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
+            [
+                'judul' => 'Pesanan Pembelian',
+                'route' => 'po.index',
+                'img' => 'evaluation.png',
+                'deskripsi' => 'membuat pesanan pembelian',
+            ],
 
         ];
         $title = 'Data Master';

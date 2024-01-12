@@ -38,18 +38,7 @@
             }
         });
     });
-    $('.select2').select2({
-        dropdownParent: $('#tambah .modal-content')
-    });
-    $('.select2-tambah2').select2({
-        dropdownParent: $('#tambah2 .modal-content')
-    });
-    $('#selectView').select2({
-        dropdownParent: $('#view .modal-content')
-    });
-    $('.selectView').select2({
-        dropdownParent: $('#view .modal-content')
-    });
+    
     $('.costume_muncul').hide();
     $('.bulan_muncul').hide();
     $('.tahun_muncul').hide();
@@ -67,11 +56,7 @@
 
 
     });
-    $('#select2').select2({});
-    $('.select2_add').select2({});
-    $('.select2_readonly').select2({
-        disabled: true
-    });
+ 
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -125,6 +110,7 @@
 
 
     }
+
     $(document).keydown(function(e) {
         if (e.key === "Escape") {
             // Jalankan perintah atau fungsi yang diinginkan
@@ -138,6 +124,25 @@
             $(`#${tblId} tbody tr`).filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
+        })
+    }
+
+    function plusRow(count, classPlus, url) {
+        $(document).on("click", "." + classPlus, function() {
+            count = count + 1;
+            $.ajax({
+                url: `${url}?count=` + count,
+                type: "GET",
+                success: function(data) {
+                    $("#" + classPlus).append(data);
+                    $('.select-tbh').select2()
+                },
+            });
+        });
+
+        $(document).on('click', '.remove_baris', function() {
+            var delete_row = $(this).attr("count");
+            $(".baris" + delete_row).remove();
         })
     }
 </script>

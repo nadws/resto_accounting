@@ -8,6 +8,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NavbarController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PeralatanController;
+use App\Http\Controllers\PoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
 use App\Http\Controllers\SinkronController;
@@ -108,8 +109,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/updateAkun', 'updateAkun')->name('updateAkun');
             Route::get('/hapusAkun', 'hapusAkun')->name('hapusAkun');
         });
-    
-    
+
+
 
     Route::controller(SinkronController::class)
         ->prefix('sinkron')
@@ -126,56 +127,65 @@ Route::middleware('auth')->group(function () {
             Route::get('/detail', 'detail')->name('detail');
             Route::get('/export', 'export')->name('export');
         });
+    Route::controller(PoController::class)
+        ->prefix('po')
+        ->name('po.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::get('/print', 'print')->name('print');
+            Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+        });
 });
 Route::controller(BahanController::class)
-        ->prefix('bahan')
-        ->name('bahan.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::post('/save', 'save')->name('save');
-            Route::get('/opname', 'opname')->name('opname');
-            Route::get('/template', 'template')->name('template');
-            Route::get('/history', 'history')->name('history');
-            Route::get('/kategori', 'kategori')->name('kategori');
-            Route::get('/kategori_hapus/{id}', 'kategori_hapus')->name('kategori_hapus');
-            Route::post('/kategori_create', 'kategori_create')->name('kategori_create');
-            Route::get('/load_edit', 'load_edit')->name('load_edit');
-            Route::get('/stok', 'stok')->name('stok');
-            Route::get('/stok_add', 'stok_add')->name('stok_add');
-            Route::get('/stok_tbh_baris', 'stok_tbh_baris')->name('stok_tbh_baris');
-            Route::post('/save_stk_masuk', 'save_stk_masuk')->name('save_stk_masuk');
-            Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
-            Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
-            Route::get('/delete/{id}', 'delete')->name('delete');
-            Route::post('/save_opname', 'save_opname')->name('save_opname');
-            Route::post('/update', 'update')->name('update');
-            Route::post('/import', 'import')->name('import');
+    ->prefix('bahan')
+    ->name('bahan.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/save', 'save')->name('save');
+        Route::get('/opname', 'opname')->name('opname');
+        Route::get('/template', 'template')->name('template');
+        Route::get('/history', 'history')->name('history');
+        Route::get('/kategori', 'kategori')->name('kategori');
+        Route::get('/kategori_hapus/{id}', 'kategori_hapus')->name('kategori_hapus');
+        Route::post('/kategori_create', 'kategori_create')->name('kategori_create');
+        Route::get('/load_edit', 'load_edit')->name('load_edit');
+        Route::get('/stok', 'stok')->name('stok');
+        Route::get('/stok_add', 'stok_add')->name('stok_add');
+        Route::get('/stok_tbh_baris', 'stok_tbh_baris')->name('stok_tbh_baris');
+        Route::post('/save_stk_masuk', 'save_stk_masuk')->name('save_stk_masuk');
+        Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
+        Route::get('/load_produk_stok', 'load_produk_stok')->name('load_produk_stok');
+        Route::get('/delete/{id}', 'delete')->name('delete');
+        Route::post('/save_opname', 'save_opname')->name('save_opname');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/import', 'import')->name('import');
 
 
-            Route::get('/singkron', 'singkron')->name('singkron');
-        });
+        Route::get('/singkron', 'singkron')->name('singkron');
+    });
 Route::controller(MenuController::class)
-        ->prefix('menu')
-        ->name('menu.')
-        ->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/tarik', 'tarikLokal');
-            Route::get('/get_menu', 'get_menu')->name('get_menu');
-            Route::get('/addresep', 'addresep')->name('addresep');
-            Route::get('/aktif', 'aktif')->name('aktif');
-            Route::get('/tambah_baris_resep', 'tambah_baris_resep')->name('tambah_baris_resep');
-            Route::get('/get_satuan_resep', 'get_satuan_resep')->name('get_satuan_resep');
-            Route::post('/save_menu', 'save_menu')->name('save_menu');
-            Route::post('/delete_menu', 'delete_menu')->name('delete_menu');
-            Route::get('/get_edit', 'get_edit')->name('get_edit');
-            Route::post('/edit', 'edit')->name('edit');
-            Route::get('/get_resep', 'get_resep')->name('get_resep');
-            Route::post('/save_resep', 'save_resep')->name('save_resep');
-            Route::get('/export_menu', 'export_menu')->name('export_menu');
-            Route::post('/importMenuLevel', 'importMenuLevel')->name('importMenuLevel');
-            Route::get('/export_resep', 'export_resep')->name('export_resep');
-            Route::post('/import_resep', 'import_resep')->name('import_resep');
-            Route::get('/station', 'station')->name('station');
-        });
+    ->prefix('menu')
+    ->name('menu.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/tarik', 'tarikLokal');
+        Route::get('/get_menu', 'get_menu')->name('get_menu');
+        Route::get('/addresep', 'addresep')->name('addresep');
+        Route::get('/aktif', 'aktif')->name('aktif');
+        Route::get('/tambah_baris_resep', 'tambah_baris_resep')->name('tambah_baris_resep');
+        Route::get('/get_satuan_resep', 'get_satuan_resep')->name('get_satuan_resep');
+        Route::post('/save_menu', 'save_menu')->name('save_menu');
+        Route::post('/delete_menu', 'delete_menu')->name('delete_menu');
+        Route::get('/get_edit', 'get_edit')->name('get_edit');
+        Route::post('/edit', 'edit')->name('edit');
+        Route::get('/get_resep', 'get_resep')->name('get_resep');
+        Route::post('/save_resep', 'save_resep')->name('save_resep');
+        Route::get('/export_menu', 'export_menu')->name('export_menu');
+        Route::post('/importMenuLevel', 'importMenuLevel')->name('importMenuLevel');
+        Route::get('/export_resep', 'export_resep')->name('export_resep');
+        Route::post('/import_resep', 'import_resep')->name('import_resep');
+        Route::get('/station', 'station')->name('station');
+    });
 require __DIR__ . '/auth.php';
 require __DIR__ . '/nanda.php';

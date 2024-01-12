@@ -192,6 +192,7 @@
             background-color: #0B7372;
 
         }
+        
     </style>
     @yield('styles')
 
