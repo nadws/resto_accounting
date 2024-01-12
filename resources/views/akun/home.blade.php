@@ -179,7 +179,6 @@
                     }
                     $(document).on('click', '.post_center', function() {
                         var id_akun = $(this).attr('id_akun')
-                        alert(id_akun)
                         $("#post_center").modal('show')
                         load_post_center(id_akun)
                     })
