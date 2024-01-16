@@ -133,8 +133,14 @@ Route::middleware('auth')->group(function () {
         ->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/add', 'add')->name('add');
-            Route::get('/print', 'print')->name('print');
             Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::get('/history', 'history')->name('history');
+            Route::post('/create', 'create')->name('create');
+            Route::post('/bayar', 'bayar')->name('bayar');
+            Route::get('/print/{no_nota}', 'print')->name('print');
+            Route::get('/delete/{no_nota}', 'delete')->name('delete');
+            Route::get('/detail/{no_nota}', 'detail')->name('detail');
+            Route::get('/transaksi_print/{no_nota}', 'transaksi_print')->name('transaksi_print');
         });
 });
 Route::controller(BahanController::class)

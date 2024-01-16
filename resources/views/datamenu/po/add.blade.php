@@ -23,7 +23,7 @@
     </style>
 
     <x-slot name="cardBody">
-        <form action="{{ route('jurnal.create') }}" method="post" class="save_jurnal">
+        <form action="{{ route('po.create') }}" method="post" class="save_jurnal">
             @csrf
             <section class="row">
                 <table class="table">
@@ -40,11 +40,13 @@
                             <input type="date" name="tgl" class="form-control" value="{{ date('Y-m-d') }}">
                         </td>
                         <td>
-                            <input type="text" name="no_nota" readonly value="PO-{{ $no_po }}"
+                            <input type="hidden" name="no_nota" readonly value="{{ $no_po }}"
+                                class="form-control">
+                            <input type="text" name="" readonly value="PO-{{ $no_po }}"
                                 class="form-control">
                         </td>
                         <td>
-                            <select name="id_suplier" id="" class="select22">
+                            <select required name="id_suplier" id="" class="select22">
                                 <option value="">Pilih suplier</option>
                                 @foreach ($suplier as $s)
                                     <option value="{{ $s->id_suplier }}">{{ strtoupper($s->nm_suplier) }}</option>
@@ -75,7 +77,7 @@
                         <tr>
                             <td>1</td>
                             <td>
-                                <select name="id_bahan[]" class="select22">
+                                <select required name="id_bahan[]" class="select22">
                                     <option value="">Pilih Bahan</option>
                                     @foreach ($bahan as $b)
                                         <option value="{{ $b->id_list_bahan }}">{{ strtoupper($b->nm_bahan) }}</option>
@@ -83,12 +85,12 @@
                                 </select>
                             </td>
                             <td>
-                                <input x-mask:dynamic="$money($input)" type="text"
+                                <input required x-mask:dynamic="$money($input)" type="text"
                                     class="form-control text-end qtyKeyup qtyKeyup1" count="1" placeholder="qty"
                                     name="qty[]">
                             </td>
                             <td>
-                                <select name="id_satuan_beli[]" class="select22">
+                                <select required name="id_satuan_beli[]" class="select22">
                                     <option value="">Pilih Satuan Beli</option>
                                     @foreach ($satuan as $s)
                                         <option value="{{ $s->id_satuan }}">{{ strtoupper($s->nm_satuan) }}</option>
@@ -96,7 +98,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input x-mask:dynamic="$money($input)" type="text"
+                                <input required x-mask:dynamic="$money($input)" type="text"
                                     class="form-control text-end rpSatuanKeyup rpSatuanKeyup1" count="1"
                                     placeholder="rp satuan" name="rp_satuan[]">
                             </td>
@@ -154,7 +156,7 @@
                                     BIaya Pengiriman
                                 </th>
                                 <td align="right">
-                                    <input style="width:130px" type="text" x-mask:dynamic="$money($input)"
+                                    <input style="width:130px" name="biaya" type="text" x-mask:dynamic="$money($input)"
                                         class="form-control text-end selectAll bPengirimanKeyup" value="0">
                                 </td>
                             </tr>
@@ -181,7 +183,7 @@
                                     </select>
                                 </th>
                                 <td align="right">
-                                    <input style="width:130px" type="text" x-mask:dynamic="$money($input)"
+                                    <input style="width:130px" name="uangMuka" type="text" x-mask:dynamic="$money($input)"
                                         class="form-control text-end selectAll uangMukaKeyup" value="0">
                                 </td>
                             </tr>
@@ -227,8 +229,8 @@
             }
 
             function updateTotalRp(count) {
-                const qty = $(`.qtyKeyup${count}`).val().replace(',', '')
-                const rpSatuan = $(`.rpSatuanKeyup${count}`).val().replace(',', '')
+                const qty = $(`.qtyKeyup${count}`).val().replace(/,/g, '')
+                const rpSatuan = $(`.rpSatuanKeyup${count}`).val().replace(/,/g, '')
                 const ttlRp = rpSatuan * qty;
                 console.log(qty + ' ' + rpSatuan + ' ' + ttlRp)
                 $(`.totalRpKeyup${count}`).val(ttlRp);
@@ -250,8 +252,8 @@
             }
 
             function updateBiayaDanUangMuka() {
-                const bPengiriman = parseFloat($('.bPengirimanKeyup').val().replace(',', ''));
-                const uangMuka = parseFloat($('.uangMukaKeyup').val().replace(',', ''));
+                const bPengiriman = parseFloat($('.bPengirimanKeyup').val().replace(/,/g, ''));
+                const uangMuka = parseFloat($('.uangMukaKeyup').val().replace(/,/g, ''));
                 const subTotal = parseFloat($('.subTotalValue').val());
                 const grandTotal = subTotal + bPengiriman;
                 const sisaTagihan = grandTotal - uangMuka;
@@ -270,9 +272,7 @@
 
 
 
-            $(document).on('click', '.selectAll', function() {
-                this.select()
-            })
+            
         </script>
     @endsection
 </x-theme.app>

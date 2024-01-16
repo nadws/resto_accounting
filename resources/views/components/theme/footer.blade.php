@@ -38,7 +38,7 @@
             }
         });
     });
-    
+
     $('.costume_muncul').hide();
     $('.bulan_muncul').hide();
     $('.tahun_muncul').hide();
@@ -56,7 +56,7 @@
 
 
     });
- 
+
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {
         $(document).on("keyup", "." + classNoHide, function() {
@@ -126,6 +126,9 @@
             });
         })
     }
+    $(document).on('click', '.selectAll', function() {
+        this.select()
+    })
 
     function plusRow(count, classPlus, url) {
         $(document).on("click", "." + classPlus, function() {
@@ -144,6 +147,7 @@
             var delete_row = $(this).attr("count");
             $(".baris" + delete_row).remove();
         })
+
     }
 </script>
 @if (session()->has('sukses'))
