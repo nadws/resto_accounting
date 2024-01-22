@@ -40,6 +40,12 @@ class NavbarController extends Controller
                 'img' => 'suplier.png',
                 'deskripsi' => 'membuat dan menyunting data rekening',
             ],
+            [
+                'judul' => 'Data Ekspedisi',
+                'route' => 'ekspedisi.index',
+                'img' => 'warehouse.png',
+                'deskripsi' => 'membuat dan menyunting data rekening',
+            ],
 
         ];
         $title = 'Data Master';

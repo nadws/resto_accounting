@@ -75,132 +75,29 @@
         </div>
         <hr>
         <div class="row mt-3">
-            <div class="col">
-                <div class="tbl-container bdr">
-                    <table class="table table-bordered">
-                        <thead class="bg-primary text-white">
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Bahan</th>
-                                <th class="text-end">Qty</th>
-                                <th>Satuan</th>
-                                <th>Keterangan</th>
-                                <th class="text-end">Rp Satuan</th>
-                                <th class="text-end">Total Rp</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($getBarang as $no => $d)
-                                <tr>
-                                    <td>{{ $no + 1 }}</td>
-                                    <td>{{ ucwords($d->nm_bahan) }}</td>
-                                    <td align="right">{{ number_format($d->qty, 0) }}</td>
-                                    <td>{{ ucwords($d->nm_satuan) }}</td>
-                                    <td>{{ $d->ket }}</td>
-                                    <td align="right">{{ number_format($d->ttl_rp / $d->qty, 0) }}</td>
-                                    <td align="right">{{ number_format($d->ttl_rp, 0) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        {{-- <tfoot class="rounded-tfoot text-white bg-info">
-                        <tr>
-                            <th class="text-center " colspan="2">Total</th>
-                            <th class="text-end">8</th>
-                            <th class="text-end" colspan="4">20,000</th>
-                        </tr>
-                    </tfoot> --}}
-                    </table>
-                </div>
-            </div>
+            @include('datamenu.po.components.tbl_item')
+           
         </div>
         <hr>
         <div class="row">
-            <div class="col-6">
-                <table class="table table-border">
-                    <tr>
-                        <td class="dhead  text-start">
-                            <h6 class="text-white">Catatan Tambahan</h6>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="left">{{ $poDetail->catatan ?? '-' }}</td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="col-6">
-                <table class="table table-hover text-start" style="padding-bottom: 1px">
-                    <tr>
-                        <th>Sub Total</th>
-                        <th>
-                            <h6 class="subTotal text-end">{{ number_format($poDetail->sub_total, 0) }}</h6>
-                        </th>
-                    </tr>
-
-                    @if ($poDetail->biaya)
-                        <tr>
-                            <th>
-                                BIaya Pengiriman
-                            </th>
-                            <td align="right">
-                                <h6>{{ number_format($poDetail->biaya, 0) }}</h6>
-                            </td>
-                        </tr>
-                    @endif
-                    @php
-                        $total = $poDetail->sub_total + $poDetail->biaya;
-                    @endphp
-                    <tr>
-                        <th>Total</th>
-                        <th>
-                            <h6 class="grandTotal text-end">{{ number_format($total, 0) }}</h6>
-                        </th>
-                    </tr>
-                    {{-- @if ($poDetail->uang_muka)
-                        <tr>
-                            <th>
-                                Uang Dimuka
-                            </th>
-                            <td align="right">
-                                <h6>{{ number_format($poDetail->uang_muka, 0) }}</h6>
-                            </td>
-                        </tr>
-                    @endif --}}
-
-                    @if ($bayarSum->ttlBayar)
-                        @foreach ($cekSudahPernahBayar as $i => $d)
-                            <tr class="text-primary border">
-                                <th><i class="fas fa-check me-2"></i>Pembayaran {{$d->status == 'dp' ? 'DP' : ''}} {{ strtoupper($d->nm_akun) }} ke -
-                                    {{ $i + 1 }}</th>
-                                <th>
-                                    <h6 class="text-primary text-end"> {{ number_format($d->jumlah, 0) }}</h6>
-                                </th>
-                            </tr>
-                        @endforeach
-
-                    @endif
-                    <tr>
-                        <th>Sisa Tagihan</th>
-                        <th>
-                            @php
-                                $sisaTagihan = $total  - $bayarSum->ttlBayar;
-                            @endphp
-                            <input type="hidden" name="sisaTagihan" class="sisaTagihanValue"
-                                value="{{ $sisaTagihan }}">
-                            <h5 class="text-end"><em class="sisaTagihan ">{{ number_format($sisaTagihan, 0) }}</em>
-                            </h5>
-                        </th>
-                    </tr>
-                </table>
-            </div>
+            @php
+                $total = $poDetail->sub_total - $poDetail->potongan + $poDetail->biaya + $poDetail->ttl_pajak;
+                $sisaTagihan = $total - $bayarSum->ttlBayar;
+            @endphp
+            @include('datamenu.po.components.tbl_sub', [
+                'sisaTagihan' => $sisaTagihan,
+                'total' => $total,
+            ])
         </div>
     </div>
 
 
 
-      
 
-<script>window.print()</script>
+
+    <script>
+        window.print()
+    </script>
 </body>
 
 </html>

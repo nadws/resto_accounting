@@ -52,149 +52,36 @@
             </div>
         </div>
         <div class="row mt-3">
-            <div class="col">
-                <table class="table table-hover table-md">
-                    <thead>
-                        <tr>
-                            <th class="dhead">No</th>
-                            <th width="250" class="dhead">Bahan</th>
-                            <th width="80" class="dhead text-end">Qty</th>
-                            <th class="dhead">Satuan</th>
-                            <th class="dhead text-end">Rp Satuan</th>
-                            <th class="dhead text-end">Total Rp</th>
-                            <th class="dhead">Keterangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $qtySum = 0;
-                            $ttlRpSum = 0;
-                        @endphp
-                        @foreach ($getBarang as $no => $d)
-                            @php
-                                $qtySum += $d->qty;
-                                $ttlRpSum += $d->ttl_rp;
-                            @endphp
-                            <tr>
-                                <td>{{ $no + 1 }}</td>
-                                <td>{{ ucwords($d->nm_bahan) }}</td>
-                                <td align="right">{{ number_format($d->qty, 0) }}</td>
-                                <td>{{ ucwords($d->nm_satuan) }}</td>
-                                <td align="right">{{ number_format($d->ttl_rp / $d->qty, 0) }}</td>
-                                <td align="right">{{ number_format($d->ttl_rp, 0) }}</td>
-                                <td>{{ $d->ket }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                    <tfoot class="rounded-tfoot">
-                        <tr>
-                            <th class="text-center " colspan="2">Total</th>
-                            <th class="text-end">{{ $qtySum }}</th>
-                            <th class="text-end" colspan="3">{{ number_format($ttlRpSum, 0) }}</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+            @include('datamenu.po.components.tbl_item')
         </div>
         <form action="{{ route('po.bayar') }}" method="post">
 
-        <div class="row">
-            <div class="col-7">
-                <table class="table table-border">
-                    <tr>
-                        <td class="dhead  text-start">
-                            <h6 class="text-white">Catatan Tambahan</h6>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align="left">{{ $poDetail->catatan ?? '-' }}</td>
-                    </tr>
-                </table>
+            <div class="row">
+                @php
+                    $total = $poDetail->sub_total - $poDetail->potongan + $poDetail->biaya + $poDetail->ttl_pajak;
+                    $sisaTagihan = $total - $bayarSum->ttlBayar;
+                @endphp
+                @include('datamenu.po.components.tbl_sub', [
+                    'sisaTagihan' => $sisaTagihan,
+                    'total' => $total,
+                ])
             </div>
-
-            <div class="col-5">
-                <table class="table table-hover text-start" style="padding-bottom: 1px">
-                    <tr>
-                        <th>Sub Total</th>
-                        <th>
-                            <h6 class="subTotal text-end">{{ number_format($poDetail->sub_total, 0) }}</h6>
-                        </th>
-                    </tr>
-
-                    @if ($poDetail->biaya)
-                        <tr>
-                            <th>
-                                BIaya Pengiriman
-                            </th>
-                            <td align="right">
-                                <h6> {{ number_format($poDetail->biaya, 0) }}</h6>
-                               
-                            </td>
-                        </tr>
-                    @endif
-                    @php
-                        $total = $poDetail->sub_total + $poDetail->biaya;
-                    @endphp
-                    <tr>
-                        <th>Total</th>
-                        <th>
-                            <h6 class="grandTotal text-end">{{ number_format($total, 0) }}</h6>
-                        </th>
-                    </tr>
-                    {{-- @if ($poDetail->uang_muka)
-                        <tr>
-                            <th>
-                                Uang Dimuka
-                            </th>
-                            <td align="right">
-                                {{ number_format($poDetail->uang_muka, 0) }}
-                            </td>
-                        </tr>
-                    @endif --}}
-
-                    @if ($bayarSum->ttlBayar)
-                        @foreach ($cekSudahPernahBayar as $i => $d)
-                            <tr class="text-primary border">
-                                <th><i class="fas fa-check me-2"></i>Pembayaran {{$d->status == 'dp' ? 'DP' : ''}} {{ strtoupper($d->nm_akun)}} ke - {{ $i + 1 }}</th>
-                                <th>
-                                    <h6 class="text-primary text-end"> {{ number_format($d->jumlah, 0) }}</h6>
-                                </th>
-                            </tr>
-                        @endforeach
-
-                    @endif
-                    <tr>
-                        <th>Sisa Tagihan</th>
-                        <th>
-                            @php
-                                $sisaTagihan = $total - $bayarSum->ttlBayar;
-                            @endphp
-                            <input type="hidden" name="sisaTagihan" class="sisaTagihanValue" value="{{ $sisaTagihan }}">
-                            <h5 class="text-end"><em class="sisaTagihan ">{{ number_format($sisaTagihan, 0) }}</em>
-                            </h5>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <hr>
-        <div class="row" x-data="{}">
-            <div class="col">
-                @if ($bayarSum->ttlBayar < $poDetail->sub_total)
-                    <h6>Terima Pembayaran</h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="dhead">Tgl Transaksi</th>
-                                <th class="dhead" width="170">Total Bayar</th>
-                                <th class="dhead">Dibayar Pakai</th>
-                                <th class="dhead">Catatan</th>
-                                <th class="dhead text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+            <hr>
+            <div class="row" x-data="{}">
+                <div class="col">
+                    @if (ceil($bayarSum->ttlBayar) < ceil($poDetail->sub_total - $poDetail->potongan + $poDetail->ttl_pajak))
+                        <h6>Terima Pembayaran</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="dhead">Tgl Transaksi </th>
+                                    <th class="dhead" width="170">Total Bayar</th>
+                                    <th class="dhead">Dibayar Pakai</th>
+                                    <th class="dhead">Catatan</th>
+                                    <th class="dhead text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @csrf
                                 <tr>
                                     <td>
@@ -221,44 +108,54 @@
                                             placeholder="catatan jika ada">
                                     </td>
                                     <td align="center">
-                                        <span class="text-danger d-none errorTtlBayar">Total Bayar tidak boleh lebih dari Sisa Tagihan</span>
+                                        <span class="text-danger d-none errorTtlBayar">Total Bayar tidak boleh lebih
+                                            dari Sisa Tagihan</span>
                                         <button onclick="return confirm('Yakin ingin dibayar ? ')" type="submit"
-                                            class="btn btn-sm btn-primary btnPembayaran"><i class="fas fa-plus"></i> Tambah
+                                            class="btn btn-sm btn-primary btnPembayaran"><i class="fas fa-plus"></i>
+                                            Tambah
                                             Pembayaran</button>
                                     </td>
                                 </tr>
-                            </form>
+        </form>
 
-                        </tbody>
+        </tbody>
 
 
-                    </table>
-                @endif
-                @if ($bayarSum->ttlBayar)
-                    <h6>Transaksi</h6>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="dhead" width="150">Tgl Transaksi</th>
-                                <th class="dhead">Nama Transaksi</th>
-                                <th class="dhead">Catatan</th>
-                                <th class="dhead text-end">Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($cekSudahPernahBayar as $d)
-                                <tr>
-                                    <td>{{ tanggal($d->tgl_transaksi) }}</td>
-                                    <td>{{ ucwords($d->nm_transaksi) }}</td>
-                                    <td>{{ $d->catatan }}</td>
-                                    <td align="right">{{ number_format($d->jumlah, 0) }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @endif
+        </table>
+        @endif
+        @if ($bayarSum->ttlBayar)
+            <h6>Transaksi</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="dhead" width="150">Tgl Transaksi</th>
+                        <th class="dhead">Nama Transaksi</th>
+                        <th class="dhead">Catatan</th>
+                        <th class="dhead text-end">Jumlah</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($cekSudahPernahBayar as $d)
+                        <tr>
+                            <td>{{ tanggal($d->tgl_transaksi) }}</td>
+                            <td>{{ ucwords($d->nm_transaksi) }}</td>
+                            <td>{{ $d->catatan }}</td>
+                            <td align="right">{{ number_format($d->jumlah, 2) }}</td>
+                        </tr>
+                    @endforeach
+                    @foreach ($getTbhBiaya as $d)
+                        <tr>
+                            <td>{{ tanggal($d->tgl_tambahan) }}</td>
+                            <td>Biaya Tambahan Diluar Nota</td>
+                            <td>{{ $d->ket }}</td>
+                            <td align="right">{{ number_format($d->ttl_rp_biaya, 2) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
 
-            </div>
+        </div>
 
         </div>
     </x-slot>
@@ -270,11 +167,11 @@
     @section('scripts')
         <script>
             $('.select22').select2()
-            $(document).on('keyup', '.ttlBayar', function(){
+            $(document).on('keyup', '.ttlBayar', function() {
                 const ttlBayar = parseFloat($(this).val().replace(/,/g, ''))
                 const sisaBayar = parseFloat($('.sisaTagihanValue').val().replace(/,/g, ''))
 
-                if(ttlBayar > sisaBayar) {
+                if (ttlBayar > sisaBayar) {
                     $('.btnPembayaran').addClass('d-none');
                     $('.errorTtlBayar').removeClass('d-none');
                 } else {

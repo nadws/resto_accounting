@@ -15,4 +15,8 @@
         <a class="nav-link {{ request()->route()->getName() == 'bahan.opname'? 'active': '' }}"
             href="{{ route('bahan.opname') }}">Opname</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {{ request()->route()->getName() == 'bahan.history'? 'active': '' }}"
+            href="{{ route('bahan.history') }}">History</a>
+    </li>
 </ul>

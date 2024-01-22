@@ -56,6 +56,9 @@
 
 
     });
+    $('.selectView').select2({
+        dropdownParent: $('#view .modal-content')
+    });
 
 
     function convertRp(classNoHide, classHide, classTotal, classTotalhide) {

@@ -3,6 +3,7 @@
         <a class="nav-link {{ request()->route()->getName() == 'po.index'? 'active': '' }}" aria-current="page"
             href="{{ route('po.index') }}">Pesanan Pembelian</a>
     </li>
+  
     <li class="nav-item">
         <a class="nav-link {{ request()->route()->getName() == 'po.history'? 'active': '' }}" aria-current="page"
             href="{{ route('po.history') }}">History Transaksi PO</a>

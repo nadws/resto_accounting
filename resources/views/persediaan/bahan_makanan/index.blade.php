@@ -14,7 +14,6 @@
             <div class="col-lg-6">
                 <x-theme.button modal="Y" idModal="tambah" href="#" icon="fa-plus" addClass="float-end"
                     teks="Buat Baru" />
-                <x-theme.button href="#" icon="fa-history" addClass="float-end history" teks="History" />
                 <x-theme.button modal="Y" idModal="import" href="#" icon="fa-upload" addClass="float-end"
                     teks="Import" />
             </div>

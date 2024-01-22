@@ -411,8 +411,13 @@ class BahanController extends Controller
         return redirect()->route('bahan.stok')->with('sukses', 'Data Berhasil ditambahkan');
     }
 
-    public function history()
+    public function history(Request $r)
     {
+        
+        $tgl = tanggalFilter($r);
+        $tgl1 = $tgl['tgl1'];
+        $tgl2 = $tgl['tgl2'];
+
         $stokMasuk = DB::select("SELECT 
         a.invoice,
         a.debit,
@@ -421,7 +426,7 @@ class BahanController extends Controller
         a.tgl
         FROM `stok_bahan` as a
         JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
-        where a.invoice NOT LIKE '%BHNOPN%';");
+        where a.invoice NOT LIKE '%BHNOPN%' AND a.tgl BETWEEN '$tgl1' AND '$tgl2'");
 
 
         $stokOpname = DB::select("SELECT 
@@ -433,10 +438,10 @@ class BahanController extends Controller
                 a.tgl
                 FROM `stok_bahan` as a
                 JOIN tb_list_bahan as b on a.id_bahan = b.id_list_bahan
-                where a.invoice LIKE '%BHNOPN%';");
+                where a.invoice LIKE '%BHNOPN%'  AND a.tgl BETWEEN '$tgl1' AND '$tgl2'");
 
         $data = [
-            'title' =>  'aldi',
+            'title' =>  'History Stok',
             'stokMasuk' => $stokMasuk,
             'stokOpname' => $stokOpname,
         ];

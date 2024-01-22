@@ -36,7 +36,7 @@
                         <td><a target="_blank" href="{{ route('po.transaksi_print', $d->no_nota) }}">{{ ucwords($d->nm_transaksi) }}: {{ ucwords($d->nm_suplier) }}</a></td>
                         <td>{{ strtoupper($d->nm_akun) }}</td>
                         <td>{{ $d->nm_suplier }}</td>
-                        <td align="right">{{ number_format($d->jumlah,0) }}</td>
+                        <td align="right">{{ number_format($d->jumlah,2) }}</td>
                     </tr>
                     @endforeach
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BahanController;
 use App\Http\Controllers\CashflowController;
+use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\JurnalAktivaController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\MenuController;
@@ -134,13 +135,28 @@ Route::middleware('auth')->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/add', 'add')->name('add');
             Route::get('/tbh_baris', 'tbh_baris')->name('tbh_baris');
+            Route::get('/tagihan', 'tagihan')->name('tagihan');
             Route::get('/history', 'history')->name('history');
+            Route::get('/load_selectEkspedisi', 'load_selectEkspedisi')->name('load_selectEkspedisi');
             Route::post('/create', 'create')->name('create');
+            Route::post('/create_biaya_tambahan', 'create_biaya_tambahan')->name('create_biaya_tambahan');
+            Route::get('/load_bukukan', 'load_bukukan')->name('load_bukukan');
             Route::post('/bayar', 'bayar')->name('bayar');
+            Route::post('/create_bukukan', 'create_bukukan')->name('create_bukukan');
+            Route::get('/tambahan/{no_nota}', 'tambahan')->name('tambahan');
             Route::get('/print/{no_nota}', 'print')->name('print');
             Route::get('/delete/{no_nota}', 'delete')->name('delete');
             Route::get('/detail/{no_nota}', 'detail')->name('detail');
             Route::get('/transaksi_print/{no_nota}', 'transaksi_print')->name('transaksi_print');
+        });
+    Route::controller(EkspedisiController::class)
+        ->prefix('ekspedisi')
+        ->name('ekspedisi.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
+            Route::get('/delete/{id}', 'delete')->name('delete');
+            Route::post('/update', 'update')->name('update');
         });
 });
 Route::controller(BahanController::class)

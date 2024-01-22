@@ -41,6 +41,7 @@
                 <select name="tahun" id="" class="selectView bulan">
                     <option {{date('Y') == '2022' ? 'selected' : ''}} value="2022">2022</option>
                     <option {{date('Y') == '2023' ? 'selected' : ''}} value="2023">2023</option>
+                    <option {{date('Y') == '2024' ? 'selected' : ''}} value="2024">2024</option>
                 </select>
             </div>
             <div class="col-lg-8 tahun_muncul mt-2">
@@ -48,9 +49,13 @@
                 <select name="tahunfilter" id="" class="selectView tahun">
                     <option {{date('Y') == '2022' ? 'selected' : ''}} value="2022">2022</option>
                     <option {{date('Y') == '2023' ? 'selected' : ''}} value="2023">2023</option>
+                    <option {{date('Y') == '2024' ? 'selected' : ''}} value="2024">2024</option>
                 </select>
             </div>
         </div>
 
     </x-theme.modal>
 </form>
+<script>
+    $('.selectView').select2()
+</script>
