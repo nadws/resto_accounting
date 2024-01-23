@@ -27,7 +27,7 @@ class PoController extends Controller
         $adaWhere = $where ? "where a.no_nota = $nota GROUP by a.no_nota" : '';
         $db = $where ? 'selectOne' : 'select';
         return $po = DB::$db("SELECT 
-        a.no_nota,a.tgl,a.nota_jurnal,a.nota_manual,a.admin,a.sub_total,a.ttl_pajak,a.status,a.biaya,a.uang_muka,a.catatan,a.diskon,a.potongan,
+        a.no_nota,a.tgl,a.nota_jurnal,a.nota_jurnal_pengiriman,a.nota_manual,a.admin,a.sub_total,a.ttl_pajak,a.status,a.biaya,a.uang_muka,a.catatan,a.diskon,a.potongan,
         b.nm_suplier,b.npwp,b.alamat,b.telepon,b.email
         FROM po_pembelian a
         JOIN tb_suplier b ON a.id_suplier = b.id_suplier $adaWhere order by a.id_pembelian DESC");
@@ -64,7 +64,6 @@ class PoController extends Controller
                 ->join('tb_ekspedisi as b', 'a.id_ekspedisi', 'b.id_ekspedisi')
                 ->where('a.no_nota', $no_nota)->count();
         };
-
         $data = [
             'title' => 'Pesanan Pembelian',
             'po' => $po,
@@ -229,7 +228,30 @@ class PoController extends Controller
         ];
         return view('datamenu.po.bukukan', $data);
     }
+    public function load_bukukan_pengiriman(Request $r)
+    {
+        $max = DB::table('notas')->latest('nomor_nota')->where('id_buku', '2')->first();
 
+
+        if (empty($max)) {
+            $nota_t = '1000';
+        } else {
+            $nota_t = $max->nomor_nota + 1;
+        }
+        $no_nota = $r->no_nota;
+        $data = [
+            'no_nota'   => $no_nota,
+            'cekSudahPernahBayar' => $this->getCekSudahPernahBayar($no_nota),
+            'transaksi' => $this->getHistoryQuery(true, $no_nota),
+            'poDetail' => $this->getQueryPo(true, $no_nota),
+            'getBarang' => $this->getBarangPerNota($no_nota),
+            'bayarSum' => $this->getSumBayarDitransaksi($no_nota),
+            'nota_jurnal' => $nota_t,
+            'akun' => $this->getDataMaster('akunPembayaran'),
+            'postCenter' => $this->getDataMaster('postCenter')
+        ];
+        return view('datamenu.po.bukukan_pengiriman', $data);
+    }
     public function create_bukukan(Request $r)
     {
         DB::beginTransaction();
@@ -246,12 +268,10 @@ class PoController extends Controller
 
             // masukan ke stok
             $getItem = DB::table('po_item')->where('no_nota', $no_nota)->get();
-            $invo = DB::selectOne("SELECT max(a.urutan) as urutan
-            FROM stok_bahan as a WHERE a.invoice LIKE '%BHNMSK%'
-            ");
+
+            $invo = DB::selectOne("SELECT max(a.urutan) as urutan FROM stok_bahan as a WHERE a.invoice LIKE '%BHNMSK%'");
 
             $invoice = empty($invo->urutan) ? '1001' : $invo->urutan + 1;
-
 
             foreach ($getItem as $d) {
                 DB::table('stok_bahan')->insert([
@@ -286,7 +306,7 @@ class PoController extends Controller
                     'id_akun' => $id_akun,
                     'no_dokumen' => $nota_manual,
                     'id_buku' => $id_buku,
-                    'ket' => "dari po-$ket",
+                    'ket' => "dari po-$no_nota-$ket",
                     'debit' => $debit,
                     'kredit' => $kredit,
                     'admin' => auth()->user()->name,
@@ -295,7 +315,7 @@ class PoController extends Controller
                     'id_suplier' => '',
                     'no_urut' => $akun->inisial . '-' . $urutan,
                     'urutan' => $urutan,
-                    'id_post_center' =>$id_post_center
+                    'id_post_center' => $id_post_center
                 ];
                 DB::table('jurnal')->insert($data);
             }
@@ -306,14 +326,78 @@ class PoController extends Controller
             // cek jika ada selisih debit kredit
             if ($totalDebit !== $totalKredit) {
                 return redirect()->route('po.index')->with('error', 'Data GAGAL : debit kredit tidak sama');
-            }   
+            }
 
             DB::commit();
             return redirect()->route('po.index')->with('sukses', 'Data Berhasil masuk akun');
         } catch (Exception $e) {
-            return redirect()->route('po.index')->with('error', $e->getMessage());
 
             DB::rollBack();
+            return redirect()->route('po.index')->with('error', $e->getMessage());
+        }
+    }
+    public function create_bukukan_pengiriman(Request $r)
+    {
+        dd('pengirmana');
+        DB::beginTransaction();
+        try {
+
+            $no_nota = $r->no_nota;
+            $tgl = $r->tgl_jurnal;
+            $ket = $r->ket;
+            $nota_manual = $r->nota_manual;
+            $nota_jurnal = $r->nota_jurnal;
+            $id_post_center = $r->id_post_center;
+            $totalKredit = $r->totalKredit;
+            $totalDebit = $r->totalDebit;
+
+            // masukan jurnal
+            for ($i = 0; $i < count($r->id_akun); $i++) {
+                $id_buku = 2;
+                DB::table('notas')->insert(['nomor_nota' => $nota_jurnal, 'id_buku' => $id_buku]);
+
+                $id_akun = $r->id_akun[$i];
+                $debit = $r->debit[$i];
+                $kredit = $r->kredit[$i];
+                $id_post_center = $r->id_post_center[$i];
+
+                $max_akun = DB::table('jurnal')->latest('urutan')->where('id_akun', $id_akun)->first();
+                $akun = DB::table('akun')->where('id_akun', $id_akun)->first();
+                $urutan = empty($max_akun) ? '1001' : ($max_akun->urutan == 0 ? '1001' : $max_akun->urutan + 1);
+                $data = [
+                    'tgl' => $tgl,
+                    'no_nota' => 'TGHNPO-' . $nota_jurnal,
+                    'id_akun' => $id_akun,
+                    'no_dokumen' => $nota_manual,
+                    'id_buku' => $id_buku,
+                    'ket' => "PENGIRIMAN PO/$no_nota-$ket",
+                    'debit' => $debit,
+                    'kredit' => $kredit,
+                    'admin' => auth()->user()->name,
+                    'tgl_dokumen' => $tgl,
+                    'id_proyek' => '',
+                    'id_suplier' => '',
+                    'no_urut' => $akun->inisial . '-' . $urutan,
+                    'urutan' => $urutan,
+                    'id_post_center' => $id_post_center
+                ];
+                DB::table('jurnal')->insert($data);
+            }
+            // end jurnal--------------
+
+            DB::table('po_pembelian')->where('no_nota', $no_nota)->update(['nota_jurnal_pengiriman' => 'TGHNPO-' . $nota_jurnal]);
+
+            // cek jika ada selisih debit kredit
+            if ($totalDebit !== $totalKredit) {
+                return redirect()->route('po.index')->with('error', 'Data GAGAL : debit kredit tidak sama');
+            }
+
+            DB::commit();
+            return redirect()->route('po.index')->with('sukses', 'Data Berhasil masuk akun');
+        } catch (Exception $e) {
+
+            DB::rollBack();
+            return redirect()->route('po.index')->with('error', $e->getMessage());
         }
     }
     public function delete($no_nota)

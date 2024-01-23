@@ -444,6 +444,8 @@ class BahanController extends Controller
             'title' =>  'History Stok',
             'stokMasuk' => $stokMasuk,
             'stokOpname' => $stokOpname,
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
         ];
         return view('persediaan.bahan_makanan.history', $data);
     }

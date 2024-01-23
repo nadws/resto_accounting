@@ -9,7 +9,7 @@
                 <hr>
             </div>
         </div>
-        <h6 class="float-start">{{ $title }}</h6>
+        <h6 class="float-start">{{ $title }} {{ tanggal($tgl1) }} ~ {{ tanggal($tgl2) }}</h6>
         <div class="row justify-content-end">
             <div class="col-lg-6">
                 <x-theme.btn_filter />

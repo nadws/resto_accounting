@@ -141,8 +141,10 @@ Route::middleware('auth')->group(function () {
             Route::post('/create', 'create')->name('create');
             Route::post('/create_biaya_tambahan', 'create_biaya_tambahan')->name('create_biaya_tambahan');
             Route::get('/load_bukukan', 'load_bukukan')->name('load_bukukan');
+            Route::get('/load_bukukan_pengiriman', 'load_bukukan_pengiriman')->name('load_bukukan_pengiriman');
             Route::post('/bayar', 'bayar')->name('bayar');
             Route::post('/create_bukukan', 'create_bukukan')->name('create_bukukan');
+            Route::post('/create_bukukan_pengiriman', 'create_bukukan_pengiriman')->name('create_bukukan_pengiriman');
             Route::get('/tambahan/{no_nota}', 'tambahan')->name('tambahan');
             Route::get('/print/{no_nota}', 'print')->name('print');
             Route::get('/delete/{no_nota}', 'delete')->name('delete');

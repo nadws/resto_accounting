@@ -4,10 +4,10 @@
             href="{{ route('po.index') }}">Pesanan Pembelian</a>
     </li>
   
-    <li class="nav-item">
+    {{-- <li class="nav-item">
         <a class="nav-link {{ request()->route()->getName() == 'po.history'? 'active': '' }}" aria-current="page"
             href="{{ route('po.history') }}">History Transaksi PO</a>
-    </li>
+    </li> --}}
 </ul>
 <x-theme.button modal="Y" idModal="view" icon="fa-calendar-week" addClass="float-end" teks="Filter" />
 <form action="" method="GET">

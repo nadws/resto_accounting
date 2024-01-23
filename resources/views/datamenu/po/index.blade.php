@@ -1,4 +1,4 @@
-<x-theme.app title="{{ $title }}" table="Y" sizeCard="9">
+<x-theme.app title="{{ $title }}" table="Y" sizeCard="10">
     <x-slot name="cardHeader">
         <div class="row">
             <div class="col-lg-12">
@@ -6,6 +6,7 @@
             </div>
             <div class="col-lg-12">
                 <hr>
+
             </div>
         </div>
         <h6 class="float-start">{{ $title }}</h6>
@@ -23,7 +24,7 @@
                         <th>Total Rp</th>
                         <th>Status</th>
                         <th>Admin</th>
-                        <th width="10%" class="text-center">Aksi</th>
+                        <th width="10%" class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,8 +57,15 @@
                                 <span
                                     class="badge badge-sm bg-{{ $warna[$d->status] }}">{{ ucwords($d->status) }}</span>
                                 @if ($d->nota_jurnal)
+                                    <br>
                                     <span class="mt-1 badge badge-sm bg-{{ $warna[$d->status] }}">Nota Jurnal :
                                         {{ ucwords($d->nota_jurnal) }}</span>
+                                @endif
+                                @if (getCountTbhBayar($d->no_nota) > 0)
+                                    <br>
+
+                                    <span class="mt-1 badge bg-success">Biaya Pengiriman :
+                                        {{ $d->nota_jurnal_pengiriman ?? getCountTbhBayar($d->no_nota) }}</span>
                                 @endif
                             </td>
                             <td>{{ $d->admin }}</td>
@@ -74,26 +82,36 @@
                                         Aksi
                                     </button>
                                     <div class="dropdown-menu" style="">
-                                        @if ($warna[$d->status] == 'primary' && !$d->nota_jurnal)
+                                        @if (!$d->nota_jurnal)
+                                            <a href="#" class="dropdown-item bukukan"
+                                                linkSubmit="{{ route('po.create_bukukan') }}"
+                                                link="{{ route('po.load_bukukan') }}" no_nota="{{ $d->no_nota }}">
+                                                <i class="fas fa-book"></i> Bukukan +
+                                                Stokan
+                                            </a>
+                                        @endif
+                                        @if (!$d->nota_jurnal_pengiriman)
+                                            @if (getCountTbhBayar($d->no_nota) > 0)
                                                 <a href="#" class="dropdown-item bukukan"
-                                                    no_nota="{{ $d->no_nota }}"><i class="fas fa-book"></i> Bukukan +
-                                                    Stokan
+                                                    linkSubmit="{{ route('po.create_bukukan_pengiriman') }}"
+                                                    link="{{ route('po.load_bukukan_pengiriman') }}"
+                                                    no_nota="{{ $d->no_nota }}"><i class="fas fa-book"></i> Bukukan
+                                                    Biaya Pengiriman
                                                 </a>
+                                            @else
                                                 <a href="{{ route('po.tambahan', $d->no_nota) }}"
-                                                    class="dropdown-item"><i class="fas fa-plus"></i> Biaya Tambahan
-                                                    @if (getCountTbhBayar($d->no_nota) > 0)
-                                                        <span
-                                                            class="badge bg-success">{{ getCountTbhBayar($d->no_nota) }}</span>
-                                                    @endif
+                                                    class="dropdown-item"><i class="fas fa-plus"></i> Biaya Pengiriman
+
                                                 </a>
                                             @endif
-                                            <a target="_blank" href="{{ route('po.print', $d->no_nota) }}"
-                                                class="dropdown-item"><i class="fas fa-print"></i> Cetak</a>
-                                            <a href="{{ route('po.detail', $d->no_nota) }}" class="dropdown-item"><i
-                                                    class="fas fa-eye"></i> Detail</a>
-                                            <a onclick="return confirm('Yakin dihapus ? ')"
-                                                href="{{ route('po.delete', $d->no_nota) }}"
-                                                class="dropdown-item text-danger"><i class="fas fa-trash"></i> Hapus</a>
+                                        @endif
+                                        <a target="_blank" href="{{ route('po.print', $d->no_nota) }}"
+                                            class="dropdown-item"><i class="fas fa-print"></i> Cetak</a>
+                                        <a href="{{ route('po.detail', $d->no_nota) }}" class="dropdown-item"><i
+                                                class="fas fa-eye"></i> Detail</a>
+                                        <a onclick="return confirm('Yakin dihapus ? ')"
+                                            href="{{ route('po.delete', $d->no_nota) }}"
+                                            class="dropdown-item text-danger"><i class="fas fa-trash"></i> Hapus</a>
                                     </div>
                                 </div>
 
@@ -104,22 +122,28 @@
                 </tbody>
             </table>
         </section>
-        <form action="{{ route('po.create_bukukan') }}" method="post">
+        <form id="formSubmitBukukan" method="post">
             @csrf
             <x-theme.modal title="Bukukan ke Jurnal" size="modal-lg" idModal="modal_bukukan">
                 <div id="load_bukukan"></div>
             </x-theme.modal>
         </form>
 
+
         @section('scripts')
             <script>
                 $(document).on('click', '.bukukan', function(e) {
                     e.preventDefault();
                     const no_nota = $(this).attr('no_nota')
+                    const link = $(this).attr('link')
+                    const linkSubmit = $(this).attr('linkSubmit')
+
+                    $("#formSubmitBukukan").attr('action', linkSubmit);
                     $("#modal_bukukan").modal('show')
+                    
                     $.ajax({
                         type: "GET",
-                        url: "{{ route('po.load_bukukan') }}",
+                        url: link,
                         data: {
                             no_nota: no_nota
                         },
