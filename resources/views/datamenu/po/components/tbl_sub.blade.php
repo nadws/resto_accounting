@@ -68,7 +68,7 @@
             @foreach ($cekSudahPernahBayar as $i => $d)
                 <tr class="text-primary border">
                     <th style="font-size:13px"><i class="fas fa-check me-2"></i>Pembayaran
-                        {{ $d->status == 'dp' ? 'DP' : '' }}
+                        
                         {{ strtoupper($d->nm_akun) }} ke -
                         {{ $i + 1 }}</th>
                     <th>

@@ -36,32 +36,34 @@
                     $totalDebit = 0;
                 @endphp
                 <tbody>
+                    @foreach ($getBarang as $no => $d)
                     <tr>
                         <td>{{ tanggal($poDetail->tgl) }}</td>
-                        <td>Sub Total</td>
+                        <td>{{$d->nm_bahan}}</td>
                         <td>
                             <input type="hidden" name="id_akun[]" value="42">
-                            <input type="hidden" name="debit[]" value="{{ $poDetail->sub_total }}">
+                            <input type="hidden" name="debit[]" value="{{ $d->ttl_rp }}">
                             <input type="hidden" name="kredit[]" value="0">
                             <select disabled name="id_akun_debit[]" id="" class="selectAkun">
-                                @foreach ($akun as $d)
-                                    <option {{ $d->id_akun == 42 ? 'selected' : '' }} value="{{ $d->id_akun }}">
-                                        {{ $d->nm_akun }}</option>
+                                @foreach ($akun as $a)
+                                    <option {{ $a->id_akun == 42 ? 'selected' : '' }} value="{{ $a->id_akun }}">
+                                        {{ $a->nm_akun }}</option>
                                 @endforeach
                             </select>   
                         </td>
                         <td>
                             <select name="id_post_center[]" id="" class="selectAkun">
-                                @foreach ($postCenter as $d)
-                                    <option value="{{ $d->id_post_center }}">{{ $d->nm_post }}</option>
+                                @foreach ($postCenter as $p)
+                                    <option value="{{ $p->id_post_center }}">{{ $p->nm_post }}</option>
                                 @endforeach
                             </select>
 
 
                         </td>
-                        <td align="right">{{ number_format($poDetail->sub_total, 2) }}</td>
+                        <td align="right">{{ number_format($d->ttl_rp, 2) }}</td>
                         <td align="right">{{ number_format(0, 2) }}</td>
                     </tr>
+                    @endforeach
                     @if ($poDetail->biaya)
                         <tr>
                             <td>{{ tanggal($poDetail->tgl) }}</td>
