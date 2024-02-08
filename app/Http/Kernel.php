@@ -63,5 +63,9 @@ class Kernel extends HttpKernel
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'cek.posisi.head' => \App\Http\Middleware\CekPosisi::class,
+        'cek.posisi.admin' => \App\Http\Middleware\CekPosisiAdmin::class,
+        'cek.posisi.presiden' => \App\Http\Middleware\CekPosisiPresiden::class,
+
     ];
 }

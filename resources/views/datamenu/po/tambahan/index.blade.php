@@ -179,7 +179,10 @@
                 const nilai = $(this).val()
                 if (nilai == 'tambah') {
                     $('#modal_tbh_ekspedisi').modal('show')
-                    $('#form_tbh_ekspedisi').submit(function(e) {
+                    
+                }
+            })
+            $('#form_tbh_ekspedisi').submit(function(e) {
                         e.preventDefault();
                         const nm_ekspedisi = $('.nm_ekspedisi').val()
                         $.ajax({
@@ -194,8 +197,6 @@
                             }
                         });
                     });
-                }
-            })
             $(document).on('keyup', '.tbhBayarKeyup', function() {
                 const tambahanBiaya = parseFloat($(this).val().replace(/,/g, ''));
                 var grandTotal = parseFloat($('.sudahDibayarValue').val())  

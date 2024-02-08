@@ -212,11 +212,13 @@
 
                             <tr @click.prevent="bPengiriman = ! bPengiriman">
                                 <td colspan="2">
-                                    <a href="#"><i class="fas fa-plus"></i> Biaya Pengiriman</a>
+                                    <a href="#"><i class="fas fa-plus"></i> Biaya Tambahan</a>
                                 </td>
                             </tr>
                             <tr x-show="bPengiriman">
                                 <td>
+                                    <div class="form-group">
+                                    <label for="">Debit Akun</label>
                                     <select name="id_akun_pembayaran" id="" class="select22">
                                         <option value="">Pilih Akun</option>
                                         @foreach ($akunPembayaran as $d)
@@ -224,6 +226,19 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="form-group">
+
+                                    <label for="">Kredit Akun</label>
+
+                                    <select name="id_akun_lawan" id="" class="select22">
+                                        <option value="">Pilih Akun</option>
+                                        @foreach ($akunPembayaran as $d)
+                                            <option value="{{ $d->id_akun }}">{{ strtoupper($d->nm_akun) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
                                 </td>
                                 <td align="right">
                                     <input style="width:130px" name="biaya" type="text"

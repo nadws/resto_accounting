@@ -11,9 +11,8 @@ class DashboardController extends Controller
     {
         $data = [
             'title' => 'Dashboard',
-            'kategori_akun' => DB::table('subklasifikasi_akun')->get()
         ];
 
-        return view('dashboard.index', $data);
+        return view('dashboardmenu.index', $data);
     }
 }

@@ -69,9 +69,9 @@
                             <td>{{ tanggal($poDetail->tgl) }}</td>
                             <td>Biaya Pengiriman</td>
                             <td>
-                                <input type="hidden" name="debit[]" value="{{ $poDetail->biaya }}">
+                                <input type="hidden" name="kredit[]" value="{{ $poDetail->biaya }}">
                                 <input type="hidden" name="id_post_center[]">
-                                <input type="hidden" name="kredit[]" value="0">
+                                <input type="hidden" name="debit[]" value="0">
 
                                 <select name="id_akun[]" id="" class="selectAkun">
 
@@ -82,8 +82,8 @@
                             </td>
                             <td></td>
 
-                            <td align="right">{{ number_format($poDetail->biaya, 2) }}</td>
                             <td align="right">{{ number_format(0, 2) }}</td>
+                            <td align="right">{{ number_format($poDetail->biaya, 2) }}</td>
                         </tr>
                     @endif
                     @if ($poDetail->ttl_pajak)

@@ -1,65 +1,49 @@
 @auth
-<header class="mb-5">
-    @include('components.theme.header2')
-    <nav class="main-navbar ">
-        <div class="container font-bold">
-            <ul>
-                <li class="menu-item ">
-                    <a href="{{ route('dashboard.index') }}"
-                        class='menu-link {{ request()->route()->getName() == 'dashboard.index'
-                            ? 'active_navbar_new'
-                            : '' }}'>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                {{-- <li class="menu-item">
-                    <a href="{{ route('cashflow.add') }}"
-                        class='menu-link {{ request()->route()->getName() == 'cashflow.add'
-                            ? 'active_navbar_new'
-                            : '' }}'>
-                        <span>Tambah Cashflow</span>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('cashflow.index') }}"
-                        class='menu-link {{ request()->route()->getName() == 'cashflow.index'
-                            ? 'active_navbar_new'
-                            : '' }}'>
-                        <span>Transaksi</span>
-                    </a>
-                </li> --}}
-                @php
-                    $navbar = DB::table('navbar')
-                        ->orderBy('urutan', 'ASC')
-                        ->get();
-
-                @endphp
-                @foreach ($navbar as $d)
-                    @php
-                        $string = $d->isi;
-                        $string = str_replace(['[', ']', "'"], '', $string);
-                        $array = explode(', ', $string);
-                    @endphp
-                    <li class="menu-item">
-                        <a href="{{ route($d->route) }}"
-                            class='menu-link 
-                    {{ in_array(request()->route()->getName(),$array)? 'active_navbar_new': '' }}'>
-                            <span> {{ ucwords($d->nama) }}</span>
+    <header class="mb-5">
+        @include('components.theme.header2')
+        <nav class="main-navbar ">
+            <div class="container font-bold">
+                <ul>
+                    <li class="menu-item ">
+                        <a href="{{ route('dashboard.index') }}"
+                            class='menu-link {{ request()->route()->getName() == 'dashboard.index'
+                                ? 'active_navbar_new'
+                                : '' }}'>
+                            <span>Dashboard</span>
                         </a>
                     </li>
-                @endforeach
-                <li class="menu-item ">
-                    <a href="{{ route('sinkron.index') }}"
-                        class='menu-link {{ request()->route()->getName() == 'sinkron.index'
-                            ? 'active_navbar_new'
-                            : '' }}'>
-                        <span>Sinkron</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </nav>
 
-</header>
+                    @php
+                        $id_user = auth()->user()->id;
+
+                        $navbar = DB::table('navbar')
+                            ->orderBy('urutan', 'ASC')
+                            ->get();
+                    @endphp
+                    @foreach ($navbar as $i => $d)
+                        @php
+                            $string = $d->isi;
+                            $string = str_replace(['[', ']', "'"], '', $string);
+                            $array = explode(', ', $string);
+                            $data = DB::table('sub_navbar as a')
+                                ->join('permission_navbar as b', 'a.id_sub_navbar', 'b.id_sub_navbar')
+                                ->where([['a.navbar', $i + 1], ['b.id_user', $id_user]])
+                                ->get();
+                        @endphp
+                        @if ($data->isNotEmpty())
+                            <li class="menu-item">
+                                <a href="{{ route($d->route) }}"
+                                    class='menu-link 
+                    {{ in_array(request()->route()->getName(),$array)? 'active_navbar_new': '' }}'>
+                                    <span> {{ ucwords($d->nama) }}</span>
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+
+                </ul>
+            </div>
+        </nav>
+
+    </header>
 @endauth
-

@@ -7,8 +7,10 @@ use App\Http\Controllers\JurnalAktivaController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\NavbarController;
+use App\Http\Controllers\PengorderanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PeralatanController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitController;
@@ -23,9 +25,11 @@ Route::get('/login', function () {
     return redirect('login');
 });
 Route::middleware('auth')->group(function () {
+
     Route::get('/template1', function () {
         return view('template-notable');
     })->name('template1');
+
 
     // Route::get('/dashboard', function () {
     //     return view('template-notable');
@@ -38,20 +42,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/403', function () {
         view('error.403');
     })->name('403');
-
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('/profile', 'edit')->name('profile.edit');
-        Route::patch('/profile', 'update')->name('profile.update');
-        Route::delete('/profile', 'destroy')->name('profile.destroy');
-    });
-
-
     Route::controller(NavbarController::class)->group(function () {
         Route::get('/buku_besar', 'buku_besar')->name('buku_besar');
         Route::get('/pembukuan', 'pembukuan')->name('pembukuan');
         Route::get('/persediaan', 'persediaan')->name('persediaan');
         Route::get('/datamenu', 'datamenu')->name('datamenu');
+
+        Route::get('/tbhNavbar', 'tbhNavbar')->name('tbhNavbar');
+        Route::post('/createNavbar', 'createNavbar')->name('createNavbar');
     });
+    Route::controller(PermissionController::class)
+        ->prefix('data_master/permission')
+        ->name('permission.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::post('/', 'create')->name('create');
+        });
     Route::controller(UserController::class)
         ->prefix('user')
         ->name('user.')
@@ -62,7 +68,11 @@ Route::middleware('auth')->group(function () {
             Route::get('/delete', 'delete')->name('delete');
             Route::get('/edit', 'edit')->name('edit');
         });
-
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('/profile', 'edit')->name('profile.edit');
+        Route::patch('/profile', 'update')->name('profile.update');
+        Route::delete('/profile', 'destroy')->name('profile.destroy');
+    });
     Route::controller(JurnalController::class)
         ->prefix('jurnal')
         ->name('jurnal.')
@@ -103,6 +113,7 @@ Route::middleware('auth')->group(function () {
         ->name('profit.')
         ->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/dashboard', 'dashboard')->name('dashboard');
             Route::get('/createAkun', 'createAkun')->name('createAkun');
             Route::get('/importLaporan', 'importLaporan')->name('importLaporan');
             Route::get('/loadListAkunProfit', 'loadListAkunProfit')->name('loadListAkunProfit');
@@ -159,6 +170,18 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', 'create')->name('create');
             Route::get('/delete/{id}', 'delete')->name('delete');
             Route::post('/update', 'update')->name('update');
+        });
+
+    Route::controller(PengorderanController::class)
+        ->prefix('pengorderan')
+        ->name('pengorderan.')
+        ->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/add', 'add')->name('add');
+            Route::get('/load_selectSatuan', 'load_selectSatuan')->name('load_selectSatuan');
+            Route::get('/print/{no_nota}', 'print')->name('print');
+            Route::post('/create', 'create')->name('create');
+            Route::get('/createSatuan', 'createSatuan')->name('createSatuan');
         });
 });
 Route::controller(BahanController::class)

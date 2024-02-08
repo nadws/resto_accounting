@@ -111,6 +111,7 @@ class PoController extends Controller
             $catatan = $r->catatan;
             $id_akun = $r->id_akun;
             $id_akun_pembayaran = $r->id_akun_pembayaran;
+            $id_akun_lawan = $r->id_akun_lawan;
             $id_akun_selisih = $r->id_akun_selisih;
             $pajakSum = $r->pajakSum;
             $biaya = str()->remove(',', $r->biaya);
@@ -175,6 +176,7 @@ class PoController extends Controller
             if ($biaya) {
                 DB::table('po_transaksi')->insert([
                     'id_akun' => $id_akun_pembayaran,
+                    'id_akun_lawan' => $id_akun_lawan,
                     'no_nota' => $no_nota,
                     'nm_transaksi' => "BIAYA TAMBAHAN PO/$no_nota",
                     'jumlah' => $biaya,
@@ -338,7 +340,6 @@ class PoController extends Controller
     }
     public function create_bukukan_pengiriman(Request $r)
     {
-        dd('pengirmana');
         DB::beginTransaction();
         try {
 

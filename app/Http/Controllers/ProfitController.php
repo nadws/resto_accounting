@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Http;
 
 class ProfitController extends Controller
 {
+    public function dashboard()
+    {
+        $data = [
+            'title' => 'Dashboard Profit',
+            'kategori_akun' => DB::table('subklasifikasi_akun')->get()
+        ];
+
+        return view('dashboard.index', $data);
+    }
     function prosesTransaksi($transactions, $type)
     {
         $data = [];

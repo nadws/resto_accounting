@@ -71,7 +71,7 @@ class BahanController extends Controller
                         foreach ($resep as $r) {
                             DB::table('stok_bahan')->insert([
                                 'id_bahan' => $r->id_bahan,
-                                'id_menu' => $i->id_menu,
+                                'id_bahan' => $i->id_menu,
                                 'invoice' => "$kode-$invoice",
                                 'urutan' => $invoice,
                                 'tgl' => $tgl,
@@ -91,7 +91,7 @@ class BahanController extends Controller
             return redirect()->route('sinkron.index')->with('sukses', 'Data Berhasil diimport');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e);
+            return redirect()->route('sinkron.index')->with('error', 'Data GAGAL : ' . $e->getMessage());
         }
     }
     public function singkronPalsu()
